@@ -6,7 +6,7 @@ const accountingService = require('../services/accounting.service');
  */
 async function getPurchaseOrders(req, res, next) {
     try {
-        const { page = 1, limit = 50, status, factoryId, brandId } = req.query;
+        const { page = 1, limit = 20000, status, factoryId, brandId } = req.query;
         const offset = (page - 1) * limit;
 
         let query = `

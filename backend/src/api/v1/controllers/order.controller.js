@@ -11,7 +11,7 @@ const auditService = require('../../../services/audit.service');
  */
 async function getOrders(req, res, next) {
   try {
-    const { page = 1, limit = 200, status, customerId, orderType, salesPersonId, search } = req.query;
+    const { page = 1, limit = 20000, status, customerId, orderType, salesPersonId, search } = req.query;
     const offset = (page - 1) * limit;
 
     let baseQuery = `
