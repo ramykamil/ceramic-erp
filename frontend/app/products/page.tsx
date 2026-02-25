@@ -38,7 +38,7 @@ export default function ProductsPage() {
 
   // Server-Side State
   const [page, setPage] = useState(1);
-  const [limit] = useState(500);
+  const [limit] = useState(100000); // Increased limit to show all products on a single page
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [sortBy, setSortBy] = useState<string>('ProductName');
