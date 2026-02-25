@@ -1,0 +1,90 @@
+{
+    "name": "retail-erp-standard",
+    "version": "1.0.0",
+    "description": "Retail ERP - Système de Gestion Portable",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "build": "electron-builder --win",
+        "build:portable": "electron-builder --win portable",
+        "build:all": "electron-builder --win --config"
+    },
+    "author": "Ramy Kamil Mecheri",
+    "license": "MIT",
+    "devDependencies": {
+        "electron": "^28.0.0",
+        "electron-builder": "^24.9.1",
+        "electron-rebuild": "^3.2.9"
+    },
+    "build": {
+        "appId": "com.retailerp.standard",
+        "productName": "Retail ERP",
+        "directories": {
+            "output": "dist"
+        },
+        "extraResources": [
+            {
+                "from": "../backend",
+                "to": "backend",
+                "filter": [
+                    "**/*",
+                    "!node_modules/**"
+                ]
+            },
+            {
+                "from": "../frontend/.next",
+                "to": "frontend/.next"
+            },
+            {
+                "from": "../frontend/public",
+                "to": "frontend/public"
+            },
+            {
+                "from": "../config",
+                "to": "config"
+            }
+        ],
+        "files": [
+            "**/*",
+            "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+            "!**/node_modules/.cache/**"
+        ],
+        "win": {
+            "target": [
+                {
+                    "target": "nsis",
+                    "arch": [
+                        "x64"
+                    ]
+                },
+                {
+                    "target": "portable",
+                    "arch": [
+                        "x64"
+                    ]
+                }
+            ],
+            "icon": "icon.png"
+        },
+        "nsis": {
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true,
+            "installerIcon": "icon.png",
+            "uninstallerIcon": "icon.png",
+            "installerHeaderIcon": "icon.png",
+            "createDesktopShortcut": true,
+            "createStartMenuShortcut": true,
+            "shortcutName": "Retail ERP"
+        },
+        "portable": {
+            "artifactName": "RetailERP-Portable-${version}.${ext}"
+        }
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "electron",
+            "better-sqlite3",
+            "lzma-native"
+        ]
+    }
+}

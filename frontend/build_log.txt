@@ -1,0 +1,690 @@
+
+> ceramic-erp-frontend@1.0.0 build
+> next build
+
+  ▲ Next.js 14.2.33
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/26) ...
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2397296765'
+}
+
+Error occurred prerendering page "/customers/new". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/mobile/dashboard/page.js:1:6126)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2445667209'
+}
+
+Error occurred prerendering page "/customers". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/mobile/dashboard/page.js:1:6126)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/_not-found/page.js:1:3052)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '3008291444'
+}
+
+Error occurred prerendering page "/_not-found". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/_not-found/page.js:1:3052)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2397296765'
+}
+
+Error occurred prerendering page "/brands". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/mobile/dashboard/page.js:1:6126)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2445667209'
+}
+
+Error occurred prerendering page "/hr/attendance". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/mobile/dashboard/page.js:1:6126)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+   Generating static pages (6/26) 
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2397296765'
+}
+
+Error occurred prerendering page "/inventory/transactions". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/_not-found/page.js:1:3052)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '3008291444'
+}
+
+Error occurred prerendering page "/hr/employees". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/_not-found/page.js:1:3052)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/mobile/dashboard/page.js:1:6126)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2445667209'
+}
+
+Error occurred prerendering page "/inventory". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/mobile/dashboard/page.js:1:6126)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2397296765'
+}
+
+Error occurred prerendering page "/logistics/deliveries". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/_not-found/page.js:1:3052)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '3008291444'
+}
+
+Error occurred prerendering page "/login". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/_not-found/page.js:1:3052)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+   Generating static pages (12/26) 
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/mobile/dashboard/page.js:1:6126)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2445667209'
+}
+
+Error occurred prerendering page "/logistics/drivers". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/mobile/dashboard/page.js:1:6126)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/mobile/dashboard/page.js:1:6126)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2445667209'
+}
+
+Error occurred prerendering page "/mobile/dashboard". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/mobile/dashboard/page.js:1:6126)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2397296765'
+}
+
+Error occurred prerendering page "/logistics/vehicles". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2397296765'
+}
+
+Error occurred prerendering page "/logistics". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2397296765'
+}
+
+Error occurred prerendering page "/". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/mobile/dashboard/page.js:1:6126)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2445667209'
+}
+
+Error occurred prerendering page "/orders". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/mobile/dashboard/page.js:1:6126)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2397296765'
+}
+
+Error occurred prerendering page "/mobile/pos". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+   Generating static pages (19/26) 
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/mobile/dashboard/page.js:1:6126)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2445667209'
+}
+
+Error occurred prerendering page "/products/form". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/mobile/dashboard/page.js:1:6126)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2397296765'
+}
+
+Error occurred prerendering page "/products". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2397296765'
+}
+
+Error occurred prerendering page "/purchasing/new". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/mobile/dashboard/page.js:1:6126)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2445667209'
+}
+
+Error occurred prerendering page "/purchasing". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/mobile/dashboard/page.js:1:6126)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2397296765'
+}
+
+Error occurred prerendering page "/reports". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/mobile/dashboard/page.js:1:6126)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2445667209'
+}
+
+Error occurred prerendering page "/settlements". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/mobile/dashboard/page.js:1:6126)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975) {
+  digest: '2397296765'
+}
+
+Error occurred prerendering page "/sales/pos". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'S')
+    at e.exports (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:2:112758)
+    at /home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16735
+    at 8985 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/chunks/241.js:1:16844)
+    at t (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at 7245 (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/app/logistics/page.js:1:5129)
+    at Object.t [as require] (/home/ramy/Desktop/ceramic-erp-platform/frontend/.next/server/webpack-runtime.js:1:128)
+    at require (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:16:18839)
+    at I (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:94364)
+    at C (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:92915)
+    at rR (/home/ramy/Desktop/ceramic-erp-platform/frontend/node_modules/.pnpm/next@14.2.33_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:33975)
+ ✓ Generating static pages (26/26)
+
+> Export encountered errors on following paths:
+	/_not-found/page: /_not-found
+	/brands/page: /brands
+	/customers/new/page: /customers/new
+	/customers/page: /customers
+	/hr/attendance/page: /hr/attendance
+	/hr/employees/page: /hr/employees
+	/inventory/page: /inventory
+	/inventory/transactions/page: /inventory/transactions
+	/login/page: /login
+	/logistics/deliveries/page: /logistics/deliveries
+	/logistics/drivers/page: /logistics/drivers
+	/logistics/page: /logistics
+	/logistics/vehicles/page: /logistics/vehicles
+	/mobile/dashboard/page: /mobile/dashboard
+	/mobile/pos/page: /mobile/pos
+	/orders/page: /orders
+	/page: /
+	/products/form/page: /products/form
+	/products/page: /products
+	/purchasing/new/page: /purchasing/new
+	/purchasing/page: /purchasing
+	/reports/page: /reports
+	/sales/pos/page: /sales/pos
+	/settlements/page: /settlements

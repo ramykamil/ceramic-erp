@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ceramic ERP - Excel to CSV Converter</title>
+    <!-- SheetJS with multiple CDN fallbacks -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        if (typeof XLSX === 'undefined') {
+            document.write('<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"><\/script>');
+        }
+    </script>
+    <script>
+        if (typeof XLSX === 'undefined') {
+            document.write('<script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"><\/script>');
+        }
+    </script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof XLSX === 'undefined') {
+                document.getElementById('status').textContent = '⚠️ Error: Could not load the Excel parsing library. Check your internet connection.';
+                document.getElementById('status').className = 'status error';
+                document.getElementById('convertBtn').disabled = true;
+            }
+        });
+    </script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f3f4f6; color: #1f2937; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        .container { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); width: 100%; max-width: 500px; text-align: center; }
+        .drop-zone { border: 2px dashed #e5e7eb; border-radius: 8px; padding: 3rem 1.5rem; margin: 1.5rem 0; cursor: pointer; transition: all 0.2s; position: relative; }
+        .drop-zone:hover, .drop-zone.dragover { border-color: #3b82f6; background: #eff6ff; }
+        .drop-zone input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+        .btn { background: #3b82f6; color: white; padding: 0.75rem 1.5rem; border-radius: 6px; border: none; font-weight: 500; cursor: pointer; width: 100%; margin-top: 1rem; font-size: 1rem; transition: background 0.2s; }
+        .btn:hover { background: #2563eb; }
+        .btn:disabled { background: #9ca3af; cursor: not-allowed; }
+        .status { margin-top: 1rem; font-size: 0.875rem; min-height: 1.5rem; }
+        .error { color: #dc2626; }
+        .success { color: #059669; }
+        .info { font-size: 0.85rem; color: #6b7280; margin-top: 2rem; text-align: left; background: #f9fafb; padding: 1rem; border-radius: 6px; }
+        code { background: #e5e7eb; padding: 0.1rem 0.3rem; border-radius: 4px; font-size: 0.8em; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📊 Inventory Converter</h2>
+    <p style="color: #6b7280; margin-bottom: 2rem;">Convert "Old Software" Excel files to App CSV</p>
+
+    <div class="drop-zone" id="dropZone">
+        <input type="file" id="fileInput" accept=".xlsx, .xls, .csv">
+        <div style="font-size: 2rem; margin-bottom: 1rem;">📁</div>
+        <p style="margin: 0; font-weight: 500;">Click to upload or drag & drop</p>
+        <p style="margin: 0.5rem 0 0; font-size: 0.85rem; color: #9ca3af;">Supports .xlsx, .xls, .csv</p>
+    </div>
+
+    <div id="status" class="status"></div>
+    <button id="convertBtn" class="btn" disabled>Convert & Download CSV</button>
+
+    <div class="info">
+        <strong>Expected Columns:</strong><br>
+        This tool looks for columns containing <code>Libell</code> (Name), <code>Qt</code> (Qty), and optionally <code>Reference</code>, <code>PALETTE</code>, <code>COLIS</code>.
+        <br><br>
+        <strong>Output Format:</strong><br>
+        Standard CSV ready for Ceramic ERP import.
+    </div>
+</div>
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const dropZone = document.getElementById('dropZone');
+    const status = document.getElementById('status');
+    const convertBtn = document.getElementById('convertBtn');
+    
+    let selectedFile = null;
+
+    // Drag & Drop visual feedback
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (e) => { 
+        e.preventDefault(); 
+        dropZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length) handleFile(e.target.files[0]);
+    });
+
+    function handleFile(file) {
+        selectedFile = file;
+        status.textContent = `Selected: ${file.name}`;
+        status.className = 'status';
+        convertBtn.disabled = false;
+    }
+
+    convertBtn.addEventListener('click', async () => {
+        if (!selectedFile) return;
+
+        try {
+            status.textContent = 'Processing...';
+            status.className = 'status';
+            
+            const data = await readFile(selectedFile);
+            const csvContent = processData(data);
+            downloadCSV(csvContent, `Converted_${selectedFile.name.split('.')[0]}.csv`);
+            
+            status.textContent = 'Success! Download started.';
+            status.className = 'status success';
+        } catch (err) {
+            console.error(err);
+            status.textContent = 'Error: ' + err.message;
+            status.className = 'status error';
+        }
+    });
+
+    function readFile(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const data = new Uint8Array(e.target.result);
+                try {
+                    const workbook = XLSX.read(data, { type: 'array', cellDates: true });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    // raw: true ensures we get the underlying value (e.g. 1.215) instead of formatted string "1.22"
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { defval: "", raw: true });
+                    resolve(jsonData);
+                } catch (err) {
+                    reject(new Error("Failed to parse file. Is it a valid Excel/CSV?"));
+                }
+            };
+            reader.onerror = () => reject(new Error("File read error"));
+            reader.readAsArrayBuffer(file);
+        });
+    }
+
+    function parseQuantity(val) {
+        if (!val) return 0;
+        if (typeof val === 'number') return val; // Return raw number to keep precision (e.g. 1.215)
+        
+        const str = String(val);
+        // Clean French format: "1 234,56" -> "1234.56"
+        // Also remove non-numeric chars except dot and comma
+        const clean = str.replace(/[^0-9,.-]/g, '').replace(',', '.');
+        const num = parseFloat(clean);
+        return isNaN(num) ? 0 : num;
+    }
+
+    function processData(jsonData) {
+        if (!jsonData || jsonData.length === 0) throw new Error("File is empty");
+
+        const headers = ["Reference", "Libelle", "Famille", "NB PALETTE", "NB COLIS", "Qte", "Prix d'achat", "Prix de vente", "QteParColis", "QteColisParPalette", "Source"];
+        const rows = [];
+
+        // Add Header
+        rows.push(headers.join(','));
+
+        jsonData.forEach(row => {
+            // Fuzzy match keys
+            const keys = Object.keys(row);
+            const libelleKey = keys.find(k => k.toLowerCase().includes('libell') || k.toLowerCase().includes('name') || k.toLowerCase().includes('désignation'));
+            const qtyKey = keys.find(k => k.toLowerCase().startsWith('qt') || k.toLowerCase().includes('stock'));
+            const refKey = keys.find(k => k.toLowerCase().startsWith('ref') || k.toLowerCase().includes('code'));
+            const palletKey = keys.find(k => k.toLowerCase().includes('palette'));
+            const colisKey = keys.find(k => k.toLowerCase().includes('colis') && !k.toLowerCase().includes('par'));
+            const priceBuyKey = keys.find(k => k.toLowerCase().includes('ach') || k.toLowerCase().includes('buy'));
+            const priceSellKey = keys.find(k => k.toLowerCase().includes('ven') || k.toLowerCase().includes('sell'));
+            // New Keys
+            const familleKey = keys.find(k => k.toLowerCase().includes('famille') || k.toLowerCase().includes('brand') || k.toLowerCase().includes('marque'));
+            const qteParColisKey = keys.find(k => k.toLowerCase().includes('qteparcolis') || k.toLowerCase().includes('pcs'));
+            const qteColisParPaletteKey = keys.find(k => k.toLowerCase().includes('qtecolisparpalette') || k.toLowerCase().includes('box'));
+
+
+            const name = libelleKey ? String(row[libelleKey]).trim() : "";
+            
+            if (name) {
+                 const newRow = [
+                    refKey ? `"${String(row[refKey]).replace(/"/g, '""')}"` : "",
+                    `"${name.replace(/"/g, '""')}"`,
+                    familleKey ? `"${String(row[familleKey]).replace(/"/g, '""')}"` : "",
+                    parseQuantity(palletKey ? row[palletKey] : 0),
+                    parseQuantity(colisKey ? row[colisKey] : 0),
+                    parseQuantity(qtyKey ? row[qtyKey] : 0),
+                    priceBuyKey ? `"${String(row[priceBuyKey]).replace(/"/g, '""')}"` : "0",
+                    priceSellKey ? `"${String(row[priceSellKey]).replace(/"/g, '""')}"` : "0",
+                    parseQuantity(qteParColisKey ? row[qteParColisKey] : 0),
+                    parseQuantity(qteColisParPaletteKey ? row[qteColisParPaletteKey] : 0),
+                    "EXCEL_CONVERTED"
+                ];
+                rows.push(newRow.join(','));
+            }
+        });
+
+        return rows.join('\n');
+    }
+
+    function downloadCSV(content, fileName) {
+        const blob = new Blob(["\uFEFF" + content], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        if (link.download !== undefined) {
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", fileName);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
+</script>
+
+</body>
+</html>

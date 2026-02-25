@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Name=Ceramic ERP
+Comment=Start Ceramic ERP Platform
+Path=/home/ramy/Desktop/ceramic-erp-platform/
+Exec=/home/ramy/Desktop/ceramic-erp-platform/start_app_safe.sh
+Icon=utilities-terminal
+Terminal=false
+Type=Application
+Categories=Office;Business;
