@@ -25,7 +25,7 @@ const formatDate = (dateString: string) => {
     if (!dateString) return '—';
     try {
         return new Date(dateString).toLocaleDateString('fr-DZ', {
-            year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'UTC'
+            year: 'numeric', month: '2-digit', day: '2-digit'
         });
     } catch { return dateString; }
 };

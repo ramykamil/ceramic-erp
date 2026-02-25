@@ -47,7 +47,7 @@ const formatCurrencyDZD = (amount: number | null | undefined): string => {
 const formatDate = (dateString: string | null | undefined): string => {
   if (!dateString) return '—';
   try {
-    return new Date(dateString).toLocaleDateString('fr-DZ', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'UTC' });
+    return new Date(dateString).toLocaleDateString('fr-DZ', { year: 'numeric', month: '2-digit', day: '2-digit' });
   } catch (e) { return dateString; }
 };
 
