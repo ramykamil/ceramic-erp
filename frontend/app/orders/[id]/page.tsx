@@ -10,7 +10,18 @@ import { StandardDocument, DocumentData } from '@/components/print/StandardDocum
 
 // Helpers & Interfaces
 const formatCurrency = (amount: number) => new Intl.NumberFormat('fr-DZ', { style: 'currency', currency: 'DZD' }).format(amount);
-const formatDate = (d: string) => new Date(d).toLocaleDateString('fr-DZ');
+const formatDate = (d: string) => {
+    if (!d) return '-';
+    const match = d.match(/^(\d{4})-\d{2}-\d{2}/);
+    if (match && d.length <= 10) {
+        const parts = d.split('-');
+        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    } else if (match) {
+        const parts = match[0].split('-');
+        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+    return new Date(d).toLocaleDateString('fr-DZ');
+};
 
 interface FactureItem {
     productCode: string;

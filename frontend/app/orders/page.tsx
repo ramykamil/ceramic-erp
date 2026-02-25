@@ -28,7 +28,15 @@ interface Order {
 
 // Helpers
 const formatCurrencyDZD = (amount: number) => new Intl.NumberFormat('fr-DZ', { style: 'currency', currency: 'DZD' }).format(amount);
-const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString('fr-DZ');
+const formatDate = (dateString: string) => {
+  if (!dateString) return '-';
+  const match = dateString.match(/^(\d{4}-\d{2}-\d{2})/);
+  if (match) {
+    const parts = match[1].split('-');
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+  }
+  return new Date(dateString).toLocaleDateString('fr-DZ');
+};
 const getStatusBadge = (status: string) => {
   const classes = {
     PENDING: 'bg-amber-100 text-amber-800',

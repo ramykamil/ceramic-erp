@@ -60,12 +60,17 @@ export const formatCurrencyExport = (value: number | null | undefined): number =
     return Number(value) || 0;
 };
 
-/**
- * Format date for export
- */
 export const formatDateExport = (value: string | null | undefined): string => {
     if (!value) return '';
     try {
+        const match = value.match(/^(\d{4})-\d{2}-\d{2}/);
+        if (match && value.length <= 10) {
+            const parts = value.split('-');
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        } else if (match) {
+            const parts = match[0].split('-');
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
         return new Date(value).toLocaleDateString('fr-FR');
     } catch {
         return value;
