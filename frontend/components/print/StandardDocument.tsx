@@ -255,6 +255,8 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
+        borderTop: isReturnSlip ? '16px solid #ef4444' : 'none',
+        paddingTop: isReturnSlip ? '15px' : '0',
         borderBottom: '4px solid #b91c1c',
         paddingBottom: '12px',
         marginBottom: '15px',

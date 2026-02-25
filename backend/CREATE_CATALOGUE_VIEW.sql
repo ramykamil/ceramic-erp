@@ -13,6 +13,7 @@ SELECT
     p.ProductName,
     LOWER(p.ProductName) as productname_lower,
     LOWER(p.ProductCode) as productcode_lower,
+    p.BrandID,
     b.BrandName as Famille,
     LOWER(COALESCE(b.BrandName, '')) as brandname_lower,
     p.BasePrice as PrixVente,

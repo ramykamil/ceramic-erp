@@ -1,0 +1,6272 @@
+[
+  {
+    "productid": 1705,
+    "productcode": "FICHE:ACRA BEIGE 30/65",
+    "brandid": 4
+  },
+  {
+    "productid": 1379,
+    "productcode": "FICHE: ROMA BLANC RELIEF 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3692,
+    "productcode": "002",
+    "brandid": 4
+  },
+  {
+    "productid": 3701,
+    "productcode": "009",
+    "brandid": 3
+  },
+  {
+    "productid": 3702,
+    "productcode": "65",
+    "brandid": 6
+  },
+  {
+    "productid": 3703,
+    "productcode": "552",
+    "brandid": 6
+  },
+  {
+    "productid": 3695,
+    "productcode": "00125",
+    "brandid": 2
+  },
+  {
+    "productid": 1048,
+    "productcode": "FICHE: MALAGA TAUPE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 3698,
+    "productcode": "0025",
+    "brandid": 7
+  },
+  {
+    "productid": 635,
+    "productcode": "FICHE:ACRA GRIS 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1644,
+    "productcode": "FICHE:EVA BEIGE 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1679,
+    "productcode": "FICHE:MARBELLA MATT 30/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2586,
+    "productcode": "FICHE:GEO MARFIL+PERLA  60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2574,
+    "productcode": "FICHE:ROMA BLANC REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3584,
+    "productcode": "FICHE:MARBRE+EMPERADOR NOIR 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2046,
+    "productcode": "FICHE:BROOKLYNE GRIS 60/60",
+    "brandid": 2
+  },
+  {
+    "productid": 2141,
+    "productcode": "FICHE:CRISTALO 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2595,
+    "productcode": "FICHE:CAIRO MARFIL SIMPLE 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2654,
+    "productcode": "FICHE:ALTAMIRA OXIDO 33/33",
+    "brandid": 3
+  },
+  {
+    "productid": 2434,
+    "productcode": "FICHE:SERIE VIRGINIA PLATINE+GRIS REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 2597,
+    "productcode": "FICHE:LUNA CREMA REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2610,
+    "productcode": "FICHE: DRAGON CREMA 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3462,
+    "productcode": "FICHE:MARMOL GRIS GLOSSY REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 3464,
+    "productcode": "FICHE:MARMOL CREMA GLOSSY REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 3463,
+    "productcode": "FICHE:OPERA GLOSSY REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 3466,
+    "productcode": "FICHE:VOGUE GLOSSY REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 3467,
+    "productcode": "FICHE:ELITE GLOSSY REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 3585,
+    "productcode": "FICHE:NEO WHITE GLOSSY REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 3521,
+    "productcode": "FICHE:SUNNY CREMA 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 2572,
+    "productcode": "FICHE: TULIPE MARFIL 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 3580,
+    "productcode": "FICHE: EXTRA BEIGE REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 3581,
+    "productcode": "FICHE: EXTRA GRIS REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 3469,
+    "productcode": "FICHE:ALASKA GLOSSY 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 1999,
+    "productcode": "FICHE:SINA? REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 2516,
+    "productcode": "FICHE:LIFE GRIS 25/75",
+    "brandid": 3
+  },
+  {
+    "productid": 2518,
+    "productcode": "FICHE:LIFE MARON 25/75",
+    "brandid": 3
+  },
+  {
+    "productid": 2341,
+    "productcode": "FICHE:CAIRO 33/33",
+    "brandid": 5
+  },
+  {
+    "productid": 2850,
+    "productcode": "FICHE:PALACE NOIR+VENICIA BLANC POLI REC 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1322,
+    "productcode": "FICHE:SNAP NOIR 150/75",
+    "brandid": 3
+  },
+  {
+    "productid": 2858,
+    "productcode": "FICHE:MIRNA EXTRA SATINE 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2862,
+    "productcode": "FICHE: ROMA BLANC BRILLANT 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 3341,
+    "productcode": "FICHE:SERIE CANNES 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1375,
+    "productcode": "FICHE:ARIZONA PERLA 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1387,
+    "productcode": "FICHE:TOSCA NATUREL 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1377,
+    "productcode": "FICHE:CALACATA REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1327,
+    "productcode": "FICHE:VERONA GRAFFITO 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1293,
+    "productcode": "FICHE: STELLAR GOLD POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1363,
+    "productcode": "FICHE:ECO BLANCO REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3345,
+    "productcode": "FICHE:VOLTA MARFIL 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2746,
+    "productcode": "FICHE:PRADA GREEN POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2469,
+    "productcode": "FICHE:STIGMA NATURE POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2051,
+    "productcode": "FICHE:MIRDIF MARBRE REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 2110,
+    "productcode": "FICHE:ARCILLA TAUPE 33/33",
+    "brandid": 11
+  },
+  {
+    "productid": 2540,
+    "productcode": "FICHE: CALISTA CREMA REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2549,
+    "productcode": "FICHE:FUJI CREMA REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2466,
+    "productcode": "FICHE:RITAL MARFIL EXTRA 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2385,
+    "productcode": "FICHE:OLYMPIA  45/90",
+    "brandid": 5
+  },
+  {
+    "productid": 2098,
+    "productcode": "FICHE:ROME MARBRE 45/45",
+    "brandid": 11
+  },
+  {
+    "productid": 1993,
+    "productcode": "FICHE: URBAIN SILVER 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2236,
+    "productcode": "FICHE: ATALANTA GOLD BLACK POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1684,
+    "productcode": "FICHE: FLAT PERLA 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2813,
+    "productcode": "FICHE:CARTHAGE GRIS 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 3416,
+    "productcode": "FICHE:SERIE WONDER // CHANEL 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1857,
+    "productcode": "FICHE: SERIE TUCSON 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1833,
+    "productcode": "FICHE: ATHINA BLEU 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2542,
+    "productcode": "FICHE:ARTICO (G+B) 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 2521,
+    "productcode": "FICHE:ROCKSTAR BROWN 45/45",
+    "brandid": 6
+  },
+  {
+    "productid": 2689,
+    "productcode": "FICHE: FICHE WOOD PANEL( DARK GREY+GREY BLACK) 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1487,
+    "productcode": "FICHE:JASMINE POLI/REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1126,
+    "productcode": "FICHE: COSMO GRIS POLI/REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1871,
+    "productcode": "FICHE: LOTUS BEIGE 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1120,
+    "productcode": "FICHE: SERIE VOLCANO 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1714,
+    "productcode": "FICHE: BARCELONA POLI 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1742,
+    "productcode": "FICHE: PLAZA BLEU POL/REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1773,
+    "productcode": "FICHE: DIAMOND BLACK 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1809,
+    "productcode": "FICHE: ROBLE 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1829,
+    "productcode": "FICHE: EUROPA GLOSSY 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2812,
+    "productcode": "FICHE:4D BEIGE +BROWN 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1661,
+    "productcode": "FICHE:ACRA BEIGE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1528,
+    "productcode": "FICHE:ACRA BEIGE REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1378,
+    "productcode": "FICHE:ACRA GRIS 30/65",
+    "brandid": 4
+  },
+  {
+    "productid": 1779,
+    "productcode": "FICHE:ACRA GRIS 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 3721,
+    "productcode": "FICHE:ACRA GRIS 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1588,
+    "productcode": "FICHE:ACRA GRIS POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3722,
+    "productcode": "FICHE:ACRA GRIS REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1059,
+    "productcode": "FICHE:ACRA GRIS REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1634,
+    "productcode": "FICHE:AGATA BLACK 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1688,
+    "productcode": "FICHE:AGERA POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2493,
+    "productcode": "FICHE:ALASKA BLANC 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1429,
+    "productcode": "FICHE:ALASKA BLANC POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2507,
+    "productcode": "FICHE:ALASKA BLANC POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1422,
+    "productcode": "FICHE:ALASKA BLANC REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1606,
+    "productcode": "FICHE:ALASKA POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3723,
+    "productcode": "FICHE:ALASKA REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 1967,
+    "productcode": "FICHE:ALASKA SILVER 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 1201,
+    "productcode": "FICHE:ALBA PERLA+BEIGE+GRIS 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 2091,
+    "productcode": "FICHE:ALBANIA NATURE POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 1593,
+    "productcode": "FICHE:ALEPPO BEIGE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 2509,
+    "productcode": "FICHE:ALEXA 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1145,
+    "productcode": "FICHE:ALEXANDRA POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2626,
+    "productcode": "FICHE:ALICANT CREMA POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2821,
+    "productcode": "FICHE:ALLURE GRIS 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 3459,
+    "productcode": "FICHE:ALMERIA BEIGE REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 3460,
+    "productcode": "FICHE:ALMERIA GRIS REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 2088,
+    "productcode": "FICHE:ALMERIA MARBRE 45/45",
+    "brandid": 11
+  },
+  {
+    "productid": 1049,
+    "productcode": "FICHE:ALMERIA POLI REC 90/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1843,
+    "productcode": "FICHE:ALPE 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2328,
+    "productcode": "FICHE:ALPEN REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 2338,
+    "productcode": "FICHE:ALPEN SIMPLE 45/45",
+    "brandid": 5
+  },
+  {
+    "productid": 2522,
+    "productcode": "FICHE:AMAZONE PERLA REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2512,
+    "productcode": "FICHE:AMERICA GOLD POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3724,
+    "productcode": "FICHE:ANDREA PERLA POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1031,
+    "productcode": "FICHE:ANKARA POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1685,
+    "productcode": "FICHE:ANTALIA BEIGE 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1043,
+    "productcode": "FICHE:ANTALIA GRIS 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1019,
+    "productcode": "FICHE:ANTALIA GRIS 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 2067,
+    "productcode": "FICHE:AQUA BLUE POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 2063,
+    "productcode": "FICHE:AQUA GREEN POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 2390,
+    "productcode": "FICHE:ARCO BEIGE POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2065,
+    "productcode": "FICHE:ARCO GRIS POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 1369,
+    "productcode": "FICHE:ARCO PERLA REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2614,
+    "productcode": "FICHE:ARDESIA PERLA POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1283,
+    "productcode": "FICHE:ARIEL GRIS FONCE POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2058,
+    "productcode": "FICHE:ARIEL MARFIL REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1261,
+    "productcode": "FICHE:ARIEL PERLA 45/45",
+    "brandid": 3
+  },
+  {
+    "productid": 1012,
+    "productcode": "FICHE:ARIZONA CAPPUCCINO REC 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1795,
+    "productcode": "FICHE:ARIZONA MOCCA SIMPLE 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 2450,
+    "productcode": "FICHE:ARIZONA NATUREL 20/75",
+    "brandid": 3
+  },
+  {
+    "productid": 1424,
+    "productcode": "FICHE:ARIZONA PERLA REC 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 2642,
+    "productcode": "FICHE:ARMANI GOLD 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 1095,
+    "productcode": "FICHE:ARMANI+POLO BLACK POLI REC 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2488,
+    "productcode": "FICHE:ARSENAL BLANC 45/45",
+    "brandid": 3
+  },
+  {
+    "productid": 2631,
+    "productcode": "FICHE:ARTICO BLANC POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3725,
+    "productcode": "FICHE:ARTICO GRIS 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 3726,
+    "productcode": "FICHE:ARTISAN BLUE 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 3727,
+    "productcode": "FICHE:ARTISAN GRIS 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 2617,
+    "productcode": "FICHE:ASCOT ROJO 20/75",
+    "brandid": 3
+  },
+  {
+    "productid": 1021,
+    "productcode": "FICHE:ASTON BEIGE+WHITE+OXIDO 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 3728,
+    "productcode": "FICHE:ATHENA BLUE POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2817,
+    "productcode": "FICHE:ATHINA BEIGE 20/75",
+    "brandid": 3
+  },
+  {
+    "productid": 1907,
+    "productcode": "FICHE:ATICA BEIGE 30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1535,
+    "productcode": "FICHE:ATICA GRIS 30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2076,
+    "productcode": "FICHE:ATLANTA BEIGE 45/90",
+    "brandid": 11
+  },
+  {
+    "productid": 3729,
+    "productcode": "FICHE:ATLANTA GOLD BLACK POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 3730,
+    "productcode": "FICHE:ATLANTA GOLD BLUE POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2190,
+    "productcode": "FICHE:ATLANTA GREEN GOLD POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1134,
+    "productcode": "FICHE:ATLANTA POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2134,
+    "productcode": "FICHE:ATLANTIC 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 3731,
+    "productcode": "FICHE:ATLANTIC 60/60",
+    "brandid": 2
+  },
+  {
+    "productid": 2391,
+    "productcode": "FICHE:ATLANTIC BEIGE REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 3732,
+    "productcode": "FICHE:ATLANTIC POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2126,
+    "productcode": "FICHE:ATLANTIC STONE 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2130,
+    "productcode": "FICHE:ATLANTIC STONE 60/60",
+    "brandid": 2
+  },
+  {
+    "productid": 2668,
+    "productcode": "FICHE:ATLAS CREMA POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2520,
+    "productcode": "FICHE:ATLAS CREMA REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2619,
+    "productcode": "FICHE:ATLAS GRIS POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1210,
+    "productcode": "FICHE:ATLAS PERLA POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1354,
+    "productcode": "FICHE:AURES BLANC POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1347,
+    "productcode": "FICHE:AVION CREMA 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 3451,
+    "productcode": "FICHE:BARCELONA CREMA REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2624,
+    "productcode": "FICHE:BARCELONA OCRE 20/75",
+    "brandid": 3
+  },
+  {
+    "productid": 3733,
+    "productcode": "FICHE:BARCELONA PERLA REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1554,
+    "productcode": "FICHE:BARCELONA POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3476,
+    "productcode": "FICHE:BARI PERLA 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1352,
+    "productcode": "FICHE:BARUSSA GOLD+MAGMA OXIDO POLI REC 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2113,
+    "productcode": "FICHE:BASIC BEIGE 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 655,
+    "productcode": "FICHE:BASIC GRIS 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 1957,
+    "productcode": "FICHE:BASIC GRIS 60/60",
+    "brandid": 2
+  },
+  {
+    "productid": 1676,
+    "productcode": "FICHE:BAVARIA GRIS REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2086,
+    "productcode": "FICHE:BERLIN BEIGE 45/45",
+    "brandid": 11
+  },
+  {
+    "productid": 2524,
+    "productcode": "FICHE:BERLIN MARON 20/75",
+    "brandid": 3
+  },
+  {
+    "productid": 2117,
+    "productcode": "FICHE:BIANCO 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2508,
+    "productcode": "FICHE:BIANCO WHITE 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 1845,
+    "productcode": "FICHE:BIEL NATURE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 800,
+    "productcode": "FICHE:ATLANTIC  GLOSSY 60/60",
+    "brandid": 2
+  },
+  {
+    "productid": 2578,
+    "productcode": "FICHE:BIJOUX EXTRA POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2495,
+    "productcode": "FICHE:BIJOUX MARFIL POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1161,
+    "productcode": "FICHE:BIJOUX MARFIL REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2598,
+    "productcode": "FICHE:BIJOUX PERLA POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2602,
+    "productcode": "FICHE:BIJOUX TABAC POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1916,
+    "productcode": "FICHE:BLANCO REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2034,
+    "productcode": "FICHE:BLANCOS SILVER 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 2581,
+    "productcode": "FICHE:BOIS CHARBON 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2859,
+    "productcode": "FICHE:BOIS DOUGLAS 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1333,
+    "productcode": "FICHE:BOIS DOUGLAS+VENICIA GOLD POLI REC 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2573,
+    "productcode": "FICHE:BOIS MINDI 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2563,
+    "productcode": "FICHE:BOIS PADOUK 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2647,
+    "productcode": "FICHE:BONITA MARFIL 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1716,
+    "productcode": "FICHE:BOSS POLI REC 90/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1700,
+    "productcode": "FICHE:BOSTON BEIGE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1710,
+    "productcode": "FICHE:BOSTON GRIS 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 2173,
+    "productcode": "FICHE:BROOKLYNE BEIGE 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 1961,
+    "productcode": "FICHE:BROOKLYNE BEIGE 60/60",
+    "brandid": 2
+  },
+  {
+    "productid": 1954,
+    "productcode": "FICHE:BROOKLYNE DARK 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2045,
+    "productcode": "FICHE:BROOKLYNE GRIS 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 3734,
+    "productcode": "FICHE:BULGARI CREMA 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2484,
+    "productcode": "FICHE:CALACATA 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2697,
+    "productcode": "FICHE:CALACATA 4D 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 3735,
+    "productcode": "FICHE:CALACATA BRILLANT REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1018,
+    "productcode": "FICHE:CALACATA CREED 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2193,
+    "productcode": "FICHE:CARLA GRIS REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1359,
+    "productcode": "FICHE:CALACATA CUADRO 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2609,
+    "productcode": "FICHE:CALACATA DRAGON REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2529,
+    "productcode": "FICHE:CALACATA MARBRE 45/45",
+    "brandid": 3
+  },
+  {
+    "productid": 1345,
+    "productcode": "FICHE:CALACATA POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3736,
+    "productcode": "FICHE:CALACATA POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3737,
+    "productcode": "FICHE:CALACATA RELIEFE 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2658,
+    "productcode": "FICHE:CALACATA SATINE REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3738,
+    "productcode": "FICHE:CALACATTA EMPIRIAL REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 3739,
+    "productcode": "FICHE:CALISTA CREMA REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1555,
+    "productcode": "FICHE:CALMA REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1062,
+    "productcode": "FICHE:CAMARO GRIS 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 2463,
+    "productcode": "FICHE:CAMILIA PERLA REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1155,
+    "productcode": "FICHE:CANADA 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 2673,
+    "productcode": "FICHE:CANADA MARBRE POLI REC 150/75",
+    "brandid": 3
+  },
+  {
+    "productid": 1812,
+    "productcode": "FICHE:CANADA POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1654,
+    "productcode": "FICHE:CANNES PERLE POLI REC 90/90",
+    "brandid": 4
+  },
+  {
+    "productid": 3740,
+    "productcode": "FICHE:CANNES+NAPOLI POLI REC 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2440,
+    "productcode": "FICHE:CAPI PERLA POLI REC 90/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1157,
+    "productcode": "FICHE:CAPRI SILVER REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1214,
+    "productcode": "FICHE:CARAMELLO SIMPLE 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3741,
+    "productcode": "FICHE:CARLA BEIGE REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 3742,
+    "productcode": "FICHE:CARTHAGE GRIS 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 2427,
+    "productcode": "FICHE:CASTEL BEIGE 3D WALL STONE 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1118,
+    "productcode": "FICHE:CASTELLO POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2293,
+    "productcode": "FICHE:CATALANO BEIGE 3D WALL 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2295,
+    "productcode": "FICHE:CATALANO BROWN 3D WALL 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2105,
+    "productcode": "FICHE:CATALONIA BEIGE 45/45",
+    "brandid": 12
+  },
+  {
+    "productid": 1106,
+    "productcode": "FICHE:CATANIA BLANCO 30/65",
+    "brandid": 4
+  },
+  {
+    "productid": 3743,
+    "productcode": "FICHE:CATANIA BLANCO 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1398,
+    "productcode": "FICHE:CEDRA BEIGE 20/75",
+    "brandid": 3
+  },
+  {
+    "productid": 1253,
+    "productcode": "FICHE:CEDRA BLANC 20/75",
+    "brandid": 3
+  },
+  {
+    "productid": 2606,
+    "productcode": "FICHE:CELINE MARFIL 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2103,
+    "productcode": "FICHE:CENIA PERLA 45/45",
+    "brandid": 11
+  },
+  {
+    "productid": 1832,
+    "productcode": "FICHE:CESAR GRIS 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 774,
+    "productcode": "FICHE:CHANEL GRIS 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2670,
+    "productcode": "FICHE:CHANEL GRIS REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 776,
+    "productcode": "FICHE:JOYA BRILLANT REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3744,
+    "productcode": "FICHE:CHIC 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 1771,
+    "productcode": "FICHE:CHIC GRIS REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1029,
+    "productcode": "FICHE:CHICAGO BEIGE REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1269,
+    "productcode": "FICHE:CINDY 45/45",
+    "brandid": 3
+  },
+  {
+    "productid": 2397,
+    "productcode": "FICHE:CITY BEIGE REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2159,
+    "productcode": "FICHE:CITY GRIS REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2480,
+    "productcode": "FICHE:CIVILIA BLANC 20/75",
+    "brandid": 3
+  },
+  {
+    "productid": 2612,
+    "productcode": "FICHE:CIVILIA MARON 20/75 SIMPLE",
+    "brandid": 3
+  },
+  {
+    "productid": 2601,
+    "productcode": "FICHE:CLARA GOLD POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2831,
+    "productcode": "FICHE:CLARA GOLD POLI REC 90/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1943,
+    "productcode": "FICHE:CLEMCA BEIGE 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 1942,
+    "productcode": "FICHE:CLEMCA GRIS 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 1086,
+    "productcode": "FICHE:CLIFTON 30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2021,
+    "productcode": "FICHE:CONCORDE BEIGE 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 1973,
+    "productcode": "FICHE:CONCORDE GRIS 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 3745,
+    "productcode": "FICHE:COSMO CREMA POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3746,
+    "productcode": "FICHE:COSMO GRIS POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1200,
+    "productcode": "FICHE:COSTA CAPPUCCINO REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1167,
+    "productcode": "FICHE:COSTA CREMA REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 658,
+    "productcode": "FICHE:COSTA GRIS REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1166,
+    "productcode": "FICHE:COSTA REC (CR+CAP) 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1603,
+    "productcode": "FICHE:COSTA REC (G+B) 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2496,
+    "productcode": "FICHE:COTTO OXIDO 33/33",
+    "brandid": 3
+  },
+  {
+    "productid": 2442,
+    "productcode": "FICHE:COTTO ROJO 33/33",
+    "brandid": 3
+  },
+  {
+    "productid": 1917,
+    "productcode": "FICHE:COTTO ROJO TERRE CUITE 45/45",
+    "brandid": 3
+  },
+  {
+    "productid": 2421,
+    "productcode": "FICHE:CREMA MARFIL SIMPLE 45/45",
+    "brandid": 5
+  },
+  {
+    "productid": 2545,
+    "productcode": "FICHE:CRESTO PERLA REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3747,
+    "productcode": "FICHE:CRISTALLO 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 1921,
+    "productcode": "FICHE:CRYSTALE 30/60",
+    "brandid": 7
+  },
+  {
+    "productid": 1447,
+    "productcode": "FICHE:CRYSTALE BLANC POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2483,
+    "productcode": "FICHE:CRYSTALE BLANC POLI REC 90/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2443,
+    "productcode": "FICHE:CRYSTALE MARFIL POLI REC 90/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1100,
+    "productcode": "FICHE:DAKAR BEIGE POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1744,
+    "productcode": "FICHE:DAKAR BROWN POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1420,
+    "productcode": "FICHE:DENVER GRIS 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 663,
+    "productcode": "FICHE:DESERT TERRE CUITE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1212,
+    "productcode": "FICHE:DIAMOND BEIGE 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 1975,
+    "productcode": "FICHE:DIAMOND GOLD 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 1198,
+    "productcode": "FICHE:DIAMOND GRIS 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 1925,
+    "productcode": "FICHE:DIAMOND SILVER 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 2029,
+    "productcode": "FICHE:DIANA BEIGE 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 2015,
+    "productcode": "FICHE:DIANA GRIS 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 2824,
+    "productcode": "FICHE:DIGITAL BLUE 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1017,
+    "productcode": "FICHE:DIOR POLI REC 90/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1937,
+    "productcode": "FICHE:DISFRUTA GOLD 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 1938,
+    "productcode": "FICHE:DISFRUTA SILVER 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 1655,
+    "productcode": "FICHE:DOMO BEIGE REC 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1054,
+    "productcode": "FICHE:DOMO BROWN REC 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1238,
+    "productcode": "FICHE:DOMO GRIS REC 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 2992,
+    "productcode": "FICHE:DOVE GRIS POLI REC 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 3748,
+    "productcode": "FICHE:DRAGON GREEN POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3749,
+    "productcode": "FICHE:DRAGON GRIS POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3750,
+    "productcode": "FICHE:DRAGON POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2273,
+    "productcode": "FICHE:DUNE BEIGE 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 3751,
+    "productcode": "FICHE:ECO POLI REC 120/60",
+    "brandid": 5
+  },
+  {
+    "productid": 1855,
+    "productcode": "FICHE:EDEN GRIS 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1926,
+    "productcode": "FICHE:ELEGANCE GOLD 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 1927,
+    "productcode": "FICHE:ELEGANCE SILVER 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 1025,
+    "productcode": "FICHE:ELEGANT POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1598,
+    "productcode": "FICHE:ELEGANT POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1668,
+    "productcode": "FICHE:ELEGANT+DUBAI POLI REC 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2589,
+    "productcode": "FICHE:ELEGANTA PERLA POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2404,
+    "productcode": "FICHE:ELEMENT POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2644,
+    "productcode": "FICHE:ELITE GRIS 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 3752,
+    "productcode": "FICHE:ELITE REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 2250,
+    "productcode": "FICHE:ELIXIR BLUE POLI REC 70/70",
+    "brandid": 8
+  },
+  {
+    "productid": 2544,
+    "productcode": "FICHE:ELSA GRIS POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2458,
+    "productcode": "FICHE:ELSA GRIS POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3753,
+    "productcode": "FICHE:EMERLAND POLI REC 120/60",
+    "brandid": 5
+  },
+  {
+    "productid": 1621,
+    "productcode": "FICHE:EMMA PERLA 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2550,
+    "productcode": "FICHE:EMPERADOR NOIR POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2292,
+    "productcode": "FICHE:ENERGIE GRIS REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1404,
+    "productcode": "FICHE:ENERGIE REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1726,
+    "productcode": "FICHE:ESPERA 30/65",
+    "brandid": 4
+  },
+  {
+    "productid": 1591,
+    "productcode": "FICHE:ESPERA 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1463,
+    "productcode": "FICHE:ESPERA REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1722,
+    "productcode": "FICHE:EUROPA 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 3754,
+    "productcode": "FICHE:EUROPA GLOSSY 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1760,
+    "productcode": "FICHE:EUROPA MATT 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1852,
+    "productcode": "FICHE:EUROPA MATT REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1445,
+    "productcode": "FICHE:EUROPA MATT REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1842,
+    "productcode": "FICHE:EUROPA POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1813,
+    "productcode": "FICHE:EUROPA POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1541,
+    "productcode": "FICHE:EUROPA POLI REC 90/90",
+    "brandid": 4
+  },
+  {
+    "productid": 3755,
+    "productcode": "FICHE:EVA CAPPUCCINO 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1247,
+    "productcode": "FICHE:EVA GRIS 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1641,
+    "productcode": "FICHE:EVERTON GRIS POLI REC 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1119,
+    "productcode": "FICHE:EVERTON GRIS POLI REC 90/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2269,
+    "productcode": "FICHE:EXPERIA GRIS POLI REC 70/70",
+    "brandid": 8
+  },
+  {
+    "productid": 2279,
+    "productcode": "FICHE:EXPERT POLI REC 70/70",
+    "brandid": 8
+  },
+  {
+    "productid": 2262,
+    "productcode": "FICHE:EXPLORE BLACK POLI REC 70/70",
+    "brandid": 8
+  },
+  {
+    "productid": 2257,
+    "productcode": "FICHE:EXTEND GRIS POLI REC 70/70",
+    "brandid": 8
+  },
+  {
+    "productid": 3756,
+    "productcode": "FICHE:EXTRA BEIGE REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 3757,
+    "productcode": "FICHE:EXTRA GRIS REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 2833,
+    "productcode": "FICHE:EXTRA PERLA 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2248,
+    "productcode": "FICHE:EXTREME GRIS POLI REC 70/70",
+    "brandid": 8
+  },
+  {
+    "productid": 2268,
+    "productcode": "FICHE:FABIA BEIGE REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1069,
+    "productcode": "FICHE:FABIA GRIS 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2290,
+    "productcode": "FICHE:FABIA GRIS REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1707,
+    "productcode": "FICHE:FAST GRIS 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 2437,
+    "productcode": "FICHE:FESTIVAL REC 60/60",
+    "brandid": 11
+  },
+  {
+    "productid": 1358,
+    "productcode": "FICHE:FIRST PERLA 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 3758,
+    "productcode": "FICHE:FLAT CREMA REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3759,
+    "productcode": "FICHE:FLAT PERLA REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1775,
+    "productcode": "FICHE:FLORA GOLD 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2547,
+    "productcode": "FICHE:FLORA MARBRE GOLD POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2684,
+    "productcode": "FICHE:FLORA MARBRE GOLD REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2548,
+    "productcode": "FICHE:FLORIDA BEIGE 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 1542,
+    "productcode": "FICHE:FLORIDA BEIGE REC 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1885,
+    "productcode": "FICHE:FLORIDA BROWN REC 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1614,
+    "productcode": "FICHE:FLORIDA BROWN SIMPLE 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1188,
+    "productcode": "FICHE:FLORIDA GRIS REC 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1482,
+    "productcode": "FICHE:FLORIDA NATURE SIMPLE 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 2023,
+    "productcode": "FICHE:FLOWER BEIGE 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 1994,
+    "productcode": "FICHE:FLOWER GRIS 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 1329,
+    "productcode": "FICHE:FLOWERS 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2588,
+    "productcode": "FICHE:FORMULA GRIS 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2571,
+    "productcode": "FICHE:FORMULA MARFIL 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1213,
+    "productcode": "FICHE:FUJI GRIS REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1662,
+    "productcode": "FICHE:FULHAM POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2291,
+    "productcode": "FICHE:FUNNY GOLD REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 3342,
+    "productcode": "FICHE:GALAXY 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 2596,
+    "productcode": "FICHE:GALAXY MAGIC POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1886,
+    "productcode": "FICHE:GARDEN SIMPLE 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 2587,
+    "productcode": "FICHE:GAZELLE PERLA REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2842,
+    "productcode": "FICHE:GEANT BEIGE 45/45",
+    "brandid": 6
+  },
+  {
+    "productid": 1160,
+    "productcode": "FICHE:GEANT BEIGE 45/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1038,
+    "productcode": "FICHE:GENEVE GRIS 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 3760,
+    "productcode": "FICHE:GEO MARFIL REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1258,
+    "productcode": "FICHE:GEO MOKA+MARFIL POLI REC 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1633,
+    "productcode": "FICHE:GIO GRIS 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1410,
+    "productcode": "FICHE:GEO PERLA+GEO GRIS POLI REC 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 3761,
+    "productcode": "FICHE:GIO CREMA 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2079,
+    "productcode": "FICHE:GIVENCHY MARBRE POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 1913,
+    "productcode": "FICHE:GLASS BEIGE 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 2210,
+    "productcode": "FICHE:GLASS BLACK POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1923,
+    "productcode": "FICHE:GLORIA BEIGE 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 1924,
+    "productcode": "FICHE:GLORIA GRIS 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 2163,
+    "productcode": "FICHE:GOLDEN BLACK 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2000,
+    "productcode": "FICHE:GOLDEN WEEK REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 1182,
+    "productcode": "FICHE:GRANADA POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2200,
+    "productcode": "FICHE:GRANIT GRIS POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2220,
+    "productcode": "FICHE:GRANIT GRIS REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 3762,
+    "productcode": "FICHE:GRANITO GRIS REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 2763,
+    "productcode": "FICHE:GRECE MARBRE POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 1451,
+    "productcode": "FICHE:GRECK WHITE REC 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1573,
+    "productcode": "FICHE:HAVANA NATURE REC 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1097,
+    "productcode": "FICHE:HAWAI PERLA 30/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1179,
+    "productcode": "FICHE:HAWAI PERLA 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1537,
+    "productcode": "FICHE:HAWAI PERLA REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1172,
+    "productcode": "FICHE:HAWAI PERLA SIMPLE 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1195,
+    "productcode": "FICHE:HAZARD BEIGE POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1664,
+    "productcode": "FICHE:HAZARD GRIS POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3763,
+    "productcode": "FICHE:HEXA CREMA 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1578,
+    "productcode": "FICHE:HOPE GRIS POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1101,
+    "productcode": "FICHE:IDEAL NATUREL POLI REC 90/90",
+    "brandid": 3
+  },
+  {
+    "productid": 3764,
+    "productcode": "FICHE:IMPERIAL POLI REC 120/60",
+    "brandid": 5
+  },
+  {
+    "productid": 2441,
+    "productcode": "FICHE:INFINITY MIX 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2382,
+    "productcode": "FICHE:INTERWOOD 45/90",
+    "brandid": 5
+  },
+  {
+    "productid": 1476,
+    "productcode": "FICHE:IRIS 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 3765,
+    "productcode": "FICHE:ITALIA BLACK POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2811,
+    "productcode": "FICHE:ITALY BLANC 25/75",
+    "brandid": 3
+  },
+  {
+    "productid": 3766,
+    "productcode": "FICHE:IVORIA LIGHT REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2183,
+    "productcode": "FICHE:JACOB BLACK POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1836,
+    "productcode": "FICHE:JAGUAR BLACK POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1738,
+    "productcode": "FICHE:JAKARTA 30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3767,
+    "productcode": "FICHE:JAPAN BEIGE REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1729,
+    "productcode": "FICHE:JAPAN GRIS 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 3768,
+    "productcode": "FICHE:JAPAN LIGHT REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 3769,
+    "productcode": "FICHE:JASMINE POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 678,
+    "productcode": "FICHE:JET CREMA REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2078,
+    "productcode": "FICHE:JIAN MARBRE 45/45",
+    "brandid": 11
+  },
+  {
+    "productid": 2797,
+    "productcode": "FICHE:JIAN MARBRE POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 2751,
+    "productcode": "FICHE:JIAN MARBRE REC 60/60",
+    "brandid": 11
+  },
+  {
+    "productid": 1624,
+    "productcode": "FICHE:JORDAN 30/65",
+    "brandid": 4
+  },
+  {
+    "productid": 1680,
+    "productcode": "FICHE:JORDAN SIMPLE 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1433,
+    "productcode": "FICHE:JOY PERLA 45/45",
+    "brandid": 3
+  },
+  {
+    "productid": 1130,
+    "productcode": "FICHE:JOYA BRILLANT 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1127,
+    "productcode": "FICHE:JOYA MATT 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1185,
+    "productcode": "FICHE:JULIA CREMA 30/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1123,
+    "productcode": "FICHE:JULIA WHITE 30/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1731,
+    "productcode": "FICHE:JUNGLE CREMA REC 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1174,
+    "productcode": "FICHE:JUNGLE MIEL REC 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 2645,
+    "productcode": "FICHE:JUPITER+MOZART POLI REC 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1491,
+    "productcode": "FICHE:KENZO LIGHT 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 2451,
+    "productcode": "FICHE:JOY PERLA POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3770,
+    "productcode": "FICHE:KIEV 33/33",
+    "brandid": 6
+  },
+  {
+    "productid": 3714,
+    "productcode": "FICHE:KING CREMA 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 3771,
+    "productcode": "FICHE:KING IVORY 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1116,
+    "productcode": "FICHE:KINGDOM NATUREL POLI REC 90/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2446,
+    "productcode": "FICHE:KINGSTONE REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3772,
+    "productcode": "FICHE:LAND 45/90",
+    "brandid": 5
+  },
+  {
+    "productid": 1033,
+    "productcode": "FICHE:LAND GRIS 30/65",
+    "brandid": 4
+  },
+  {
+    "productid": 1657,
+    "productcode": "FICHE:LAND GRIS 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1477,
+    "productcode": "FICHE:LAND GRIS REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2125,
+    "productcode": "FICHE:LAURA 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2788,
+    "productcode": "FICHE:LEGANCY GOLD 45/45",
+    "brandid": 6
+  },
+  {
+    "productid": 1287,
+    "productcode": "FICHE:LEGEND GRIS FONCE POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3773,
+    "productcode": "FICHE:LEGEND GRIS REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1492,
+    "productcode": "FICHE:LEO CREMA 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1020,
+    "productcode": "FICHE:LEO CREMA 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1073,
+    "productcode": "FICHE:LEO MARFIL 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 2281,
+    "productcode": "FICHE:LIBERTY PLUS BROWN 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 3774,
+    "productcode": "FICHE:LIGHT GOLD REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 2323,
+    "productcode": "FICHE:LIMIT BROWN 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1532,
+    "productcode": "FICHE:LINDRA 30/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1575,
+    "productcode": "FICHE:LINZ BROWN POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2856,
+    "productcode": "FICHE:LOGIC GRIS 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 2499,
+    "productcode": "FICHE:LOGIC PERLA 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 1910,
+    "productcode": "FICHE:LONDON+RIO BLACK POLI REC 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2132,
+    "productcode": "FICHE:LOOK 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2487,
+    "productcode": "FICHE:LORA GRAFITO 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2820,
+    "productcode": "FICHE:LORA GRIS 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1462,
+    "productcode": "FICHE:LUKE OXIDO TERRE CUITE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 3525,
+    "productcode": "FICHE:LUMIERE SILVER 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2175,
+    "productcode": "FICHE:LUNA 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2580,
+    "productcode": "FICHE:LUNA TOFFEE REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3457,
+    "productcode": "FICHE:LUXE REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 2270,
+    "productcode": "FICHE:MACAU BLACK POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2611,
+    "productcode": "FICHE:MADERA CHEMIN GRIS 20/75",
+    "brandid": 3
+  },
+  {
+    "productid": 2477,
+    "productcode": "FICHE:MADERA CHEMIN MARON 20/75",
+    "brandid": 3
+  },
+  {
+    "productid": 2593,
+    "productcode": "FICHE:MADERA CHEMIN VERT 20/75",
+    "brandid": 3
+  },
+  {
+    "productid": 2101,
+    "productcode": "FICHE:MADERA GRIS 120/60",
+    "brandid": 12
+  },
+  {
+    "productid": 2212,
+    "productcode": "FICHE:MADOX GRIS 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1580,
+    "productcode": "FICHE:MADRID 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 3775,
+    "productcode": "FICHE:MADRID GOLD 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 3776,
+    "productcode": "FICHE:MADRID SILVER 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 2263,
+    "productcode": "FICHE:MAGIC SILVER REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2679,
+    "productcode": "FICHE:MAGIC VERT POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2184,
+    "productcode": "FICHE:MAGNUM BLACK POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1481,
+    "productcode": "FICHE:MAJESTIC 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 2013,
+    "productcode": "FICHE:MAJESTIC GOLD 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 1416,
+    "productcode": "FICHE:MAJESTIC MARFIL 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1976,
+    "productcode": "FICHE:MAJESTIC SILVER 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 2258,
+    "productcode": "FICHE:MAJESTY GRIS REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2371,
+    "productcode": "FICHE:CREMA MARFIL REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 1936,
+    "productcode": "FICHE:MALAGA GOLD 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 1620,
+    "productcode": "FICHE:MALAGA GRIS 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1948,
+    "productcode": "FICHE:MALAGA SILVER 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 3777,
+    "productcode": "FICHE:MALAGA TAUPE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1643,
+    "productcode": "FICHE:MALAGA WHITE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 2527,
+    "productcode": "FICHE:MALDIVE CREMA 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1295,
+    "productcode": "FICHE:MALISIA GRIS 33/33",
+    "brandid": 3
+  },
+  {
+    "productid": 1159,
+    "productcode": "FICHE:MALTA GRIS REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1659,
+    "productcode": "FICHE:MALTA GRIS REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1584,
+    "productcode": "FICHE:MALTA LIGHT GRIS 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1887,
+    "productcode": "FICHE:MANHATTAN POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1300,
+    "productcode": "FICHE:MANSTONE BEIGE 15/60",
+    "brandid": 14
+  },
+  {
+    "productid": 2594,
+    "productcode": "FICHE:MARA MARFIL 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2539,
+    "productcode": "FICHE:MARA MARFIL SATINE 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2659,
+    "productcode": "FICHE:MARABELLA 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2737,
+    "productcode": "FICHE:MARABELLA SATINE 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2094,
+    "productcode": "FICHE:MARBELA MARFIL 45/45",
+    "brandid": 11
+  },
+  {
+    "productid": 3778,
+    "productcode": "FICHE:MARBELLA 30/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1543,
+    "productcode": "FICHE:MARBELLA MATT REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1768,
+    "productcode": "FICHE:MARBELLA REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1587,
+    "productcode": "FICHE:MARBLE WHITE 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2319,
+    "productcode": "FICHE:MARBLE WHITE REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2331,
+    "productcode": "FICHE:MARBLE WHITE SIMPLE 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2600,
+    "productcode": "FICHE:MARBRE BLANC 25/75",
+    "brandid": 3
+  },
+  {
+    "productid": 2590,
+    "productcode": "FICHE:MARBRE BRONZE POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2394,
+    "productcode": "FICHE:MARCHE GRANIT ROSE 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2297,
+    "productcode": "FICHE:MARCHE PORTLAND LIGHT GRIS 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2305,
+    "productcode": "FICHE:MARCHE URBAIN SILVER 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1419,
+    "productcode": "FICHE:MARINA BLANC REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1370,
+    "productcode": "FICHE:MARINA CREMA REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2761,
+    "productcode": "FICHE:MARINA TAUPE REC 60/60",
+    "brandid": 11
+  },
+  {
+    "productid": 3779,
+    "productcode": "FICHE:MARMOL CREMA REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 3780,
+    "productcode": "FICHE:MARMOL GRIS REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 2636,
+    "productcode": "FICHE:MARTA BLANC 45/45",
+    "brandid": 3
+  },
+  {
+    "productid": 1163,
+    "productcode": "FICHE:MARTEN POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2082,
+    "productcode": "FICHE:MATIX BLEU 60/60",
+    "brandid": 11
+  },
+  {
+    "productid": 1199,
+    "productcode": "FICHE:MAUREEN BLACK POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1191,
+    "productcode": "FICHE:MAXI MARFIL+OXID+ NATUREL 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1321,
+    "productcode": "FICHE:MAXI PERLA+NOIR+GRIS 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2171,
+    "productcode": "FICHE:MAYA 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2139,
+    "productcode": "FICHE:MAYA PLUS 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 1260,
+    "productcode": "FICHE:MELINA MARFIL REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1276,
+    "productcode": "FICHE:MELINA PERLA REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2473,
+    "productcode": "FICHE:MERINGUE 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1348,
+    "productcode": "FICHE:MERINGUE 45/45",
+    "brandid": 3
+  },
+  {
+    "productid": 2628,
+    "productcode": "FICHE:MERINGUE POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2143,
+    "productcode": "FICHE:SUNNY BEIGE 60/60",
+    "brandid": 2
+  },
+  {
+    "productid": 3526,
+    "productcode": "FICHE:METRO BEIGE 45/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2533,
+    "productcode": "FICHE:METRO CALACATA 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 3480,
+    "productcode": "FICHE:METRO GRIS 45/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1752,
+    "productcode": "FICHE:METRO LUXE GOLD 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2615,
+    "productcode": "FICHE:METRO LUXE GOLD 45/45",
+    "brandid": 6
+  },
+  {
+    "productid": 2730,
+    "productcode": "FICHE:METRO POL 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1550,
+    "productcode": "FICHE:MEXICO MARFIL 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1602,
+    "productcode": "FICHE:MIAMI PERLA TERRE CUITE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 3781,
+    "productcode": "FICHE:MICRA BROWN POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2037,
+    "productcode": "FICHE:MILANO BEIGE 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 2035,
+    "productcode": "FICHE:MILANO GRIS 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 2835,
+    "productcode": "FICHE:MILANO MARFIL 25/75",
+    "brandid": 3
+  },
+  {
+    "productid": 1693,
+    "productcode": "FICHE:MILANO POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1331,
+    "productcode": "FICHE:MILANO POLI REC 90/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2724,
+    "productcode": "FICHE:MINERAL BEIGE TERRE CUITE 45/45",
+    "brandid": 3
+  },
+  {
+    "productid": 2827,
+    "productcode": "FICHE:MINERAL GRIS TERRE CUITE 45/45",
+    "brandid": 3
+  },
+  {
+    "productid": 1281,
+    "productcode": "FICHE:MIRABELE BLANC POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2651,
+    "productcode": "FICHE:MIRABELE GRIS POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2472,
+    "productcode": "FICHE:MIRAGE MARFIL REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1058,
+    "productcode": "FICHE:MIRAGE PERLA REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2368,
+    "productcode": "FICHE:MIRAGE REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 2764,
+    "productcode": "FICHE:MIRDIF MARBRE POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 2718,
+    "productcode": "FICHE:MIRNA EXTRA REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3782,
+    "productcode": "FICHE:MIRNA EXTRA SATINE REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2211,
+    "productcode": "FICHE:MIROIR MARFIL 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 3783,
+    "productcode": "FICHE:MISTRAL GOLD POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2174,
+    "productcode": "FICHE:MODERNA 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 1259,
+    "productcode": "FICHE:MONA BEIGE 45/45",
+    "brandid": 14
+  },
+  {
+    "productid": 1034,
+    "productcode": "FICHE:MONACO (G+B) 30/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2742,
+    "productcode": "FICHE:MONACO GRIS 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2083,
+    "productcode": "FICHE:MONACO MARBRE 45/45",
+    "brandid": 11
+  },
+  {
+    "productid": 1189,
+    "productcode": "FICHE:MONDO CREMA 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 2038,
+    "productcode": "FICHE:MONT GOLD 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 2044,
+    "productcode": "FICHE:MONT-BLANC BLANC 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 1506,
+    "productcode": "FICHE:MONTE CARLE POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1082,
+    "productcode": "FICHE:MONTREAL 30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2504,
+    "productcode": "FICHE:MONTREAL PERLA REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1254,
+    "productcode": "FICHE:MONTREAL TERRE CUITE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1011,
+    "productcode": "FICHE:MOON LIGHT GRIS REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2825,
+    "productcode": "FICHE:MOON WHITE 3D 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1030,
+    "productcode": "FICHE:MOON WHITE REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1468,
+    "productcode": "FICHE:MORATA GRIS REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1582,
+    "productcode": "FICHE:MOSCOW PERLA 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1526,
+    "productcode": "FICHE:MUNICH PERLA POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1211,
+    "productcode": "FICHE:NAPOLI POLI REC 90/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1658,
+    "productcode": "FICHE:NATURA BEIGE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 2561,
+    "productcode": "FICHE:ONYX GOLD POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1663,
+    "productcode": "FICHE:NATURA GRIS 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1291,
+    "productcode": "FICHE:ONYX GOLD POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1051,
+    "productcode": "FICHE:NAVAL POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1754,
+    "productcode": "FICHE:NAVAS BEIGE REC 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 3784,
+    "productcode": "FICHE:NEO WHITE REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 2090,
+    "productcode": "FICHE:NERO BLACK POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 3785,
+    "productcode": "FICHE:NEST OXID 33/33",
+    "brandid": 11
+  },
+  {
+    "productid": 2138,
+    "productcode": "FICHE:NEVADO 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2106,
+    "productcode": "FICHE:NEVERTI MARBRE 45/45",
+    "brandid": 11
+  },
+  {
+    "productid": 2093,
+    "productcode": "FICHE:NEVERTI MARBRE REC 60/60",
+    "brandid": 11
+  },
+  {
+    "productid": 1793,
+    "productcode": "FICHE:NEWYORK 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1559,
+    "productcode": "FICHE:NEWYORK MATT REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1892,
+    "productcode": "FICHE:NEWYORK POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1609,
+    "productcode": "FICHE:NEWYORK POLI REC 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1479,
+    "productcode": "FICHE:NEWYORK POLI REC 90/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1411,
+    "productcode": "FICHE:NEWYORK REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3786,
+    "productcode": "FICHE:NOBLE POLI REC 120/60",
+    "brandid": 5
+  },
+  {
+    "productid": 3586,
+    "productcode": "FICHE:NOOR BEIGE 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2061,
+    "productcode": "FICHE:NOOR CREMA 45/45",
+    "brandid": 11
+  },
+  {
+    "productid": 2055,
+    "productcode": "FICHE:NOOR GRIS 45/45",
+    "brandid": 11
+  },
+  {
+    "productid": 3587,
+    "productcode": "FICHE:NOOR GRIS 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2008,
+    "productcode": "FICHE:OCTAVIA 33/33",
+    "brandid": 5
+  },
+  {
+    "productid": 1672,
+    "productcode": "FICHE:OCTAVIA BEIGE 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2819,
+    "productcode": "FICHE:OCTAVIA GRIS 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1572,
+    "productcode": "FICHE:OKYANOS POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3588,
+    "productcode": "FICHE:OLMO WHITE REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 3787,
+    "productcode": "FICHE:OLYMPIA 45/90",
+    "brandid": 5
+  },
+  {
+    "productid": 3788,
+    "productcode": "FICHE:OLYMPIA BLACK POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1669,
+    "productcode": "FICHE:OMEGA BEIGE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1681,
+    "productcode": "FICHE:OMEGA GRIS 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1941,
+    "productcode": "FICHE:ONDA BEIGE 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 1939,
+    "productcode": "FICHE:ONDA GRIS 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 1495,
+    "productcode": "FICHE:ONE BEIGE REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1778,
+    "productcode": "FICHE:ONE GRIS 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 1480,
+    "productcode": "FICHE:ONE GRIS REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2036,
+    "productcode": "FICHE:ONYX BEIGE 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 3789,
+    "productcode": "FICHE:ONYX BLUE POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2393,
+    "productcode": "FICHE:ONYX GREEN POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 3790,
+    "productcode": "FICHE:ONYX GRIS 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 2392,
+    "productcode": "FICHE:ONYX LIGHT POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1373,
+    "productcode": "FICHE:ONYX PERLA POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2616,
+    "productcode": "FICHE:OPALE BLANC POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1063,
+    "productcode": "FICHE:OPALE BLANC POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2551,
+    "productcode": "FICHE:OPALE MARFIL POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1713,
+    "productcode": "FICHE:OPERA CREMA 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 3791,
+    "productcode": "FICHE:OPERA MATT REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 3792,
+    "productcode": "FICHE:OPERA REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 2206,
+    "productcode": "FICHE:OPIUM GRIS REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2436,
+    "productcode": "FICHE:ORION MARBRE 45/45",
+    "brandid": 11
+  },
+  {
+    "productid": 2052,
+    "productcode": "FICHE:ORO MARBRE REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 2775,
+    "productcode": "FICHE:ORO MARBRE REC 60/60",
+    "brandid": 11
+  },
+  {
+    "productid": 798,
+    "productcode": "FICHE:ORQUE (N+B) 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2583,
+    "productcode": "FICHE:OSCAR BLANC RELIEFE 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2591,
+    "productcode": "FICHE:OSCAR CREMA 25/75",
+    "brandid": 3
+  },
+  {
+    "productid": 2481,
+    "productcode": "FICHE:OSCAR CREMA 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2439,
+    "productcode": "FICHE:OSCAR MIX RELIEFE 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 770,
+    "productcode": "FICHE:OSCAR SILVER 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 3793,
+    "productcode": "FICHE:OSLO BEIGE 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 2071,
+    "productcode": "FICHE:OSLO BEIGE POLI REC 60/60",
+    "brandid": 11
+  },
+  {
+    "productid": 2613,
+    "productcode": "FICHE:OXFORD BLANC REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1837,
+    "productcode": "FICHE:OXFORD POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2848,
+    "productcode": "FICHE:PACIFICA BEIGE REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2814,
+    "productcode": "FICHE:PALACE NOIR POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3794,
+    "productcode": "FICHE:PALACE NOIR POLI REC 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2765,
+    "productcode": "FICHE:PALAZZO BEIGE 20/70",
+    "brandid": 11
+  },
+  {
+    "productid": 2767,
+    "productcode": "FICHE:PALAZZO GRIS 20/70",
+    "brandid": 11
+  },
+  {
+    "productid": 1597,
+    "productcode": "FICHE:PALERMO (B+M) 30/90",
+    "brandid": 4
+  },
+  {
+    "productid": 3795,
+    "productcode": "FICHE:PALIO POLI REC 120/60",
+    "brandid": 5
+  },
+  {
+    "productid": 1192,
+    "productcode": "FICHE:PALM 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2447,
+    "productcode": "FICHE:PALMA CREMA POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2576,
+    "productcode": "FICHE:PANAMA TOFFEE 20/75",
+    "brandid": 3
+  },
+  {
+    "productid": 2185,
+    "productcode": "FICHE:PANDA 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1861,
+    "productcode": "FICHE:PARIS GRIS REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2199,
+    "productcode": "FICHE:PARMA BROWN REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1545,
+    "productcode": "FICHE:PARMA CREMA 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1092,
+    "productcode": "FICHE:PATCHWORK 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1391,
+    "productcode": "FICHE:PEDRIZA 30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1596,
+    "productcode": "FICHE:PEDRIZA 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1911,
+    "productcode": "FICHE:PEDRIZA TERRE CUITE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1204,
+    "productcode": "FICHE:PEDRO 30/65",
+    "brandid": 4
+  },
+  {
+    "productid": 1610,
+    "productcode": "FICHE:PEDRO 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1139,
+    "productcode": "FICHE:PEDRO POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2657,
+    "productcode": "FICHE:STIGMA NATURE POLI REC 150/75",
+    "brandid": 3
+  },
+  {
+    "productid": 2655,
+    "productcode": "FICHE:HAMBRA NOIR RELIEFE 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2585,
+    "productcode": "FICHE:PERADOR BROWN 45/45",
+    "brandid": 6
+  },
+  {
+    "productid": 2191,
+    "productcode": "FICHE:PERADOR BROWN 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2300,
+    "productcode": "FICHE:PERADOR GRIS REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1607,
+    "productcode": "FICHE:PERLE REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1549,
+    "productcode": "FICHE:PIANO POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2327,
+    "productcode": "FICHE:PIEDRA 33/33",
+    "brandid": 5
+  },
+  {
+    "productid": 1472,
+    "productcode": "FICHE:PILLAR GRIS POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1414,
+    "productcode": "FICHE:PINTA GRIS 33/33",
+    "brandid": 3
+  },
+  {
+    "productid": 1932,
+    "productcode": "FICHE:PIXEL BEIGE 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 1922,
+    "productcode": "FICHE:PIXEL GRIS 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 2818,
+    "productcode": "FICHE:PIZARA GRIS 33/33",
+    "brandid": 3
+  },
+  {
+    "productid": 2630,
+    "productcode": "FICHE:PLASMA POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2770,
+    "productcode": "FICHE:PLATINIUM GRIS POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 3796,
+    "productcode": "FICHE:PLATINIUM LIGHT 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 3797,
+    "productcode": "FICHE:PLAZA BLUE POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3798,
+    "productcode": "FICHE:PLAZA GREEN POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2049,
+    "productcode": "FICHE:POEME MARBRE REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 2005,
+    "productcode": "FICHE:POLAR REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 3799,
+    "productcode": "FICHE:POLO SILVER REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 3590,
+    "productcode": "FICHE:PORTLAND BEIGE REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 2057,
+    "productcode": "FICHE:PORTO BEIGE REC 60/60",
+    "brandid": 11
+  },
+  {
+    "productid": 2108,
+    "productcode": "FICHE:PORTO GRIS REC 60/60",
+    "brandid": 11
+  },
+  {
+    "productid": 2054,
+    "productcode": "FICHE:PRADA MARBRE REC 60/60",
+    "brandid": 11
+  },
+  {
+    "productid": 3800,
+    "productcode": "FICHE:PRADA VERT POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1248,
+    "productcode": "FICHE:PRESIDENT BEIGE 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1314,
+    "productcode": "FICHE:PRESIDENT GRIS 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1015,
+    "productcode": "FICHE:PRESTIGE GRIS POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1560,
+    "productcode": "FICHE:PRESTIGE WHITE POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1840,
+    "productcode": "FICHE:PRESTIGE WHITE POLI REC 90/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2201,
+    "productcode": "FICHE:PRIMA NARDO REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2672,
+    "productcode": "FICHE:PRISMA GRIS 45/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1104,
+    "productcode": "FICHE:QUEBEC 30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1732,
+    "productcode": "FICHE:PRIVA BEIGE 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 2650,
+    "productcode": "FICHE:PROSTYLE MARFIL 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1310,
+    "productcode": "FICHE:PROSTYLE SILVER 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2555,
+    "productcode": "FICHE:PYRAMIDE GRIS 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 1647,
+    "productcode": "FICHE:QUEBEC GRIS 30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1334,
+    "productcode": "FICHE:PYRAMIDE LIGHT 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 2170,
+    "productcode": "FICHE:QUARTZ CREMA 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 3801,
+    "productcode": "FICHE:QUARTZ TOFFEE 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 1599,
+    "productcode": "FICHE:QUEBEC GRIS TERRE CUITE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1065,
+    "productcode": "FICHE:RAFAYEL GRIS POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1275,
+    "productcode": "FICHE:RAIN MARFIL+RAIN TOFFEE POLI REC 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2708,
+    "productcode": "FICHE:RAVELLO 33/33",
+    "brandid": 10
+  },
+  {
+    "productid": 1677,
+    "productcode": "FICHE:RAVENA POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2772,
+    "productcode": "FICHE:RAYMOND BLACK POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 2432,
+    "productcode": "FICHE:REDLINE 33/33",
+    "brandid": 5
+  },
+  {
+    "productid": 1413,
+    "productcode": "FICHE:REMINI 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 3522,
+    "productcode": "FICHE:REO REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 3802,
+    "productcode": "FICHE:RIMAS NATUREL POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3803,
+    "productcode": "FICHE:RIO BLANCO REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2546,
+    "productcode": "FICHE:RITAL EXTRA 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 3804,
+    "productcode": "FICHE:RITAL MARFIL 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1237,
+    "productcode": "FICHE:RITAL MARFIL 45/45",
+    "brandid": 3
+  },
+  {
+    "productid": 2736,
+    "productcode": "FICHE:RITAL MARFIL REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3805,
+    "productcode": "FICHE:RIVANO GOLD REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1324,
+    "productcode": "FICHE:RIVEL NATUREL 20/75",
+    "brandid": 3
+  },
+  {
+    "productid": 2557,
+    "productcode": "FICHE:RIVEL PERLA 20/75",
+    "brandid": 3
+  },
+  {
+    "productid": 3806,
+    "productcode": "FICHE:RIVER POLI REC 120/60",
+    "brandid": 5
+  },
+  {
+    "productid": 2388,
+    "productcode": "FICHE:ROCK GRIS REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1882,
+    "productcode": "FICHE:ROCKSTAR DARK GRIS 45/45",
+    "brandid": 6
+  },
+  {
+    "productid": 2510,
+    "productcode": "FICHE:ROCKWELL PERLA 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2464,
+    "productcode": "FICHE:ROCKWELL TOFFEE 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1386,
+    "productcode": "FICHE:RODENO 30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1678,
+    "productcode": "FICHE:RODENO 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1186,
+    "productcode": "FICHE:ROLEX BEIGE POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1525,
+    "productcode": "FICHE:ROLEX GRIS POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1557,
+    "productcode": "FICHE:ROLEX GRIS POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1553,
+    "productcode": "FICHE:ROLEX WHITE POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1611,
+    "productcode": "FICHE:ROLEX WHITE POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3807,
+    "productcode": "FICHE:ROLEX WHITE+GRIS POLI REC 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 3591,
+    "productcode": "FICHE:ROMA BEIGE 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 3808,
+    "productcode": "FICHE:ROMA BLANC 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2559,
+    "productcode": "FICHE:ROMA BLANC 45/45",
+    "brandid": 3
+  },
+  {
+    "productid": 2627,
+    "productcode": "FICHE:ROMA BLANC 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 3809,
+    "productcode": "FICHE:ROMA BLANC BRILLANT 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1436,
+    "productcode": "FICHE:ROMA BLANC POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2457,
+    "productcode": "FICHE:ROMA BLANC POLI REC 90/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2680,
+    "productcode": "FICHE:ROMA BLANC REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3810,
+    "productcode": "FICHE:ROMA BLANC RELIEFE 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3811,
+    "productcode": "FICHE:ROMA BLANC SATINE 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3812,
+    "productcode": "FICHE:ROMA BLANC+SALVADOR VERT45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1080,
+    "productcode": "FICHE:ROMA CREMA25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 3716,
+    "productcode": "FICHE:ROMA GRIS 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 2150,
+    "productcode": "FICHE:ROME MARBRE POLI REC 60/60",
+    "brandid": 11
+  },
+  {
+    "productid": 1122,
+    "productcode": "FICHE:ROSA 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1133,
+    "productcode": "FICHE:ROSA REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1531,
+    "productcode": "FICHE:ROX GRIS 30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1583,
+    "productcode": "FICHE:ROX GRIS TERRE CUITE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1444,
+    "productcode": "FICHE:ROZALIA MARFIL 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1056,
+    "productcode": "FICHE:JOYA MATT SIMPLE 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1539,
+    "productcode": "FICHE:ROZALIA POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3813,
+    "productcode": "FICHE:ROZARIO GRIS REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 2676,
+    "productcode": "FICHE:RUDRA POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1682,
+    "productcode": "FICHE:SAHARA 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 2479,
+    "productcode": "FICHE:SALVADOR NATURAL POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1390,
+    "productcode": "FICHE:SALVADOR VERT POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1608,
+    "productcode": "FICHE:SAMARA 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2367,
+    "productcode": "FICHE:SAMPA 45/45",
+    "brandid": 5
+  },
+  {
+    "productid": 2603,
+    "productcode": "FICHE:SANDRA MARFIL REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2526,
+    "productcode": "FICHE:SANDY MARFIL 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1637,
+    "productcode": "FICHE:SANTO POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2773,
+    "productcode": "FICHE:SAPHIRE BRONZE POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 3439,
+    "productcode": "FICHE:SAUVAGE POLI REC 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1175,
+    "productcode": "FICHE:SAVANA WHITE REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2837,
+    "productcode": "FICHE:SERIE CAVALI BEIGE 33/33",
+    "brandid": 6
+  },
+  {
+    "productid": 1108,
+    "productcode": "FICHE:SEA POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1706,
+    "productcode": "FICHE:SECILIA GRIS POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1589,
+    "productcode": "FICHE:SEFAR 30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1207,
+    "productcode": "FICHE:SEFAR 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1178,
+    "productcode": "FICHE:SELVA BEIGE SIMPLE 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1141,
+    "productcode": "FICHE:SELVA LIGHT GRIS SIMPLE 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1478,
+    "productcode": "FICHE:SELVA MOCCA SIMPLE 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1743,
+    "productcode": "FICHE:SERIE 3D WALL GOLD 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1368,
+    "productcode": "FICHE:SERIE 3D WALL GRIS 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2145,
+    "productcode": "FICHE:SERIE ARCILLA GRIS 33/33",
+    "brandid": 11
+  },
+  {
+    "productid": 2315,
+    "productcode": "FICHE:SERIE BALTIGO 20/75",
+    "brandid": 5
+  },
+  {
+    "productid": 1294,
+    "productcode": "FICHE:SERIE BRICK 15/60",
+    "brandid": 14
+  },
+  {
+    "productid": 2677,
+    "productcode": "FICHE:SERIE BRITISH REC 20/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2605,
+    "productcode": "FICHE:SERIE CAPITALE 20/90",
+    "brandid": 3
+  },
+  {
+    "productid": 3814,
+    "productcode": "FICHE:SERIE CASTENA 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2570,
+    "productcode": "FICHE:SERIE CAVALI GRIS 33/33",
+    "brandid": 6
+  },
+  {
+    "productid": 1096,
+    "productcode": "FICHE:SERIE CHENE NATURE+ HONEY 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2324,
+    "productcode": "FICHE:SERIE COLMAR GRIS REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 2004,
+    "productcode": "FICHE:SERIE COLMAR MARON REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 2350,
+    "productcode": "FICHE:SERIE CONCRETE 45/45",
+    "brandid": 5
+  },
+  {
+    "productid": 2410,
+    "productcode": "FICHE:SERIE CONCRETE GRIS REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 1517,
+    "productcode": "FICHE:SERIE CRAFTER 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 2430,
+    "productcode": "FICHE:SERIE CROOS WOOD 20/75",
+    "brandid": 5
+  },
+  {
+    "productid": 2853,
+    "productcode": "FICHE:SERIE CUADRO 33/33",
+    "brandid": 3
+  },
+  {
+    "productid": 1089,
+    "productcode": "FICHE:SERIE DANNA SIMPLE 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 2494,
+    "productcode": "FICHE:SERIE DIOR 15/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1629,
+    "productcode": "FICHE:SERIE EVA 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 2360,
+    "productcode": "FICHE:SERIE FORZA GRIS + STEEL 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 2656,
+    "productcode": "FICHE:SERIE FOSTER PIERRE 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2398,
+    "productcode": "FICHE:SERIE LENOX GRIS REC 45/45",
+    "brandid": 5
+  },
+  {
+    "productid": 2333,
+    "productcode": "FICHE:SERIE LENOX GRIS REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 2433,
+    "productcode": "FICHE:SERIE LENOX SIMPLE 45/45",
+    "brandid": 5
+  },
+  {
+    "productid": 1045,
+    "productcode": "FICHE:SERIE LUKE TERRE CUITE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 3815,
+    "productcode": "FICHE:SERIE LV 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1674,
+    "productcode": "FICHE:SERIE MALAGA 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1035,
+    "productcode": "FICHE:SERIE MALAYSIA PERLA+ GRIS 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1474,
+    "productcode": "FICHE:SERIE MONACOR BEIGE+BROW30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2444,
+    "productcode": "FICHE:SERIE MONIKA+PASTEL POLI REC 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 3816,
+    "productcode": "FICHE:SERIE MONZA BEIGE+MIX 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2629,
+    "productcode": "FICHE:SERIE MOSAIQUE 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1319,
+    "productcode": "FICHE:SERIE MOSAIQUE 33/33",
+    "brandid": 3
+  },
+  {
+    "productid": 2553,
+    "productcode": "FICHE:SERIE NATURE 15/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1090,
+    "productcode": "FICHE:SERIE NAVARO 15/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2077,
+    "productcode": "FICHE:SERIE NERO BLACK+BLANC POLI REC 45/90",
+    "brandid": 11
+  },
+  {
+    "productid": 1595,
+    "productcode": "FICHE:SERIE NERO SAND+MAPLE 30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1558,
+    "productcode": "FICHE:SERIE PREMIUM REC 20/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1564,
+    "productcode": "FICHE:SERIE PRESTIGE GRIS POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2342,
+    "productcode": "FICHE:SERIE PRISMA+NITRA 33/33",
+    "brandid": 5
+  },
+  {
+    "productid": 1457,
+    "productcode": "FICHE:SERIE ROBLE 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1931,
+    "productcode": "FICHE:SERIE ROCK 30/60",
+    "brandid": 7
+  },
+  {
+    "productid": 1653,
+    "productcode": "FICHE:SERIE ROCKSTAR 33/33",
+    "brandid": 6
+  },
+  {
+    "productid": 2176,
+    "productcode": "FICHE:SERIE ROZARIO REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 2326,
+    "productcode": "FICHE:SERIE SAMPA REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 3817,
+    "productcode": "FICHE:SERIE SILVIA MARBRE POLI REC 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1151,
+    "productcode": "FICHE:SERIE SPIDER POLI REC 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2075,
+    "productcode": "FICHE:SERIE STONE 30/60",
+    "brandid": 11
+  },
+  {
+    "productid": 2003,
+    "productcode": "FICHE:SERIE SWITCH 45/45",
+    "brandid": 5
+  },
+  {
+    "productid": 3818,
+    "productcode": "FICHE:SERIE SWITCHBEIGE+MARON REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 1763,
+    "productcode": "FICHE:SERIE TRAVANTO POLI REC 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1920,
+    "productcode": "FICHE:SERIE TRAVENTINO 30/60",
+    "brandid": 7
+  },
+  {
+    "productid": 1489,
+    "productcode": "FICHE:SERIE TRAVERTIN 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 3475,
+    "productcode": "FICHE:SERIE TRAVERTINO POLI REC 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 3819,
+    "productcode": "FICHE:SERIE TRAVERTO 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1612,
+    "productcode": "FICHE:SERIE TREND SIMPLE 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 3820,
+    "productcode": "FICHE:SERIE TUCSON GRIS+PERLA 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1325,
+    "productcode": "FICHE:SERIE TWENTY BEIGE 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1230,
+    "productcode": "FICHE:SERIE TWENTY GRIS 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2407,
+    "productcode": "FICHE:SERIE URANO 33/33",
+    "brandid": 5
+  },
+  {
+    "productid": 1499,
+    "productcode": "FICHE:SERIE VENIZIA PERLA+BLACK 30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2380,
+    "productcode": "FICHE:SERIE VIRGINIA BLANCO REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 3821,
+    "productcode": "FICHE:SERIE VIRGINIA PLATINE REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 3822,
+    "productcode": "FICHE:SERIE VOLCANO BROWN+OXIDO 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 3831,
+    "productcode": "FICHE:SUNNY CREMA REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 2416,
+    "productcode": "FICHE:SERIE WOODLINE NATURE+ROVER 45/90",
+    "brandid": 5
+  },
+  {
+    "productid": 2774,
+    "productcode": "FICHE:SHAIMOND MARBRE POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 1459,
+    "productcode": "FICHE:SHELL CREMA 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2552,
+    "productcode": "FICHE:SIFAR GRAFITO POLI REC 90/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1221,
+    "productcode": "FICHE:SIFAR GRIS POLI REC 90/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1392,
+    "productcode": "FICHE:SIFAR MARFIL POLI REC 90/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2727,
+    "productcode": "FICHE:SIFAR PERLA POLI REC 90/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2006,
+    "productcode": "FICHE:SILK REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 1750,
+    "productcode": "FICHE:SILVER 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 2056,
+    "productcode": "FICHE:SILVER MARBRE REC 60/60",
+    "brandid": 11
+  },
+  {
+    "productid": 3823,
+    "productcode": "FICHE:SINAΪ REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 2330,
+    "productcode": "FICHE:SINTO (GRIS +MARON) REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 3824,
+    "productcode": "FICHE:SKY GOLD POLI REC 120/60",
+    "brandid": 5
+  },
+  {
+    "productid": 2431,
+    "productcode": "FICHE:SKY PERLA 45/45",
+    "brandid": 5
+  },
+  {
+    "productid": 2400,
+    "productcode": "FICHE:SKY PERLA REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 1650,
+    "productcode": "FICHE:SKY WHITE 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1962,
+    "productcode": "FICHE:SKYDRA BEIGE 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2122,
+    "productcode": "FICHE:SKYDRA GRIS 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2713,
+    "productcode": "FICHE:SMART (G+B) 60/60",
+    "brandid": 10
+  },
+  {
+    "productid": 1241,
+    "productcode": "FICHE:SMILE BEIGE 60/60",
+    "brandid": 14
+  },
+  {
+    "productid": 1290,
+    "productcode": "FICHE:SMILE GRIS 60/60",
+    "brandid": 14
+  },
+  {
+    "productid": 2128,
+    "productcode": "FICHE:SNAP GRIS POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 3825,
+    "productcode": "FICHE:SNAP NOIR POLI REC 150/75",
+    "brandid": 3
+  },
+  {
+    "productid": 1464,
+    "productcode": "FICHE:SNIPER POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1255,
+    "productcode": "FICHE:SNOW WHITE 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1438,
+    "productcode": "FICHE:SOFIA NATUREL POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3826,
+    "productcode": "FICHE:SOFT BEIGE REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2456,
+    "productcode": "FICHE:SOLO GRIS+GRAFITO POLI REC 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2452,
+    "productcode": "FICHE:SONY PERLA POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1206,
+    "productcode": "FICHE:SOPHIA GRIS 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 804,
+    "productcode": "FICHE:SPEEDY GOLD POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1267,
+    "productcode": "FICHE:SPEEDY GOLD REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1302,
+    "productcode": "FICHE:SPEEDY MARBRE GRIS POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1336,
+    "productcode": "FICHE:STANLY MARFIL TERRE CUITE 45/45",
+    "brandid": 3
+  },
+  {
+    "productid": 1753,
+    "productcode": "FICHE:STAR POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2283,
+    "productcode": "FICHE:STAR WHITE 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 3827,
+    "productcode": "FICHE:STELLAR GOLD POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3828,
+    "productcode": "FICHE:STIGMA NATUREL POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3829,
+    "productcode": "FICHE:STIGMA NATUREL POLI REC 150/75",
+    "brandid": 3
+  },
+  {
+    "productid": 1044,
+    "productcode": "FICHE:STONE GRIS 33/33",
+    "brandid": 4
+  },
+  {
+    "productid": 3830,
+    "productcode": "FICHE:STONE GRIS REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1168,
+    "productcode": "FICHE:STYLE 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1579,
+    "productcode": "FICHE:STYLE GLOSSY 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1470,
+    "productcode": "FICHE:STYLE GLOSSY REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1052,
+    "productcode": "FICHE:STYLE GLOSSY REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1565,
+    "productcode": "FICHE:STYLE MATT 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1010,
+    "productcode": "FICHE:STYLE MATT REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1563,
+    "productcode": "FICHE:STYLE MATT REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2160,
+    "productcode": "FICHE:SUNNY BEIGE 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2161,
+    "productcode": "FICHE:SUNNY GRIS 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2129,
+    "productcode": "FICHE:SUNNY GRIS 60/60",
+    "brandid": 2
+  },
+  {
+    "productid": 2186,
+    "productcode": "FICHE:SUNSET GRIS POLI REC 70/70",
+    "brandid": 8
+  },
+  {
+    "productid": 2298,
+    "productcode": "FICHE:SUPER BEIGE REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 3832,
+    "productcode": "FICHE:SUPER GRIS REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2396,
+    "productcode": "FICHE:SUPER WHITE POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1099,
+    "productcode": "FICHE:SWEET BEIGE 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 3833,
+    "productcode": "FICHE:SWEET BEIGE REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1519,
+    "productcode": "FICHE:SWEET GRIS 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1131,
+    "productcode": "FICHE:SWEET GRIS 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1804,
+    "productcode": "FICHE:SWEET GRIS REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3592,
+    "productcode": "FICHE:SWEET/NOBLE GRIS 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2205,
+    "productcode": "FICHE:SWIFT CREMA REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2209,
+    "productcode": "FICHE:SWIFT GRIS REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1493,
+    "productcode": "FICHE:SWISS BEIGE REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1645,
+    "productcode": "FICHE:SWISS GRIS REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1042,
+    "productcode": "FICHE:SWITCH GRIS 30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1328,
+    "productcode": "FICHE:SYDNEY BEIGE 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1193,
+    "productcode": "FICHE:SYDNEY GRIS 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1946,
+    "productcode": "FICHE:TEMACINE BEIGE 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 1944,
+    "productcode": "FICHE:TEMACINE GRIS 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 1432,
+    "productcode": "FICHE:TERRA ROJA TERRE CUITE 45/45",
+    "brandid": 3
+  },
+  {
+    "productid": 2453,
+    "productcode": "FICHE:TERRAZO BLANC REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2634,
+    "productcode": "FICHE:TERRE NATUREL POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2582,
+    "productcode": "FICHE:TERRE NATUREL POLI REC 150/75",
+    "brandid": 3
+  },
+  {
+    "productid": 1245,
+    "productcode": "FICHE:TERRE TABAC POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2018,
+    "productcode": "FICHE:TESLA BEIGE 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 2528,
+    "productcode": "FICHE:TESLA BEIGE 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2462,
+    "productcode": "FICHE:TESLA BEIGE REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2020,
+    "productcode": "FICHE:TESLA GRIS 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 2762,
+    "productcode": "FICHE:THUNDER BLACK POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 1490,
+    "productcode": "FICHE:TIFFANY CREMA 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2863,
+    "productcode": "FICHE:TIFFANY GRIS REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1047,
+    "productcode": "FICHE:TIGER BLACK POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1769,
+    "productcode": "FICHE:TIMBER 33/33",
+    "brandid": 6
+  },
+  {
+    "productid": 3834,
+    "productcode": "FICHE:TIMKEN POLI REC 120/60",
+    "brandid": 5
+  },
+  {
+    "productid": 1169,
+    "productcode": "FICHE:TOKYO BEIGE 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1785,
+    "productcode": "FICHE:TOKYO TAUPE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 3835,
+    "productcode": "FICHE:TORINO WHITE 45/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2286,
+    "productcode": "FICHE:TORINO WHITE POLI REC 70/70",
+    "brandid": 8
+  },
+  {
+    "productid": 1113,
+    "productcode": "FICHE:TORINO WHITE REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2709,
+    "productcode": "FICHE:TORTORA GRIS 33/33",
+    "brandid": 10
+  },
+  {
+    "productid": 2284,
+    "productcode": "FICHE:TOWN SILVER POLI REC 70/70",
+    "brandid": 8
+  },
+  {
+    "productid": 2990,
+    "productcode": "FICHE:TRAVA CREMA POLI REC 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1866,
+    "productcode": "FICHE:TRAVANTO BROWN 30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1821,
+    "productcode": "FICHE:TRAVANTO GRIS 30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2826,
+    "productcode": "FICHE:TRAVERTI BEIGE 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 2515,
+    "productcode": "FICHE:TRAVERTI GRIS 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 3339,
+    "productcode": "FICHE:TRAVERTIN BEIGE TERRE CUITE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1473,
+    "productcode": "FICHE:TRAVEX BLACK POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2136,
+    "productcode": "FICHE:TREND GRIS 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 1023,
+    "productcode": "FICHE:TREND GRIS SIMPLE 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 2731,
+    "productcode": "FICHE:TRENDY NEGRO 25/75",
+    "brandid": 10
+  },
+  {
+    "productid": 3836,
+    "productcode": "FICHE:TRESOR BLACK POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2554,
+    "productcode": "FICHE:TREVIA GOLD POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2715,
+    "productcode": "FICHE:TRIBECA BEIGE 45/45",
+    "brandid": 10
+  },
+  {
+    "productid": 2714,
+    "productcode": "FICHE:TRIBECA CR 25/60",
+    "brandid": 10
+  },
+  {
+    "productid": 1196,
+    "productcode": "FICHE:TRIPOLI CREMA POLI REC 90/90",
+    "brandid": 4
+  },
+  {
+    "productid": 2024,
+    "productcode": "FICHE:TRIPOLI GRIS 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 1402,
+    "productcode": "FICHE:TRIPOLI PERLA POLI REC 90/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1512,
+    "productcode": "FICHE:TRIPOLY CREMA POLI REC 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1507,
+    "productcode": "FICHE:TRIPOLY GRIS POLI REC 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1055,
+    "productcode": "FICHE:TUCSON GRIS 30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3837,
+    "productcode": "FICHE:TULIP MARFIL 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1125,
+    "productcode": "FICHE:TULIP POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2169,
+    "productcode": "FICHE:TULSA BEIGE 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2165,
+    "productcode": "FICHE:TULSA GRIS 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2569,
+    "productcode": "FICHE:TUSCA NATUREL POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2066,
+    "productcode": "FICHE:TUSCAN MARBRE POLI REC",
+    "brandid": 11
+  },
+  {
+    "productid": 1466,
+    "productcode": "FICHE:TWILIGHT POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1761,
+    "productcode": "FICHE:UNIQUE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 2318,
+    "productcode": "FICHE:UNIX GRIS 45/45",
+    "brandid": 8
+  },
+  {
+    "productid": 2267,
+    "productcode": "FICHE:UPTOWN GRIS REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2841,
+    "productcode": "FICHE:URBAIN PERLA 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1696,
+    "productcode": "FICHE:VALENCIA WHITE 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 1458,
+    "productcode": "FICHE:VALENTINA POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1791,
+    "productcode": "FICHE:VALENTINA REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2740,
+    "productcode": "FICHE:VAMOS BEIGE REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2465,
+    "productcode": "FICHE:VAMOS GRIS 45/45",
+    "brandid": 6
+  },
+  {
+    "productid": 2502,
+    "productcode": "FICHE:VAMOS GRIS REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 3838,
+    "productcode": "FICHE:VANITY POLI REC 120/60",
+    "brandid": 5
+  },
+  {
+    "productid": 1717,
+    "productcode": "FICHE:VANS GOLD 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 2010,
+    "productcode": "FICHE:VECTOR REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 1016,
+    "productcode": "FICHE:VEGA POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2152,
+    "productcode": "FICHE:VENAS 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2133,
+    "productcode": "FICHE:VENAS PLUS 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 3713,
+    "productcode": "FICHE:VENAS PLUS 60/60",
+    "brandid": 2
+  },
+  {
+    "productid": 3839,
+    "productcode": "FICHE:VENICE GOLD REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2844,
+    "productcode": "FICHE:VENICIA GOLD 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2661,
+    "productcode": "FICHE:VENICIA GOLD 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2192,
+    "productcode": "FICHE:VENICIA GOLD POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2753,
+    "productcode": "FICHE:VENIZIA BEIGE POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 2793,
+    "productcode": "FICHE:VENOM BLACK POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 2064,
+    "productcode": "FICHE:VENOM GREEN POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 1320,
+    "productcode": "FICHE:VERONA 15/60",
+    "brandid": 14
+  },
+  {
+    "productid": 1027,
+    "productcode": "FICHE:VERONA BEIGE 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 3840,
+    "productcode": "FICHE:VERONA GRAFITO 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1673,
+    "productcode": "FICHE:VERONA GRIS 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 3841,
+    "productcode": "FICHE:VERONA GRIS 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2608,
+    "productcode": "FICHE:VERONA MARFIL 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2734,
+    "productcode": "FICHE:VERONA PERLA 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2476,
+    "productcode": "FICHE:VERONA TOFFEE 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2460,
+    "productcode": "FICHE:VERONA WOOD 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 3453,
+    "productcode": "FICHE:VIA PERLA 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 2127,
+    "productcode": "FICHE:VICTORIA 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2162,
+    "productcode": "FICHE:VICTORIA 60/60",
+    "brandid": 2
+  },
+  {
+    "productid": 1148,
+    "productcode": "FICHE:VICTORIA CREMA REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3842,
+    "productcode": "FICHE:VICTORIA EXTRA REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3843,
+    "productcode": "FICHE:VICTORIA SATINO 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 1862,
+    "productcode": "FICHE:VIGO+IBIZA POLI REC 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 3844,
+    "productcode": "FICHE:VIRGINIA NATUREL POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2652,
+    "productcode": "FICHE:VITA MARFIL REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2836,
+    "productcode": "FICHE:VIVA PERLA 30/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2618,
+    "productcode": "FICHE:VIVA PERLA REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2260,
+    "productcode": "FICHE:V-MAX GRIS REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 3845,
+    "productcode": "FICHE:VOGUE REC 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 3523,
+    "productcode": "FICHE:VOGUE SILVER 45/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1929,
+    "productcode": "FICHE:VOLCANO BLANCO 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 2449,
+    "productcode": "FICHE:VOLGA PERLA 33/33",
+    "brandid": 3
+  },
+  {
+    "productid": 3846,
+    "productcode": "FICHE:VOLTA MARFIL REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2584,
+    "productcode": "FICHE:WEST MARFIL POLI REC 150/75",
+    "brandid": 3
+  },
+  {
+    "productid": 3847,
+    "productcode": "FICHE:WONDER+CHANEL POLI REC 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 3848,
+    "productcode": "FICHE:WOOD BEIGE+WOOD CHOCO 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 3849,
+    "productcode": "FICHE:WOOD DARK GRIS+GRIS BLACK 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 3850,
+    "productcode": "FICHE:WOOD GOLD BLACK+MARBLE GRIS 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 3851,
+    "productcode": "FICHE:WOOD MOCCA+WOOD BROWN 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1536,
+    "productcode": "FICHE:WOODLAND GRIS REC 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1831,
+    "productcode": "FICHE:WOODLAND HAYA REC 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1520,
+    "productcode": "FICHE:WOODLAND NATURE REC 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1847,
+    "productcode": "FICHE:WOODLAND PERLA REC 20/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1028,
+    "productcode": "FICHE:ZARA POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2857,
+    "productcode": "FICHE:ZARA TURQUOISE POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1039,
+    "productcode": "FICHE:ZENITH POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1697,
+    "productcode": "FICHE:ZURICH+ANKARA POLI REC 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1617,
+    "productcode": "FICHE:DESERT 30/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1828,
+    "productcode": "FICHE:QUEBEC TERRE CUITE 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1798,
+    "productcode": "FICHE:PEDRO POLI REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1091,
+    "productcode": "FICHE:JOYA 30/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1349,
+    "productcode": "FICHE:BERLIN CREMA 20/75",
+    "brandid": 3
+  },
+  {
+    "productid": 1330,
+    "productcode": "FICHE:CUADRO MARFIL 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1085,
+    "productcode": "FICHE:JOYA 30/65",
+    "brandid": 4
+  },
+  {
+    "productid": 2475,
+    "productcode": "FICHE:PRESIDENT GREY 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2519,
+    "productcode": "FICHE:CLARA PERLA REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2157,
+    "productcode": "FICHE:ARAD BLACK POLI REC 120/60",
+    "brandid": 11
+  },
+  {
+    "productid": 1918,
+    "productcode": "FICHE:ALASKA GOLD 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 2121,
+    "productcode": "FICHE:LOTUS DARK POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2245,
+    "productcode": "FICHE:MARCHE PREMIUM GRIS 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2314,
+    "productcode": "FICHE:SERIE SHARK 20/75",
+    "brandid": 5
+  },
+  {
+    "productid": 2745,
+    "productcode": "FICHE:SERIE TRAVERTINE 33/33",
+    "brandid": 6
+  },
+  {
+    "productid": 2363,
+    "productcode": "FICHE:SERIE LAND 45/90",
+    "brandid": 5
+  },
+  {
+    "productid": 2359,
+    "productcode": "FICHE:SERIE SWITCH REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 3452,
+    "productcode": "FICHE:BARCELONA PERLA 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1013,
+    "productcode": "FICHE: DRAGON GREEN POLI/REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1683,
+    "productcode": "FICHE: DRAGON POLI 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3412,
+    "productcode": "FICHE:SERIE ROLEX WHITE POLI REC 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 3520,
+    "productcode": "FICHE:SWEET BEIGE 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1671,
+    "productcode": "FICHE:CATANIA BLANCO REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1581,
+    "productcode": "FICHE:COSTA WHITE REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2361,
+    "productcode": "FICHE:SERIE FORZA TAN+ SNOW 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 2357,
+    "productcode": "FICHE:SERIE INCA 33/33",
+    "brandid": 5
+  },
+  {
+    "productid": 2316,
+    "productcode": "FICHE:SERIE ORCA 20/75",
+    "brandid": 5
+  },
+  {
+    "productid": 2320,
+    "productcode": "FICHE:TITAN GRIS REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2757,
+    "productcode": "FICHE:VERONA WHITE REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2409,
+    "productcode": "FICHE:SERIE ALCO REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 2370,
+    "productcode": "FICHE:SERIE CAMPO SIMPLE 45/45",
+    "brandid": 5
+  },
+  {
+    "productid": 2411,
+    "productcode": "FICHE:SERIE CONCRETE CREMA REC 60/60",
+    "brandid": 5
+  },
+  {
+    "productid": 2413,
+    "productcode": "FICHE:SERIE VIRGINIA 45/45",
+    "brandid": 5
+  },
+  {
+    "productid": 2325,
+    "productcode": "FICHE:TALAVERA 33/33",
+    "brandid": 5
+  },
+  {
+    "productid": 1890,
+    "productcode": "FICHE: SERIE LV 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1979,
+    "productcode": "FICHE:MARBLE WHITE 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2366,
+    "productcode": "FICHE:OLYMPIA BLACK 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1893,
+    "productcode": "FICHE: CATANIA BLANCO 45/45",
+    "brandid": 4
+  },
+  {
+    "productid": 1928,
+    "productcode": "FICHE:M\rAGNUM BLACK POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2349,
+    "productcode": "FICHE:EXCELLENCE WHITE POLI REC 70/70",
+    "brandid": 8
+  },
+  {
+    "productid": 1964,
+    "productcode": "FICHE:HEXA CREMA REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2002,
+    "productcode": "FICHE:MARCHE PERLATO BEIGE 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2243,
+    "productcode": "FICHE:OSCAR SILVER REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2358,
+    "productcode": "FICHE:PANAMA SILVER 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2365,
+    "productcode": "FICHE:TITAN BEIGE REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2242,
+    "productcode": "FICHE:TORONTO SILVER REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1888,
+    "productcode": "FICHE:WONDER POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1197,
+    "productcode": "FICHE: IVORIA LIGHT 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1822,
+    "productcode": "FICHE: CASANOVA 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1818,
+    "productcode": "FICHE: MONZA BEIGE  45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1902,
+    "productcode": "FICHE: PLAZA GREEN POL/REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2259,
+    "productcode": "FICHE:CORAL WHITE REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1538,
+    "productcode": "FICHE:DIAMOND BLACK POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2244,
+    "productcode": "FICHE:EXAR SILVER POLI REC 70/70",
+    "brandid": 8
+  },
+  {
+    "productid": 1933,
+    "productcode": "FICHE:EXTORIA GRIS POLI REC 70/70",
+    "brandid": 8
+  },
+  {
+    "productid": 1848,
+    "productcode": "FICHE:GRANITO LIGHT GRIS 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 1940,
+    "productcode": "FICHE:JAPAN LIGHT REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1540,
+    "productcode": "FICHE:LOTUS BEIGE POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2235,
+    "productcode": "FICHE:MAGMA BLACK POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1544,
+    "productcode": "FICHE:MAGMA POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1518,
+    "productcode": "FICHE:PALM BEIGE 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 1856,
+    "productcode": "FICHE:ROCKSTAR BEIGE 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 1453,
+    "productcode": "FICHE:SERIE CASANOVA 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1452,
+    "productcode": "FICHE:TERACOTA 33/33",
+    "brandid": 6
+  },
+  {
+    "productid": 2623,
+    "productcode": "FICHE:TIFFANY CREMA REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1839,
+    "productcode": "FICHE:TIFFANY GRIS 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2009,
+    "productcode": "FICHE:VERSACE BLACK 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2278,
+    "productcode": "FICHE:NEO WHITE 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2274,
+    "productcode": "FICHE:DEVA BROWN 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2249,
+    "productcode": "FICHE:EXON BLACK POLI REC 70/70",
+    "brandid": 8
+  },
+  {
+    "productid": 2301,
+    "productcode": "FICHE:GRANIT GRIS REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2255,
+    "productcode": "FICHE:MADOX BEIGE 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2253,
+    "productcode": "FICHE:MARCHE PREMIRA BLACK 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2282,
+    "productcode": "FICHE:ORION SILVER REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2302,
+    "productcode": "FICHE:TUDOR GRIS POLI REC 70/70",
+    "brandid": 8
+  },
+  {
+    "productid": 2251,
+    "productcode": "FICHE:VENUS BLUE POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2322,
+    "productcode": "FICHE:CARLA PERLAREC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2401,
+    "productcode": "FICHE:CESAR BLACK POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2621,
+    "productcode": "FICHE:ELEMENT REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2182,
+    "productcode": "FICHE:EXTREME BEIGE POLI REC 70/70",
+    "brandid": 8
+  },
+  {
+    "productid": 2266,
+    "productcode": "FICHE:LOGIC GRIS 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2271,
+    "productcode": "FICHE:MARCHE TAN BROWN 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2261,
+    "productcode": "FICHE:UPTOWN BEIGE REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2032,
+    "productcode": "FICHE: PORTLAND GRIS 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2043,
+    "productcode": "FICHE: CATALANO BEIGE 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1966,
+    "productcode": "FICHE:CALACATTA EMPIRIAL 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2144,
+    "productcode": "FICHE:ARTHUR BLANC REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2147,
+    "productcode": "FICHE:LIMIT GRIS REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2120,
+    "productcode": "FICHE:OSCAR MATT REC 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2164,
+    "productcode": "FICHE:SELFY GRIS 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2845,
+    "productcode": "FICHE:OCTAVIA BEIGE 45/45",
+    "brandid": 6
+  },
+  {
+    "productid": 2860,
+    "productcode": "FICHE:4D GRIS +BLANC 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2733,
+    "productcode": "FICHE:IVORIA GRIS REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2738,
+    "productcode": "FICHE:MASTER BEIGE 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2743,
+    "productcode": "FICHE:MEGA GRIS 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 2849,
+    "productcode": "FICHE:MOON GRIS 3D 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2847,
+    "productcode": "FICHE:SERIE ARTISTIC 33/33",
+    "brandid": 6
+  },
+  {
+    "productid": 2726,
+    "productcode": "FICHE:VAMOS BEIGE 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 3582,
+    "productcode": "FICHE: TORINO WHITE 45/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2643,
+    "productcode": "FICHE:BLOOM BEIGE 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 2558,
+    "productcode": "FICHE:CARTIER BEIGE 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2641,
+    "productcode": "FICHE:CHANEL BEIGE REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2448,
+    "productcode": "FICHE:FLOWER GOLD 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2482,
+    "productcode": "FICHE:MASTER GRIS 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2498,
+    "productcode": "FICHE:MONT BLANC 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 2532,
+    "productcode": "FICHE:MOON BEIGE 3D 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2649,
+    "productcode": "FICHE:NORDO BEIGE 45/45",
+    "brandid": 6
+  },
+  {
+    "productid": 2497,
+    "productcode": "FICHE:SERIE GLASS 15/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2491,
+    "productcode": "FICHE:SERIE JAKARTA 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2485,
+    "productcode": "FICHE:SERIE JAMAICA 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1455,
+    "productcode": "FICHE:SERIE MONZA 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1891,
+    "productcode": "FICHE: SERIE TRAVERTO 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1865,
+    "productcode": "FICHE:CARLA GRIS 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2227,
+    "productcode": "FICHE:CASTEL BROWN 3D WALL STONE 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1914,
+    "productcode": "FICHE:FABIA BEIGE 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1894,
+    "productcode": "FICHE:PERLE TURQUOISE POLI REC 120/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1873,
+    "productcode": "FICHE:SERIE 3D WALL BEIGE 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1823,
+    "productcode": "FICHE:STORM CALACATA 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 1912,
+    "productcode": "FICHE:WOOD DARK GRIS +GRIS BLACK 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1562,
+    "productcode": "FICHE: DRAGON GREY POL/REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1485,
+    "productcode": "FICHE: WOOD PANEL (BLACK GOLD+GREY MARBLE) 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2214,
+    "productcode": "FICHE: ATLANTA GOLD BLEU 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1496,
+    "productcode": "FICHE:LEGEND GRIS 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1576,
+    "productcode": "FICHE:OSLO GOLD 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 1615,
+    "productcode": "FICHE:SAVANA WHITE 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1635,
+    "productcode": "FICHE: ACRA GRIS 45/90",
+    "brandid": 4
+  },
+  {
+    "productid": 1282,
+    "productcode": "FICHE:4D CALACATA REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1509,
+    "productcode": "FICHE: ATLANTIC POLI 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2288,
+    "productcode": "FICHE:ITALYA BLACK POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1272,
+    "productcode": "FICHE:FLAT CREMA 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1076,
+    "productcode": "FICHE: COSMO CREMA POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 1770,
+    "productcode": "FICHE: SERIE KIEV 33/33",
+    "brandid": 6
+  },
+  {
+    "productid": 3477,
+    "productcode": "FICHE:RIVANO GOLD 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1687,
+    "productcode": "FICHE:ARTISAN (G+B) 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 3479,
+    "productcode": "FICHE:BERLIN SILVER 45/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1173,
+    "productcode": "FICHE:WOOD PANEL( MOCCA+BROWN) 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2028,
+    "productcode": "FICHE: MADRID SILVER 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 1968,
+    "productcode": "FICHE: ONYX GRIS 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 2012,
+    "productcode": "FICHE: MADRID GRIS 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 1995,
+    "productcode": "FICHE:TRESORE POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2022,
+    "productcode": "FICHE: MADRID GOLD 25/75",
+    "brandid": 7
+  },
+  {
+    "productid": 2033,
+    "productcode": "FICHE:BLANCOS GOLD 25/60",
+    "brandid": 7
+  },
+  {
+    "productid": 669,
+    "productcode": "FICHE:VICTORIA MATT 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 2514,
+    "productcode": "FICHE:COTTO ROJA 45/45",
+    "brandid": 3
+  },
+  {
+    "productid": 2500,
+    "productcode": "FICHE:ARINAS MARFIL REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2525,
+    "productcode": "FICHE:ARSENAL BLANC REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2503,
+    "productcode": "FICHE:CAPI PERLA POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2511,
+    "productcode": "FICHE:CHINA MARBRE POLI REC 90/90",
+    "brandid": 3
+  },
+  {
+    "productid": 2501,
+    "productcode": "FICHE:ROMA BLANC BRILLANT REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2505,
+    "productcode": "FICHE:SONY PERLA POLI REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2247,
+    "productcode": "FICHE:VITA GRIS POLI REC 120/60",
+    "brandid": 8
+  },
+  {
+    "productid": 2280,
+    "productcode": "FICHE:VIVA LIGHT 60/60",
+    "brandid": 8
+  },
+  {
+    "productid": 1360,
+    "productcode": "FICHE:VIVA MARFIL REC 60/60",
+    "brandid": 3
+  },
+  {
+    "productid": 1440,
+    "productcode": "FICHE:VENICE GOLD 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1342,
+    "productcode": "FICHE:HERMES GOLD 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1057,
+    "productcode": "FICHE:LEGEND BEIGE REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1103,
+    "productcode": "FICHE:METRO MIX 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1446,
+    "productcode": "FICHE:SERIE 3D STONE 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1850,
+    "productcode": "FICHE:BULGARI GOLD 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1863,
+    "productcode": "FICHE:WOOD PANEL (BEIGE+CHOCO) 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1808,
+    "productcode": "FICHE:HEXA GOLD 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1868,
+    "productcode": "FICHE:ALLURE BEIGE 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 1846,
+    "productcode": "FICHE:CATANIA SILVER 45/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1904,
+    "productcode": "FICHE:LIMIT BROWN 45/45",
+    "brandid": 6
+  },
+  {
+    "productid": 1876,
+    "productcode": "FICHE:ROCKSTAR BEIGE 45/45",
+    "brandid": 6
+  },
+  {
+    "productid": 1883,
+    "productcode": "FICHE:ROCKSTAR LIGHT GRIS 45/45",
+    "brandid": 6
+  },
+  {
+    "productid": 1872,
+    "productcode": "FICHE:VAMOS GRIS 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 1835,
+    "productcode": "FICHE:TERRA COTTA 33/33",
+    "brandid": 6
+  },
+  {
+    "productid": 1522,
+    "productcode": "FICHE:ARTISAN (BLUE+BLANC) 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 1551,
+    "productcode": "FICHE:WOOD PANEL (GRIS BLACK+DARK GRIS) 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1511,
+    "productcode": "FICHE:VAMOS BEIGE 45/45",
+    "brandid": 6
+  },
+  {
+    "productid": 1516,
+    "productcode": "FICHE:SERIE CASTEN\rA30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1548,
+    "productcode": "FICHE:ASPEN CREMA 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1527,
+    "productcode": "FICHE:CRYSTALE 3D GRIS 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 1530,
+    "productcode": "FICHE:LUXO GRIS 25/80",
+    "brandid": 6
+  },
+  {
+    "productid": 1854,
+    "productcode": "FICHE:SERIE TRAVA BEIGE+GRIS REC 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1228,
+    "productcode": "FICHE:PLATINIUM GREY 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1556,
+    "productcode": "FICHE:CHANEL BEIGE 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1252,
+    "productcode": "FICHE:HEXO 33/33",
+    "brandid": 6
+  },
+  {
+    "productid": 1498,
+    "productcode": "FICHE:MAYSTRO GRIS 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 1636,
+    "productcode": "FICHE:METRO BLACK 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1407,
+    "productcode": "FICHE:MIDWAY BEIGE 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1365,
+    "productcode": "FICHE:ONE BEIGE 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 2399,
+    "productcode": "FICHE:EMPIRE GOLD POLI REC 70/70",
+    "brandid": 8
+  },
+  {
+    "productid": 2218,
+    "productcode": "FICHE:EXOTIC GOLD POLI REC 70/70",
+    "brandid": 8
+  },
+  {
+    "productid": 1194,
+    "productcode": "FICHE:ASPEN JAUNE REC 60/60",
+    "brandid": 14
+  },
+  {
+    "productid": 1263,
+    "productcode": "FICHE:CONCRETTE BLANC 60/60",
+    "brandid": 14
+  },
+  {
+    "productid": 1072,
+    "productcode": "FICHE:LUXURE 45/45",
+    "brandid": 14
+  },
+  {
+    "productid": 1299,
+    "productcode": "FICHE:MANSTONE GRIS 15/60",
+    "brandid": 14
+  },
+  {
+    "productid": 1296,
+    "productcode": "FICHE:SERIE CLAY 15/60",
+    "brandid": 14
+  },
+  {
+    "productid": 1231,
+    "productcode": "FICHE:SERIE ESCADA 30/45",
+    "brandid": 14
+  },
+  {
+    "productid": 1246,
+    "productcode": "FICHE:SERIE SAKHRA 30/45",
+    "brandid": 14
+  },
+  {
+    "productid": 2732,
+    "productcode": "FICHE:TRENDY VERT 25/75",
+    "brandid": 10
+  },
+  {
+    "productid": 1136,
+    "productcode": "FICHE:VEGAS BEIGE 45/45",
+    "brandid": 14
+  },
+  {
+    "productid": 1409,
+    "productcode": "FICHE:VEGAS GRIS REC 60/60",
+    "brandid": 14
+  },
+  {
+    "productid": 1605,
+    "productcode": "FICHE:4D CALACATA REC 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1646,
+    "productcode": "FICHE:SERIE CASTINA 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 3510,
+    "productcode": "FICHE: ARIZONA PERLA 20/75",
+    "brandid": 3
+  },
+  {
+    "productid": 1332,
+    "productcode": "FICHE:ALTAMIRA 30/30",
+    "brandid": 14
+  },
+  {
+    "productid": 1244,
+    "productcode": "FICHE:CONCRETTE GRIS 60/60",
+    "brandid": 14
+  },
+  {
+    "productid": 1262,
+    "productcode": "FICHE:CONCRETTE PERLA 60/60",
+    "brandid": 14
+  },
+  {
+    "productid": 1318,
+    "productcode": "FICHE:DRAGON NOIR +MARON 15/60",
+    "brandid": 14
+  },
+  {
+    "productid": 1628,
+    "productcode": "FICHE:GEO BEIGE MARON 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 3509,
+    "productcode": "FICHE:ARIZONA PERLA 20/75",
+    "brandid": 3
+  },
+  {
+    "productid": 1521,
+    "productcode": "FICHE:SKY GOLD 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 1639,
+    "productcode": "FICHE:METRO WHITE/MIX 30/60",
+    "brandid": 6
+  },
+  {
+    "productid": 1286,
+    "productcode": "FICHE:DAYTON BEIGE 60/60",
+    "brandid": 14
+  },
+  {
+    "productid": 1312,
+    "productcode": "FICHE:DRAGON NOIR 15/60",
+    "brandid": 14
+  },
+  {
+    "productid": 1242,
+    "productcode": "FICHE:FENCY 30/65",
+    "brandid": 14
+  },
+  {
+    "productid": 1313,
+    "productcode": "FICHE:HERO BLANC 60/60",
+    "brandid": 14
+  },
+  {
+    "productid": 2816,
+    "productcode": "FICHE:ROCKSTAR BROWN 25/70",
+    "brandid": 6
+  },
+  {
+    "productid": 1274,
+    "productcode": "FICHE:ROMA 15/60",
+    "brandid": 14
+  },
+  {
+    "productid": 3717,
+    "productcode": "FICHE:FLORA SILVER 30/90",
+    "brandid": 6
+  },
+  {
+    "productid": 2707,
+    "productcode": "FICHE:FRESH 30/90",
+    "brandid": 10
+  },
+  {
+    "productid": 1960,
+    "productcode": "FICHE:QUARTAZ TOFFE 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 1953,
+    "productcode": "FICHE:LUXOR 45/45",
+    "brandid": 2
+  },
+  {
+    "productid": 3589,
+    "productcode": "FICHE:OPERA MATT 60/60",
+    "brandid": 31
+  },
+  {
+    "productid": 2694,
+    "productcode": "FICHE:ONYX GRIS 45/45",
+    "brandid": 10
+  },
+  {
+    "productid": 2690,
+    "productcode": "FICHE:CARRARA WHITE 30/60",
+    "brandid": 10
+  },
+  {
+    "productid": 2693,
+    "productcode": "FICHE:COMPACT GRIS 45/45",
+    "brandid": 10
+  },
+  {
+    "productid": 2692,
+    "productcode": "FICHE:GLAMOUR CREMA 45/90",
+    "brandid": 10
+  },
+  {
+    "productid": 1050,
+    "productcode": "FICHE:LOFT POLI REC 120/60",
+    "brandid": 4
+  },
+  {
+    "productid": 3593,
+    "productcode": "FICHE:VOGUE 45/45",
+    "brandid": 31
+  },
+  {
+    "productid": 2685,
+    "productcode": "FICHE:COMPACT BEIGE 45/45",
+    "brandid": 10
+  },
+  {
+    "productid": 1689,
+    "productcode": "FICHE:EUROPA REC 60/60",
+    "brandid": 4
+  },
+  {
+    "productid": 2637,
+    "productcode": "FICHE:VENICIA BLANC 45/90",
+    "brandid": 3
+  },
+  {
+    "productid": 1638,
+    "productcode": "FICHE:EVA CAPPCCINO 25/75",
+    "brandid": 4
+  },
+  {
+    "productid": 1338,
+    "productcode": "FICHE:CALACATA MARBRE POLI REC 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 3583,
+    "productcode": "FICHE:ANDREA PERLA 120/60",
+    "brandid": 3
+  },
+  {
+    "productid": 2700,
+    "productcode": "FICHE:ONYX GRIS SIMPLE 60/60",
+    "brandid": 10
+  },
+  {
+    "productid": 3712,
+    "productcode": "FICHE:SOFT BEIGE 60/60",
+    "brandid": 6
+  },
+  {
+    "productid": 2711,
+    "productcode": "FICHE: ONYX BEIGE REC 60/60",
+    "brandid": 10
+  },
+  {
+    "productid": 2748,
+    "productcode": "FICHE:ANTALIA BEIGE 60/60",
+    "brandid": 12
+  },
+  {
+    "productid": 2096,
+    "productcode": "FICHE:CAMPUS BLUE 120/60",
+    "brandid": 12
+  },
+  {
+    "productid": 2047,
+    "productcode": "FICHE:CAMPUS GRIS 120/60",
+    "brandid": 12
+  },
+  {
+    "productid": 2712,
+    "productcode": "FICHE:EMPERADOR (G+B) 45/45",
+    "brandid": 10
+  },
+  {
+    "productid": 2760,
+    "productcode": "FICHE:HILTON CREMA 60/60",
+    "brandid": 12
+  },
+  {
+    "productid": 2092,
+    "productcode": "FICHE:MARDIN WHITE 120/60",
+    "brandid": 12
+  },
+  {
+    "productid": 2698,
+    "productcode": "FICHE:TRENDY BRONZE 20/75",
+    "brandid": 10
+  },
+  {
+    "productid": 2808,
+    "productcode": "FICHE:PRENSA 45/45",
+    "brandid": 14
+  }
+]

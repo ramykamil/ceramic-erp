@@ -734,8 +734,8 @@ export default function ProductsPage() {
                   <div>
                     <label className="block text-xs font-medium text-slate-500 uppercase mb-1">Marque (Famille)</label>
                     <select
-                      value={editingProduct.brandid || (uniqueFamilles.includes(editingProduct.famille) ? brands.find(b => b.brandname === editingProduct.famille)?.brandid : '0') || '0'}
-                      onChange={e => setEditingProduct({ ...editingProduct, brandid: Number(e.target.value) })}
+                      value={editingProduct.brandid !== undefined && editingProduct.brandid !== null ? String(editingProduct.brandid) : '0'}
+                      onChange={e => setEditingProduct({ ...editingProduct, brandid: e.target.value === '0' ? null : Number(e.target.value) })}
                       className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
                     >
                       <option value="0">-- Aucune --</option>

@@ -21,7 +21,7 @@ async function getProducts(req, res, next) {
     let query = `
       SELECT 
         mvc.ProductID, mvc.ProductCode, mvc.ProductName,
-        mvc.Famille, mvc.PrixVente, mvc.PrixAchat,
+        mvc.BrandID as brandid, mvc.Famille, mvc.PrixVente, mvc.PrixAchat,
         p.BasePrice, p.PurchasePrice, -- NEW: Fetch BasePrice/PurchasePrice from Products table for fallback
         mvc.Calibre, mvc.Choix, mvc.QteParColis, mvc.QteColisParPalette, mvc.Size,
         COALESCE(inv.RealTotalQty, 0) as TotalQty, 
