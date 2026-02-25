@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo, Suspense } from 'react';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { DateQuickFilter, DateRange } from '@/components/DateQuickFilter';
+import { DateQuickFilter, DateRange, getDateRange } from '@/components/DateQuickFilter';
 import { UserFilter } from '@/components/UserFilter';
 
 // Interface pour les transactions (basée sur la réponse API)
@@ -69,8 +69,9 @@ function InventoryTransactionsContent() {
 
   const [search, setSearch] = useState('');
   const [transactionType, setTransactionType] = useState('');
-  const [dateFrom, setDateFrom] = useState('');
-  const [dateTo, setDateTo] = useState('');
+  const initialDateRange = getDateRange('TODAY');
+  const [dateFrom, setDateFrom] = useState(initialDateRange.startDate || '');
+  const [dateTo, setDateTo] = useState(initialDateRange.endDate || '');
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 
   const initialProductId = useMemo(() => searchParams.get('productId'), [searchParams]);
@@ -154,7 +155,7 @@ function InventoryTransactionsContent() {
                   setDateFrom(range.startDate || '');
                   setDateTo(range.endDate || '');
                 }}
-                defaultPreset="ALL"
+                defaultPreset="TODAY"
                 showCustom={false}
               />
             </div>

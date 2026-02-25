@@ -5,7 +5,7 @@ import api from '@/lib/api';
 import Link from 'next/link';
 import { useReactToPrint } from 'react-to-print';
 import { StandardDocument, DocumentData } from '@/components/print/StandardDocument';
-import { DateQuickFilter, DateRange } from '@/components/DateQuickFilter';
+import { DateQuickFilter, DateRange, getDateRange } from '@/components/DateQuickFilter';
 import { UserFilter } from '@/components/UserFilter';
 
 // --- Interfaces ---
@@ -122,7 +122,7 @@ export default function ReturnsPage() {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [dateRange, setDateRange] = useState<DateRange>({ startDate: null, endDate: null });
+    const [dateRange, setDateRange] = useState<DateRange>(getDateRange('TODAY'));
     const [filteredReturns, setFilteredReturns] = useState<Return[]>([]);
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 
@@ -503,7 +503,7 @@ export default function ReturnsPage() {
                             <p className="text-xs text-slate-500 mb-2 font-medium">📅 Filtrer par date:</p>
                             <DateQuickFilter
                                 onFilterChange={(range) => setDateRange(range)}
-                                defaultPreset="ALL"
+                                defaultPreset="TODAY"
                                 showCustom={true}
                             />
                         </div>

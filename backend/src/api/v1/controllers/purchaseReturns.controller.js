@@ -286,8 +286,9 @@ const updatePurchaseReturnStatus = async (req, res) => {
                 // --- UNIT CONVERSION LOGIC ---
                 const isSoldInPieces = item.unitcode === 'PCS';
                 const sqmPerPiece = parseDimensions(item.size || item.productname);
+                const isFicheProduct = (item.productname || '').toLowerCase().startsWith('fiche');
 
-                if (isSoldInPieces && sqmPerPiece > 0) {
+                if (isSoldInPieces && !isFicheProduct && sqmPerPiece > 0) {
                     const convertedQty = qtyToRemove * sqmPerPiece;
                     console.log(`[PurchaseReturn] Converting ${qtyToRemove} PCS of ${item.productname} to ${convertedQty.toFixed(4)} SQM`);
                     qtyToRemove = convertedQty;

@@ -420,8 +420,9 @@ async function addOrderItem(req, res, next) {
         const isSoldInPieces = unitCode === 'PCS';
         const isPrimarySqm = product.primaryunitcode === 'SQM' || product.primaryunitcode === 'M2';
         const sqmPerPiece = parseDimensions(product.size || product.productname);
+        const isFicheProduct = (product.productname || '').toLowerCase().startsWith('fiche');
 
-        if (isSoldInPieces && sqmPerPiece > 0) {
+        if (isSoldInPieces && !isFicheProduct && sqmPerPiece > 0) {
           qtyToReserve = qtyToReserve * sqmPerPiece;
         }
 
@@ -637,10 +638,11 @@ async function finalizeOrder(req, res, next) {
       // We detect "SQM" primary unit explicitly, OR infer from dimensions if primary unit is missing/ambiguous
       const isSoldInPieces = item.unitcode === 'PCS';
       const isPrimarySqm = item.primaryunitcode === 'SQM' || item.primaryunitcode === 'M2';
+      const isFicheProduct = (item.productname || '').toLowerCase().startsWith('fiche');
 
       const sqmPerPiece = parseDimensions(item.size || item.productname);
 
-      if (isSoldInPieces && sqmPerPiece > 0) {
+      if (isSoldInPieces && !isFicheProduct && sqmPerPiece > 0) {
         // Cases:
         // 1. Primary is SQM: We conversion is mandatory.
         // 2. Primary is PCS (Misconfiguration): User stores Stock in SQM but Primary is PCS (Product 309 case).
@@ -803,8 +805,9 @@ const updateOrder = async (req, res) => {
         // Must handle Unit Conversion (PCS -> SQM) same as finalizeOrder
         let qtyToAddBack = qty;
         const sqmPerPiece = parseDimensions(item.size || item.productname);
+        const isFicheProduct = (item.productname || '').toLowerCase().startsWith('fiche');
 
-        if (item.unitcode === 'PCS' && sqmPerPiece > 0) {
+        if (item.unitcode === 'PCS' && !isFicheProduct && sqmPerPiece > 0) {
           qtyToAddBack = qty * sqmPerPiece;
         }
 
@@ -1068,7 +1071,9 @@ async function deleteOrder(req, res, next) {
       };
       const isSoldInPieces = item.unitcode === 'PCS';
       const sqmPerPiece = parseDimensions(item.size || item.productname);
-      if (isSoldInPieces && sqmPerPiece > 0) {
+      const isFicheProduct = (item.productname || '').toLowerCase().startsWith('fiche');
+
+      if (isSoldInPieces && !isFicheProduct && sqmPerPiece > 0) {
         qtyToRelease = qtyToRelease * sqmPerPiece;
       }
 

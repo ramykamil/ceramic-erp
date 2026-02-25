@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import api from '@/lib/api';
 import Link from 'next/link';
-import { DateQuickFilter, DateRange } from '@/components/DateQuickFilter';
+import { DateQuickFilter, DateRange, getDateRange } from '@/components/DateQuickFilter';
 
 // --- Interfaces ---
 interface PurchaseReturn {
@@ -51,7 +51,7 @@ export default function PurchaseReturnsPage() {
     const [returns, setReturns] = useState<PurchaseReturn[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [dateRange, setDateRange] = useState<DateRange>({ startDate: null, endDate: null });
+    const [dateRange, setDateRange] = useState<DateRange>(getDateRange('TODAY'));
     const [factories, setFactories] = useState<{ factoryid: number; factoryname: string }[]>([]);
     const [selectedFactoryId, setSelectedFactoryId] = useState<string>('');
 
@@ -150,7 +150,7 @@ export default function PurchaseReturnsPage() {
                 <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap gap-4 items-end">
                     <div className="flex-1 min-w-[300px]">
                         <label className="block text-sm font-medium text-slate-700 mb-1">Période</label>
-                        <DateQuickFilter onFilterChange={setDateRange} />
+                        <DateQuickFilter onFilterChange={setDateRange} defaultPreset="TODAY" />
                     </div>
 
                     <div className="w-64">

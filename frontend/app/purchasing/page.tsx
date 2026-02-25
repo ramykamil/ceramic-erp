@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { DateQuickFilter, DateRange, DateFilterPreset } from '@/components/DateQuickFilter';
+import { DateQuickFilter, DateRange, DateFilterPreset, getDateRange } from '@/components/DateQuickFilter';
 import { UserFilter } from '@/components/UserFilter';
 import { useSortableTable } from '@/hooks/useSortableTable';
 import { SortableTableHeader } from '@/components/SortableTableHeader';
@@ -63,7 +63,7 @@ export default function PurchaseOrdersListPage() {
   const [statusFilter, setStatusFilter] = useState('');
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [dateRange, setDateRange] = useState<DateRange>({ startDate: null, endDate: null });
+  const [dateRange, setDateRange] = useState<DateRange>(getDateRange('TODAY'));
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<'commandes' | 'versements'>('commandes');
   const [receivingPoId, setReceivingPoId] = useState<number | null>(null);
@@ -336,7 +336,7 @@ export default function PurchaseOrdersListPage() {
                   <p className="text-xs text-slate-500 mb-2 font-medium">📅 Filtrer par date:</p>
                   <DateQuickFilter
                     onFilterChange={(range) => setDateRange(range)}
-                    defaultPreset="ALL"
+                    defaultPreset="TODAY"
                     showCustom={true}
                   />
                 </div>

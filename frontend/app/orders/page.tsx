@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { DateQuickFilter, DateRange, DateFilterPreset } from '@/components/DateQuickFilter';
+import { DateQuickFilter, DateRange, DateFilterPreset, getDateRange } from '@/components/DateQuickFilter';
 import { UserFilter } from '@/components/UserFilter';
 import { useSortableTable } from '@/hooks/useSortableTable';
 import { ResizableSortableHeader, useColumnWidths } from '@/components/ResizableSortableHeader';
@@ -46,7 +46,7 @@ export default function OrdersListPage() {
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('ALL'); // 'ALL', 'PENDING', 'CONFIRMED', etc.
-  const [dateRange, setDateRange] = useState<DateRange>({ startDate: null, endDate: null });
+  const [dateRange, setDateRange] = useState<DateRange>(getDateRange('TODAY'));
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [orderTypeFilter, setOrderTypeFilter] = useState('ALL'); // 'ALL', 'GROS', 'RETAIL'
@@ -240,7 +240,7 @@ export default function OrdersListPage() {
                   <p className="text-xs text-slate-500 mb-2 font-medium">📅 Filtrer par date:</p>
                   <DateQuickFilter
                     onFilterChange={handleDateFilterChange}
-                    defaultPreset="ALL"
+                    defaultPreset="TODAY"
                     showCustom={true}
                   />
                 </div>
