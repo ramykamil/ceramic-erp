@@ -693,10 +693,11 @@ async function updatePurchaseOrder(req, res, next) {
 
             // Fetch old items for comparison
             const oldItemsRes = await client.query(`
-                SELECT poi.*, u.UnitCode, p.ProductName, p.Size
+                SELECT poi.*, u.UnitCode, p.ProductName, p.Size, pu.UnitCode as PrimaryUnitCode
                 FROM PurchaseOrderItems poi
                 LEFT JOIN Units u ON poi.UnitID = u.UnitID
                 JOIN Products p ON poi.ProductID = p.ProductID
+                LEFT JOIN Units pu ON p.PrimaryUnitID = pu.UnitID
                 WHERE poi.PurchaseOrderID = $1
             `, [id]);
 
@@ -710,17 +711,22 @@ async function updatePurchaseOrder(req, res, next) {
 
                 // Get Product Info for Unit Conversion of NEW/UPDATED Item
                 const productInfo = await client.query(
-                    `SELECT ProductName, Size FROM Products WHERE ProductID = $1`,
+                    `SELECT p.ProductName, p.Size, u.UnitCode as PrimaryUnitCode 
+                     FROM Products p 
+                     LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID 
+                     WHERE p.ProductID = $1`,
                     [item.productId]
                 );
                 const pInfo = productInfo.rows[0];
                 const sqmPerPiece = parseDimensions(pInfo?.size || pInfo?.productname);
+                const primaryUnitCode = (pInfo?.primaryunitcode || '').toUpperCase();
+                const isFicheProduct = (pInfo?.productname || '').toLowerCase().startsWith('fiche');
 
                 const unitRes = await client.query('SELECT UnitCode FROM Units WHERE UnitID = $1', [item.unitId]);
-                const unitCode = unitRes.rows[0]?.unitcode || 'PCS';
+                const unitCode = (unitRes.rows[0]?.unitcode || 'PCS').toUpperCase();
 
                 let quantityInStockUnit = parseFloat(item.quantity);
-                if (unitCode === 'PCS' && sqmPerPiece > 0) {
+                if (unitCode === 'PCS' && ['SQM', 'M2', 'M²'].includes(primaryUnitCode) && !isFicheProduct && sqmPerPiece > 0) {
                     quantityInStockUnit = quantityInStockUnit * sqmPerPiece;
                 }
 
@@ -734,7 +740,11 @@ async function updatePurchaseOrder(req, res, next) {
                     // Calculate Old Stock Qty (what was previously added)
                     let oldQuantityInStockUnit = parseFloat(oldItem.quantity);
                     const oldSqmPerPiece = parseDimensions(oldItem.size || oldItem.productname);
-                    if (oldItem.unitcode === 'PCS' && oldSqmPerPiece > 0) {
+                    const oldPrimaryUnitCode = (oldItem.primaryunitcode || '').toUpperCase();
+                    const oldIsFicheProduct = (oldItem.productname || '').toLowerCase().startsWith('fiche');
+                    const oldUnitCode = (oldItem.unitcode || 'PCS').toUpperCase();
+
+                    if (oldUnitCode === 'PCS' && ['SQM', 'M2', 'M²'].includes(oldPrimaryUnitCode) && !oldIsFicheProduct && oldSqmPerPiece > 0) {
                         oldQuantityInStockUnit = oldQuantityInStockUnit * oldSqmPerPiece;
                     }
 
@@ -818,7 +828,11 @@ async function updatePurchaseOrder(req, res, next) {
                         // Revert Stock
                         let oldQuantityInStockUnit = parseFloat(oldItem.quantity);
                         const oldSqmPerPiece = parseDimensions(oldItem.size || oldItem.productname);
-                        if (oldItem.unitcode === 'PCS' && oldSqmPerPiece > 0) {
+                        const oldPrimaryUnitCode = (oldItem.primaryunitcode || '').toUpperCase();
+                        const oldIsFicheProduct = (oldItem.productname || '').toLowerCase().startsWith('fiche');
+                        const oldUnitCode = (oldItem.unitcode || 'PCS').toUpperCase();
+
+                        if (oldUnitCode === 'PCS' && ['SQM', 'M2', 'M²'].includes(oldPrimaryUnitCode) && !oldIsFicheProduct && oldSqmPerPiece > 0) {
                             oldQuantityInStockUnit = oldQuantityInStockUnit * oldSqmPerPiece;
                         }
 
