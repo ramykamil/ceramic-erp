@@ -407,7 +407,7 @@ async function getProductSalesHistory(req, res, next) {
         COUNT(DISTINCT o.OrderID) as ordercount,
         SUM(oi.Quantity) as totalqty,
         COALESCE(SUM(oi.PalletCount), 0) as totalpallets,
-        COALESCE(SUM(oi.CartonCount), 0) as totalcartons,
+        COALESCE(SUM(oi.ColisCount), 0) as totalcartons,
         SUM(oi.LineTotal) as totalamount,
         MAX(o.OrderDate) as lastorderdate,
         AVG(oi.UnitPrice) as avgprice
