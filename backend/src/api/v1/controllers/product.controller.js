@@ -16,30 +16,17 @@ async function getProducts(req, res, next) {
     const { page = 1, limit = 50, search, famille, choix, calibre, stockFilter, sortBy, sortOrder = 'ASC', ids } = req.query;
     const offset = (page - 1) * limit;
 
-    // OPTIMIZED: Use Real-Time Inventory JOIN on top of Materialized View
-    // mv_Catalogue provides fast searching/filtering, Inventory provides live stock
+    // 1. Fetch primarily from MatView to instantly apply search and pagination with perfect index support
     let query = `
       SELECT 
-        mvc.ProductID, mvc.ProductCode, mvc.ProductName,
-        mvc.BrandID as brandid, mvc.Famille, mvc.PrixVente, mvc.PrixAchat,
-        p.BasePrice, p.PurchasePrice, -- NEW: Fetch BasePrice/PurchasePrice from Products table for fallback
-        mvc.Calibre, mvc.Choix, mvc.QteParColis, mvc.QteColisParPalette, mvc.Size,
-        COALESCE(inv.RealTotalQty, 0) as TotalQty, 
-        COALESCE(inv.RealNbPalette, 0) as NbPalette, 
-        COALESCE(inv.RealNbColis, 0) as NbColis,
-        mvc.DerivedPiecesPerColis, mvc.DerivedColisPerPalette,
+        mvc.ProductID as productid, mvc.ProductCode as productcode, mvc.ProductName as productname,
+        mvc.BrandID as brandid, mvc.Famille as famille, mvc.PrixVente as prixvente, mvc.PrixAchat as prixachat,
+        mvc.Calibre as calibre, mvc.Choix as choix, mvc.QteParColis as qteparcolis, 
+        mvc.QteColisParPalette as qtecolisparpalette, mvc.Size as size,
+        mvc.DerivedPiecesPerColis as derivedpiecespercolis, mvc.DerivedColisPerPalette as derivedcolisperpalette,
+        mvc.TotalQty as cached_totalqty,
         COUNT(*) OVER() as TotalCount
       FROM mv_Catalogue mvc
-      LEFT JOIN Products p ON mvc.ProductID = p.ProductID
-      LEFT JOIN (
-        SELECT 
-            ProductID, 
-            SUM(QuantityOnHand) as RealTotalQty, 
-            SUM(PalletCount) as RealNbPalette, 
-            SUM(ColisCount) as RealNbColis
-        FROM Inventory
-        GROUP BY ProductID
-      ) inv ON mvc.ProductID = inv.ProductID
       WHERE 1=1
     `;
     const params = [];
@@ -85,32 +72,69 @@ async function getProducts(req, res, next) {
       i++;
     }
 
-    // Stock Filter
+    // Stock Filter based on the materialized view cached total 
+    // (Extremely fast, prevents massive GROUP BY slowdowns)
     if (stockFilter === 'instock') {
-      query += ` AND COALESCE(inv.RealTotalQty, 0) > 0`;
+      query += ` AND COALESCE(mvc.TotalQty, 0) > 0`;
     } else if (stockFilter === 'outofstock') {
-      query += ` AND COALESCE(inv.RealTotalQty, 0) <= 0`;
+      query += ` AND COALESCE(mvc.TotalQty, 0) <= 0`;
     } else if (stockFilter === 'lowstock') {
-      query += ` AND COALESCE(inv.RealTotalQty, 0) > 0 AND COALESCE(inv.RealTotalQty, 0) < 100`;
+      query += ` AND COALESCE(mvc.TotalQty, 0) > 0 AND COALESCE(mvc.TotalQty, 0) < 100`;
     }
 
     // Sorting
-    const allowedSorts = ['productname', 'productcode', 'famille', 'prixvente', 'prixachat', 'nbpalette', 'nbcolis', 'totalqty', 'calibre', 'choix'];
-    const sortColumn = allowedSorts.includes(sortBy?.toLowerCase()) ? sortBy : 'ProductName';
+    const allowedSorts = ['productname', 'productcode', 'famille', 'prixvente', 'prixachat', 'calibre', 'choix', 'totalqty'];
+    let sortColumn = allowedSorts.includes(sortBy?.toLowerCase()) ? sortBy : 'ProductName';
+    if (sortColumn.toLowerCase() === 'totalqty') sortColumn = 'cached_totalqty'; // Map to MV column
+
     const orderDirection = sortOrder.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
 
-    query += ` ORDER BY ${sortColumn} ${orderDirection}`;
+    query += ` ORDER BY ${sortColumn} ${orderDirection} NULLS LAST`;
 
     query += ` LIMIT $${i++} OFFSET $${i++}`;
     params.push(limit, offset);
 
     const result = await pool.query(query, params);
 
+    let data = result.rows;
+
+    // 2. Fetch "Real-Time" live stock ONLY for the 50 viewed items to ensure accurate UI values
+    // This removes the crippling FULL TABLE GROUP BY on Inventory.
+    if (data.length > 0) {
+      const productIds = data.map(p => p.productid);
+      const invQuery = `
+        SELECT 
+          ProductID, 
+          SUM(QuantityOnHand) as realtotalqty, 
+          SUM(PalletCount) as realnbpalette, 
+          SUM(ColisCount) as realnbcolis
+        FROM Inventory
+        WHERE ProductID = ANY($1::int[])
+        GROUP BY ProductID
+      `;
+      const invResult = await pool.query(invQuery, [productIds]);
+      const invMap = {};
+      for (const row of invResult.rows) {
+        invMap[row.productid] = row;
+      }
+
+      // Merge live stock back into results
+      data = data.map(p => {
+        const live = invMap[p.productid];
+        return {
+          ...p,
+          totalqty: live ? parseFloat(live.realtotalqty) : 0,
+          nbpalette: live ? parseInt(live.realnbpalette) : 0,
+          nbcolis: live ? parseInt(live.realnbcolis) : 0
+        };
+      });
+    }
+
     const totalItems = result.rows.length > 0 ? parseInt(result.rows[0].totalcount) : 0;
 
     res.json({
       success: true,
-      data: result.rows,
+      data,
       pagination: {
         page: parseInt(page),
         limit: parseInt(limit),
