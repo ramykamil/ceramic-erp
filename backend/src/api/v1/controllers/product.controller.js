@@ -13,7 +13,7 @@ function extractSizeFromName(name) {
 
 async function getProducts(req, res, next) {
   try {
-    const { page = 1, limit = 50, search, famille, choix, calibre, sortBy, sortOrder = 'ASC', ids } = req.query;
+    const { page = 1, limit = 50, search, famille, choix, calibre, stockFilter, sortBy, sortOrder = 'ASC', ids } = req.query;
     const offset = (page - 1) * limit;
 
     // OPTIMIZED: Use Real-Time Inventory JOIN on top of Materialized View
@@ -83,6 +83,15 @@ async function getProducts(req, res, next) {
       query += ` AND Calibre = $${i}`;
       params.push(calibre);
       i++;
+    }
+
+    // Stock Filter
+    if (stockFilter === 'instock') {
+      query += ` AND COALESCE(inv.RealTotalQty, 0) > 0`;
+    } else if (stockFilter === 'outofstock') {
+      query += ` AND COALESCE(inv.RealTotalQty, 0) <= 0`;
+    } else if (stockFilter === 'lowstock') {
+      query += ` AND COALESCE(inv.RealTotalQty, 0) > 0 AND COALESCE(inv.RealTotalQty, 0) < 100`;
     }
 
     // Sorting

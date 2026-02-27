@@ -5,6 +5,7 @@ import api from '@/lib/api';
 import { useSortableTable, SortDirection } from '@/hooks/useSortableTable'; // Can remove if unused, but let's keep import for now or just remove it. Remove it.
 import Link from 'next/link';
 // import { useSortableTable, SortDirection } from '@/hooks/useSortableTable'; // Removed
+import { TableVirtuoso } from 'react-virtuoso';
 import { ResizableHeader, useColumnWidths } from '@/components/ResizableSortableHeader';
 import { exportToExcel, formatCurrencyExport, formatQuantityExport } from '@/lib/exportToExcel';
 
@@ -38,7 +39,7 @@ export default function ProductsPage() {
 
   // Server-Side State
   const [page, setPage] = useState(1);
-  const [limit] = useState(100000); // Increased limit to show all products on a single page
+  const [limit] = useState(50); // Set low limit for infinite scroll
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [sortBy, setSortBy] = useState<string>('ProductName');
@@ -120,10 +121,10 @@ export default function ProductsPage() {
   // Filter & Data reload
   useEffect(() => {
     const delaySearch = setTimeout(() => {
-      loadProducts();
+      loadProducts(false);
     }, 300);
     return () => clearTimeout(delaySearch);
-  }, [search, familleFilter, choixFilter, stockFilter, page, sortBy, sortOrder]);
+  }, [search, familleFilter, choixFilter, stockFilter, sortBy, sortOrder]);
 
   const loadFilters = async () => {
     const res = await api.getProductFilters();
@@ -144,45 +145,34 @@ export default function ProductsPage() {
     }
   };
 
-  const loadProducts = async () => {
-    setLoading(true);
+  const loadProducts = async (isLoadMore = false) => {
+    if (!isLoadMore) setLoading(true);
+
+    const nextPage = isLoadMore ? page + 1 : 1;
     const params: any = {
       search,
       limit,
-      page,
+      page: nextPage,
       sortBy,
       sortOrder
     };
     if (familleFilter) params.famille = familleFilter;
     if (choixFilter) params.choix = choixFilter;
-
-    // Note: stock filtering is still partly client side relative to page results? 
-    // Ideally backend should handle stock filter too, but for now we follow the plan which focused on pagination.
-    // However, if we filter client-side after fetching 50 items, we might end up with 0 items.
-    // The previous implementation filtered AFTER api call.
-    // If we want correct pagination with stock filter, we MUST move stock filter to backend.
-    // BUT the task plan didn't explicitly say "Move Stock Filter".
-    // I will try to support it if the backend supports `having` or similar, but looking at controller step 79:
-    // It does NOT have stock filter.
-    // So for now, I will warn the user or just apply it client side on the 50 items (imperfect but better than crash).
-    // Actually, to match desktop experience, stock filter is crucial.
-    // I will add a TO-DO in the controller or just accept that "En stock" might show fewer than 50 items per page.
+    if (stockFilter) params.stockFilter = stockFilter;
 
     try {
       const res = await api.getProducts(params);
       let data = (res.data as Product[]) || [];
 
-      // Temporary Client-Side Stock Filter (Ideally move to backend later)
-      if (stockFilter === 'instock') {
-        data = data.filter(p => Number(p.totalqty) > 0);
-      } else if (stockFilter === 'outofstock') {
-        data = data.filter(p => Number(p.totalqty) === 0);
-      } else if (stockFilter === 'lowstock') {
-        data = data.filter(p => Number(p.totalqty) > 0 && Number(p.totalqty) < 100);
-      }
-
       if (res.success) {
-        setProducts(data);
+        if (isLoadMore) {
+          setProducts(prev => [...prev, ...data]);
+          setPage(nextPage);
+        } else {
+          setProducts(data);
+          setPage(1);
+        }
+
         if ((res as any).pagination) {
           setTotalItems((res as any).pagination.totalItems);
           setTotalPages((res as any).pagination.totalPages);
@@ -191,7 +181,7 @@ export default function ProductsPage() {
     } catch (error) {
       console.error("Failed to load products", error);
     } finally {
-      setLoading(false);
+      if (!isLoadMore) setLoading(false);
     }
   };
 
@@ -512,14 +502,30 @@ export default function ProductsPage() {
 
         {/* DATA TABLE - Maximized Height */}
         <div className="bg-white rounded border border-slate-200 shadow-sm flex-1 min-h-0 flex flex-col" style={{ maxHeight: 'calc(100vh - 165px)' }}>
-          <div className="overflow-auto flex-1">
-            {loading ? (
+          <div className="flex-1 w-full h-full">
+            {loading && page === 1 ? (
               <div className="flex items-center justify-center h-64">
                 <div className="text-slate-500 text-lg">Chargement...</div>
               </div>
+            ) : products.length === 0 ? (
+              <div className="flex items-center justify-center h-64">
+                <div className="text-slate-500 text-lg">Aucun produit trouvé. Modifiez votre recherche ou ajoutez des produits.</div>
+              </div>
             ) : (
-              <table className="w-full text-xs" style={{ tableLayout: 'fixed' }}>
-                <thead className="bg-slate-700 text-white text-[10px] uppercase sticky top-0 z-10">
+              <TableVirtuoso
+                data={products}
+                style={{ height: '100%' }}
+                endReached={() => {
+                  if (products.length < totalItems && !loading) {
+                    loadProducts(true);
+                  }
+                }}
+                components={{
+                  Table: (props) => <table {...props} className="w-full text-xs [&>tbody>tr:nth-child(even)]:bg-slate-50 [&>tbody>tr:nth-child(odd)]:bg-white" style={{ tableLayout: 'fixed' }} />,
+                  TableHead: (props) => <thead {...props} className="bg-slate-700 text-white text-[10px] uppercase sticky top-0 z-10" />,
+                  TableRow: (props) => <tr {...props} className="hover:bg-blue-50 transition" />,
+                }}
+                fixedHeaderContent={() => (
                   <tr>
                     <ResizableHeader columnKey="famille" width={widths.famille} onResize={handleResize} onClick={() => handleSort('famille')} className="p-1.5 text-left cursor-pointer hover:bg-slate-600">Famille {getSortIcon('famille')}</ResizableHeader>
 
@@ -535,79 +541,68 @@ export default function ProductsPage() {
                     <ResizableHeader columnKey="valeur" width={widths.valeur} onResize={handleResize} className="p-1.5 text-right font-bold text-green-300">Valeur</ResizableHeader>
                     <th className="p-1.5 text-center" style={{ width: 60 }}>Actions</th>
                   </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {products.map((p, i) => {
-                    const valeurAchat = Number(p.totalqty || 0) * (Number(p.prixachat) || Number(p.purchaseprice) || 0);
-                    const isDeleting = deletingProductId === p.productid;
+                )}
+                itemContent={(index, p) => {
+                  const valeurAchat = Number(p.totalqty || 0) * (Number(p.prixachat) || Number(p.purchaseprice) || 0);
+                  const isDeleting = deletingProductId === p.productid;
 
-                    return (
-                      <tr key={p.productid} className={`hover:bg-blue-50 transition ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50'} ${isDeleting ? 'opacity-50' : ''}`}>
-                        <td className="p-1 text-slate-600 truncate">{p.famille || '-'}</td>
+                  return (
+                    <>
+                      <td className="p-1 text-slate-600 truncate">{p.famille || '-'}</td>
 
-                        <td className="p-1 font-medium truncate max-w-[200px]" title={p.productname}>{p.productname}</td>
+                      <td className="p-1 font-medium truncate max-w-[200px]" title={p.productname}>{p.productname}</td>
 
-                        {/* Stock Columns */}
-                        <td className="p-1 text-right bg-indigo-50/50 font-mono">{formatQty(p.nbpalette)}</td>
-                        <td className="p-1 text-right bg-indigo-50/50 font-mono">{formatQty(p.nbcolis)}</td>
-                        <td className="p-1 text-right bg-blue-50/50 font-bold font-mono text-blue-700">{formatQty(p.totalqty)}</td>
+                      {/* Stock Columns */}
+                      <td className="p-1 text-right bg-indigo-50/50 font-mono">{formatQty(p.nbpalette)}</td>
+                      <td className="p-1 text-right bg-indigo-50/50 font-mono">{formatQty(p.nbcolis)}</td>
+                      <td className="p-1 text-right bg-blue-50/50 font-bold font-mono text-blue-700">{formatQty(p.totalqty)}</td>
 
-                        {/* Prices */}
-                        <td className="p-1 text-right font-mono">{formatMoney(Number(p.prixachat) || Number(p.purchaseprice) || 0)}</td>
-                        <td className="p-1 text-right font-mono">{formatMoney(p.prixvente)}</td>
+                      {/* Prices */}
+                      <td className="p-1 text-right font-mono">{formatMoney(Number(p.prixachat) || Number(p.purchaseprice) || 0)}</td>
+                      <td className="p-1 text-right font-mono">{formatMoney(p.prixvente)}</td>
 
-
-
-                        {/* Packaging Info */}
-                        <td className="p-1 text-right text-blue-600 font-mono font-medium text-[10px]">
-                          {formatQty(Number(p.derivedpiecespercolis || p.qteparcolis || 0))}
-                        </td>
-                        <td className="p-1 text-right text-blue-600 font-mono font-medium text-[10px]">
-                          {Number(p.derivedcolisperpalette || p.qtecolisparpalette || 0)}
-                        </td>
-
-                        {/* Total Value */}
-                        <td className="p-1 text-right font-bold text-green-700 font-mono">{formatMoney(Number(p.totalqty || 0) * (Number(p.prixachat) || Number(p.purchaseprice) || 0))}</td>
-
-                        {/* Actions */}
-                        <td className="p-1 text-center">
-                          <div className="flex justify-center gap-0.5">
-                            <button
-                              onClick={() => loadSalesHistory(p.productid)}
-                              className="text-green-600 hover:text-green-800 hover:bg-green-100 p-1 rounded transition"
-                              title="Historique"
-                            >
-                              📊
-                            </button>
-                            <button
-                              onClick={() => openEditModal(p)}
-                              className="text-blue-600 hover:text-blue-800 hover:bg-blue-100 p-1 rounded transition"
-                              title="Modifier"
-                            >
-                              ✏️
-                            </button>
-                            <button
-                              onClick={() => handleDelete(p.productid)}
-                              disabled={isDeleting}
-                              className="text-red-600 hover:text-red-800 hover:bg-red-100 p-1 rounded transition disabled:opacity-50"
-                              title="Supprimer"
-                            >
-                              🗑️
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                  {products.length === 0 && !loading && (
-                    <tr>
-                      <td colSpan={14} className="p-12 text-center text-slate-400 italic">
-                        Aucun produit trouvé. Modifiez votre recherche ou ajoutez des produits.
+                      {/* Packaging Info */}
+                      <td className="p-1 text-right text-blue-600 font-mono font-medium text-[10px]">
+                        {formatQty(Number(p.derivedpiecespercolis || p.qteparcolis || 0))}
                       </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                      <td className="p-1 text-right text-blue-600 font-mono font-medium text-[10px]">
+                        {Number(p.derivedcolisperpalette || p.qtecolisparpalette || 0)}
+                      </td>
+
+                      {/* Total Value */}
+                      <td className="p-1 text-right font-bold text-green-700 font-mono">{formatMoney(Number(p.totalqty || 0) * (Number(p.prixachat) || Number(p.purchaseprice) || 0))}</td>
+
+                      {/* Actions */}
+                      <td className="p-1 text-center py-1.5">
+                        <div className="flex justify-center gap-0.5">
+                          <button
+                            onClick={() => loadSalesHistory(p.productid)}
+                            className="text-green-600 hover:text-green-800 hover:bg-green-100 p-1 rounded transition"
+                            title="Historique"
+                          >
+                            📊
+                          </button>
+                          <button
+                            onClick={() => openEditModal(p)}
+                            className="text-blue-600 hover:text-blue-800 hover:bg-blue-100 p-1 rounded transition"
+                            title="Modifier"
+                          >
+                            ✏️
+                          </button>
+                          <button
+                            onClick={() => handleDelete(p.productid)}
+                            disabled={isDeleting}
+                            className="text-red-600 hover:text-red-800 hover:bg-red-100 p-1 rounded transition disabled:opacity-50"
+                            title="Supprimer"
+                          >
+                            🗑️
+                          </button>
+                        </div>
+                      </td>
+                    </>
+                  );
+                }}
+              />
             )}
           </div>
         </div>
@@ -676,24 +671,10 @@ export default function ProductsPage() {
             {/* Pagination Controls Row */}
             <div className="flex flex-wrap justify-between items-center gap-4">
               <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setPage(p => Math.max(1, p - 1))}
-                  disabled={page === 1}
-                  className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg disabled:opacity-50 text-sm font-medium"
-                >
-                  ← Précédent
-                </button>
                 <span className="text-sm font-mono text-slate-600">
-                  Page <span className="font-bold text-slate-900">{page}</span> / {totalPages}
-                  <span className="ml-2 text-slate-400">({totalItems} produits)</span>
+                  Affichage de <span className="font-bold text-slate-900">{products.length}</span> sur <span className="font-bold text-slate-900">{totalItems}</span> produits
                 </span>
-                <button
-                  onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                  disabled={page === totalPages}
-                  className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg disabled:opacity-50 text-sm font-medium"
-                >
-                  Suivant →
-                </button>
+                {loading && page > 1 && <span className="text-sm text-blue-500 animate-pulse ml-4 font-medium">Chargement en cours...</span>}
               </div>
 
               {/* Keep existing page totals if user wants doubles, but user asked for these cards. 
