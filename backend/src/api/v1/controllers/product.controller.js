@@ -83,9 +83,17 @@ async function getProducts(req, res, next) {
     }
 
     // Sorting
-    const allowedSorts = ['productname', 'productcode', 'famille', 'prixvente', 'prixachat', 'calibre', 'choix', 'totalqty'];
-    let sortColumn = allowedSorts.includes(sortBy?.toLowerCase()) ? sortBy : 'ProductName';
-    if (sortColumn.toLowerCase() === 'totalqty') sortColumn = 'cached_totalqty'; // Map to MV column
+    const allowedSorts = ['productname', 'productcode', 'famille', 'prixvente', 'prixachat', 'calibre', 'choix', 'totalqty', 'nbcolis', 'nbpalette', 'valeur'];
+    let sortColumn = 'ProductName';
+    if (sortBy && allowedSorts.includes(sortBy.toLowerCase())) {
+      sortColumn = sortBy.toLowerCase();
+    }
+
+    // Map frontend column names to database columns
+    if (sortColumn === 'totalqty') sortColumn = 'cached_totalqty';
+    if (sortColumn === 'valeur') sortColumn = '(COALESCE(mvc.TotalQty, 0) * COALESCE(mvc.PrixAchat, 0))';
+    if (sortColumn === 'nbcolis') sortColumn = 'mvc.NbColis';
+    if (sortColumn === 'nbpalette') sortColumn = 'mvc.NbPalette';
 
     const orderDirection = sortOrder.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
 
