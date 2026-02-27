@@ -36,6 +36,7 @@ interface Product {
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isExporting, setIsExporting] = useState(false);
 
   // Server-Side State
   const [page, setPage] = useState(1);
@@ -387,6 +388,48 @@ export default function ProductsPage() {
   const totalQtyPage = products.reduce((sum, p) => sum + Number(p.totalqty || 0), 0);
   const totalValuePage = products.reduce((sum, p) => sum + (Number(p.totalqty || 0) * Number(p.prixachat || 0)), 0);
 
+  const handleExport = async () => {
+    setIsExporting(true);
+    try {
+      const params: any = {
+        search,
+        limit: 100000, // Fetch all matching products
+        page: 1,
+        sortBy,
+        sortOrder
+      };
+      if (familleFilter) params.famille = familleFilter;
+      if (choixFilter) params.choix = choixFilter;
+      if (stockFilter) params.stockFilter = stockFilter;
+
+      const res = await api.getProducts(params);
+      const dataToExport = (res.data as Product[]) || [];
+
+      exportToExcel(
+        dataToExport,
+        [
+          { key: 'productcode', label: 'Référence' },
+          { key: 'productname', label: 'Libellé' },
+          { key: 'famille', label: 'Famille' },
+          { key: 'nbpalette', label: 'Palettes', format: formatQuantityExport },
+          { key: 'nbcolis', label: 'Colis', format: formatQuantityExport },
+          { key: 'totalqty', label: 'Qté', format: formatQuantityExport },
+          { key: 'prixachat', label: 'Prix Achat', format: (val, row: any) => formatCurrencyExport(Number(val) || Number(row.purchaseprice) || 0) },
+          { key: 'prixvente', label: 'Prix Vente', format: formatCurrencyExport },
+          { key: 'calibre', label: 'Calibre' },
+          { key: 'choix', label: 'Choix' },
+        ],
+        'catalogue_produits',
+        'Produits'
+      );
+    } catch (error) {
+      console.error("Failed to export products", error);
+      alert("Erreur lors de l'exportation.");
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
     <div className="h-screen flex flex-col bg-slate-50 text-slate-800 overflow-hidden">
       <div className="flex flex-col h-full max-w-[1920px] mx-auto w-full p-4">
@@ -401,28 +444,11 @@ export default function ProductsPage() {
             </div>
             <div className="flex gap-2">
               <button
-                onClick={() => {
-                  exportToExcel(
-                    products,
-                    [
-                      { key: 'productcode', label: 'Référence' },
-                      { key: 'productname', label: 'Libellé' },
-                      { key: 'famille', label: 'Famille' },
-                      { key: 'nbpalette', label: 'Palettes', format: formatQuantityExport },
-                      { key: 'nbcolis', label: 'Colis', format: formatQuantityExport },
-                      { key: 'totalqty', label: 'Qté', format: formatQuantityExport },
-                      { key: 'prixachat', label: 'Prix Achat', format: (val, row) => formatCurrencyExport(Number(val) || Number(row.purchaseprice) || 0) },
-                      { key: 'prixvente', label: 'Prix Vente', format: formatCurrencyExport },
-                      { key: 'calibre', label: 'Calibre' },
-                      { key: 'choix', label: 'Choix' },
-                    ],
-                    'catalogue_produits',
-                    'Produits'
-                  );
-                }}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded text-xs font-medium shadow-sm flex items-center gap-2"
+                onClick={handleExport}
+                disabled={isExporting}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded text-xs font-medium shadow-sm flex items-center gap-2 disabled:opacity-50"
               >
-                📄 Excel
+                {isExporting ? '⏳ Exportation...' : '📄 Excel'}
               </button>
               <Link href="/" className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-3 py-1.5 rounded text-xs font-medium transition shadow-sm flex items-center gap-2">
                 ← Retour
