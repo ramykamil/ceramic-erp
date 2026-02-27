@@ -548,6 +548,62 @@ export default function SettingsPage() {
                             </div>
                         </div>
 
+                        {/* ACCESS CONTROL SECTION */}
+                        <div className="mt-8 pt-6 border-t border-slate-200">
+                            <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                                <span className="text-2xl">🔒</span>
+                                Contrôle d'Accès & Sécurité
+                            </h3>
+                            <p className="text-sm text-slate-500 mb-4">
+                                Restreindre l'accès à l'application pour certains rôles utilisateurs. Les Administrateurs et Managers ne sont pas affectés.
+                            </p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mb-6">
+                                <div className="p-4 border rounded-lg bg-orange-50 border-orange-200">
+                                    <label className="block font-medium mb-2 text-orange-800">
+                                        🕒 Heures de Travail
+                                    </label>
+                                    <p className="text-xs text-orange-600 mb-3">Bloquer l'accès en dehors de ces horaires</p>
+                                    <div className="flex items-center gap-4">
+                                        <div className="flex-1">
+                                            <span className="text-xs text-orange-700 block mb-1">Ouverture</span>
+                                            <input
+                                                type="time"
+                                                name="workstarttime"
+                                                value={formData.workstarttime || '08:00'}
+                                                onChange={handleChange}
+                                                className="w-full p-2 border border-orange-300 rounded font-mono text-center focus:ring-2 focus:ring-orange-500"
+                                            />
+                                        </div>
+                                        <div className="flex-1">
+                                            <span className="text-xs text-orange-700 block mb-1">Fermeture</span>
+                                            <input
+                                                type="time"
+                                                name="workendtime"
+                                                value={formData.workendtime || '18:00'}
+                                                onChange={handleChange}
+                                                className="w-full p-2 border border-orange-300 rounded font-mono text-center focus:ring-2 focus:ring-orange-500"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="p-4 border rounded-lg bg-red-50 border-red-200">
+                                    <label className="block font-medium mb-2 text-red-800">
+                                        🛡️ IPs Autorisées (Whitelisting)
+                                    </label>
+                                    <p className="text-xs text-red-600 mb-3">IPs séparées par des virgules (,). Si vide, l'accès est autorisé depuis n'importe où.</p>
+                                    <input
+                                        type="text"
+                                        name="allowedips"
+                                        value={formData.allowedips || ''}
+                                        onChange={handleChange}
+                                        placeholder="ex: 192.168.1.1, 41.100.22.40"
+                                        className="w-full p-2 border border-red-300 rounded font-mono text-sm focus:ring-2 focus:ring-red-500"
+                                    />
+                                    <p className="mt-2 text-[10px] text-red-500 font-bold">⚠️ Attention: Restreindre les IPs bloquera les utilisateurs qui ne sont pas sur ce réseau.</p>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* MOBILE ACCESS SECTION */}
                         <div className="mt-8 pt-6 border-t border-slate-200">
                             <h3 className="font-bold text-lg mb-4 flex items-center gap-2">

@@ -203,6 +203,12 @@ class ApiClient {
       const data = await response.json();
 
       if (!response.ok) {
+        if (response.status === 403 && (data.code === 'OUTSIDE_WORKING_HOURS' || data.code === 'IP_NOT_ALLOWED')) {
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('auth_token');
+            window.location.href = '/login?error=' + encodeURIComponent(data.message);
+          }
+        }
         throw new Error(data.message || 'API request failed');
       }
 

@@ -29,7 +29,8 @@ async function updateSettings(req, res, next) {
             defaultprintformat, ticketwidth, ticketheader, ticketfooter, showbalanceonticket,
             enablepalletmanagement, updatepurchaseprice, barcodeprefix, defaulttaxrate, defaulttimbre,
             retailmargin, wholesalemargin,
-            retailmargintype, wholesalemargintype
+            retailmargintype, wholesalemargintype,
+            workstarttime, workendtime, allowedips
         } = req.body;
 
         const query = `
@@ -60,8 +61,11 @@ async function updateSettings(req, res, next) {
                 WholesaleMargin = COALESCE($24, WholesaleMargin),
                 RetailMarginType = COALESCE($25, RetailMarginType),
                 WholesaleMarginType = COALESCE($26, WholesaleMarginType),
+                WorkStartTime = COALESCE($27, WorkStartTime),
+                WorkEndTime = COALESCE($28, WorkEndTime),
+                AllowedIPs = COALESCE($29, AllowedIPs),
                 UpdatedAt = NOW(),
-                UpdatedBy = $27
+                UpdatedBy = $30
             WHERE SettingID = (SELECT SettingID FROM AppSettings LIMIT 1)
             RETURNING *
         `;
@@ -73,6 +77,7 @@ async function updateSettings(req, res, next) {
             enablepalletmanagement, updatepurchaseprice, barcodeprefix, defaulttaxrate, defaulttimbre,
             retailmargin, wholesalemargin,
             retailmargintype, wholesalemargintype,
+            workstarttime, workendtime, allowedips,
             req.user?.userId || null
         ]);
 
