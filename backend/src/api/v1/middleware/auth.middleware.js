@@ -57,7 +57,7 @@ function authenticateToken(req, res, next) {
       // Working Hours Check
       if (settings.workstarttime && settings.workendtime) {
         const now = new Date();
-        const currentTime = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }).replace(':', ':');
+        const currentTime = now.toLocaleTimeString('en-GB', { timeZone: 'Africa/Algiers', hour: '2-digit', minute: '2-digit', hour12: false });
         // '08:00' format
 
         if (currentTime < settings.workstarttime || currentTime > settings.workendtime) {

@@ -31,6 +31,35 @@ async function login(req, res, next) {
       return res.status(401).json({ success: false, message: 'Nom d\'utilisateur ou mot de passe incorrect' });
     }
 
+    // --- Access Restrictions Check for Restricted Roles ---
+    if (user.role !== 'ADMIN' && user.role !== 'MANAGER') {
+      const settingsResult = await pool.query('SELECT workstarttime, workendtime, allowedips FROM AppSettings LIMIT 1');
+      if (settingsResult.rows.length > 0) {
+        const settings = settingsResult.rows[0];
+
+        // IP Check
+        if (settings.allowedips && settings.allowedips.trim() !== '') {
+          const clientIP = req.headers['x-forwarded-for'] || req.connection?.remoteAddress || req.ip;
+          const allowedList = settings.allowedips.split(',').map(ip => ip.trim()).filter(ip => ip);
+          const isAllowed = allowedList.some(allowedIp => clientIP && clientIP.includes(allowedIp));
+
+          if (!isAllowed) {
+            return res.status(403).json({ success: false, message: "Accès refusé: Votre adresse IP n'est pas autorisée.", code: 'IP_NOT_ALLOWED' });
+          }
+        }
+
+        // Time Check
+        if (settings.workstarttime && settings.workendtime) {
+          const now = new Date();
+          const currentTime = now.toLocaleTimeString('en-GB', { timeZone: 'Africa/Algiers', hour: '2-digit', minute: '2-digit', hour12: false });
+
+          if (currentTime < settings.workstarttime || currentTime > settings.workendtime) {
+            return res.status(403).json({ success: false, message: "Accès restreint en dehors des heures de travail.", code: 'OUTSIDE_WORKING_HOURS' });
+          }
+        }
+      }
+    }
+
     // Generate JWT
     const payload = {
       userId: user.userid, // uses userid column
