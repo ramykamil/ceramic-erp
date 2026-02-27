@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const compression = require('compression');
 
 // Import middleware
 const { errorHandler, notFoundHandler } = require('./api/v1/middleware/error.middleware');
@@ -11,6 +12,9 @@ const apiRoutes = require('./api/v1/routes');
 
 // Create Express app
 const app = express();
+
+// Enable gzip compression for all HTTP responses
+app.use(compression());
 
 // Middleware - CORS configured for LAN and Cloud access
 // Allow specific frontend URL in production, or fallback to '*'
