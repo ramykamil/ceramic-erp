@@ -25,7 +25,12 @@ async function getProducts(req, res, next) {
         mvc.QteColisParPalette as qtecolisparpalette, mvc.Size as size,
         mvc.DerivedPiecesPerColis as derivedpiecespercolis, mvc.DerivedColisPerPalette as derivedcolisperpalette,
         mvc.TotalQty as cached_totalqty,
-        COUNT(*) OVER() as TotalCount
+        COUNT(*) OVER() as TotalCount,
+        SUM(COALESCE(mvc.TotalQty, 0)) OVER() as filtered_totalqty,
+        SUM(COALESCE(mvc.NbColis, 0)) OVER() as filtered_totalcolis,
+        SUM(COALESCE(mvc.NbPalette, 0)) OVER() as filtered_totalpalette,
+        SUM(COALESCE(mvc.TotalQty, 0) * COALESCE(mvc.PrixAchat, 0)) OVER() as filtered_valeurachat,
+        SUM(COALESCE(mvc.TotalQty, 0) * COALESCE(mvc.PrixVente, 0)) OVER() as filtered_valeurvente
       FROM mv_Catalogue mvc
       WHERE 1=1
     `;
@@ -140,9 +145,24 @@ async function getProducts(req, res, next) {
 
     const totalItems = result.rows.length > 0 ? parseInt(result.rows[0].totalcount) : 0;
 
+    const filterTotals = result.rows.length > 0 ? {
+      totalQty: parseFloat(result.rows[0].filtered_totalqty),
+      totalColis: parseInt(result.rows[0].filtered_totalcolis),
+      totalPalette: parseInt(result.rows[0].filtered_totalpalette),
+      valeurAchat: parseFloat(result.rows[0].filtered_valeurachat),
+      valeurVente: parseFloat(result.rows[0].filtered_valeurvente),
+    } : {
+      totalQty: 0,
+      totalColis: 0,
+      totalPalette: 0,
+      valeurAchat: 0,
+      valeurVente: 0,
+    };
+
     res.json({
       success: true,
       data,
+      filterTotals,
       pagination: {
         page: parseInt(page),
         limit: parseInt(limit),

@@ -58,8 +58,9 @@ export default function ProductsPage() {
   const [uniqueChoix, setUniqueChoix] = useState<string[]>([]);
   const [warehouses, setWarehouses] = useState<{ warehouseid: number; warehousename: string }[]>([]); // Warehouses list
 
-  // Global Stats
+  // Global Stats & Filter Totals
   const [globalStats, setGlobalStats] = useState<{ totalqty: number; totalpallets: number; totalcolis: number; totalpurchasevalue: number; totalsalevalue: number; totalproducts: number } | null>(null);
+  const [filterTotals, setFilterTotals] = useState<{ totalQty: number; totalColis: number; totalPalette: number; valeurAchat: number; valeurVente: number } | null>(null);
 
   // Edit Modal State
   const [editingProduct, setEditingProduct] = useState<any | null>(null); // Weak typing for now to allow brandid
@@ -177,6 +178,10 @@ export default function ProductsPage() {
         if ((res as any).pagination) {
           setTotalItems((res as any).pagination.totalItems);
           setTotalPages((res as any).pagination.totalPages);
+        }
+
+        if ((res as any).filterTotals) {
+          setFilterTotals((res as any).filterTotals);
         }
       }
     } catch (error) {
@@ -645,14 +650,14 @@ export default function ProductsPage() {
                   <div className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Stock (Filtre)</div>
                   <div className="flex items-baseline gap-1">
                     <span className="text-sm font-bold text-slate-800">
-                      {formatQty(products.reduce((acc, p) => acc + Number(p.totalqty || 0), 0))}
+                      {formatQty(filterTotals?.totalQty ?? 0)}
                     </span>
                     <span className="text-[9px] text-slate-400">m²</span>
                   </div>
                 </div>
                 <div className="text-right">
                   <div className="text-[9px] font-medium text-blue-600 bg-white px-1.5 py-0.5 rounded-full border border-blue-100">
-                    {formatQty(products.reduce((acc, p) => acc + Number(p.nbpalette || 0), 0))} <span className="text-slate-400">pal.</span>
+                    {formatQty(filterTotals?.totalPalette ?? 0)} <span className="text-slate-400">pal.</span>
                   </div>
                 </div>
               </div>
@@ -662,13 +667,13 @@ export default function ProductsPage() {
                 <div>
                   <div className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Articles (Filtre)</div>
                   <div className="flex items-baseline gap-1">
-                    <span className="text-sm font-bold text-slate-800">{products.length}</span>
+                    <span className="text-sm font-bold text-slate-800">{totalItems}</span>
                     <span className="text-[9px] text-slate-400">réf.</span>
                   </div>
                 </div>
                 <div className="text-right">
                   <div className="text-[9px] font-medium text-violet-600 bg-white px-1.5 py-0.5 rounded-full border border-violet-100">
-                    {formatQty(products.reduce((acc, p) => acc + Number(p.nbcolis || 0), 0))} <span className="text-slate-400">col.</span>
+                    {formatQty(filterTotals?.totalColis ?? 0)} <span className="text-slate-400">col.</span>
                   </div>
                 </div>
               </div>
@@ -678,7 +683,7 @@ export default function ProductsPage() {
                 <div>
                   <div className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Valeur (Achat)</div>
                   <div className="text-sm font-bold text-slate-800 truncate">
-                    {formatMoney(products.reduce((acc, p) => acc + (Number(p.totalqty || 0) * (Number(p.prixachat) || Number(p.purchaseprice) || 0)), 0))}
+                    {formatMoney(filterTotals?.valeurAchat ?? 0)}
                   </div>
                 </div>
               </div>
@@ -688,7 +693,7 @@ export default function ProductsPage() {
                 <div>
                   <div className="text-[9px] uppercase font-bold text-emerald-600/80 tracking-wider">Valeur (Vente)</div>
                   <div className="text-sm font-bold text-emerald-700 truncate">
-                    {formatMoney(products.reduce((acc, p) => acc + (Number(p.totalqty || 0) * Number(p.prixvente || 0)), 0))}
+                    {formatMoney(filterTotals?.valeurVente ?? 0)}
                   </div>
                 </div>
               </div>
