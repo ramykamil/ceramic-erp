@@ -229,33 +229,45 @@ async function createGoodsReceipt(req, res, next) {
                 await client.query(updatePoItemQuery, [qtyReceived, item.poItemId]);
             }
 
-            // 2c. Mettre à jour l'Inventaire (QuantityOnHand, PalletCount, ColisCount)
+            // 2c. Mettre à jour l'Inventaire (QuantityOnHand, then recalculate PalletCount/ColisCount)
             // SIMPLIFIED: All received stock is OWNED with NULL FactoryID
             // Factory/supplier is tracked via GoodsReceipt/PO header, not inventory
             const invCheck = await client.query(`
-                SELECT InventoryID FROM Inventory 
+                SELECT InventoryID, QuantityOnHand FROM Inventory 
                 WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = 'OWNED' 
                 AND FactoryID IS NULL
                 LIMIT 1
             `, [item.productId, warehouseId]);
 
+            let newTotalQty = finalQtyToAdd;
+
             if (invCheck.rows.length > 0) {
-                // UPDATE existing inventory
+                // UPDATE existing inventory - add quantity
+                newTotalQty = parseFloat(invCheck.rows[0].quantityonhand || 0) + finalQtyToAdd;
                 await client.query(`
                     UPDATE Inventory SET 
-                        QuantityOnHand = QuantityOnHand + $1,
-                        PalletCount = COALESCE(PalletCount, 0) + $2,
-                        ColisCount = COALESCE(ColisCount, 0) + $3,
+                        QuantityOnHand = $1,
                         UpdatedAt = CURRENT_TIMESTAMP
-                    WHERE InventoryID = $4
-                `, [finalQtyToAdd, palletCount, colisCount, invCheck.rows[0].inventoryid]);
+                    WHERE InventoryID = $2
+                `, [newTotalQty, invCheck.rows[0].inventoryid]);
             } else {
                 // INSERT new inventory record (OWNED, no factory)
                 await client.query(`
                     INSERT INTO Inventory (ProductID, WarehouseID, OwnershipType, FactoryID, QuantityOnHand, PalletCount, ColisCount)
-                    VALUES ($1, $2, 'OWNED', NULL, $3, $4, $5)
-                `, [item.productId, warehouseId, finalQtyToAdd, palletCount, colisCount]);
+                    VALUES ($1, $2, 'OWNED', NULL, $3, 0, 0)
+                `, [item.productId, warehouseId, finalQtyToAdd]);
             }
+
+            // Recalculate PalletCount and ColisCount from total QuantityOnHand
+            // This ensures consistency with updateProduct and adjustProductQuantity
+            const ppc = parseFloat(productInfo.rows[0]?.qteparcolis) || 0;
+            const cpp = parseFloat(productInfo.rows[0]?.qtecolisparpalette) || 0;
+            const newColis = ppc > 0 ? parseFloat((newTotalQty / ppc).toFixed(4)) : 0;
+            const newPallets = cpp > 0 ? parseFloat((newColis / cpp).toFixed(4)) : 0;
+            await client.query(`
+                UPDATE Inventory SET ColisCount = $1, PalletCount = $2
+                WHERE ProductID = $3 AND WarehouseID = $4 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
+            `, [newColis, newPallets, item.productId, warehouseId]);
 
             // 2d. Enregistrer la Transaction d'Inventaire
             const transQuery = `

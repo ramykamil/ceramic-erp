@@ -659,15 +659,30 @@ async function finalizeOrder(req, res, next) {
       // Reduce BOTH QuantityOnHand and QuantityReserved since the order is now confirmed/sold
       // NOTE: QuantityReserved was increased when item was added (addOrderItem).
       // So now we decrease it, and also decrease OnHand.
-      await client.query(`
+      const deductResult = await client.query(`
         UPDATE Inventory 
         SET QuantityOnHand = GREATEST(0, QuantityOnHand - $1),
             QuantityReserved = GREATEST(0, QuantityReserved - $1),
-            PalletCount = GREATEST(0::numeric, COALESCE(PalletCount, 0::numeric) - COALESCE($2::numeric, 0::numeric)),
-            ColisCount = GREATEST(0::numeric, COALESCE(ColisCount, 0::numeric) - COALESCE($3::numeric, 0::numeric)),
             UpdatedAt = CURRENT_TIMESTAMP
-        WHERE ProductID = $4 AND WarehouseID = $5
-      `, [qtyToDeduct, Number(item.palletcount) || 0, Number(item.coliscount) || 0, item.productid, warehouseId]);
+        WHERE ProductID = $2 AND WarehouseID = $3
+        RETURNING QuantityOnHand
+      `, [qtyToDeduct, item.productid, warehouseId]);
+
+      // Recalculate PalletCount and ColisCount from new total QuantityOnHand
+      if (deductResult.rows.length > 0) {
+        const newQty = parseFloat(deductResult.rows[0].quantityonhand) || 0;
+        const productPkg = await client.query('SELECT QteParColis, QteColisParPalette FROM Products WHERE ProductID = $1', [item.productid]);
+        if (productPkg.rows.length > 0) {
+          const ppc = parseFloat(productPkg.rows[0].qteparcolis) || 0;
+          const cpp = parseFloat(productPkg.rows[0].qtecolisparpalette) || 0;
+          const newColis = ppc > 0 ? parseFloat((newQty / ppc).toFixed(4)) : 0;
+          const newPallets = cpp > 0 ? parseFloat((newColis / cpp).toFixed(4)) : 0;
+          await client.query(
+            'UPDATE Inventory SET ColisCount = $1, PalletCount = $2 WHERE ProductID = $3 AND WarehouseID = $4',
+            [newColis, newPallets, item.productid, warehouseId]
+          );
+        }
+      }
 
       // Record inventory transaction for audit trail
       await client.query(`
