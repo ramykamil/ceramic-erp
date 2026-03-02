@@ -137,8 +137,8 @@ async function getProducts(req, res, next) {
         return {
           ...p,
           totalqty: live ? parseFloat(live.realtotalqty) : 0,
-          nbpalette: live ? parseInt(live.realnbpalette) : 0,
-          nbcolis: live ? parseInt(live.realnbcolis) : 0
+          nbpalette: live ? parseFloat(live.realnbpalette) : 0,
+          nbcolis: live ? parseFloat(live.realnbcolis) : 0
         };
       });
     }
@@ -147,8 +147,8 @@ async function getProducts(req, res, next) {
 
     const filterTotals = result.rows.length > 0 ? {
       totalQty: parseFloat(result.rows[0].filtered_totalqty),
-      totalColis: parseInt(result.rows[0].filtered_totalcolis),
-      totalPalette: parseInt(result.rows[0].filtered_totalpalette),
+      totalColis: parseFloat(result.rows[0].filtered_totalcolis),
+      totalPalette: parseFloat(result.rows[0].filtered_totalpalette),
       valeurAchat: parseFloat(result.rows[0].filtered_valeurachat),
       valeurVente: parseFloat(result.rows[0].filtered_valeurvente),
     } : {
