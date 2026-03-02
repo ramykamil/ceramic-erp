@@ -616,18 +616,19 @@ async function adjustProductQuantity(req, res, next) {
 
 /**
  * Get purchase history for a specific product
- * Shows which suppliers (factories) sold this product to us with total quantities and amounts
+ * Shows which suppliers (factories/brands) sold this product to us with total quantities and amounts
  */
 async function getProductPurchaseHistory(req, res, next) {
   try {
     const { id } = req.params;
 
-    // 1. Get product info
+    // 1. Get product info (including packaging for palette/carton calc)
     const productQuery = `
       SELECT 
         p.ProductID, p.ProductCode, p.ProductName, 
         b.BrandName as Famille,
-        p.BasePrice, p.PurchasePrice, p.Size
+        p.BasePrice, p.PurchasePrice, p.Size,
+        p.QteParColis, p.QteColisParPalette
       FROM Products p
       LEFT JOIN Brands b ON p.BrandID = b.BrandID
       WHERE p.ProductID = $1
@@ -638,12 +639,18 @@ async function getProductPurchaseHistory(req, res, next) {
       return res.status(404).json({ success: false, message: 'Produit non trouvé' });
     }
 
-    // 2. Get aggregated purchases by factory (supplier)
+    const product = productResult.rows[0];
+    const qteParColis = parseFloat(product.qteparcolis) || 0;
+    const colisParPalette = parseFloat(product.qtecolisparpalette) || 0;
+
+    // 2. Get aggregated purchases by supplier (factory OR brand)
+    // Mirrors the COALESCE logic from getPurchaseOrders
     const purchaseQuery = `
       SELECT 
-        f.FactoryID as factoryid,
-        f.FactoryName as factoryname,
-        f.FactoryCode as factorycode,
+        COALESCE(po.FactoryID, po.BrandID) as supplierid,
+        COALESCE(f.FactoryName, b.BrandName, 'Fournisseur inconnu') as suppliername,
+        COALESCE(f.FactoryCode, '') as suppliercode,
+        CASE WHEN po.FactoryID IS NOT NULL THEN 'FACTORY' ELSE 'BRAND' END as suppliertype,
         COUNT(DISTINCT po.PurchaseOrderID) as ordercount,
         SUM(poi.Quantity) as totalqty,
         SUM(poi.LineTotal) as totalamount,
@@ -653,27 +660,46 @@ async function getProductPurchaseHistory(req, res, next) {
       FROM PurchaseOrderItems poi
       JOIN PurchaseOrders po ON poi.PurchaseOrderID = po.PurchaseOrderID
       LEFT JOIN Factories f ON po.FactoryID = f.FactoryID
+      LEFT JOIN Brands b ON po.BrandID = b.BrandID
       WHERE poi.ProductID = $1
         AND po.Status NOT IN ('CANCELLED')
-      GROUP BY f.FactoryID, f.FactoryName, f.FactoryCode, po.OwnershipType
+      GROUP BY COALESCE(po.FactoryID, po.BrandID), 
+               COALESCE(f.FactoryName, b.BrandName, 'Fournisseur inconnu'),
+               COALESCE(f.FactoryCode, ''),
+               CASE WHEN po.FactoryID IS NOT NULL THEN 'FACTORY' ELSE 'BRAND' END,
+               po.OwnershipType
       ORDER BY totalqty DESC
       LIMIT 100
     `;
     const purchaseResult = await pool.query(purchaseQuery, [id]);
 
-    // 3. Calculate grand totals
-    const totals = purchaseResult.rows.reduce((acc, row) => ({
+    // 3. Calculate palettes and cartons for each supplier row
+    const suppliersWithPackaging = purchaseResult.rows.map(row => {
+      const qty = parseFloat(row.totalqty || 0);
+      const totalcartons = qteParColis > 0 ? parseFloat((qty / qteParColis).toFixed(2)) : 0;
+      const totalpallets = colisParPalette > 0 ? parseFloat((totalcartons / colisParPalette).toFixed(2)) : 0;
+      return {
+        ...row,
+        totalpallets,
+        totalcartons
+      };
+    });
+
+    // 4. Calculate grand totals
+    const totals = suppliersWithPackaging.reduce((acc, row) => ({
       totalQty: acc.totalQty + parseFloat(row.totalqty || 0),
+      totalPallets: acc.totalPallets + (row.totalpallets || 0),
+      totalCartons: acc.totalCartons + (row.totalcartons || 0),
       totalAmount: acc.totalAmount + parseFloat(row.totalamount || 0),
       totalOrders: acc.totalOrders + parseInt(row.ordercount || 0),
       supplierCount: acc.supplierCount + 1
-    }), { totalQty: 0, totalAmount: 0, totalOrders: 0, supplierCount: 0 });
+    }), { totalQty: 0, totalPallets: 0, totalCartons: 0, totalAmount: 0, totalOrders: 0, supplierCount: 0 });
 
     res.json({
       success: true,
       data: {
-        product: productResult.rows[0],
-        suppliers: purchaseResult.rows,
+        product: product,
+        suppliers: suppliersWithPackaging,
         totals: totals
       }
     });

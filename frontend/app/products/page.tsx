@@ -101,7 +101,7 @@ export default function ProductsPage() {
   const [purchaseHistoryData, setPurchaseHistoryData] = useState<{
     product: any;
     suppliers: any[];
-    totals: { totalQty: number; totalAmount: number; totalOrders: number; supplierCount: number };
+    totals: { totalQty: number; totalAmount: number; totalOrders: number; supplierCount: number; totalPallets?: number; totalCartons?: number };
   } | null>(null);
   const [isLoadingPurchaseHistory, setIsLoadingPurchaseHistory] = useState(false);
 
@@ -1253,7 +1253,7 @@ export default function ProductsPage() {
                     ) : purchaseHistoryData ? (
                       <>
                         {/* Summary Cards */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
                           <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
                             <p className="text-xs text-orange-600 font-medium uppercase">Fournisseurs</p>
                             <p className="text-2xl font-bold text-orange-700">{purchaseHistoryData.totals.supplierCount}</p>
@@ -1261,6 +1261,14 @@ export default function ProductsPage() {
                           <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
                             <p className="text-xs text-purple-600 font-medium uppercase">Commandes</p>
                             <p className="text-2xl font-bold text-purple-700">{purchaseHistoryData.totals.totalOrders}</p>
+                          </div>
+                          <div className="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
+                            <p className="text-xs text-indigo-600 font-medium uppercase">Palettes</p>
+                            <p className="text-2xl font-bold text-indigo-700">{formatQty(purchaseHistoryData.totals.totalPallets || 0)}</p>
+                          </div>
+                          <div className="bg-cyan-50 p-4 rounded-lg border border-cyan-200">
+                            <p className="text-xs text-cyan-600 font-medium uppercase">Cartons</p>
+                            <p className="text-2xl font-bold text-cyan-700">{formatQty(purchaseHistoryData.totals.totalCartons || 0)}</p>
                           </div>
                           <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
                             <p className="text-xs text-emerald-600 font-medium uppercase">Qté Totale</p>
@@ -1285,6 +1293,8 @@ export default function ProductsPage() {
                                   <th className="p-3 text-left">Fournisseur</th>
                                   <th className="p-3 text-center">Type</th>
                                   <th className="p-3 text-center">Commandes</th>
+                                  <th className="p-3 text-right bg-indigo-100">Palettes</th>
+                                  <th className="p-3 text-right bg-cyan-100">Cartons</th>
                                   <th className="p-3 text-right bg-emerald-100">Qté</th>
                                   <th className="p-3 text-right">Montant</th>
                                   <th className="p-3 text-right">Prix Moy.</th>
@@ -1293,10 +1303,10 @@ export default function ProductsPage() {
                               </thead>
                               <tbody className="divide-y divide-slate-100">
                                 {purchaseHistoryData.suppliers.map((s: any, idx: number) => (
-                                  <tr key={`${s.factoryid}-${s.ownershiptype}-${idx}`} className="hover:bg-orange-50/30">
+                                  <tr key={`${s.supplierid}-${s.ownershiptype}-${idx}`} className="hover:bg-orange-50/30">
                                     <td className="p-3 font-medium text-slate-800">
-                                      {s.factoryname || 'Fournisseur inconnu'}
-                                      <span className="text-xs text-slate-400 ml-2">{s.factorycode || ''}</span>
+                                      {s.suppliername}
+                                      {s.suppliercode && <span className="text-xs text-slate-400 ml-2">{s.suppliercode}</span>}
                                     </td>
                                     <td className="p-3 text-center">
                                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${s.ownershiptype === 'CONSIGNMENT' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'
@@ -1305,6 +1315,8 @@ export default function ProductsPage() {
                                       </span>
                                     </td>
                                     <td className="p-3 text-center font-mono">{s.ordercount}</td>
+                                    <td className="p-3 text-right font-bold text-indigo-600 font-mono bg-indigo-50/50">{formatQty(s.totalpallets || 0)}</td>
+                                    <td className="p-3 text-right font-bold text-cyan-600 font-mono bg-cyan-50/50">{formatQty(s.totalcartons || 0)}</td>
                                     <td className="p-3 text-right font-bold text-emerald-600 font-mono bg-emerald-50/50">{formatQty(s.totalqty)}</td>
                                     <td className="p-3 text-right font-bold text-slate-800 font-mono">{formatMoney(s.totalamount)}</td>
                                     <td className="p-3 text-right text-slate-600 font-mono">{formatMoney(s.avgprice)}</td>
