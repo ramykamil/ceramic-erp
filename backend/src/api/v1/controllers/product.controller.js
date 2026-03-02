@@ -462,6 +462,7 @@ async function getProductSalesHistory(req, res, next) {
     const salesQuery = `
       SELECT 
         o.OrderID as orderid,
+        o.OrderNumber as ordernumber,
         o.OrderDate as orderdate,
         c.CustomerID as customerid,
         c.CustomerName as customername,

@@ -1215,6 +1215,7 @@ export default function ProductsPage() {
                             <table className="w-full text-sm">
                               <thead className="bg-slate-100 text-xs text-slate-500 uppercase sticky top-0">
                                 <tr>
+                                  <th className="p-3 text-center">N° Bon</th>
                                   <th className="p-3 text-center">Date</th>
                                   <th className="p-3 text-left">Client</th>
                                   <th className="p-3 text-center">Type</th>
@@ -1228,6 +1229,7 @@ export default function ProductsPage() {
                               <tbody className="divide-y divide-slate-100">
                                 {historyData.orders.map((o: any, idx: number) => (
                                   <tr key={`${o.orderid}-${idx}`} className="hover:bg-slate-50">
+                                    <td className="p-3 text-center text-blue-600 text-xs font-mono font-semibold">{o.ordernumber || '-'}</td>
                                     <td className="p-3 text-center text-slate-600 text-xs font-mono">{o.orderdate ? new Date(o.orderdate).toLocaleDateString('fr-DZ') : '-'}</td>
                                     <td className="p-3 font-medium text-slate-800">{o.customername} <span className="text-xs text-slate-400 ml-1">{o.customercode}</span></td>
                                     <td className="p-3 text-center"><span className={`px-2 py-1 rounded-full text-xs font-medium ${o.customertype === 'WHOLESALE' ? 'bg-purple-100 text-purple-700' : 'bg-teal-100 text-teal-700'}`}>{o.customertype === 'WHOLESALE' ? 'Gros' : 'Détail'}</span></td>
@@ -1290,6 +1292,7 @@ export default function ProductsPage() {
                             <table className="w-full text-sm">
                               <thead className="bg-orange-100 text-xs text-orange-700 uppercase sticky top-0">
                                 <tr>
+                                  <th className="p-3 text-center">N° Bon</th>
                                   <th className="p-3 text-center">Date</th>
                                   <th className="p-3 text-left">Fournisseur</th>
                                   <th className="p-3 text-center">Type</th>
@@ -1303,6 +1306,7 @@ export default function ProductsPage() {
                               <tbody className="divide-y divide-slate-100">
                                 {purchaseHistoryData.orders.map((o: any, idx: number) => (
                                   <tr key={`${o.orderid}-${idx}`} className="hover:bg-orange-50/30">
+                                    <td className="p-3 text-center text-orange-600 text-xs font-mono font-semibold">{o.ponumber || '-'}</td>
                                     <td className="p-3 text-center text-slate-600 text-xs font-mono">{o.orderdate ? new Date(o.orderdate).toLocaleDateString('fr-DZ') : '-'}</td>
                                     <td className="p-3 font-medium text-slate-800">{o.suppliername}{o.suppliercode && <span className="text-xs text-slate-400 ml-1">{o.suppliercode}</span>}</td>
                                     <td className="p-3 text-center"><span className={`px-2 py-1 rounded-full text-xs font-medium ${o.ownershiptype === 'CONSIGNMENT' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'}`}>{o.ownershiptype === 'CONSIGNMENT' ? 'Dépôt' : 'Achat'}</span></td>
