@@ -93,17 +93,20 @@ export default function ProductsPage() {
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
   const [historyData, setHistoryData] = useState<{
     product: any;
-    customers: any[];
-    totals: { totalQty: number; totalAmount: number; totalOrders: number; customerCount: number; totalPallets?: number; totalCartons?: number };
+    orders: any[];
+    totals: any;
   } | null>(null);
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
   const [historyTab, setHistoryTab] = useState<'ventes' | 'achats'>('ventes');
   const [purchaseHistoryData, setPurchaseHistoryData] = useState<{
     product: any;
-    suppliers: any[];
-    totals: { totalQty: number; totalAmount: number; totalOrders: number; supplierCount: number; totalPallets?: number; totalCartons?: number };
+    orders: any[];
+    totals: any;
   } | null>(null);
   const [isLoadingPurchaseHistory, setIsLoadingPurchaseHistory] = useState(false);
+  const [historyStartDate, setHistoryStartDate] = useState('');
+  const [historyEndDate, setHistoryEndDate] = useState('');
+  const [historyProductId, setHistoryProductId] = useState<number | null>(null);
 
   // Resizable columns
   const { widths, handleResize } = useColumnWidths('products-table', {
@@ -375,17 +378,25 @@ export default function ProductsPage() {
   };
 
   // Load Sales & Purchase History for a product
-  const loadSalesHistory = async (productId: number) => {
+  const loadSalesHistory = async (productId: number, startDate?: string, endDate?: string) => {
     setIsLoadingHistory(true);
     setIsLoadingPurchaseHistory(true);
     setIsHistoryModalOpen(true);
-    setHistoryTab('ventes');
+    setHistoryProductId(productId);
+    if (!startDate && !endDate) {
+      setHistoryTab('ventes');
+      setHistoryStartDate('');
+      setHistoryEndDate('');
+    }
     setPurchaseHistoryData(null);
     setHistoryData(null);
+    const dateParams: any = {};
+    if (startDate) dateParams.startDate = startDate;
+    if (endDate) dateParams.endDate = endDate;
     try {
       const [salesRes, purchaseRes] = await Promise.all([
-        api.getProductSalesHistory(productId),
-        api.getProductPurchaseHistory(productId)
+        api.getProductSalesHistory(productId, Object.keys(dateParams).length > 0 ? dateParams : undefined),
+        api.getProductPurchaseHistory(productId, Object.keys(dateParams).length > 0 ? dateParams : undefined)
       ]);
       if (salesRes.success && salesRes.data) {
         setHistoryData(salesRes.data as any);
@@ -1127,26 +1138,37 @@ export default function ProductsPage() {
                 <button onClick={() => { setIsHistoryModalOpen(false); setHistoryData(null); setPurchaseHistoryData(null); }} className="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
               </div>
 
-              {/* Tabs */}
-              <div className="flex border-b border-slate-200 px-5">
-                <button
-                  onClick={() => setHistoryTab('ventes')}
-                  className={`px-4 py-3 text-sm font-semibold border-b-2 transition-colors ${historyTab === 'ventes'
-                    ? 'border-emerald-500 text-emerald-700 bg-emerald-50/50'
-                    : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
-                    }`}
-                >
-                  📊 Historique des Ventes
-                </button>
-                <button
-                  onClick={() => setHistoryTab('achats')}
-                  className={`px-4 py-3 text-sm font-semibold border-b-2 transition-colors ${historyTab === 'achats'
-                    ? 'border-orange-500 text-orange-700 bg-orange-50/50'
-                    : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
-                    }`}
-                >
-                  🛒 Historique des Achats
-                </button>
+              {/* Tabs + Date Filter */}
+              <div className="flex items-center justify-between border-b border-slate-200 px-5 flex-wrap gap-2">
+                <div className="flex">
+                  <button
+                    onClick={() => setHistoryTab('ventes')}
+                    className={`px-4 py-3 text-sm font-semibold border-b-2 transition-colors ${historyTab === 'ventes'
+                      ? 'border-emerald-500 text-emerald-700 bg-emerald-50/50'
+                      : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                      }`}
+                  >
+                    📊 Historique des Ventes
+                  </button>
+                  <button
+                    onClick={() => setHistoryTab('achats')}
+                    className={`px-4 py-3 text-sm font-semibold border-b-2 transition-colors ${historyTab === 'achats'
+                      ? 'border-orange-500 text-orange-700 bg-orange-50/50'
+                      : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                      }`}
+                  >
+                    🛒 Historique des Achats
+                  </button>
+                </div>
+                <div className="flex items-center gap-2 py-2">
+                  <input type="date" value={historyStartDate} onChange={(e) => setHistoryStartDate(e.target.value)} className="border border-slate-300 rounded-lg px-2 py-1.5 text-xs" />
+                  <span className="text-slate-400 text-xs">→</span>
+                  <input type="date" value={historyEndDate} onChange={(e) => setHistoryEndDate(e.target.value)} className="border border-slate-300 rounded-lg px-2 py-1.5 text-xs" />
+                  <button onClick={() => { if (historyProductId) loadSalesHistory(historyProductId, historyStartDate || undefined, historyEndDate || undefined); }} className="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-blue-700">Filtrer</button>
+                  {(historyStartDate || historyEndDate) && (
+                    <button onClick={() => { setHistoryStartDate(''); setHistoryEndDate(''); if (historyProductId) loadSalesHistory(historyProductId); }} className="text-slate-400 hover:text-red-500 text-xs">✕</button>
+                  )}
+                </div>
               </div>
 
               <div className="flex-1 overflow-auto p-6">
@@ -1160,7 +1182,6 @@ export default function ProductsPage() {
                       </div>
                     ) : historyData ? (
                       <>
-                        {/* Summary Cards */}
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
                           <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                             <p className="text-xs text-blue-600 font-medium uppercase">Clients</p>
@@ -1172,11 +1193,11 @@ export default function ProductsPage() {
                           </div>
                           <div className="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
                             <p className="text-xs text-indigo-600 font-medium uppercase">Palettes</p>
-                            <p className="text-2xl font-bold text-indigo-700">{historyData.totals.totalPallets || 0}</p>
+                            <p className="text-2xl font-bold text-indigo-700">{formatQty(historyData.totals.totalPallets || 0)}</p>
                           </div>
                           <div className="bg-cyan-50 p-4 rounded-lg border border-cyan-200">
                             <p className="text-xs text-cyan-600 font-medium uppercase">Cartons</p>
-                            <p className="text-2xl font-bold text-cyan-700">{historyData.totals.totalCartons || 0}</p>
+                            <p className="text-2xl font-bold text-cyan-700">{formatQty(historyData.totals.totalCartons || 0)}</p>
                           </div>
                           <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
                             <p className="text-xs text-emerald-600 font-medium uppercase">Qté (m²/pcs)</p>
@@ -1187,50 +1208,34 @@ export default function ProductsPage() {
                             <p className="text-2xl font-bold text-amber-700">{formatMoney(historyData.totals.totalAmount)}</p>
                           </div>
                         </div>
-
-                        {/* Customers Table */}
-                        {historyData.customers.length === 0 ? (
-                          <div className="text-center py-12 text-slate-400">
-                            <p className="text-lg">Aucune vente enregistrée pour ce produit</p>
-                          </div>
+                        {historyData.orders.length === 0 ? (
+                          <div className="text-center py-12 text-slate-400"><p className="text-lg">Aucune vente enregistrée pour ce produit</p></div>
                         ) : (
                           <div className="overflow-x-auto">
                             <table className="w-full text-sm">
-                              <thead className="bg-slate-100 text-xs text-slate-500 uppercase">
+                              <thead className="bg-slate-100 text-xs text-slate-500 uppercase sticky top-0">
                                 <tr>
+                                  <th className="p-3 text-center">Date</th>
                                   <th className="p-3 text-left">Client</th>
                                   <th className="p-3 text-center">Type</th>
-                                  <th className="p-3 text-center">Commandes</th>
                                   <th className="p-3 text-right bg-indigo-100">Palettes</th>
                                   <th className="p-3 text-right bg-cyan-100">Cartons</th>
                                   <th className="p-3 text-right bg-emerald-100">Qté</th>
+                                  <th className="p-3 text-right">Prix Unit.</th>
                                   <th className="p-3 text-right">Montant</th>
-                                  <th className="p-3 text-right">Prix Moy.</th>
-                                  <th className="p-3 text-center">Dernière</th>
                                 </tr>
                               </thead>
                               <tbody className="divide-y divide-slate-100">
-                                {historyData.customers.map((c: any) => (
-                                  <tr key={c.customerid} className="hover:bg-slate-50">
-                                    <td className="p-3 font-medium text-slate-800">
-                                      {c.customername}
-                                      <span className="text-xs text-slate-400 ml-2">{c.customercode}</span>
-                                    </td>
-                                    <td className="p-3 text-center">
-                                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${c.customertype === 'WHOLESALE' ? 'bg-purple-100 text-purple-700' : 'bg-teal-100 text-teal-700'
-                                        }`}>
-                                        {c.customertype === 'WHOLESALE' ? 'Gros' : 'Détail'}
-                                      </span>
-                                    </td>
-                                    <td className="p-3 text-center font-mono">{c.ordercount}</td>
-                                    <td className="p-3 text-right font-bold text-indigo-600 font-mono bg-indigo-50/50">{c.totalpallets || 0}</td>
-                                    <td className="p-3 text-right font-bold text-cyan-600 font-mono bg-cyan-50/50">{c.totalcartons || 0}</td>
-                                    <td className="p-3 text-right font-bold text-emerald-600 font-mono bg-emerald-50/50">{formatQty(c.totalqty)}</td>
-                                    <td className="p-3 text-right font-bold text-slate-800 font-mono">{formatMoney(c.totalamount)}</td>
-                                    <td className="p-3 text-right text-slate-600 font-mono">{formatMoney(c.avgprice)}</td>
-                                    <td className="p-3 text-center text-slate-500 text-xs">
-                                      {c.lastorderdate ? new Date(c.lastorderdate).toLocaleDateString('fr-DZ') : '-'}
-                                    </td>
+                                {historyData.orders.map((o: any, idx: number) => (
+                                  <tr key={`${o.orderid}-${idx}`} className="hover:bg-slate-50">
+                                    <td className="p-3 text-center text-slate-600 text-xs font-mono">{o.orderdate ? new Date(o.orderdate).toLocaleDateString('fr-DZ') : '-'}</td>
+                                    <td className="p-3 font-medium text-slate-800">{o.customername} <span className="text-xs text-slate-400 ml-1">{o.customercode}</span></td>
+                                    <td className="p-3 text-center"><span className={`px-2 py-1 rounded-full text-xs font-medium ${o.customertype === 'WHOLESALE' ? 'bg-purple-100 text-purple-700' : 'bg-teal-100 text-teal-700'}`}>{o.customertype === 'WHOLESALE' ? 'Gros' : 'Détail'}</span></td>
+                                    <td className="p-3 text-right font-bold text-indigo-600 font-mono bg-indigo-50/50">{formatQty(o.pallets)}</td>
+                                    <td className="p-3 text-right font-bold text-cyan-600 font-mono bg-cyan-50/50">{formatQty(o.cartons)}</td>
+                                    <td className="p-3 text-right font-bold text-emerald-600 font-mono bg-emerald-50/50">{formatQty(o.qty)}</td>
+                                    <td className="p-3 text-right text-slate-600 font-mono">{formatMoney(o.unitprice)}</td>
+                                    <td className="p-3 text-right font-bold text-slate-800 font-mono">{formatMoney(o.linetotal)}</td>
                                   </tr>
                                 ))}
                               </tbody>
@@ -1252,7 +1257,6 @@ export default function ProductsPage() {
                       </div>
                     ) : purchaseHistoryData ? (
                       <>
-                        {/* Summary Cards */}
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
                           <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
                             <p className="text-xs text-orange-600 font-medium uppercase">Fournisseurs</p>
@@ -1279,50 +1283,34 @@ export default function ProductsPage() {
                             <p className="text-2xl font-bold text-red-700">{formatMoney(purchaseHistoryData.totals.totalAmount)}</p>
                           </div>
                         </div>
-
-                        {/* Suppliers Table */}
-                        {purchaseHistoryData.suppliers.length === 0 ? (
-                          <div className="text-center py-12 text-slate-400">
-                            <p className="text-lg">Aucun achat enregistré pour ce produit</p>
-                          </div>
+                        {purchaseHistoryData.orders.length === 0 ? (
+                          <div className="text-center py-12 text-slate-400"><p className="text-lg">Aucun achat enregistré pour ce produit</p></div>
                         ) : (
                           <div className="overflow-x-auto">
                             <table className="w-full text-sm">
-                              <thead className="bg-orange-100 text-xs text-orange-700 uppercase">
+                              <thead className="bg-orange-100 text-xs text-orange-700 uppercase sticky top-0">
                                 <tr>
+                                  <th className="p-3 text-center">Date</th>
                                   <th className="p-3 text-left">Fournisseur</th>
                                   <th className="p-3 text-center">Type</th>
-                                  <th className="p-3 text-center">Commandes</th>
                                   <th className="p-3 text-right bg-indigo-100">Palettes</th>
                                   <th className="p-3 text-right bg-cyan-100">Cartons</th>
                                   <th className="p-3 text-right bg-emerald-100">Qté</th>
+                                  <th className="p-3 text-right">Prix Unit.</th>
                                   <th className="p-3 text-right">Montant</th>
-                                  <th className="p-3 text-right">Prix Moy.</th>
-                                  <th className="p-3 text-center">Dernière</th>
                                 </tr>
                               </thead>
                               <tbody className="divide-y divide-slate-100">
-                                {purchaseHistoryData.suppliers.map((s: any, idx: number) => (
-                                  <tr key={`${s.supplierid}-${s.ownershiptype}-${idx}`} className="hover:bg-orange-50/30">
-                                    <td className="p-3 font-medium text-slate-800">
-                                      {s.suppliername}
-                                      {s.suppliercode && <span className="text-xs text-slate-400 ml-2">{s.suppliercode}</span>}
-                                    </td>
-                                    <td className="p-3 text-center">
-                                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${s.ownershiptype === 'CONSIGNMENT' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'
-                                        }`}>
-                                        {s.ownershiptype === 'CONSIGNMENT' ? 'Dépôt' : 'Achat'}
-                                      </span>
-                                    </td>
-                                    <td className="p-3 text-center font-mono">{s.ordercount}</td>
-                                    <td className="p-3 text-right font-bold text-indigo-600 font-mono bg-indigo-50/50">{formatQty(s.totalpallets || 0)}</td>
-                                    <td className="p-3 text-right font-bold text-cyan-600 font-mono bg-cyan-50/50">{formatQty(s.totalcartons || 0)}</td>
-                                    <td className="p-3 text-right font-bold text-emerald-600 font-mono bg-emerald-50/50">{formatQty(s.totalqty)}</td>
-                                    <td className="p-3 text-right font-bold text-slate-800 font-mono">{formatMoney(s.totalamount)}</td>
-                                    <td className="p-3 text-right text-slate-600 font-mono">{formatMoney(s.avgprice)}</td>
-                                    <td className="p-3 text-center text-slate-500 text-xs">
-                                      {s.lastorderdate ? new Date(s.lastorderdate).toLocaleDateString('fr-DZ') : '-'}
-                                    </td>
+                                {purchaseHistoryData.orders.map((o: any, idx: number) => (
+                                  <tr key={`${o.orderid}-${idx}`} className="hover:bg-orange-50/30">
+                                    <td className="p-3 text-center text-slate-600 text-xs font-mono">{o.orderdate ? new Date(o.orderdate).toLocaleDateString('fr-DZ') : '-'}</td>
+                                    <td className="p-3 font-medium text-slate-800">{o.suppliername}{o.suppliercode && <span className="text-xs text-slate-400 ml-1">{o.suppliercode}</span>}</td>
+                                    <td className="p-3 text-center"><span className={`px-2 py-1 rounded-full text-xs font-medium ${o.ownershiptype === 'CONSIGNMENT' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'}`}>{o.ownershiptype === 'CONSIGNMENT' ? 'Dépôt' : 'Achat'}</span></td>
+                                    <td className="p-3 text-right font-bold text-indigo-600 font-mono bg-indigo-50/50">{formatQty(o.pallets || 0)}</td>
+                                    <td className="p-3 text-right font-bold text-cyan-600 font-mono bg-cyan-50/50">{formatQty(o.cartons || 0)}</td>
+                                    <td className="p-3 text-right font-bold text-emerald-600 font-mono bg-emerald-50/50">{formatQty(o.qty)}</td>
+                                    <td className="p-3 text-right text-slate-600 font-mono">{formatMoney(o.unitprice)}</td>
+                                    <td className="p-3 text-right font-bold text-slate-800 font-mono">{formatMoney(o.linetotal)}</td>
                                   </tr>
                                 ))}
                               </tbody>
@@ -1331,26 +1319,19 @@ export default function ProductsPage() {
                         )}
                       </>
                     ) : (
-                      <div className="text-center py-12 text-slate-400">
-                        <p className="text-lg">Aucun achat enregistré pour ce produit</p>
-                      </div>
+                      <div className="text-center py-12 text-slate-400"><p className="text-lg">Aucun achat enregistré pour ce produit</p></div>
                     )}
                   </>
                 )}
               </div>
               <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-end">
-                <button
-                  onClick={() => { setIsHistoryModalOpen(false); setHistoryData(null); setPurchaseHistoryData(null); }}
-                  className="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-lg font-medium text-sm"
-                >
-                  Fermer
-                </button>
+                <button onClick={() => { setIsHistoryModalOpen(false); setHistoryData(null); setPurchaseHistoryData(null); }} className="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-lg font-medium text-sm">Fermer</button>
               </div>
             </div>
           </div>
         )}
 
       </div>
-    </div >
+    </div>
   );
 }

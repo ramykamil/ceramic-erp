@@ -421,7 +421,7 @@ async function deleteProduct(req, res, next) {
 
 /**
  * Get sales history for a specific product
- * Shows which customers bought this product with total quantities and amounts
+ * Shows individual order lines (each order separately) with date filtering
  */
 async function getProductSalesHistory(req, res, next) {
   try {
@@ -458,47 +458,48 @@ async function getProductSalesHistory(req, res, next) {
       return res.status(404).json({ success: false, message: 'Produit non trouvé' });
     }
 
-    // 2. Get aggregated sales by customer with detailed quantities
+    // 2. Get individual order lines (NOT aggregated)
     const salesQuery = `
       SELECT 
+        o.OrderID as orderid,
+        o.OrderDate as orderdate,
         c.CustomerID as customerid,
         c.CustomerName as customername,
         c.CustomerCode as customercode,
         c.CustomerType as customertype,
-        COUNT(DISTINCT o.OrderID) as ordercount,
-        SUM(oi.Quantity) as totalqty,
-        COALESCE(SUM(oi.PalletCount), 0) as totalpallets,
-        COALESCE(SUM(oi.ColisCount), 0) as totalcartons,
-        SUM(oi.LineTotal) as totalamount,
-        MAX(o.OrderDate) as lastorderdate,
-        AVG(oi.UnitPrice) as avgprice
+        oi.Quantity as qty,
+        COALESCE(oi.PalletCount, 0) as pallets,
+        COALESCE(oi.ColisCount, 0) as cartons,
+        oi.UnitPrice as unitprice,
+        oi.LineTotal as linetotal,
+        o.Status as orderstatus
       FROM OrderItems oi
       JOIN Orders o ON oi.OrderID = o.OrderID
       JOIN Customers c ON o.CustomerID = c.CustomerID
       WHERE oi.ProductID = $1
         AND o.Status NOT IN ('CANCELLED', 'DRAFT')
         ${dateFilter}
-      GROUP BY c.CustomerID, c.CustomerName, c.CustomerCode, c.CustomerType
-      ORDER BY totalqty DESC
-      LIMIT 100
+      ORDER BY o.OrderDate DESC
+      LIMIT 10000
     `;
     const salesResult = await pool.query(salesQuery, params);
 
-    // 3. Calculate grand totals with packaging details
+    // 3. Calculate grand totals
+    const uniqueCustomers = new Set(salesResult.rows.map(r => r.customerid));
     const totals = salesResult.rows.reduce((acc, row) => ({
-      totalQty: acc.totalQty + parseFloat(row.totalqty || 0),
-      totalPallets: acc.totalPallets + parseInt(row.totalpallets || 0),
-      totalCartons: acc.totalCartons + parseInt(row.totalcartons || 0),
-      totalAmount: acc.totalAmount + parseFloat(row.totalamount || 0),
-      totalOrders: acc.totalOrders + parseInt(row.ordercount || 0),
-      customerCount: acc.customerCount + 1
-    }), { totalQty: 0, totalPallets: 0, totalCartons: 0, totalAmount: 0, totalOrders: 0, customerCount: 0 });
+      totalQty: acc.totalQty + parseFloat(row.qty || 0),
+      totalPallets: acc.totalPallets + parseFloat(row.pallets || 0),
+      totalCartons: acc.totalCartons + parseFloat(row.cartons || 0),
+      totalAmount: acc.totalAmount + parseFloat(row.linetotal || 0),
+      totalOrders: acc.totalOrders + 1
+    }), { totalQty: 0, totalPallets: 0, totalCartons: 0, totalAmount: 0, totalOrders: 0 });
+    totals.customerCount = uniqueCustomers.size;
 
     res.json({
       success: true,
       data: {
         product: productResult.rows[0],
-        customers: salesResult.rows,
+        orders: salesResult.rows,
         totals: totals
       }
     });
@@ -613,14 +614,28 @@ async function adjustProductQuantity(req, res, next) {
     client.release();
   }
 }
-
 /**
  * Get purchase history for a specific product
- * Shows which suppliers (factories/brands) sold this product to us with total quantities and amounts
+ * Shows individual purchase order lines (each PO separately) with date filtering
  */
 async function getProductPurchaseHistory(req, res, next) {
   try {
     const { id } = req.params;
+    const { startDate, endDate } = req.query;
+
+    // Build date filter
+    let dateFilter = '';
+    const params = [id];
+    let paramIndex = 2;
+
+    if (startDate) {
+      dateFilter += ` AND po.OrderDate >= $${paramIndex++}`;
+      params.push(startDate);
+    }
+    if (endDate) {
+      dateFilter += ` AND po.OrderDate <= $${paramIndex++}`;
+      params.push(endDate);
+    }
 
     // 1. Get product info (including packaging for palette/carton calc)
     const productQuery = `
@@ -643,63 +658,55 @@ async function getProductPurchaseHistory(req, res, next) {
     const qteParColis = parseFloat(product.qteparcolis) || 0;
     const colisParPalette = parseFloat(product.qtecolisparpalette) || 0;
 
-    // 2. Get aggregated purchases by supplier (factory OR brand)
-    // Mirrors the COALESCE logic from getPurchaseOrders
+    // 2. Get individual purchase order lines (NOT aggregated)
     const purchaseQuery = `
       SELECT 
-        COALESCE(po.FactoryID, po.BrandID) as supplierid,
+        po.PurchaseOrderID as orderid,
+        po.PONumber as ponumber,
+        po.OrderDate as orderdate,
         COALESCE(f.FactoryName, b.BrandName, 'Fournisseur inconnu') as suppliername,
         COALESCE(f.FactoryCode, '') as suppliercode,
-        CASE WHEN po.FactoryID IS NOT NULL THEN 'FACTORY' ELSE 'BRAND' END as suppliertype,
-        COUNT(DISTINCT po.PurchaseOrderID) as ordercount,
-        SUM(poi.Quantity) as totalqty,
-        SUM(poi.LineTotal) as totalamount,
-        MAX(po.OrderDate) as lastorderdate,
-        AVG(poi.UnitPrice) as avgprice,
-        po.OwnershipType as ownershiptype
+        po.OwnershipType as ownershiptype,
+        poi.Quantity as qty,
+        poi.UnitPrice as unitprice,
+        poi.LineTotal as linetotal,
+        po.Status as orderstatus
       FROM PurchaseOrderItems poi
       JOIN PurchaseOrders po ON poi.PurchaseOrderID = po.PurchaseOrderID
       LEFT JOIN Factories f ON po.FactoryID = f.FactoryID
       LEFT JOIN Brands b ON po.BrandID = b.BrandID
       WHERE poi.ProductID = $1
         AND po.Status NOT IN ('CANCELLED')
-      GROUP BY COALESCE(po.FactoryID, po.BrandID), 
-               COALESCE(f.FactoryName, b.BrandName, 'Fournisseur inconnu'),
-               COALESCE(f.FactoryCode, ''),
-               CASE WHEN po.FactoryID IS NOT NULL THEN 'FACTORY' ELSE 'BRAND' END,
-               po.OwnershipType
-      ORDER BY totalqty DESC
-      LIMIT 100
+        ${dateFilter}
+      ORDER BY po.OrderDate DESC
+      LIMIT 10000
     `;
-    const purchaseResult = await pool.query(purchaseQuery, [id]);
+    const purchaseResult = await pool.query(purchaseQuery, params);
 
-    // 3. Calculate palettes and cartons for each supplier row
-    const suppliersWithPackaging = purchaseResult.rows.map(row => {
-      const qty = parseFloat(row.totalqty || 0);
-      const totalcartons = qteParColis > 0 ? parseFloat((qty / qteParColis).toFixed(2)) : 0;
-      const totalpallets = colisParPalette > 0 ? parseFloat((totalcartons / colisParPalette).toFixed(2)) : 0;
-      return {
-        ...row,
-        totalpallets,
-        totalcartons
-      };
+    // 3. Calculate palettes and cartons per line
+    const ordersWithPackaging = purchaseResult.rows.map(row => {
+      const qty = parseFloat(row.qty || 0);
+      const cartons = qteParColis > 0 ? parseFloat((qty / qteParColis).toFixed(2)) : 0;
+      const pallets = colisParPalette > 0 ? parseFloat((cartons / colisParPalette).toFixed(2)) : 0;
+      return { ...row, pallets, cartons };
     });
 
     // 4. Calculate grand totals
-    const totals = suppliersWithPackaging.reduce((acc, row) => ({
-      totalQty: acc.totalQty + parseFloat(row.totalqty || 0),
-      totalPallets: acc.totalPallets + (row.totalpallets || 0),
-      totalCartons: acc.totalCartons + (row.totalcartons || 0),
-      totalAmount: acc.totalAmount + parseFloat(row.totalamount || 0),
-      totalOrders: acc.totalOrders + parseInt(row.ordercount || 0),
-      supplierCount: acc.supplierCount + 1
-    }), { totalQty: 0, totalPallets: 0, totalCartons: 0, totalAmount: 0, totalOrders: 0, supplierCount: 0 });
+    const uniqueSuppliers = new Set(purchaseResult.rows.map(r => r.suppliername));
+    const totals = ordersWithPackaging.reduce((acc, row) => ({
+      totalQty: acc.totalQty + parseFloat(row.qty || 0),
+      totalPallets: acc.totalPallets + (row.pallets || 0),
+      totalCartons: acc.totalCartons + (row.cartons || 0),
+      totalAmount: acc.totalAmount + parseFloat(row.linetotal || 0),
+      totalOrders: acc.totalOrders + 1
+    }), { totalQty: 0, totalPallets: 0, totalCartons: 0, totalAmount: 0, totalOrders: 0 });
+    totals.supplierCount = uniqueSuppliers.size;
 
     res.json({
       success: true,
       data: {
         product: product,
-        suppliers: suppliersWithPackaging,
+        orders: ordersWithPackaging,
         totals: totals
       }
     });

@@ -264,8 +264,9 @@ class ApiClient {
     return this.request(`/products/${productId}/sales-history?${queryString}`);
   }
 
-  async getProductPurchaseHistory(productId: number) {
-    return this.request(`/products/${productId}/purchase-history`);
+  async getProductPurchaseHistory(productId: number, params?: { startDate?: string; endDate?: string }) {
+    const queryString = params ? new URLSearchParams(params as any).toString() : '';
+    return this.request(`/products/${productId}/purchase-history?${queryString}`);
   }
 
   async importProducts(file: File) {
