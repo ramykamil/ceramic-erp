@@ -426,19 +426,37 @@ export default function ProductsPage() {
   const handleExport = async () => {
     setIsExporting(true);
     try {
-      const params: any = {
-        search,
-        limit: 100000, // Fetch all matching products
-        page: 1,
-        sortBy,
-        sortOrder
-      };
-      if (familleFilter) params.famille = familleFilter;
-      if (choixFilter) params.choix = choixFilter;
-      if (stockFilter) params.stockFilter = stockFilter;
+      // Fetch products in batches to avoid Next.js proxy Content-Length errors on large responses
+      const batchSize = 500;
+      let allProducts: Product[] = [];
+      let currentPage = 1;
+      let hasMore = true;
 
-      const res = await api.getProducts(params);
-      const dataToExport = (res.data as Product[]) || [];
+      while (hasMore) {
+        const params: any = {
+          search,
+          limit: batchSize,
+          page: currentPage,
+          sortBy,
+          sortOrder
+        };
+        if (familleFilter) params.famille = familleFilter;
+        if (choixFilter) params.choix = choixFilter;
+        if (stockFilter) params.stockFilter = stockFilter;
+
+        const res = await api.getProducts(params);
+        const batch = (res.data as Product[]) || [];
+        allProducts = [...allProducts, ...batch];
+
+        // Stop if we got fewer items than requested (last page)
+        if (batch.length < batchSize) {
+          hasMore = false;
+        } else {
+          currentPage++;
+        }
+      }
+
+      const dataToExport = allProducts;
 
       exportToExcel(
         dataToExport,
