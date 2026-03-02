@@ -288,7 +288,7 @@ export default function ProductsPage() {
   const handleAdjustQuantity = async () => {
     if (!editingProduct) return;
     const currentQty = Number(editingProduct.totalqty || 0);
-    const targetQty = parseFloat(newTotalQty);
+    const targetQty = parseFloat(newTotalQty.replace(',', '.'));
     if (isNaN(targetQty) || targetQty < 0) {
       alert('❌ Veuillez entrer une quantité valide (≥ 0)');
       return;
@@ -907,12 +907,16 @@ export default function ProductsPage() {
                       <label className="block text-xs font-medium text-slate-500 uppercase mb-1">Nouvelle quantité totale</label>
                       <div className="flex gap-2">
                         <input
-                          type="number"
-                          onWheel={(e) => e.currentTarget.blur()}
-                          step="0.01"
-                          min="0"
+                          type="text"
+                          inputMode="decimal"
                           value={newTotalQty}
-                          onChange={e => setNewTotalQty(e.target.value)}
+                          onChange={e => {
+                            const val = e.target.value;
+                            // Allow digits, dots, and commas (French decimal separator)
+                            if (val === '' || /^[0-9]*[.,]?[0-9]*$/.test(val)) {
+                              setNewTotalQty(val);
+                            }
+                          }}
                           placeholder={`Ex: ${formatQty(Number(editingProduct.totalqty || 0))}`}
                           className="flex-1 p-2.5 border border-slate-300 rounded-lg text-sm"
                         />
@@ -926,8 +930,8 @@ export default function ProductsPage() {
                       </div>
                     </div>
                     {/* Difference Preview */}
-                    {newTotalQty && !isNaN(parseFloat(newTotalQty)) && (() => {
-                      const diff = parseFloat(newTotalQty) - Number(editingProduct.totalqty || 0);
+                    {newTotalQty && !isNaN(parseFloat(newTotalQty.replace(',', '.'))) && (() => {
+                      const diff = parseFloat(newTotalQty.replace(',', '.')) - Number(editingProduct.totalqty || 0);
                       if (Math.abs(diff) < 0.001) return (
                         <div className="text-xs text-slate-400 text-center">Aucun changement</div>
                       );

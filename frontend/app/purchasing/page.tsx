@@ -75,6 +75,12 @@ export default function PurchaseOrdersListPage() {
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<'commandes' | 'versements'>('commandes');
   const [receivingPoId, setReceivingPoId] = useState<number | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  // Read user role from localStorage on mount
+  useEffect(() => {
+    setUserRole(localStorage.getItem('user_role'));
+  }, []);
 
   // One-click direct reception: receive all remaining quantities into stock
   const handleDirectReceive = async (poId: number) => {
@@ -476,10 +482,14 @@ export default function PurchaseOrdersListPage() {
                               </Link>
                             )}
 
-                            {po.status === 'PENDING' && (
+                            {(po.status === 'PENDING' || userRole === 'ADMIN') && (
                               <button
                                 onClick={async () => {
-                                  if (!confirm('Êtes-vous sûr de vouloir supprimer ce bon de commande ?')) return;
+                                  const isNonPending = po.status !== 'PENDING';
+                                  const confirmMsg = isNonPending
+                                    ? `⚠️ ATTENTION: Ce bon est "${po.status}". La suppression va annuler le stock réceptionné.\n\nÊtes-vous sûr de vouloir supprimer ce bon de commande ?`
+                                    : 'Êtes-vous sûr de vouloir supprimer ce bon de commande ?';
+                                  if (!confirm(confirmMsg)) return;
                                   try {
                                     const res = await api.deletePurchaseOrder(po.purchaseorderid);
                                     if (res.success) {

@@ -903,23 +903,78 @@ async function deletePurchaseOrder(req, res, next) {
     try {
         await client.query('BEGIN');
         const { id } = req.params;
+        const userRole = req.user.role;
 
         const checkRes = await client.query('SELECT Status FROM PurchaseOrders WHERE PurchaseOrderID = $1', [id]);
         if (checkRes.rows.length === 0) {
             await client.query('ROLLBACK');
             return res.status(404).json({ success: false, message: 'Purchase Order not found' });
         }
-        if (checkRes.rows[0].status !== 'PENDING') {
+
+        const poStatus = checkRes.rows[0].status;
+
+        // Non-PENDING POs can only be deleted by ADMIN
+        if (poStatus !== 'PENDING' && userRole !== 'ADMIN') {
             await client.query('ROLLBACK');
-            return res.status(400).json({ success: false, message: 'Seules les commandes en attente peuvent être supprimées.' });
+            return res.status(403).json({ success: false, message: 'Seul un administrateur peut supprimer une commande qui n\'est pas en attente.' });
         }
 
-        // Delete Items first (Cascade might handle it, but explicit is safer logic wise if no cascade)
+        // --- Revert inventory for POs that have goods receipts (PARTIAL / RECEIVED) ---
+        const receiptsRes = await client.query(
+            'SELECT ReceiptID, WarehouseID FROM GoodsReceipts WHERE PurchaseOrderID = $1',
+            [id]
+        );
+
+        if (receiptsRes.rows.length > 0) {
+            const receiptIds = receiptsRes.rows.map(r => r.receiptid);
+
+            // Get all inventory transactions linked to these goods receipts
+            const txRes = await client.query(`
+                SELECT ProductID, WarehouseID, Quantity, TransactionID
+                FROM InventoryTransactions
+                WHERE ReferenceType = 'GOODS_RECEIPT'
+                  AND ReferenceID = ANY($1::int[])
+            `, [receiptIds]);
+
+            // Subtract quantities from inventory
+            for (const tx of txRes.rows) {
+                await client.query(`
+                    UPDATE Inventory
+                    SET QuantityOnHand = QuantityOnHand - $1,
+                        UpdatedAt = CURRENT_TIMESTAMP
+                    WHERE ProductID = $2
+                      AND WarehouseID = $3
+                      AND OwnershipType = 'OWNED'
+                      AND FactoryID IS NULL
+                `, [tx.quantity, tx.productid, tx.warehouseid]);
+            }
+
+            // Delete inventory transactions
+            await client.query(`
+                DELETE FROM InventoryTransactions
+                WHERE ReferenceType = 'GOODS_RECEIPT'
+                  AND ReferenceID = ANY($1::int[])
+            `, [receiptIds]);
+
+            // Delete goods receipt items and headers
+            await client.query('DELETE FROM GoodsReceiptItems WHERE ReceiptID = ANY($1::int[])', [receiptIds]);
+            await client.query('DELETE FROM GoodsReceipts WHERE PurchaseOrderID = $1', [id]);
+        }
+
+        // Delete PO items and PO
         await client.query('DELETE FROM PurchaseOrderItems WHERE PurchaseOrderID = $1', [id]);
         await client.query('DELETE FROM PurchaseOrders WHERE PurchaseOrderID = $1', [id]);
 
         await client.query('COMMIT');
-        res.json({ success: true, message: 'Bon de commande supprimé avec succès' });
+
+        // Refresh materialized view to update catalogue stats
+        try {
+            await pool.query('REFRESH MATERIALIZED VIEW mv_Catalogue');
+        } catch (refreshError) {
+            console.warn('Note: mv_Catalogue refresh skipped:', refreshError.message);
+        }
+
+        res.json({ success: true, message: 'Bon de commande supprimé avec succès. Stock mis à jour.' });
     } catch (error) {
         await client.query('ROLLBACK');
         next(error);
