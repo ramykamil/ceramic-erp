@@ -614,6 +614,75 @@ async function adjustProductQuantity(req, res, next) {
   }
 }
 
+/**
+ * Get purchase history for a specific product
+ * Shows which suppliers (factories) sold this product to us with total quantities and amounts
+ */
+async function getProductPurchaseHistory(req, res, next) {
+  try {
+    const { id } = req.params;
+
+    // 1. Get product info
+    const productQuery = `
+      SELECT 
+        p.ProductID, p.ProductCode, p.ProductName, 
+        b.BrandName as Famille,
+        p.BasePrice, p.PurchasePrice, p.Size
+      FROM Products p
+      LEFT JOIN Brands b ON p.BrandID = b.BrandID
+      WHERE p.ProductID = $1
+    `;
+    const productResult = await pool.query(productQuery, [id]);
+
+    if (productResult.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Produit non trouvé' });
+    }
+
+    // 2. Get aggregated purchases by factory (supplier)
+    const purchaseQuery = `
+      SELECT 
+        f.FactoryID as factoryid,
+        f.FactoryName as factoryname,
+        f.FactoryCode as factorycode,
+        COUNT(DISTINCT po.PurchaseOrderID) as ordercount,
+        SUM(poi.Quantity) as totalqty,
+        SUM(poi.LineTotal) as totalamount,
+        MAX(po.OrderDate) as lastorderdate,
+        AVG(poi.UnitPrice) as avgprice,
+        po.OwnershipType as ownershiptype
+      FROM PurchaseOrderItems poi
+      JOIN PurchaseOrders po ON poi.PurchaseOrderID = po.PurchaseOrderID
+      LEFT JOIN Factories f ON po.FactoryID = f.FactoryID
+      WHERE poi.ProductID = $1
+        AND po.Status NOT IN ('CANCELLED')
+      GROUP BY f.FactoryID, f.FactoryName, f.FactoryCode, po.OwnershipType
+      ORDER BY totalqty DESC
+      LIMIT 100
+    `;
+    const purchaseResult = await pool.query(purchaseQuery, [id]);
+
+    // 3. Calculate grand totals
+    const totals = purchaseResult.rows.reduce((acc, row) => ({
+      totalQty: acc.totalQty + parseFloat(row.totalqty || 0),
+      totalAmount: acc.totalAmount + parseFloat(row.totalamount || 0),
+      totalOrders: acc.totalOrders + parseInt(row.ordercount || 0),
+      supplierCount: acc.supplierCount + 1
+    }), { totalQty: 0, totalAmount: 0, totalOrders: 0, supplierCount: 0 });
+
+    res.json({
+      success: true,
+      data: {
+        product: productResult.rows[0],
+        suppliers: purchaseResult.rows,
+        totals: totals
+      }
+    });
+  } catch (error) {
+    console.error('Error in getProductPurchaseHistory:', error);
+    next(error);
+  }
+}
+
 module.exports = {
   getProducts,
   getProductById,
@@ -626,6 +695,7 @@ module.exports = {
   exportProducts,
   fixProductMetadata,
   getProductSalesHistory,
+  getProductPurchaseHistory,
   getProductFilters,
   getProductStats,
   adjustProductQuantity

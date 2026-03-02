@@ -97,6 +97,13 @@ export default function ProductsPage() {
     totals: { totalQty: number; totalAmount: number; totalOrders: number; customerCount: number; totalPallets?: number; totalCartons?: number };
   } | null>(null);
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
+  const [historyTab, setHistoryTab] = useState<'ventes' | 'achats'>('ventes');
+  const [purchaseHistoryData, setPurchaseHistoryData] = useState<{
+    product: any;
+    suppliers: any[];
+    totals: { totalQty: number; totalAmount: number; totalOrders: number; supplierCount: number };
+  } | null>(null);
+  const [isLoadingPurchaseHistory, setIsLoadingPurchaseHistory] = useState(false);
 
   // Resizable columns
   const { widths, handleResize } = useColumnWidths('products-table', {
@@ -367,22 +374,34 @@ export default function ProductsPage() {
     }
   };
 
-  // Load Sales History for a product
+  // Load Sales & Purchase History for a product
   const loadSalesHistory = async (productId: number) => {
     setIsLoadingHistory(true);
+    setIsLoadingPurchaseHistory(true);
     setIsHistoryModalOpen(true);
+    setHistoryTab('ventes');
+    setPurchaseHistoryData(null);
+    setHistoryData(null);
     try {
-      const res = await api.getProductSalesHistory(productId);
-      if (res.success && res.data) {
-        setHistoryData(res.data as any);
-      } else {
-        throw new Error((res as any).message || 'Échec du chargement');
+      const [salesRes, purchaseRes] = await Promise.all([
+        api.getProductSalesHistory(productId),
+        api.getProductPurchaseHistory(productId)
+      ]);
+      if (salesRes.success && salesRes.data) {
+        setHistoryData(salesRes.data as any);
+      }
+      if (purchaseRes.success && purchaseRes.data) {
+        setPurchaseHistoryData(purchaseRes.data as any);
+      }
+      if (!salesRes.success && !purchaseRes.success) {
+        throw new Error('Échec du chargement de l\'historique');
       }
     } catch (error: any) {
       alert(`❌ Erreur: ${error.message}`);
       setIsHistoryModalOpen(false);
     } finally {
       setIsLoadingHistory(false);
+      setIsLoadingPurchaseHistory(false);
     }
   };
 
@@ -1092,112 +1111,224 @@ export default function ProductsPage() {
           </div>
         )}
 
-        {/* SALES HISTORY MODAL */}
+        {/* HISTORY MODAL (Ventes + Achats) */}
         {isHistoryModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
             <div className="w-full max-w-6xl bg-white rounded-xl shadow-2xl max-h-[90vh] flex flex-col">
               <div className="p-5 border-b border-slate-100 flex justify-between items-center">
                 <div>
-                  <h2 className="text-lg font-bold text-slate-800">📊 Historique des Ventes</h2>
-                  {historyData?.product && (
+                  <h2 className="text-lg font-bold text-slate-800">📊 Historique Produit</h2>
+                  {(historyData?.product || purchaseHistoryData?.product) && (
                     <p className="text-sm text-slate-500 mt-1">
-                      {historyData.product.productcode} - {historyData.product.productname}
+                      {(historyData?.product || purchaseHistoryData?.product).productcode} - {(historyData?.product || purchaseHistoryData?.product).productname}
                     </p>
                   )}
                 </div>
-                <button onClick={() => { setIsHistoryModalOpen(false); setHistoryData(null); }} className="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
+                <button onClick={() => { setIsHistoryModalOpen(false); setHistoryData(null); setPurchaseHistoryData(null); }} className="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
               </div>
-              <div className="flex-1 overflow-auto p-6">
-                {isLoadingHistory ? (
-                  <div className="text-center py-12">
-                    <div className="inline-block w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
-                    <p className="text-slate-500">Chargement...</p>
-                  </div>
-                ) : historyData ? (
-                  <>
-                    {/* Summary Cards */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
-                      <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                        <p className="text-xs text-blue-600 font-medium uppercase">Clients</p>
-                        <p className="text-2xl font-bold text-blue-700">{historyData.totals.customerCount}</p>
-                      </div>
-                      <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                        <p className="text-xs text-purple-600 font-medium uppercase">Commandes</p>
-                        <p className="text-2xl font-bold text-purple-700">{historyData.totals.totalOrders}</p>
-                      </div>
-                      <div className="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
-                        <p className="text-xs text-indigo-600 font-medium uppercase">Palettes</p>
-                        <p className="text-2xl font-bold text-indigo-700">{historyData.totals.totalPallets || 0}</p>
-                      </div>
-                      <div className="bg-cyan-50 p-4 rounded-lg border border-cyan-200">
-                        <p className="text-xs text-cyan-600 font-medium uppercase">Cartons</p>
-                        <p className="text-2xl font-bold text-cyan-700">{historyData.totals.totalCartons || 0}</p>
-                      </div>
-                      <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
-                        <p className="text-xs text-emerald-600 font-medium uppercase">Qté (m²/pcs)</p>
-                        <p className="text-2xl font-bold text-emerald-700">{formatQty(historyData.totals.totalQty)}</p>
-                      </div>
-                      <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
-                        <p className="text-xs text-amber-600 font-medium uppercase">Chiffre d'Affaires</p>
-                        <p className="text-2xl font-bold text-amber-700">{formatMoney(historyData.totals.totalAmount)}</p>
-                      </div>
-                    </div>
 
-                    {/* Customers Table */}
-                    {historyData.customers.length === 0 ? (
-                      <div className="text-center py-12 text-slate-400">
-                        <p className="text-lg">Aucune vente enregistrée pour ce produit</p>
+              {/* Tabs */}
+              <div className="flex border-b border-slate-200 px-5">
+                <button
+                  onClick={() => setHistoryTab('ventes')}
+                  className={`px-4 py-3 text-sm font-semibold border-b-2 transition-colors ${historyTab === 'ventes'
+                    ? 'border-emerald-500 text-emerald-700 bg-emerald-50/50'
+                    : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                    }`}
+                >
+                  📊 Historique des Ventes
+                </button>
+                <button
+                  onClick={() => setHistoryTab('achats')}
+                  className={`px-4 py-3 text-sm font-semibold border-b-2 transition-colors ${historyTab === 'achats'
+                    ? 'border-orange-500 text-orange-700 bg-orange-50/50'
+                    : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                    }`}
+                >
+                  🛒 Historique des Achats
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-auto p-6">
+                {/* === VENTES TAB === */}
+                {historyTab === 'ventes' && (
+                  <>
+                    {isLoadingHistory ? (
+                      <div className="text-center py-12">
+                        <div className="inline-block w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+                        <p className="text-slate-500">Chargement...</p>
                       </div>
+                    ) : historyData ? (
+                      <>
+                        {/* Summary Cards */}
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+                          <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                            <p className="text-xs text-blue-600 font-medium uppercase">Clients</p>
+                            <p className="text-2xl font-bold text-blue-700">{historyData.totals.customerCount}</p>
+                          </div>
+                          <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                            <p className="text-xs text-purple-600 font-medium uppercase">Commandes</p>
+                            <p className="text-2xl font-bold text-purple-700">{historyData.totals.totalOrders}</p>
+                          </div>
+                          <div className="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
+                            <p className="text-xs text-indigo-600 font-medium uppercase">Palettes</p>
+                            <p className="text-2xl font-bold text-indigo-700">{historyData.totals.totalPallets || 0}</p>
+                          </div>
+                          <div className="bg-cyan-50 p-4 rounded-lg border border-cyan-200">
+                            <p className="text-xs text-cyan-600 font-medium uppercase">Cartons</p>
+                            <p className="text-2xl font-bold text-cyan-700">{historyData.totals.totalCartons || 0}</p>
+                          </div>
+                          <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                            <p className="text-xs text-emerald-600 font-medium uppercase">Qté (m²/pcs)</p>
+                            <p className="text-2xl font-bold text-emerald-700">{formatQty(historyData.totals.totalQty)}</p>
+                          </div>
+                          <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                            <p className="text-xs text-amber-600 font-medium uppercase">Chiffre d&apos;Affaires</p>
+                            <p className="text-2xl font-bold text-amber-700">{formatMoney(historyData.totals.totalAmount)}</p>
+                          </div>
+                        </div>
+
+                        {/* Customers Table */}
+                        {historyData.customers.length === 0 ? (
+                          <div className="text-center py-12 text-slate-400">
+                            <p className="text-lg">Aucune vente enregistrée pour ce produit</p>
+                          </div>
+                        ) : (
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                              <thead className="bg-slate-100 text-xs text-slate-500 uppercase">
+                                <tr>
+                                  <th className="p-3 text-left">Client</th>
+                                  <th className="p-3 text-center">Type</th>
+                                  <th className="p-3 text-center">Commandes</th>
+                                  <th className="p-3 text-right bg-indigo-100">Palettes</th>
+                                  <th className="p-3 text-right bg-cyan-100">Cartons</th>
+                                  <th className="p-3 text-right bg-emerald-100">Qté</th>
+                                  <th className="p-3 text-right">Montant</th>
+                                  <th className="p-3 text-right">Prix Moy.</th>
+                                  <th className="p-3 text-center">Dernière</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-slate-100">
+                                {historyData.customers.map((c: any) => (
+                                  <tr key={c.customerid} className="hover:bg-slate-50">
+                                    <td className="p-3 font-medium text-slate-800">
+                                      {c.customername}
+                                      <span className="text-xs text-slate-400 ml-2">{c.customercode}</span>
+                                    </td>
+                                    <td className="p-3 text-center">
+                                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${c.customertype === 'WHOLESALE' ? 'bg-purple-100 text-purple-700' : 'bg-teal-100 text-teal-700'
+                                        }`}>
+                                        {c.customertype === 'WHOLESALE' ? 'Gros' : 'Détail'}
+                                      </span>
+                                    </td>
+                                    <td className="p-3 text-center font-mono">{c.ordercount}</td>
+                                    <td className="p-3 text-right font-bold text-indigo-600 font-mono bg-indigo-50/50">{c.totalpallets || 0}</td>
+                                    <td className="p-3 text-right font-bold text-cyan-600 font-mono bg-cyan-50/50">{c.totalcartons || 0}</td>
+                                    <td className="p-3 text-right font-bold text-emerald-600 font-mono bg-emerald-50/50">{formatQty(c.totalqty)}</td>
+                                    <td className="p-3 text-right font-bold text-slate-800 font-mono">{formatMoney(c.totalamount)}</td>
+                                    <td className="p-3 text-right text-slate-600 font-mono">{formatMoney(c.avgprice)}</td>
+                                    <td className="p-3 text-center text-slate-500 text-xs">
+                                      {c.lastorderdate ? new Date(c.lastorderdate).toLocaleDateString('fr-DZ') : '-'}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        )}
+                      </>
+                    ) : null}
+                  </>
+                )}
+
+                {/* === ACHATS TAB === */}
+                {historyTab === 'achats' && (
+                  <>
+                    {isLoadingPurchaseHistory ? (
+                      <div className="text-center py-12">
+                        <div className="inline-block w-8 h-8 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin mb-4"></div>
+                        <p className="text-slate-500">Chargement...</p>
+                      </div>
+                    ) : purchaseHistoryData ? (
+                      <>
+                        {/* Summary Cards */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                          <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                            <p className="text-xs text-orange-600 font-medium uppercase">Fournisseurs</p>
+                            <p className="text-2xl font-bold text-orange-700">{purchaseHistoryData.totals.supplierCount}</p>
+                          </div>
+                          <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                            <p className="text-xs text-purple-600 font-medium uppercase">Commandes</p>
+                            <p className="text-2xl font-bold text-purple-700">{purchaseHistoryData.totals.totalOrders}</p>
+                          </div>
+                          <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                            <p className="text-xs text-emerald-600 font-medium uppercase">Qté Totale</p>
+                            <p className="text-2xl font-bold text-emerald-700">{formatQty(purchaseHistoryData.totals.totalQty)}</p>
+                          </div>
+                          <div className="bg-red-50 p-4 rounded-lg border border-red-200">
+                            <p className="text-xs text-red-600 font-medium uppercase">Montant Total</p>
+                            <p className="text-2xl font-bold text-red-700">{formatMoney(purchaseHistoryData.totals.totalAmount)}</p>
+                          </div>
+                        </div>
+
+                        {/* Suppliers Table */}
+                        {purchaseHistoryData.suppliers.length === 0 ? (
+                          <div className="text-center py-12 text-slate-400">
+                            <p className="text-lg">Aucun achat enregistré pour ce produit</p>
+                          </div>
+                        ) : (
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                              <thead className="bg-orange-100 text-xs text-orange-700 uppercase">
+                                <tr>
+                                  <th className="p-3 text-left">Fournisseur</th>
+                                  <th className="p-3 text-center">Type</th>
+                                  <th className="p-3 text-center">Commandes</th>
+                                  <th className="p-3 text-right bg-emerald-100">Qté</th>
+                                  <th className="p-3 text-right">Montant</th>
+                                  <th className="p-3 text-right">Prix Moy.</th>
+                                  <th className="p-3 text-center">Dernière</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-slate-100">
+                                {purchaseHistoryData.suppliers.map((s: any, idx: number) => (
+                                  <tr key={`${s.factoryid}-${s.ownershiptype}-${idx}`} className="hover:bg-orange-50/30">
+                                    <td className="p-3 font-medium text-slate-800">
+                                      {s.factoryname || 'Fournisseur inconnu'}
+                                      <span className="text-xs text-slate-400 ml-2">{s.factorycode || ''}</span>
+                                    </td>
+                                    <td className="p-3 text-center">
+                                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${s.ownershiptype === 'CONSIGNMENT' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'
+                                        }`}>
+                                        {s.ownershiptype === 'CONSIGNMENT' ? 'Dépôt' : 'Achat'}
+                                      </span>
+                                    </td>
+                                    <td className="p-3 text-center font-mono">{s.ordercount}</td>
+                                    <td className="p-3 text-right font-bold text-emerald-600 font-mono bg-emerald-50/50">{formatQty(s.totalqty)}</td>
+                                    <td className="p-3 text-right font-bold text-slate-800 font-mono">{formatMoney(s.totalamount)}</td>
+                                    <td className="p-3 text-right text-slate-600 font-mono">{formatMoney(s.avgprice)}</td>
+                                    <td className="p-3 text-center text-slate-500 text-xs">
+                                      {s.lastorderdate ? new Date(s.lastorderdate).toLocaleDateString('fr-DZ') : '-'}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        )}
+                      </>
                     ) : (
-                      <div className="overflow-x-auto">
-                        <table className="w-full text-sm">
-                          <thead className="bg-slate-100 text-xs text-slate-500 uppercase">
-                            <tr>
-                              <th className="p-3 text-left">Client</th>
-                              <th className="p-3 text-center">Type</th>
-                              <th className="p-3 text-center">Commandes</th>
-                              <th className="p-3 text-right bg-indigo-100">Palettes</th>
-                              <th className="p-3 text-right bg-cyan-100">Cartons</th>
-                              <th className="p-3 text-right bg-emerald-100">Qté</th>
-                              <th className="p-3 text-right">Montant</th>
-                              <th className="p-3 text-right">Prix Moy.</th>
-                              <th className="p-3 text-center">Dernière</th>
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-slate-100">
-                            {historyData.customers.map((c: any) => (
-                              <tr key={c.customerid} className="hover:bg-slate-50">
-                                <td className="p-3 font-medium text-slate-800">
-                                  {c.customername}
-                                  <span className="text-xs text-slate-400 ml-2">{c.customercode}</span>
-                                </td>
-                                <td className="p-3 text-center">
-                                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${c.customertype === 'WHOLESALE' ? 'bg-purple-100 text-purple-700' : 'bg-teal-100 text-teal-700'
-                                    }`}>
-                                    {c.customertype === 'WHOLESALE' ? 'Gros' : 'Détail'}
-                                  </span>
-                                </td>
-                                <td className="p-3 text-center font-mono">{c.ordercount}</td>
-                                <td className="p-3 text-right font-bold text-indigo-600 font-mono bg-indigo-50/50">{c.totalpallets || 0}</td>
-                                <td className="p-3 text-right font-bold text-cyan-600 font-mono bg-cyan-50/50">{c.totalcartons || 0}</td>
-                                <td className="p-3 text-right font-bold text-emerald-600 font-mono bg-emerald-50/50">{formatQty(c.totalqty)}</td>
-                                <td className="p-3 text-right font-bold text-slate-800 font-mono">{formatMoney(c.totalamount)}</td>
-                                <td className="p-3 text-right text-slate-600 font-mono">{formatMoney(c.avgprice)}</td>
-                                <td className="p-3 text-center text-slate-500 text-xs">
-                                  {c.lastorderdate ? new Date(c.lastorderdate).toLocaleDateString('fr-DZ') : '-'}
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                      <div className="text-center py-12 text-slate-400">
+                        <p className="text-lg">Aucun achat enregistré pour ce produit</p>
                       </div>
                     )}
                   </>
-                ) : null}
+                )}
               </div>
               <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-end">
                 <button
-                  onClick={() => { setIsHistoryModalOpen(false); setHistoryData(null); }}
+                  onClick={() => { setIsHistoryModalOpen(false); setHistoryData(null); setPurchaseHistoryData(null); }}
                   className="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-lg font-medium text-sm"
                 >
                   Fermer

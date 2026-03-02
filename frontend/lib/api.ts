@@ -264,6 +264,10 @@ class ApiClient {
     return this.request(`/products/${productId}/sales-history?${queryString}`);
   }
 
+  async getProductPurchaseHistory(productId: number) {
+    return this.request(`/products/${productId}/purchase-history`);
+  }
+
   async importProducts(file: File) {
     const formData = new FormData();
     formData.append('file', file);
