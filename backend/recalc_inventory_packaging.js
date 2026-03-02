@@ -1,31 +1,26 @@
 /**
  * One-time script: Recalculate PalletCount and ColisCount for ALL inventory records
- * 
- * This fixes stale/incorrect PalletCount and ColisCount values by recalculating
- * them from QuantityOnHand using each product's QteParColis and QteColisParPalette.
- * 
- * Run: node recalc_inventory_packaging.js
+ * Runs against the CLOUD (Supabase) database
  */
 
-require('dotenv').config();
-const pool = require('./src/config/database');
+const { Pool } = require('pg');
+
+const pool = new Pool({
+    connectionString: "postgresql://postgres.ugvioyruqoafvsqvnwiy:%22p3yf%2BXV7'EMz%5E%23@aws-1-eu-central-1.pooler.supabase.com:5432/postgres",
+    ssl: { rejectUnauthorized: false },
+    connectionTimeoutMillis: 10000
+});
 
 async function recalculate() {
-    console.log('=== Recalculating PalletCount & ColisCount for ALL inventory records ===\n');
+    console.log('=== Recalculating PalletCount & ColisCount (CLOUD DB) ===\n');
 
     const client = await pool.connect();
     try {
-        // Get all inventory records joined with product packaging info
         const result = await client.query(`
       SELECT 
-        i.InventoryID,
-        i.ProductID,
-        i.QuantityOnHand,
-        i.PalletCount as old_palletcount,
-        i.ColisCount as old_coliscount,
-        p.ProductName,
-        p.QteParColis,
-        p.QteColisParPalette
+        i.InventoryID, i.ProductID, i.QuantityOnHand,
+        i.PalletCount as old_palletcount, i.ColisCount as old_coliscount,
+        p.ProductName, p.QteParColis, p.QteColisParPalette
       FROM Inventory i
       JOIN Products p ON i.ProductID = p.ProductID
       WHERE i.QuantityOnHand > 0
@@ -50,14 +45,13 @@ async function recalculate() {
             const oldColis = parseFloat(row.old_coliscount) || 0;
             const oldPallets = parseFloat(row.old_palletcount) || 0;
 
-            // Only update if values differ
             if (Math.abs(oldColis - newColis) > 0.01 || Math.abs(oldPallets - newPallets) > 0.01) {
                 await client.query(
                     'UPDATE Inventory SET ColisCount = $1, PalletCount = $2 WHERE InventoryID = $3',
                     [newColis, newPallets, row.inventoryid]
                 );
-                console.log(`  ✅ ${row.productname}`);
-                console.log(`     Qty: ${qty} | Colis: ${oldColis} → ${newColis} | Palettes: ${oldPallets} → ${newPallets}`);
+                console.log(`  FIX ${row.productname}`);
+                console.log(`      Qty:${qty} Col:${oldColis}->${newColis} Pal:${oldPallets}->${newPallets}`);
                 updated++;
             } else {
                 skipped++;
@@ -66,7 +60,6 @@ async function recalculate() {
 
         await client.query('COMMIT');
 
-        // Refresh materialized view
         console.log('\nRefreshing mv_Catalogue...');
         await pool.query('REFRESH MATERIALIZED VIEW mv_Catalogue');
 
