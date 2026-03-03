@@ -743,7 +743,7 @@ async function getProductAdjustmentHistory(req, res, next) {
         it.CreatedAt as createdat,
         it.Quantity as quantity,
         it.Notes as notes,
-        u.FullName as createdbyuser
+        u.Username as createdbyuser
       FROM InventoryTransactions it
       LEFT JOIN Users u ON it.CreatedBy = u.UserID
       WHERE it.ProductID = $1 AND it.TransactionType = 'ADJUSTMENT'
