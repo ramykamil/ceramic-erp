@@ -269,6 +269,11 @@ class ApiClient {
     return this.request(`/products/${productId}/purchase-history?${queryString}`);
   }
 
+  async getProductAdjustmentHistory(productId: number, params?: { startDate?: string; endDate?: string }) {
+    const queryString = params ? new URLSearchParams(params as any).toString() : '';
+    return this.request(`/products/${productId}/adjustment-history?${queryString}`);
+  }
+
   async importProducts(file: File) {
     const formData = new FormData();
     formData.append('file', file);

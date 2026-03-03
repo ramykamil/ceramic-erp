@@ -717,6 +717,63 @@ async function getProductPurchaseHistory(req, res, next) {
   }
 }
 
+/**
+ * Get manual adjustment history for a specific product
+ */
+async function getProductAdjustmentHistory(req, res, next) {
+  try {
+    const { id } = req.params;
+
+    // 1. Get product info
+    const productQuery = `
+      SELECT ProductID, ProductCode, ProductName
+      FROM Products
+      WHERE ProductID = $1
+    `;
+    const productResult = await pool.query(productQuery, [id]);
+
+    if (productResult.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Produit non trouvé' });
+    }
+
+    // 2. Get adjustment transactions
+    const adjustmentQuery = `
+      SELECT 
+        it.TransactionID as transactionid,
+        it.CreatedAt as createdat,
+        it.Quantity as quantity,
+        it.Notes as notes,
+        u.FullName as createdbyuser
+      FROM InventoryTransactions it
+      LEFT JOIN Users u ON it.CreatedBy = u.UserID
+      WHERE it.ProductID = $1 AND it.TransactionType = 'ADJUSTMENT'
+      ORDER BY it.CreatedAt DESC
+    `;
+    const adjustmentResult = await pool.query(adjustmentQuery, [id]);
+
+    // Calculate totals
+    const totals = adjustmentResult.rows.reduce((acc, row) => {
+      const qty = parseFloat(row.quantity || 0);
+      if (qty > 0) acc.totalAdded += qty;
+      else acc.totalRemoved += Math.abs(qty);
+      acc.totalAdjustments += 1;
+      return acc;
+    }, { totalAdded: 0, totalRemoved: 0, totalAdjustments: 0 });
+
+    res.json({
+      success: true,
+      data: {
+        product: productResult.rows[0],
+        adjustments: adjustmentResult.rows,
+        totals: totals
+      }
+    });
+  } catch (error) {
+    console.error('Error in getProductAdjustmentHistory:', error);
+    next(error);
+  }
+}
+
 module.exports = {
   getProducts,
   getProductById,
@@ -730,6 +787,7 @@ module.exports = {
   fixProductMetadata,
   getProductSalesHistory,
   getProductPurchaseHistory,
+  getProductAdjustmentHistory,
   getProductFilters,
   getProductStats,
   adjustProductQuantity

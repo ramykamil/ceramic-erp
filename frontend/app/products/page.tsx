@@ -97,13 +97,21 @@ export default function ProductsPage() {
     totals: any;
   } | null>(null);
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
-  const [historyTab, setHistoryTab] = useState<'ventes' | 'achats'>('ventes');
+  const [historyTab, setHistoryTab] = useState<'ventes' | 'achats' | 'ajustements'>('ventes');
   const [purchaseHistoryData, setPurchaseHistoryData] = useState<{
     product: any;
     orders: any[];
     totals: any;
   } | null>(null);
   const [isLoadingPurchaseHistory, setIsLoadingPurchaseHistory] = useState(false);
+
+  const [adjustmentHistoryData, setAdjustmentHistoryData] = useState<{
+    product: any;
+    adjustments: any[];
+    totals: any;
+  } | null>(null);
+  const [isLoadingAdjustmentHistory, setIsLoadingAdjustmentHistory] = useState(false);
+
   const [historyStartDate, setHistoryStartDate] = useState('');
   const [historyEndDate, setHistoryEndDate] = useState('');
   const [historyProductId, setHistoryProductId] = useState<number | null>(null);
@@ -377,10 +385,11 @@ export default function ProductsPage() {
     }
   };
 
-  // Load Sales & Purchase History for a product
+  // Load Sales, Purchase & Adjustment History for a product
   const loadSalesHistory = async (productId: number, startDate?: string, endDate?: string) => {
     setIsLoadingHistory(true);
     setIsLoadingPurchaseHistory(true);
+    setIsLoadingAdjustmentHistory(true);
     setIsHistoryModalOpen(true);
     setHistoryProductId(productId);
     if (!startDate && !endDate) {
@@ -390,13 +399,15 @@ export default function ProductsPage() {
     }
     setPurchaseHistoryData(null);
     setHistoryData(null);
+    setAdjustmentHistoryData(null);
     const dateParams: any = {};
     if (startDate) dateParams.startDate = startDate;
     if (endDate) dateParams.endDate = endDate;
     try {
-      const [salesRes, purchaseRes] = await Promise.all([
+      const [salesRes, purchaseRes, adjustmentRes] = await Promise.all([
         api.getProductSalesHistory(productId, Object.keys(dateParams).length > 0 ? dateParams : undefined),
-        api.getProductPurchaseHistory(productId, Object.keys(dateParams).length > 0 ? dateParams : undefined)
+        api.getProductPurchaseHistory(productId, Object.keys(dateParams).length > 0 ? dateParams : undefined),
+        api.getProductAdjustmentHistory(productId, Object.keys(dateParams).length > 0 ? dateParams : undefined)
       ]);
       if (salesRes.success && salesRes.data) {
         setHistoryData(salesRes.data as any);
@@ -404,7 +415,10 @@ export default function ProductsPage() {
       if (purchaseRes.success && purchaseRes.data) {
         setPurchaseHistoryData(purchaseRes.data as any);
       }
-      if (!salesRes.success && !purchaseRes.success) {
+      if (adjustmentRes.success && adjustmentRes.data) {
+        setAdjustmentHistoryData(adjustmentRes.data as any);
+      }
+      if (!salesRes.success && !purchaseRes.success && !adjustmentRes.success) {
         throw new Error('Échec du chargement de l\'historique');
       }
     } catch (error: any) {
@@ -413,6 +427,7 @@ export default function ProductsPage() {
     } finally {
       setIsLoadingHistory(false);
       setIsLoadingPurchaseHistory(false);
+      setIsLoadingAdjustmentHistory(false);
     }
   };
 
@@ -1181,6 +1196,15 @@ export default function ProductsPage() {
                   >
                     🛒 Historique des Achats
                   </button>
+                  <button
+                    onClick={() => setHistoryTab('ajustements')}
+                    className={`px-4 py-3 text-sm font-semibold border-b-2 transition-colors ${historyTab === 'ajustements'
+                      ? 'border-amber-500 text-amber-700 bg-amber-50/50'
+                      : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                      }`}
+                  >
+                    ⚡ Ajustements
+                  </button>
                 </div>
                 <div className="flex items-center gap-2 py-2">
                   <input type="date" value={historyStartDate} onChange={(e) => setHistoryStartDate(e.target.value)} className="border border-slate-300 rounded-lg px-2 py-1.5 text-xs" />
@@ -1346,6 +1370,70 @@ export default function ProductsPage() {
                       </>
                     ) : (
                       <div className="text-center py-12 text-slate-400"><p className="text-lg">Aucun achat enregistré pour ce produit</p></div>
+                    )}
+                  </>
+                )}
+
+                {/* === AJUSTEMENTS TAB === */}
+                {historyTab === 'ajustements' && (
+                  <>
+                    {isLoadingAdjustmentHistory ? (
+                      <div className="text-center py-12">
+                        <div className="inline-block w-8 h-8 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin mb-4"></div>
+                        <p className="text-slate-500">Chargement...</p>
+                      </div>
+                    ) : adjustmentHistoryData ? (
+                      <>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                          <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                            <p className="text-xs text-amber-600 font-medium uppercase">Total Ajustements</p>
+                            <p className="text-2xl font-bold text-amber-700">{adjustmentHistoryData.totals.totalAdjustments}</p>
+                          </div>
+                          <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                            <p className="text-xs text-emerald-600 font-medium uppercase">Quantité Ajoutée</p>
+                            <p className="text-2xl font-bold text-emerald-700">+{formatQty(adjustmentHistoryData.totals.totalAdded)}</p>
+                          </div>
+                          <div className="bg-red-50 p-4 rounded-lg border border-red-200">
+                            <p className="text-xs text-red-600 font-medium uppercase">Quantité Retirée</p>
+                            <p className="text-2xl font-bold text-red-700">-{formatQty(adjustmentHistoryData.totals.totalRemoved)}</p>
+                          </div>
+                        </div>
+                        {adjustmentHistoryData.adjustments.length === 0 ? (
+                          <div className="text-center py-12 text-slate-400"><p className="text-lg">Aucun ajustement manuel enregistré pour ce produit</p></div>
+                        ) : (
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                              <thead className="bg-amber-100/50 text-xs text-amber-800 uppercase sticky top-0">
+                                <tr>
+                                  <th className="p-3 text-center">Date / Heure</th>
+                                  <th className="p-3 text-left">Utilisateur</th>
+                                  <th className="p-3 text-right">Quantité Modifiée</th>
+                                  <th className="p-3 text-left">Notes</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-slate-100">
+                                {adjustmentHistoryData.adjustments.map((adj: any) => {
+                                  const qty = parseFloat(adj.quantity);
+                                  return (
+                                    <tr key={adj.transactionid} className="hover:bg-amber-50/20">
+                                      <td className="p-3 text-center text-slate-600 font-mono">
+                                        {new Date(adj.createdat).toLocaleString('fr-DZ')}
+                                      </td>
+                                      <td className="p-3 font-medium text-slate-800">{adj.createdbyuser || '-'}</td>
+                                      <td className={`p-3 text-right font-bold font-mono ${qty > 0 ? 'text-emerald-600 bg-emerald-50/30' : 'text-red-600 bg-red-50/30'}`}>
+                                        {qty > 0 ? '+' : ''}{formatQty(qty)}
+                                      </td>
+                                      <td className="p-3 text-slate-600 text-xs">{adj.notes || '-'}</td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className="text-center py-12 text-slate-400"><p className="text-lg">Aucun ajustement enregistré pour ce produit</p></div>
                     )}
                   </>
                 )}
