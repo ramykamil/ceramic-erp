@@ -13,7 +13,7 @@ types.setTypeParser(1082, function (stringValue) {
 const poolConfig = process.env.DATABASE_URL
   ? {
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    ssl: { rejectUnauthorized: false },
     max: 20,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 10000, // Increased timeout to 10 seconds (useful for cloud deployments)
@@ -24,6 +24,7 @@ const poolConfig = process.env.DATABASE_URL
     database: process.env.DB_NAME,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
+    ssl: { rejectUnauthorized: false },
     max: 20,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 10000,
