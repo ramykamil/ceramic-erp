@@ -430,7 +430,7 @@ async function addOrderItem(req, res, next) {
 
         // Update Inventory Reserved
         // CRITICAL: Check for negative stock / availability BEFORE reserving
-        const inventoryCheck = await client.query('SELECT QuantityOnHand, QuantityReserved FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2', [productId, warehouseId]);
+        const inventoryCheck = await client.query('SELECT QuantityOnHand, QuantityReserved FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\'', [productId, warehouseId]);
 
         let currentOnHand = 0;
         let currentReserved = 0;
@@ -449,7 +449,7 @@ async function addOrderItem(req, res, next) {
             UPDATE Inventory 
             SET QuantityReserved = QuantityReserved + $1,
                 UpdatedAt = CURRENT_TIMESTAMP
-            WHERE ProductID = $2 AND WarehouseID = $3
+            WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED'
         `, [qtyToReserve, productId, warehouseId]);
       } // End else (not MANUAL)
     }
@@ -664,7 +664,7 @@ async function finalizeOrder(req, res, next) {
         SET QuantityOnHand = GREATEST(0, QuantityOnHand - $1),
             QuantityReserved = GREATEST(0, QuantityReserved - $1),
             UpdatedAt = CURRENT_TIMESTAMP
-        WHERE ProductID = $2 AND WarehouseID = $3
+        WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED'
         RETURNING QuantityOnHand
       `, [qtyToDeduct, item.productid, warehouseId]);
 
@@ -678,7 +678,7 @@ async function finalizeOrder(req, res, next) {
           const newColis = ppc > 0 ? parseFloat((newQty / ppc).toFixed(4)) : 0;
           const newPallets = cpp > 0 ? parseFloat((newColis / cpp).toFixed(4)) : 0;
           await client.query(
-            'UPDATE Inventory SET ColisCount = $1, PalletCount = $2 WHERE ProductID = $3 AND WarehouseID = $4',
+            'UPDATE Inventory SET ColisCount = $1, PalletCount = $2 WHERE ProductID = $3 AND WarehouseID = $4 AND OwnershipType = \'OWNED\'',
             [newColis, newPallets, item.productid, warehouseId]
           );
         }
@@ -813,7 +813,7 @@ const updateOrder = async (req, res) => {
         await client.query(`
           UPDATE Inventory 
           SET QuantityReserved = GREATEST(0, QuantityReserved - $1)
-          WHERE ProductID = $2 AND WarehouseID = 1
+          WHERE ProductID = $2 AND WarehouseID = 1 AND OwnershipType = 'OWNED'
         `, [qty, item.productid]);
       } else if (order.status === 'CONFIRMED' || order.status === 'DELIVERED') {
         // CONFIRMED/DELIVERED: Item was SOLD (Deducted from OnHand). Add it back to OnHand.
@@ -829,7 +829,7 @@ const updateOrder = async (req, res) => {
         await client.query(`
           UPDATE Inventory 
           SET QuantityOnHand = QuantityOnHand + $1
-          WHERE ProductID = $2 AND WarehouseID = 1
+          WHERE ProductID = $2 AND WarehouseID = 1 AND OwnershipType = 'OWNED'
         `, [qtyToAddBack, item.productid]);
       }
     }
@@ -937,20 +937,20 @@ const updateOrder = async (req, res) => {
       // Reserve Inventory
       // Assuming Warehouse 1
       // Check if inventory record exists
-      const invCheck = await client.query('SELECT InventoryID FROM Inventory WHERE ProductID = $1 AND WarehouseID = 1', [item.productId]);
+      const invCheck = await client.query('SELECT InventoryID FROM Inventory WHERE ProductID = $1 AND WarehouseID = 1 AND OwnershipType = \'OWNED\'', [item.productId]);
 
       if (invCheck.rows.length > 0) {
         await client.query(`
             UPDATE Inventory 
             SET QuantityReserved = QuantityReserved + $1,
                 UpdatedAt = CURRENT_TIMESTAMP
-            WHERE ProductID = $2 AND WarehouseID = 1
+            WHERE ProductID = $2 AND WarehouseID = 1 AND OwnershipType = 'OWNED'
           `, [item.quantity, item.productId]);
       } else {
         // Create inventory record if missing (should exist if product exists, but safety check)
         await client.query(`
-            INSERT INTO Inventory (ProductID, WarehouseID, QuantityReserved, QuantityOnHand)
-            VALUES ($1, 1, $2, 0)
+            INSERT INTO Inventory (ProductID, WarehouseID, OwnershipType, QuantityReserved, QuantityOnHand)
+            VALUES ($1, 1, 'OWNED', $2, 0)
           `, [item.productId, item.quantity]);
       }
 
@@ -1094,7 +1094,7 @@ async function deleteOrder(req, res, next) {
 
       await client.query(`
             UPDATE Inventory SET QuantityReserved = GREATEST(0, QuantityReserved - $1)
-            WHERE ProductID = $2 AND WarehouseID = $3
+            WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED'
         `, [qtyToRelease, item.productid, warehouseId]);
     }
 
