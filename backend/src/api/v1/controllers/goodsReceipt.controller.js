@@ -197,23 +197,16 @@ async function createGoodsReceipt(req, res, next) {
                 if ((primaryUnitCode === 'SQM' || primaryUnitCode === 'M2' || primaryUnitCode === 'M²') && !isFicheProduct && sqmPerPiece > 0) {
                     finalQtyToAdd = qtyInPieces * sqmPerPiece;
                     console.log(`[GoodsReceipt] Converted ${qtyReceived} ${unitCode} -> ${qtyInPieces} PCS -> ${finalQtyToAdd} SQM`);
+                } else if (!primaryUnitCode && (unitCode === 'SQM' || unitCode === 'M2' || unitCode === 'M²')) {
+                    // No primary unit set — keep received SQM as-is to match sales deduction logic
+                    finalQtyToAdd = qtyReceived;
+                    console.log(`[GoodsReceipt] No primary unit — keeping ${qtyReceived} ${unitCode} as-is`);
                 } else {
-                    // Start with pieces, but if the primary unit was SQM and we failed to convert (no dimensions), what then?
-                    // Or if primary is BOX? (Rare).
-                    // If we calculated qtyInPieces from a BOX/PALLET, and primary is PCS, we use that.
-                    // If we received in PCS and primary is PCS, we use that.
-
-                    // Special Case: If we received in SQM and Primary IS SQM, we shouldn't have converted to pieces and back if it risks rounding errors.
-                    // But our logic above handled SQM -> Pieces.
-                    // Let's refine:
                     if (unitCode === primaryUnitCode) {
                         finalQtyToAdd = qtyReceived; // No conversion needed if units match
                     } else if (unitCode === 'SQM' && primaryUnitCode === 'PCS') {
                         finalQtyToAdd = qtyInPieces;
                     } else {
-                        // Default to the pieces count if primary is not SQM, 
-                        // OR if it is SQM but we have no dimensions (e.g. paint sold by SQM coverage?) - unlikely for this ERP.
-                        // Ideally:
                         finalQtyToAdd = qtyInPieces;
                     }
                 }

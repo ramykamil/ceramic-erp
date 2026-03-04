@@ -689,7 +689,7 @@ async function finalizeOrder(req, res, next) {
         INSERT INTO InventoryTransactions 
         (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, ReferenceID, Notes, CreatedBy, CreatedAt)
         VALUES ($1, $2, 'OUT', $3, 'ORDER', $4, $5, $6, CURRENT_TIMESTAMP)
-      `, [item.productid, warehouseId, item.quantity, orderId, `Vente ${order.ordernumber}`, req.user?.userId || 1]);
+      `, [item.productid, warehouseId, qtyToDeduct, orderId, `Vente ${order.ordernumber}`, req.user?.userId || 1]);
     }
 
     // Audit Log for Sale
