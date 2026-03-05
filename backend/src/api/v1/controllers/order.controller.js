@@ -577,18 +577,13 @@ async function finalizeOrder(req, res, next) {
       }, client);
 
       // Only update customer balance for WHOLESALE orders (not retail)
-      if (!isRetailOrder) {
-        // Update customer balance (reduce by payment amount)
-        await client.query(
-          'UPDATE Customers SET CurrentBalance = CurrentBalance - $1 WHERE CustomerID = $2',
-          [payment, order.customerid]
-        );
-      }
+      // Note: We DO NOT reduce balance by payment amount here because the payment 
+      // is already accounted for in unpaidAmount calculation below.
     }
 
     // Update customer balance (add the unpaid portion) - ONLY for wholesale
     const unpaidAmount = totalAmount - payment;
-    if (unpaidAmount > 0 && !isRetailOrder) {
+    if (unpaidAmount !== 0 && !isRetailOrder) {
       await client.query(
         'UPDATE Customers SET CurrentBalance = CurrentBalance + $1 WHERE CustomerID = $2',
         [unpaidAmount, order.customerid]
@@ -838,18 +833,15 @@ const updateOrder = async (req, res) => {
     if (order.status === 'CONFIRMED' || order.status === 'DELIVERED') {
       // Reverse Customer Balance Update (Wholesale only)
       const isRetailOrder = order.ordertype === 'RETAIL'; // or check CustomerType? finalizeOrder checks logic
-      // Note: finalizeOrder logic was: Balance -= Payment; Balance += Unpaid;
-      // So we Reverse: Balance += Payment; Balance -= Unpaid;
+      // Note: finalizeOrder logic applies: Balance += Unpaid;
+      // So we Reverse: Balance -= Unpaid;
 
       if (!isRetailOrder && order.customerid) {
         const oldTotal = parseFloat(order.totalamount) || 0;
         const oldPayment = parseFloat(order.paymentamount) || 0;
         const oldUnpaid = oldTotal - oldPayment;
 
-        if (oldPayment > 0) {
-          await client.query('UPDATE Customers SET CurrentBalance = CurrentBalance + $1 WHERE CustomerID = $2', [oldPayment, order.customerid]);
-        }
-        if (oldUnpaid > 0) {
+        if (oldUnpaid !== 0) {
           await client.query('UPDATE Customers SET CurrentBalance = CurrentBalance - $1 WHERE CustomerID = $2', [oldUnpaid, order.customerid]);
         }
       }
