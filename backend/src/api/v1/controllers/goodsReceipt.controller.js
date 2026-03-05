@@ -135,8 +135,8 @@ async function createGoodsReceipt(req, res, next) {
 
             if (productInfo.rows.length > 0) {
                 const pInfo = productInfo.rows[0];
-                const unitCode = (pInfo.unitcode || '').toUpperCase(); // The unit we are receiving in (e.g. 'BOX')
-                const primaryUnitCode = (pInfo.primaryunitcode || '').toUpperCase(); // The stock unit (e.g. 'SQM')
+                const unitCode = (pInfo.unitcode || '').toUpperCase(); // The unit we are receiving in (e.g. 'SQM')
+                const primaryUnitCode = (pInfo.primaryunitcode || '').toUpperCase(); // The declared stock unit
 
                 // Helper to parse dimensions (e.g. "60x60") => m2
                 const parseDimensions = (str) => {
@@ -153,62 +153,51 @@ async function createGoodsReceipt(req, res, next) {
                 const boxesPerPallet = parseFloat(pInfo.qtecolisparpalette) || 0;
                 const isFicheProduct = (pInfo.productname || '').toLowerCase().startsWith('fiche');
 
-                // 1. Convert everything to PIECES first
-                let qtyInPieces = 0;
+                // CONVENTION (matching finalizeOrder):
+                // All tile products (those with dimensions like 45x45, 60x60, etc.) are tracked
+                // in SQM in inventory, REGARDLESS of what PrimaryUnitID says.
+                // This is because finalizeOrder converts PCS->SQM for deduction.
+                // So we must add in SQM as well to keep consistency.
+                const isTileProduct = !isFicheProduct && sqmPerPiece > 0;
+                const isReceivingInSQM = ['SQM', 'M2', 'M²'].includes(unitCode);
+                const isReceivingInPCS = ['PCS', 'PIECE', 'PIÈCE'].includes(unitCode);
 
-                if (unitCode === 'PCS' || unitCode === 'PIECE' || unitCode === 'PIÈCE') {
-                    qtyInPieces = qtyReceived;
-                } else if (unitCode === 'SQM' || unitCode === 'M2' || unitCode === 'M²') {
-                    // If receiving in SQM, and it's a tile, convert back to pieces if needed? 
-                    // Usually stock is SQM, so we might not need conversion if target is SQM.
-                    // But let's standarize to pieces if we can, or just handle direct SQM.
-                    if (sqmPerPiece > 0) {
-                        qtyInPieces = qtyReceived / sqmPerPiece;
+                if (isTileProduct) {
+                    // TILE PRODUCT: inventory is always in SQM
+                    if (isReceivingInSQM) {
+                        // Already in SQM — use as-is, no conversion needed
+                        finalQtyToAdd = qtyReceived;
+                        console.log(`[GoodsReceipt] Tile received in SQM — keeping ${qtyReceived} SQM as-is`);
+                    } else if (isReceivingInPCS) {
+                        // Convert PCS -> SQM
+                        finalQtyToAdd = qtyReceived * sqmPerPiece;
+                        console.log(`[GoodsReceipt] Tile: ${qtyReceived} PCS * ${sqmPerPiece} = ${finalQtyToAdd} SQM`);
+                    } else if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(unitCode)) {
+                        // BOX -> PCS -> SQM
+                        const pcs = piecesPerBox > 0 ? qtyReceived * piecesPerBox : qtyReceived;
+                        finalQtyToAdd = pcs * sqmPerPiece;
+                        console.log(`[GoodsReceipt] Tile: ${qtyReceived} BOX -> ${pcs} PCS -> ${finalQtyToAdd} SQM`);
+                    } else if (['PALLET', 'PALETTE', 'PAL'].includes(unitCode)) {
+                        // PALLET -> BOX -> PCS -> SQM
+                        const boxes = boxesPerPallet > 0 ? qtyReceived * boxesPerPallet : qtyReceived;
+                        const pcs = piecesPerBox > 0 ? boxes * piecesPerBox : boxes;
+                        finalQtyToAdd = pcs * sqmPerPiece;
+                        console.log(`[GoodsReceipt] Tile: ${qtyReceived} PAL -> ${boxes} BOX -> ${pcs} PCS -> ${finalQtyToAdd} SQM`);
                     } else {
-                        // Fallback for non-tile SQM items (like carpet?)
-                        qtyInPieces = qtyReceived;
-                    }
-                } else if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(unitCode)) {
-                    if (piecesPerBox > 0) {
-                        qtyInPieces = qtyReceived * piecesPerBox;
-                    } else {
-                        // Fallback: If no pieces/box defined, we can't convert safely.
-                        // Assuming 1-to-1 or user error.
-                        console.warn(`[GoodsReceipt] Received in BOX but QteParColis is 0 for ${pInfo.productname}`);
-                        qtyInPieces = qtyReceived; // Dangerous assumption, but better than 0
-                    }
-                } else if (['PALLET', 'PALETTE', 'PAL'].includes(unitCode)) {
-                    if (boxesPerPallet > 0 && piecesPerBox > 0) {
-                        const totalBoxes = qtyReceived * boxesPerPallet;
-                        qtyInPieces = totalBoxes * piecesPerBox;
-                    } else {
-                        console.warn(`[GoodsReceipt] Received in PALLET but packaging info missing for ${pInfo.productname}`);
-                        qtyInPieces = qtyReceived; // Dangerous
+                        finalQtyToAdd = qtyReceived;
                     }
                 } else {
-                    // Unknown unit, assume direct match
-                    qtyInPieces = qtyReceived;
-                }
-
-                // 2. Convert PIECES to STOCK UNIT (PrimaryUnit)
-                // If primary unit is SQM (and it's a tile), convert Pieces -> SQM
-                // If primary unit is PCS, keep as Pieces
-
-                if ((primaryUnitCode === 'SQM' || primaryUnitCode === 'M2' || primaryUnitCode === 'M²') && !isFicheProduct && sqmPerPiece > 0) {
-                    finalQtyToAdd = qtyInPieces * sqmPerPiece;
-                    console.log(`[GoodsReceipt] Converted ${qtyReceived} ${unitCode} -> ${qtyInPieces} PCS -> ${finalQtyToAdd} SQM`);
-                } else if (!primaryUnitCode && (unitCode === 'SQM' || unitCode === 'M2' || unitCode === 'M²')) {
-                    // No primary unit set — keep received SQM as-is to match sales deduction logic
-                    finalQtyToAdd = qtyReceived;
-                    console.log(`[GoodsReceipt] No primary unit — keeping ${qtyReceived} ${unitCode} as-is`);
-                } else {
-                    if (unitCode === primaryUnitCode) {
-                        finalQtyToAdd = qtyReceived; // No conversion needed if units match
-                    } else if (unitCode === 'SQM' && primaryUnitCode === 'PCS') {
-                        finalQtyToAdd = qtyInPieces;
+                    // NON-TILE PRODUCT: inventory is in PrimaryUnit (usually PCS)
+                    if (isReceivingInPCS || unitCode === primaryUnitCode) {
+                        finalQtyToAdd = qtyReceived;
+                    } else if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(unitCode) && piecesPerBox > 0) {
+                        finalQtyToAdd = qtyReceived * piecesPerBox;
+                    } else if (['PALLET', 'PALETTE', 'PAL'].includes(unitCode) && boxesPerPallet > 0 && piecesPerBox > 0) {
+                        finalQtyToAdd = qtyReceived * boxesPerPallet * piecesPerBox;
                     } else {
-                        finalQtyToAdd = qtyInPieces;
+                        finalQtyToAdd = qtyReceived;
                     }
+                    console.log(`[GoodsReceipt] Non-tile: ${qtyReceived} ${unitCode} -> ${finalQtyToAdd} ${primaryUnitCode || 'STOCK_UNIT'}`);
                 }
             }
 
