@@ -96,7 +96,7 @@ async function main() {
             FROM InventoryTransactions it
             WHERE it.TransactionType = 'OUT'
               AND it.ReferenceType = 'ORDER'
-              AND it.CreatedAt >= (CURRENT_TIMESTAMP - INTERVAL '2 days')
+              AND it.CreatedAt >= '2026-03-03 00:00:00'::timestamp
             GROUP BY it.ProductID
         `);
         const salesByProduct = new Map();
@@ -120,33 +120,74 @@ async function main() {
             JOIN Products p ON it.ProductID = p.ProductID
             WHERE it.TransactionType = 'OUT'
               AND it.ReferenceType = 'ORDER'
-              AND it.CreatedAt >= (CURRENT_TIMESTAMP - INTERVAL '2 days')
+              AND it.CreatedAt >= '2026-03-03 00:00:00'::timestamp
             ORDER BY it.CreatedAt DESC
         `);
 
         // ============================================================
-        // STEP 4: Get Goods Receipts (purchases) in the last 2 days
+        // STEP 4: Get Goods Receipts (purchases) — properly converted
         // ============================================================
-        console.log('[DB] Loading purchases (inventory IN) from last 2 days...');
-        const purchasesResult = await client.query(`
-            SELECT 
-                it.ProductID,
-                SUM(it.Quantity) as TotalReceived
-            FROM InventoryTransactions it
-            WHERE it.TransactionType = 'IN'
-              AND it.ReferenceType = 'GOODS_RECEIPT'
-              AND it.CreatedAt >= (CURRENT_TIMESTAMP - INTERVAL '2 days')
-            GROUP BY it.ProductID
-        `);
-        const purchasesByProduct = new Map();
-        let totalPurchaseTransactions = 0;
-        for (const row of purchasesResult.rows) {
-            purchasesByProduct.set(row.productid, parseFloat(row.totalreceived) || 0);
-            totalPurchaseTransactions++;
-        }
-        console.log(`[DB] Found purchases for ${totalPurchaseTransactions} distinct products in last 2 days.\n`);
+        // Uses GoodsReceiptItems to get raw quantities and converts PCS→SQM
+        // for tile products, matching the corrected GR controller logic.
+        console.log('[DB] Loading purchases (GoodsReceiptItems) from last 3 days...');
 
-        // Also get detailed purchases info
+        const grItemsResult = await client.query(`
+            SELECT gri.ProductID, gri.QuantityReceived, gri.UnitID, u.UnitCode,
+                   p.ProductName, p.Size, p.QteParColis, p.QteColisParPalette
+            FROM GoodsReceiptItems gri
+            JOIN GoodsReceipts gr ON gri.ReceiptID = gr.ReceiptID
+            LEFT JOIN Units u ON gri.UnitID = u.UnitID
+            JOIN Products p ON gri.ProductID = p.ProductID
+            WHERE gr.ReceiptDate >= '2026-03-03 00:00:00'::timestamp
+               OR gr.CreatedAt >= '2026-03-03 00:00:00'::timestamp
+        `);
+
+        // Helper to parse tile dimensions
+        const parseDimensions = (str) => {
+            if (!str) return 0;
+            const match = str.match(/(\d{2,3})\s*[xX*\/]\s*(\d{2,3})/);
+            if (match) return (parseInt(match[1], 10) * parseInt(match[2], 10)) / 10000;
+            return 0;
+        };
+
+        const purchasesByProduct = new Map();
+        for (const gri of grItemsResult.rows) {
+            const rawQty = parseFloat(gri.quantityreceived) || 0;
+            const unitCode = (gri.unitcode || '').toUpperCase();
+            const sqmPerPiece = parseDimensions(gri.size || gri.productname);
+            const isFiche = (gri.productname || '').toLowerCase().startsWith('fiche');
+            const isTile = !isFiche && sqmPerPiece > 0;
+            const ppc = parseFloat(gri.qteparcolis) || 0;
+            const cpp = parseFloat(gri.qtecolisparpalette) || 0;
+
+            let correctQty = rawQty;
+            if (isTile) {
+                if (['SQM', 'M2', 'M²'].includes(unitCode)) {
+                    correctQty = rawQty;
+                } else if (['PCS', 'PIECE', 'PIÈCE'].includes(unitCode)) {
+                    correctQty = rawQty * sqmPerPiece;
+                } else if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(unitCode)) {
+                    const pcs = ppc > 0 ? rawQty * ppc : rawQty;
+                    correctQty = pcs * sqmPerPiece;
+                } else if (['PALLET', 'PALETTE', 'PAL'].includes(unitCode)) {
+                    const boxes = cpp > 0 ? rawQty * cpp : rawQty;
+                    const pcs = ppc > 0 ? boxes * ppc : boxes;
+                    correctQty = pcs * sqmPerPiece;
+                }
+            } else if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(unitCode) && ppc > 0) {
+                correctQty = rawQty * ppc;
+            } else if (['PALLET', 'PALETTE', 'PAL'].includes(unitCode) && cpp > 0 && ppc > 0) {
+                correctQty = rawQty * cpp * ppc;
+            }
+
+            const prev = purchasesByProduct.get(gri.productid) || 0;
+            purchasesByProduct.set(gri.productid, prev + correctQty);
+        }
+
+        let totalPurchaseTransactions = purchasesByProduct.size;
+        console.log(`[DB] Found purchases for ${totalPurchaseTransactions} distinct products in last 3 days.\n`);
+
+        // Detailed purchases for report (use converted InventoryTransaction values since we fixed them)
         const purchasesDetailResult = await client.query(`
             SELECT 
                 it.ProductID,
@@ -159,7 +200,7 @@ async function main() {
             JOIN Products p ON it.ProductID = p.ProductID
             WHERE it.TransactionType = 'IN'
               AND it.ReferenceType = 'GOODS_RECEIPT'
-              AND it.CreatedAt >= (CURRENT_TIMESTAMP - INTERVAL '2 days')
+              AND it.CreatedAt >= '2026-03-03 00:00:00'::timestamp
             ORDER BY it.CreatedAt DESC
         `);
 
@@ -176,7 +217,7 @@ async function main() {
             FROM InventoryTransactions it
             JOIN Products p ON it.ProductID = p.ProductID
             WHERE it.TransactionType = 'ADJUSTMENT'
-              AND it.CreatedAt >= (CURRENT_TIMESTAMP - INTERVAL '2 days')
+              AND it.CreatedAt >= (CURRENT_TIMESTAMP - INTERVAL '3 days')
             ORDER BY it.CreatedAt DESC
         `);
 

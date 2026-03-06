@@ -1,6 +1,22 @@
 const pool = require('../../../config/database');
 const csv = require('csv-parser');
 const fs = require('fs');
+const path = require('path');
+
+// Expected upload directory used by multer
+const UPLOADS_BASE_DIR = path.resolve(__dirname, '../../../../uploads');
+
+/**
+ * Validates that a file path is within the expected uploads directory.
+ * Prevents path traversal attacks on user-controlled file paths.
+ */
+function validateUploadPath(filePath) {
+    const resolved = path.resolve(filePath);
+    if (!resolved.startsWith(UPLOADS_BASE_DIR + path.sep) && resolved !== UPLOADS_BASE_DIR) {
+        throw new Error('Invalid file path: path traversal detected');
+    }
+    return resolved;
+}
 
 // ... (getInventoryLevels, getInventoryTransactions, adjustStock remain exactly the same) ...
 async function getInventoryLevels(req, res, next) {
@@ -155,7 +171,7 @@ async function getInventoryTransactions(req, res, next) {
 
 async function adjustStock(req, res, next) {
     const { productId, warehouseId, quantity, ownershipType, factoryId, notes } = req.body;
-    const userId = req.user.userId;
+    const { userId } = req.user;
     if (!productId || !warehouseId || quantity == null || !ownershipType) return res.status(400).json({ success: false, message: 'Champs requis manquants.' });
     const numericQuantity = parseFloat(quantity);
     if (isNaN(numericQuantity)) return res.status(400).json({ success: false, message: 'Quantité invalide.' });
@@ -215,7 +231,7 @@ async function importStock(req, res, next) {
     const results = { successful: 0, failed: 0, errors: [] };
     let rowCounter = 0;
 
-    fs.createReadStream(req.file.path)
+    fs.createReadStream(validateUploadPath(req.file.path))
         .pipe(csv({ separator: ',', mapHeaders: ({ header }) => header.trim() }))
         .on('data', (row) => {
             rowCounter++;
@@ -380,7 +396,7 @@ async function importStock(req, res, next) {
             const client = await pool.connect();
             try {
                 await client.query('BEGIN');
-                const userId = req.user.userId;
+                const { userId } = req.user;
                 const whID = targetWarehouseId;
 
                 const unitsRes = await client.query("SELECT UnitID, UnitCode FROM Units");
@@ -500,7 +516,7 @@ async function importStock(req, res, next) {
                 }
 
                 // Clean up temp file
-                try { fs.unlinkSync(req.file.path); } catch (e) { }
+                try { fs.unlinkSync(validateUploadPath(req.file.path)); } catch (e) { }
 
                 // Prepare minimal response to prevent memory issues
                 const successCount = results.successful;
@@ -529,7 +545,10 @@ async function importStock(req, res, next) {
 
             } catch (error) {
                 await client.query('ROLLBACK');
-                if (fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
+                try {
+                    const safePath = validateUploadPath(req.file.path);
+                    if (fs.existsSync(safePath)) fs.unlinkSync(safePath);
+                } catch (e) { /* path validation failed, skip cleanup */ }
                 next(error);
             } finally { client.release(); }
         });

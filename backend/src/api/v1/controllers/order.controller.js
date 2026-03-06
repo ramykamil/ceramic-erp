@@ -571,13 +571,27 @@ async function finalizeOrder(req, res, next) {
       // is already accounted for in unpaidAmount calculation below.
     }
 
-    // Update customer balance (add the unpaid portion) - ONLY for wholesale
-    const unpaidAmount = totalAmount - payment;
-    if (unpaidAmount !== 0 && !isRetailOrder) {
-      await client.query(
-        'UPDATE Customers SET CurrentBalance = CurrentBalance + $1 WHERE CustomerID = $2',
-        [unpaidAmount, order.customerid]
-      );
+    // Update customer balance - ONLY for wholesale
+    // WHOLESALE: Always add FULL totalAmount as debt. Payments are tracked
+    // separately via standalone VERSEMENTs (from the orders versement section),
+    // which independently reduce CurrentBalance. This prevents double-deduction
+    // when a versement is recorded AND the order's paymentAmount is edited.
+    // RETAIL: Use unpaidAmount since retail pays directly at POS (no versement flow).
+    if (!isRetailOrder) {
+      if (totalAmount !== 0) {
+        await client.query(
+          'UPDATE Customers SET CurrentBalance = CurrentBalance + $1 WHERE CustomerID = $2',
+          [totalAmount, order.customerid]
+        );
+      }
+    } else {
+      const unpaidAmount = totalAmount - payment;
+      if (unpaidAmount !== 0) {
+        await client.query(
+          'UPDATE Customers SET CurrentBalance = CurrentBalance + $1 WHERE CustomerID = $2',
+          [unpaidAmount, order.customerid]
+        );
+      }
     }
 
     // Update order status to CONFIRMED
@@ -822,11 +836,19 @@ const updateOrder = async (req, res) => {
     // 2b. Revert Financials (CONFIRMED Only)
     if (order.status === 'CONFIRMED' || order.status === 'DELIVERED') {
       // Reverse Customer Balance Update (Wholesale only)
-      const isRetailOrder = order.ordertype === 'RETAIL'; // or check CustomerType? finalizeOrder checks logic
-      // Note: finalizeOrder logic applies: Balance += Unpaid;
-      // So we Reverse: Balance -= Unpaid;
+      const isRetailOrder = order.ordertype === 'RETAIL';
+      // Reverse balance: must match what finalizeOrder added.
+      // WHOLESALE: finalizeOrder adds full totalAmount → reverse full totalAmount.
+      //   Payments are tracked separately via VERSEMENTs.
+      // RETAIL: finalizeOrder adds unpaidAmount → reverse unpaidAmount.
 
       if (!isRetailOrder && order.customerid) {
+        const oldTotal = parseFloat(order.totalamount) || 0;
+
+        if (oldTotal !== 0) {
+          await client.query('UPDATE Customers SET CurrentBalance = CurrentBalance - $1 WHERE CustomerID = $2', [oldTotal, order.customerid]);
+        }
+      } else if (isRetailOrder && order.customerid) {
         const oldTotal = parseFloat(order.totalamount) || 0;
         const oldPayment = parseFloat(order.paymentamount) || 0;
         const oldUnpaid = oldTotal - oldPayment;

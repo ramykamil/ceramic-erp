@@ -18,14 +18,22 @@ class BackupService {
 
             // Determine backup directory
             // Priority: customPath > process.env.BACKUP_DIR > Default Project Backups Folder
+            const defaultBackupDir = path.resolve(__dirname, '../../backups');
             let backupDir;
             if (customPath) {
-                backupDir = customPath;
+                // Validate customPath to prevent path traversal attacks
+                const resolvedCustomPath = path.resolve(customPath);
+                if (!resolvedCustomPath.startsWith(defaultBackupDir + path.sep) && resolvedCustomPath !== defaultBackupDir) {
+                    console.warn(`[BACKUP] Rejected unsafe backup path: ${customPath}. Falling back to default.`);
+                    backupDir = defaultBackupDir;
+                } else {
+                    backupDir = resolvedCustomPath;
+                }
             } else if (process.env.BACKUP_DIR) {
                 backupDir = process.env.BACKUP_DIR;
             } else {
                 // Default to 'backups' folder in the project root (backend/backups)
-                backupDir = path.join(__dirname, '../../backups');
+                backupDir = defaultBackupDir;
             }
 
             // Ensure backup directory exists
