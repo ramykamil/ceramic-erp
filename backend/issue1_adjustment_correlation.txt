@@ -1,0 +1,681 @@
+================================================================================
+  ISSUE 1: ADJUSTMENT CORRELATION REPORT
+  Generated: 2026-03-05T22:41:29.443Z
+================================================================================
+
+Discrepancies EXPLAINED by adjustments: 27
+Discrepancies STILL UNEXPLAINED: 32
+
+--- EXPLAINED BY ADJUSTMENTS ---
+
+  [NEW TECH_NEW_5ZDB] VICTORIA 60/60
+    Excel=0.00 - Sold=0.00 + Recv=4308.48 + Adjust=-2027.52
+    Expected(with adj)=2280.96 | Actual=2280.96 | Remaining Diff=0.00 ✓
+
+  [ACRA GRIS RELIEFE 25/75 (M²)] ACRA GRIS RELIEFE 25/75 (M²)
+    Excel=384.00 - Sold=15.00 + Recv=0.00 + Adjust=96.00
+    Expected(with adj)=465.00 | Actual=465.00 | Remaining Diff=0.00 ✓
+
+  [PROSTYLE SILVER 45/90] PROSTYLE SILVER 45/90
+    Excel=4840.56 - Sold=174.96 + Recv=0.00 + Adjust=-4665.60
+    Expected(with adj)=0.00 | Actual=0.00 | Remaining Diff=0.00 ✓
+
+  [SUNNY GRIS 60/60] SUNNY GRIS 60/60
+    Excel=466.56 - Sold=0.00 + Recv=0.00 + Adjust=132.48
+    Expected(with adj)=599.04 | Actual=599.04 | Remaining Diff=0.00 ✓
+
+  [TECHNO CERAM_NEW_X62P] PATRICIA PERLA REC 60/60
+    Excel=1244.16 - Sold=103.68 + Recv=259.20 + Adjust=-1244.16
+    Expected(with adj)=155.52 | Actual=155.52 | Remaining Diff=0.00 ✓
+
+  [TECHNO CERAM_NEW_4BYT] BERLIN MARON 20/75
+    Excel=0.00 - Sold=0.00 + Recv=720.00 + Adjust=-612.00
+    Expected(with adj)=108.00 | Actual=108.00 | Remaining Diff=0.00 ✓
+
+  [SYDNEY GRIS/LV 45/90] SYDNEY GRIS/LV 45/90
+    Excel=3810.24 - Sold=0.00 + Recv=1512.00 + Adjust=-851.04
+    Expected(with adj)=4471.20 | Actual=4471.20 | Remaining Diff=0.00 ✓
+
+  [BARCELONA OCRE 20/75] BARCELONA OCRE 20/75
+    Excel=7833.60 - Sold=0.00 + Recv=0.00 + Adjust=-7833.60
+    Expected(with adj)=-0.00 | Actual=0.00 | Remaining Diff=0.00 ✓
+
+  [ROMA BLANC BRILLANT REC 60/60] ROMA BLANC BRILLANT REC 60/60
+    Excel=3628.80 - Sold=51.84 + Recv=0.00 + Adjust=-362.88
+    Expected(with adj)=3214.08 | Actual=3214.08 | Remaining Diff=0.00 ✓
+
+  [TECHNO CERAM_NEW_OBT7] TOSCANA NATUREL 20/75
+    Excel=3916.80 - Sold=0.00 + Recv=992.00 + Adjust=-4760.00
+    Expected(with adj)=148.80 | Actual=148.80 | Remaining Diff=0.00 ✓
+
+  [VENAS PLUS 60/60] VENAS PLUS 60/60
+    Excel=2280.96 - Sold=0.00 + Recv=0.00 + Adjust=2177.28
+    Expected(with adj)=4458.24 | Actual=4458.24 | Remaining Diff=0.00 ✓
+
+  [ACRA GRIS 45/90 DECO] ACRA GRIS 45/90 DECO
+    Excel=369.36 - Sold=0.00 + Recv=1008.00 + Adjust=-599.76
+    Expected(with adj)=777.60 | Actual=777.60 | Remaining Diff=-0.00 ✓
+
+  [4D CALACATA REC 60/60] 4D CALACATA REC 60/60
+    Excel=2540.16 - Sold=0.00 + Recv=0.00 + Adjust=-2540.16
+    Expected(with adj)=0.00 | Actual=0.00 | Remaining Diff=0.00 ✓
+
+  [ROMA BLANC BRILLANT 45/90] ROMA BLANC BRILLANT 45/90
+    Excel=2741.04 - Sold=116.64 + Recv=4608.00 + Adjust=-2275.20
+    Expected(with adj)=4957.20 | Actual=4957.20 | Remaining Diff=-0.00 ✓
+
+  [TIMGAD CERAM_NEW_O2T8] CATANIA BLANCO REC 60/60
+    Excel=0.00 - Sold=0.00 + Recv=4308.48 + Adjust=-2027.52
+    Expected(with adj)=2280.96 | Actual=2280.96 | Remaining Diff=0.00 ✓
+
+  [KING IVORY 45/90] KING IVORY 45/90
+    Excel=2993.76 - Sold=297.74 + Recv=0.00 + Adjust=-1835.40
+    Expected(with adj)=860.62 | Actual=860.62 | Remaining Diff=-0.00 ✓
+
+  [ACRA BEIGE REC 60/60] ACRA BEIGE REC 60/60
+    Excel=7257.60 - Sold=207.36 + Recv=0.00 + Adjust=-7050.24
+    Expected(with adj)=0.00 | Actual=0.00 | Remaining Diff=0.00 ✓
+
+  [MOON WHITE REC 60/60] MOON WHITE REC 60/60
+    Excel=6480.00 - Sold=103.68 + Recv=0.00 + Adjust=-5160.96
+    Expected(with adj)=1215.36 | Actual=1215.36 | Remaining Diff=0.00 ✓
+
+  [SWISS BEIGE REC 60/60] SWISS BEIGE REC 60/60
+    Excel=6739.20 - Sold=0.00 + Recv=0.00 + Adjust=-6739.20
+    Expected(with adj)=0.00 | Actual=0.00 | Remaining Diff=0.00 ✓
+
+  [PROD-1772268465184] SIDNEY BEIGE 45/90
+    Excel=1049.76 - Sold=0.00 + Recv=0.00 + Adjust=-4.86
+    Expected(with adj)=1044.90 | Actual=1044.90 | Remaining Diff=-0.00 ✓
+
+  [SAMPA BLANCO 45/45] SAMPA BLANCO 45/45
+    Excel=2606.57 - Sold=0.00 + Recv=0.00 + Adjust=-1269.87
+    Expected(with adj)=1336.70 | Actual=1336.70 | Remaining Diff=0.00 ✓
+
+  [CERAM DECOR_NEW_HTUG] NORDO BEIGE REC 60/60 (2éme)
+    Excel=362.88 - Sold=0.00 + Recv=288.00 + Adjust=-547.20
+    Expected(with adj)=103.68 | Actual=103.68 | Remaining Diff=0.00 ✓
+
+  [LIFE BLANC PL 31/65] LIFE BLANC PL 31/65
+    Excel=0.00 - Sold=0.37 + Recv=0.00 + Adjust=0.00
+    Expected(with adj)=-0.37 | Actual=0.00 | Remaining Diff=0.37 ✓
+
+  [INTERWOOD SAND 45/90] INTERWOOD SAND 45/90
+    Excel=349.92 - Sold=0.00 + Recv=0.00 + Adjust=-349.92
+    Expected(with adj)=0.00 | Actual=0.00 | Remaining Diff=-0.00 ✓
+
+  [SYDNEY BEIGE/ROBLE CASANOVA 45/90] SYDNEY BEIGE/ROBLE CASANOVA 45/90
+    Excel=4014.36 - Sold=0.00 + Recv=0.00 + Adjust=-136.08
+    Expected(with adj)=3878.28 | Actual=3878.28 | Remaining Diff=-0.00 ✓
+
+  [TECHNO CERAM_NEW_E985] RIVEL NATUREL 20/75
+    Excel=0.00 - Sold=614.40 + Recv=15872.00 + Adjust=-13491.20
+    Expected(with adj)=1766.40 | Actual=1766.40 | Remaining Diff=0.00 ✓
+
+  [PROSTYLE SILVER RELIEFE 45/90] PROSTYLE SILVER RELIEFE 45/90
+    Excel=1166.40 - Sold=0.00 + Recv=0.00 + Adjust=-57.72
+    Expected(with adj)=1108.68 | Actual=1108.68 | Remaining Diff=0.00 ✓
+
+
+--- STILL UNEXPLAINED ---
+
+  [COTTO ROJO TERRE CUITE 45/45] COTTO ROJO TERRE CUITE 45/45
+    Excel=1807.92 - Sold=352.35 + Recv=10368.00 + Adjust=4077.54
+    Expected(with adj)=15901.11 | Actual=4075.11 | Remaining Diff=-11826.00
+
+  [STYLE 25/75] STYLE 25/75
+    Excel=3840.00 - Sold=0.00 + Recv=4096.00 + Adjust=1536.00
+    Expected(with adj)=9472.00 | Actual=4608.00 | Remaining Diff=-4864.00
+
+  [COSTA WHITE REC 60/60] COSTA WHITE REC 60/60
+    Excel=3732.48 - Sold=1992.96 + Recv=2448.00 + Adjust=1918.08
+    Expected(with adj)=6105.60 | Actual=2776.32 | Remaining Diff=-3329.28
+
+  [ACRA GRIS 45/90] ACRA GRIS 45/90
+    Excel=3402.00 - Sold=0.00 + Recv=2688.00 + Adjust=997.08
+    Expected(with adj)=7087.08 | Actual=4490.64 | Remaining Diff=-2596.44
+
+  [EUROPA REC 60/60] EUROPA REC 60/60
+    Excel=5287.68 - Sold=362.88 + Recv=3168.00 + Adjust=743.04
+    Expected(with adj)=8835.84 | Actual=6531.84 | Remaining Diff=-2304.00
+
+  [LAND GRIS REC 60/60] LAND GRIS REC 60/60
+    Excel=0.00 - Sold=0.00 + Recv=1620.00 + Adjust=1166.40
+    Expected(with adj)=2786.40 | Actual=583.20 | Remaining Diff=-2203.20
+
+  [ROMA BLANC 30/90] ROMA BLANC 30/90
+    Excel=2877.12 - Sold=466.56 + Recv=6912.00 + Adjust=-2520.18
+    Expected(with adj)=6802.38 | Actual=4936.14 | Remaining Diff=-1866.24
+
+  [DRAGON GREEN POLI REC 120/60] DRAGON GREEN POLI REC 120/60
+    Excel=560.00 - Sold=350.00 + Recv=980.00 + Adjust=700.00
+    Expected(with adj)=1890.00 | Actual=700.00 | Remaining Diff=-1190.00
+
+  [VICTORIA EXTRA REC 60/60] VICTORIA EXTRA REC 60/60
+    Excel=5080.32 - Sold=0.00 + Recv=414.72 + Adjust=-352.80
+    Expected(with adj)=5142.24 | Actual=5879.52 | Remaining Diff=+737.28
+
+  [TECHNO CERAM] ALASKA BLANC POLI REC 120/60
+    Excel=700.00 - Sold=0.00 + Recv=0.00 + Adjust=0.00
+    Expected(with adj)=700.00 | Actual=0.00 | Remaining Diff=-700.00
+
+  [ASCOT ROJO 20/75] ASCOT ROJO 20/75
+    Excel=691.20 - Sold=1382.40 + Recv=0.00 + Adjust=0.00
+    Expected(with adj)=-691.20 | Actual=0.00 | Remaining Diff=+691.20
+
+  [CONFORT CERAM] CONCRETE GRIS 45/45
+    Excel=420.00 - Sold=0.00 + Recv=0.00 + Adjust=0.00
+    Expected(with adj)=420.00 | Actual=1090.56 | Remaining Diff=+670.56
+
+  [MELINA MARFIL REC 60/60 (2éme)] MELINA MARFIL REC 60/60 (2éme)
+    Excel=0.00 - Sold=0.00 + Recv=2736.00 + Adjust=-610.56
+    Expected(with adj)=2125.44 | Actual=1555.20 | Remaining Diff=-570.24
+
+  [QUEBEC GRIS TERRE CUITE 45/45] QUEBEC GRIS TERRE CUITE 45/45
+    Excel=1385.10 - Sold=874.80 + Recv=0.00 + Adjust=0.00
+    Expected(with adj)=510.30 | Actual=947.70 | Remaining Diff=+437.40
+
+  [PROSTYLE MARFIL 45/90] PROSTYLE MARFIL 45/90
+    Excel=3499.20 - Sold=0.00 + Recv=0.00 + Adjust=-641.57
+    Expected(with adj)=2857.64 | Actual=3211.20 | Remaining Diff=+353.56
+
+  [569] KING IVORY RELIEFE 45/90
+    Excel=0.00 - Sold=0.00 + Recv=0.00 + Adjust=472.08
+    Expected(with adj)=472.08 | Actual=136.08 | Remaining Diff=-336.00
+
+  [KING CREMA 45/90] KING CREMA 45/90
+    Excel=1292.76 - Sold=0.00 + Recv=0.00 + Adjust=-374.22
+    Expected(with adj)=918.54 | Actual=1156.68 | Remaining Diff=+238.14
+
+  [QUEBEC TERRE CUITE 45/45] QUEBEC TERRE CUITE 45/45
+    Excel=0.00 - Sold=0.00 + Recv=0.00 + Adjust=0.00
+    Expected(with adj)=0.00 | Actual=69.86 | Remaining Diff=+69.86
+
+  [NEW TECH] ATLANTIC STONE 45/45
+    Excel=68.16 - Sold=0.00 + Recv=0.00 + Adjust=0.00
+    Expected(with adj)=68.16 | Actual=0.00 | Remaining Diff=-68.16
+
+  [EUROPA MATT 45/90 DECO] EUROPA MATT 45/90 DECO
+    Excel=544.32 - Sold=68.04 + Recv=0.00 + Adjust=-544.32
+    Expected(with adj)=-68.04 | Actual=0.00 | Remaining Diff=+68.04
+
+  [LIFE BLANC FS 31/65] LIFE BLANC FS 31/65
+    Excel=0.00 - Sold=54.73 + Recv=0.00 + Adjust=0.00
+    Expected(with adj)=-54.73 | Actual=0.00 | Remaining Diff=+54.73
+
+  [NAF CERAM] ALASKA GOLD RELIEFE 25/75 (M²)
+    Excel=33.00 - Sold=0.00 + Recv=0.00 + Adjust=0.00
+    Expected(with adj)=33.00 | Actual=0.00 | Remaining Diff=-33.00
+
+  [TIMGAD CERAM_NEW_6ZSR] ROLEX GRIS POLI REC 60/60
+    Excel=0.00 - Sold=24.48 + Recv=0.00 + Adjust=0.00
+    Expected(with adj)=-24.48 | Actual=0.00 | Remaining Diff=+24.48
+
+  [TIMGAD CERAM_NEW_KB8W] DRAGON POLI REC 120/60
+    Excel=490.00 - Sold=70.00 + Recv=980.00 + Adjust=-784.00
+    Expected(with adj)=616.00 | Actual=635.60 | Remaining Diff=+19.60
+
+  [PALACE NOIR POLI REC 45/90 (2éme)] PALACE NOIR POLI REC 45/90 (2éme)
+    Excel=0.00 - Sold=7.70 + Recv=0.00 + Adjust=0.00
+    Expected(with adj)=-7.70 | Actual=0.00 | Remaining Diff=+7.70
+
+  [BERLIN BEIGE 45/45] BERLIN BEIGE 45/45
+    Excel=0.00 - Sold=7.10 + Recv=0.00 + Adjust=0.00
+    Expected(with adj)=-7.10 | Actual=0.00 | Remaining Diff=+7.10
+
+  [NEW TECH_NEW_9ORY] VENAS 45/45
+    Excel=0.00 - Sold=5.68 + Recv=0.00 + Adjust=0.00
+    Expected(with adj)=-5.68 | Actual=0.00 | Remaining Diff=+5.68
+
+  [MAUREEN BLACK POLI REC 120/60] MAUREEN BLACK POLI REC 120/60
+    Excel=0.00 - Sold=4.60 + Recv=0.00 + Adjust=0.00
+    Expected(with adj)=-4.60 | Actual=0.00 | Remaining Diff=+4.60
+
+  [TECHNO CERAM_NEW_IBL7] BIJOUX PERLA POLI REC 60/60
+    Excel=0.00 - Sold=2.88 + Recv=0.00 + Adjust=0.00
+    Expected(with adj)=-2.88 | Actual=0.00 | Remaining Diff=+2.88
+
+  [GALA CERAM_NEW_LNGG] CAIRO 33/33
+    Excel=0.00 - Sold=2.18 + Recv=0.00 + Adjust=0.00
+    Expected(with adj)=-2.18 | Actual=0.00 | Remaining Diff=+2.18
+
+  [MIRNA EXTRA REC 60/60] MIRNA EXTRA REC 60/60
+    Excel=0.00 - Sold=2.16 + Recv=0.00 + Adjust=0.00
+    Expected(with adj)=-2.16 | Actual=0.00 | Remaining Diff=+2.16
+
+  [MONIKA MARBRE POLI REC 45/90 (48C)] MONIKA MARBRE POLI REC 45/90 (48C)
+    Excel=0.00 - Sold=1.22 + Recv=0.00 + Adjust=0.00
+    Expected(with adj)=-1.22 | Actual=0.00 | Remaining Diff=+1.22
+
+
+--- FULL ADJUSTMENT DETAIL FOR UNEXPLAINED PRODUCTS ---
+
+
+  === [LAND GRIS REC 60/60] LAND GRIS REC 60/60 ===
+    05/03/2026 10:10:45 | ADJUSTMENT | Qty: 259.20 | MANUAL_ADJUSTMENT | Fix: Recalculated from Import + Correct_GR_SQM - Sales (GR unit conversion bug fix)
+    04/03/2026 12:45:59 | ADJUSTMENT | Qty: 907.20 | MANUAL_ADJUSTMENT | Bulk fix: Recalculated from GoodsReceipts minus Sales to correct unit conversion and cleanup script errors
+    04/03/2026 09:39:25 | IN | Qty: 1620.00 | GOODS_RECEIPT | 
+    24/02/2026 10:37:27 | OUT | Qty: 259.20 | ORDER | Vente ORD-2026-000223
+    23/02/2026 11:23:20 | ADJUSTMENT | Qty: 259.20 | IMPORT_CSV | Import Initial
+    21/02/2026 10:37:09 | ADJUSTMENT | Qty: -259.20 | IMPORT_CSV | Import Initial
+    17/02/2026 11:52:37 | ADJUSTMENT | Qty: 259.20 | IMPORT_CSV | Import Initial
+    17/02/2026 11:52:22 | ADJUSTMENT | Qty: -259.20 | IMPORT_CSV | Import Initial
+    17/02/2026 11:42:00 | ADJUSTMENT | Qty: 259.20 | IMPORT_CSV | Import Initial
+    17/02/2026 11:41:48 | ADJUSTMENT | Qty: -259.20 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:17 | ADJUSTMENT | Qty: 259.20 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:04 | ADJUSTMENT | Qty: -259.20 | IMPORT_CSV | Import Initial
+    16/02/2026 17:10:04 | ADJUSTMENT | Qty: 259.20 | IMPORT_CSV | Import Initial
+    16/02/2026 17:09:24 | ADJUSTMENT | Qty: -259.20 | IMPORT_CSV | Import Initial
+    15/02/2026 12:26:51 | ADJUSTMENT | Qty: 259.20 | IMPORT_CSV | Import Initial
+    26/01/2026 12:17:45 | ADJUSTMENT | Qty: -2579.04 | IMPORT_CSV | Import Initial
+    26/12/2025 23:53:51 | ADJUSTMENT | Qty: 2579.04 | IMPORT_CSV | Import Initial
+
+  === [COTTO ROJO TERRE CUITE 45/45] COTTO ROJO TERRE CUITE 45/45 ===
+    05/03/2026 12:42:33 | OUT | Qty: 2.43 | ORDER | Vente ORD-2026-000576
+    04/03/2026 12:45:59 | ADJUSTMENT | Qty: 816.48 | MANUAL_ADJUSTMENT | Bulk fix: Recalculated from GoodsReceipts minus Sales to correct unit conversion and cleanup script errors
+    04/03/2026 12:37:44 | ADJUSTMENT | Qty: 3261.06 | MANUAL_ADJUSTMENT | Fix: Recalculated from GoodsReceipts (SQM) minus Sales - correcting unit conversion and cleanup script errors
+    04/03/2026 11:46:17 | OUT | Qty: 233.28 | ORDER | Vente ORD-2026-000543
+    04/03/2026 11:14:42 | OUT | Qty: 116.64 | ORDER | Vente ORD-2026-000540
+    04/03/2026 09:40:31 | IN | Qty: 10368.00 | GOODS_RECEIPT | 
+    02/03/2026 09:55:51 | OUT | Qty: 349.92 | ORDER | Vente ORD-2026-000377
+    01/03/2026 07:43:34 | OUT | Qty: 466.56 | ORDER | Vente ORD-2026-000374
+    28/02/2026 13:34:41 | IN | Qty: 5184.00 | GOODS_RECEIPT | 
+    28/02/2026 12:42:15 | OUT | Qty: 524.88 | ORDER | Vente ORD-2026-000375
+    28/02/2026 10:33:41 | OUT | Qty: 524.88 | ORDER | Vente ORD-2026-000375
+    28/02/2026 10:26:51 | OUT | Qty: 466.56 | ORDER | Vente ORD-2026-000374
+    28/02/2026 09:51:02 | IN | Qty: 5760.00 | GOODS_RECEIPT | 
+    28/02/2026 09:14:52 | OUT | Qty: 63.18 | ORDER | Vente ORD-2026-000360
+    28/02/2026 08:47:34 | IN | Qty: 5184.00 | GOODS_RECEIPT | 
+    26/01/2026 12:17:45 | ADJUSTMENT | Qty: -1844.37 | IMPORT_CSV | Import Initial
+    26/12/2025 23:53:51 | ADJUSTMENT | Qty: 1844.37 | IMPORT_CSV | Import Initial
+
+  === [ASCOT ROJO 20/75] ASCOT ROJO 20/75 ===
+    04/03/2026 10:15:22 | OUT | Qty: 691.20 | ORDER | Vente ORD-2026-000524
+    04/03/2026 09:55:33 | OUT | Qty: 691.20 | ORDER | Vente ORD-2026-000511
+    03/03/2026 13:14:03 | OUT | Qty: 691.20 | ORDER | Vente ORD-2026-000511
+    28/02/2026 11:06:40 | OUT | Qty: 614.40 | ORDER | Vente ORD-2026-000379
+    23/02/2026 11:23:20 | ADJUSTMENT | Qty: -67.92 | IMPORT_CSV | Import Initial
+    21/02/2026 11:46:47 | ADJUSTMENT | Qty: 0.00 | IMPORT_CSV | Import Initial
+    21/02/2026 10:57:12 | ADJUSTMENT | Qty: 0.00 | IMPORT_CSV | Import Initial
+    21/02/2026 10:37:09 | ADJUSTMENT | Qty: -7.68 | IMPORT_CSV | Import Initial
+    18/02/2026 13:44:28 | OUT | Qty: 1.20 | ORDER | Vente ORD-2026-000092
+    17/02/2026 11:52:37 | ADJUSTMENT | Qty: 87.60 | IMPORT_CSV | Import Initial
+    17/02/2026 11:52:22 | ADJUSTMENT | Qty: -87.60 | IMPORT_CSV | Import Initial
+    17/02/2026 11:42:00 | ADJUSTMENT | Qty: 87.60 | IMPORT_CSV | Import Initial
+    17/02/2026 11:41:48 | ADJUSTMENT | Qty: -87.60 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:17 | ADJUSTMENT | Qty: 87.60 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:04 | ADJUSTMENT | Qty: -87.60 | IMPORT_CSV | Import Initial
+    16/02/2026 17:10:04 | ADJUSTMENT | Qty: 87.60 | IMPORT_CSV | Import Initial
+    16/02/2026 17:09:24 | ADJUSTMENT | Qty: -87.60 | IMPORT_CSV | Import Initial
+    15/02/2026 12:26:51 | ADJUSTMENT | Qty: -223.20 | IMPORT_CSV | Import Initial
+    29/01/2026 16:54:18 | ADJUSTMENT | Qty: -153.60 | IMPORT_CSV | Import Initial
+    26/01/2026 12:17:45 | ADJUSTMENT | Qty: -939.60 | IMPORT_CSV | Import Initial
+    26/12/2025 23:53:51 | ADJUSTMENT | Qty: 2698.80 | IMPORT_CSV | Import Initial
+
+  === [STYLE 25/75] STYLE 25/75 ===
+    04/03/2026 12:45:59 | ADJUSTMENT | Qty: 1536.00 | MANUAL_ADJUSTMENT | Bulk fix: Recalculated from GoodsReceipts minus Sales to correct unit conversion and cleanup script errors
+    04/03/2026 09:39:52 | IN | Qty: 4096.00 | GOODS_RECEIPT | 
+    03/03/2026 09:33:37 | IN | Qty: 9216.00 | GOODS_RECEIPT | 
+    02/03/2026 11:32:10 | IN | Qty: 3584.00 | GOODS_RECEIPT | 
+    26/02/2026 12:53:55 | IN | Qty: 7680.00 | GOODS_RECEIPT | 
+    23/02/2026 11:23:20 | ADJUSTMENT | Qty: -242.82 | IMPORT_CSV | Import Initial
+    21/02/2026 11:46:47 | ADJUSTMENT | Qty: 0.00 | IMPORT_CSV | Import Initial
+    21/02/2026 10:57:12 | ADJUSTMENT | Qty: 0.00 | IMPORT_CSV | Import Initial
+    21/02/2026 10:37:09 | ADJUSTMENT | Qty: -141.18 | IMPORT_CSV | Import Initial
+    17/02/2026 11:52:37 | ADJUSTMENT | Qty: -146.82 | IMPORT_CSV | Import Initial
+    17/02/2026 11:52:22 | ADJUSTMENT | Qty: 146.82 | IMPORT_CSV | Import Initial
+    17/02/2026 11:42:00 | ADJUSTMENT | Qty: -146.82 | IMPORT_CSV | Import Initial
+    17/02/2026 11:41:48 | ADJUSTMENT | Qty: 146.82 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:17 | ADJUSTMENT | Qty: -146.82 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:04 | ADJUSTMENT | Qty: 146.82 | IMPORT_CSV | Import Initial
+    16/02/2026 17:10:04 | ADJUSTMENT | Qty: -146.82 | IMPORT_CSV | Import Initial
+    16/02/2026 17:09:24 | ADJUSTMENT | Qty: -45.18 | IMPORT_CSV | Import Initial
+    15/02/2026 12:26:51 | ADJUSTMENT | Qty: -586.50 | IMPORT_CSV | Import Initial
+    29/01/2026 16:54:18 | ADJUSTMENT | Qty: -960.00 | IMPORT_CSV | Import Initial
+    26/01/2026 12:17:45 | ADJUSTMENT | Qty: -946.50 | IMPORT_CSV | Import Initial
+    26/12/2025 23:53:51 | ADJUSTMENT | Qty: 3069.00 | IMPORT_CSV | Import Initial
+
+  === [ACRA GRIS 45/90] ACRA GRIS 45/90 ===
+    05/03/2026 10:10:45 | ADJUSTMENT | Qty: 3608.55 | MANUAL_ADJUSTMENT | Fix: Recalculated from Import + Correct_GR_SQM - Sales (GR unit conversion bug fix)
+    04/03/2026 12:45:59 | ADJUSTMENT | Qty: -2611.47 | MANUAL_ADJUSTMENT | Bulk fix: Recalculated from GoodsReceipts minus Sales to correct unit conversion and cleanup script errors
+    04/03/2026 12:20:52 | IN | Qty: 840.00 | GOODS_RECEIPT | 
+    04/03/2026 09:39:52 | IN | Qty: 1848.00 | GOODS_RECEIPT | 
+    23/02/2026 12:40:54 | OUT | Qty: 68.04 | ORDER | Vente ORD-2026-000229
+    23/02/2026 11:23:20 | ADJUSTMENT | Qty: 145.00 | IMPORT_CSV | Import Initial
+    23/02/2026 08:48:54 | OUT | Qty: 68.04 | ORDER | Vente ORD-2026-000229
+    21/02/2026 12:00:38 | OUT | Qty: 136.08 | ORDER | Vente ORD-2026-000178
+    21/02/2026 11:46:47 | ADJUSTMENT | Qty: 0.00 | IMPORT_CSV | Import Initial
+    21/02/2026 10:57:12 | ADJUSTMENT | Qty: 0.00 | IMPORT_CSV | Import Initial
+    21/02/2026 10:37:09 | ADJUSTMENT | Qty: -142.57 | IMPORT_CSV | Import Initial
+    18/02/2026 13:45:14 | OUT | Qty: 2.43 | ORDER | Vente ORD-2026-000100
+    17/02/2026 11:52:37 | ADJUSTMENT | Qty: 8.92 | IMPORT_CSV | Import Initial
+    17/02/2026 11:52:22 | ADJUSTMENT | Qty: -8.92 | IMPORT_CSV | Import Initial
+    17/02/2026 11:42:00 | ADJUSTMENT | Qty: 8.92 | IMPORT_CSV | Import Initial
+    17/02/2026 11:41:48 | ADJUSTMENT | Qty: -8.92 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:17 | ADJUSTMENT | Qty: 8.92 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:04 | ADJUSTMENT | Qty: -8.92 | IMPORT_CSV | Import Initial
+    16/02/2026 17:10:04 | ADJUSTMENT | Qty: 8.92 | IMPORT_CSV | Import Initial
+    16/02/2026 17:09:24 | ADJUSTMENT | Qty: -8.92 | IMPORT_CSV | Import Initial
+    15/02/2026 12:26:51 | ADJUSTMENT | Qty: -915.29 | IMPORT_CSV | Import Initial
+    29/01/2026 16:54:18 | ADJUSTMENT | Qty: 0.00 | IMPORT_CSV | Import Initial
+    26/01/2026 12:17:45 | ADJUSTMENT | Qty: 3796.06 | IMPORT_CSV | Import Initial
+    26/12/2025 23:53:51 | ADJUSTMENT | Qty: 725.36 | IMPORT_CSV | Import Initial
+
+  === [MAUREEN BLACK POLI REC 120/60] MAUREEN BLACK POLI REC 120/60 ===
+    05/03/2026 08:03:26 | OUT | Qty: 0.72 | ORDER | Vente ORD-2026-000550
+    05/03/2026 08:02:13 | OUT | Qty: 2.88 | ORDER | Vente ORD-2026-000551
+    04/03/2026 11:18:30 | OUT | Qty: 1.00 | ORDER | Vente ORD-2026-000541
+    03/03/2026 08:19:07 | OUT | Qty: 1.00 | ORDER | Vente ORD-2026-000488
+    02/03/2026 12:48:46 | OUT | Qty: 70.00 | ORDER | Vente ORD-2026-000466
+    02/03/2026 12:33:47 | OUT | Qty: 70.00 | ORDER | Vente ORD-2026-000466
+    28/02/2026 12:05:25 | OUT | Qty: 28.00 | ORDER | Vente ORD-2026-000380
+    24/02/2026 10:37:27 | OUT | Qty: 140.00 | ORDER | Vente ORD-2026-000223
+    24/02/2026 10:17:15 | OUT | Qty: 1.00 | ORDER | Vente ORD-2026-000282
+    24/02/2026 10:13:02 | OUT | Qty: 1.00 | ORDER | Vente ORD-2026-000283
+    23/02/2026 11:23:20 | ADJUSTMENT | Qty: -130.44 | IMPORT_CSV | Import Initial
+    23/02/2026 08:48:57 | OUT | Qty: 70.00 | ORDER | Vente ORD-2026-000219
+    22/02/2026 14:12:00 | OUT | Qty: 1.00 | ORDER | Vente ORD-2026-000232
+    22/02/2026 14:11:55 | OUT | Qty: 1.00 | ORDER | Vente ORD-2026-000232
+    21/02/2026 13:23:22 | OUT | Qty: 1.00 | ORDER | Vente ORD-2026-000171
+    21/02/2026 10:37:09 | ADJUSTMENT | Qty: 77.56 | IMPORT_CSV | Import Initial
+    19/02/2026 15:08:37 | OUT | Qty: 1.00 | ORDER | Vente ORD-2026-000149
+    19/02/2026 08:08:41 | OUT | Qty: 7.00 | ORDER | Vente ORD-2026-000125
+    18/02/2026 13:53:48 | OUT | Qty: 33.00 | ORDER | Vente ORD-2026-000107
+    18/02/2026 11:45:04 | OUT | Qty: 6.00 | ORDER | Vente ORD-2026-000089
+    18/02/2026 11:44:27 | OUT | Qty: 1.00 | ORDER | Vente ORD-2026-000083
+    17/02/2026 11:52:37 | ADJUSTMENT | Qty: -43.00 | IMPORT_CSV | Import Initial
+    17/02/2026 11:52:22 | ADJUSTMENT | Qty: 43.00 | IMPORT_CSV | Import Initial
+    17/02/2026 11:42:00 | ADJUSTMENT | Qty: -43.00 | IMPORT_CSV | Import Initial
+    17/02/2026 11:41:48 | ADJUSTMENT | Qty: 43.00 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:17 | ADJUSTMENT | Qty: -43.00 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:04 | ADJUSTMENT | Qty: 43.00 | IMPORT_CSV | Import Initial
+    16/02/2026 17:10:04 | ADJUSTMENT | Qty: -43.00 | IMPORT_CSV | Import Initial
+    16/02/2026 17:09:24 | ADJUSTMENT | Qty: 43.00 | IMPORT_CSV | Import Initial
+    15/02/2026 12:26:51 | ADJUSTMENT | Qty: -282.00 | IMPORT_CSV | Import Initial
+    29/01/2026 16:54:18 | ADJUSTMENT | Qty: -153.00 | IMPORT_CSV | Import Initial
+    26/01/2026 12:17:45 | ADJUSTMENT | Qty: -166.00 | IMPORT_CSV | Import Initial
+    26/12/2025 23:53:51 | ADJUSTMENT | Qty: 951.00 | IMPORT_CSV | Import Initial
+
+  === [QUEBEC TERRE CUITE 45/45] QUEBEC TERRE CUITE 45/45 ===
+    03/03/2026 14:03:31 | OUT | Qty: 69.86 | ORDER | Vente ORD-2026-000497
+    15/02/2026 12:26:51 | ADJUSTMENT | Qty: -1772.89 | IMPORT_CSV | Import Initial
+    26/12/2025 23:53:51 | ADJUSTMENT | Qty: 1772.89 | IMPORT_CSV | Import Initial
+
+  === [BERLIN BEIGE 45/45] BERLIN BEIGE 45/45 ===
+    05/03/2026 13:13:33 | OUT | Qty: 7.10 | ORDER | Vente ORD-2026-000582
+    02/03/2026 07:34:50 | OUT | Qty: 5.68 | ORDER | Vente ORD-2026-000441
+    23/02/2026 11:23:20 | ADJUSTMENT | Qty: -55.78 | IMPORT_CSV | Import Initial
+    21/02/2026 10:37:09 | ADJUSTMENT | Qty: 55.78 | IMPORT_CSV | Import Initial
+    19/02/2026 08:08:20 | OUT | Qty: 15.62 | ORDER | Vente ORD-2026-000136
+    17/02/2026 11:52:37 | ADJUSTMENT | Qty: -55.99 | IMPORT_CSV | Import Initial
+    17/02/2026 11:52:22 | ADJUSTMENT | Qty: 55.99 | IMPORT_CSV | Import Initial
+    17/02/2026 11:42:00 | ADJUSTMENT | Qty: -55.99 | IMPORT_CSV | Import Initial
+    17/02/2026 11:41:48 | ADJUSTMENT | Qty: 55.99 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:17 | ADJUSTMENT | Qty: -55.99 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:04 | ADJUSTMENT | Qty: 55.99 | IMPORT_CSV | Import Initial
+    16/02/2026 17:10:04 | ADJUSTMENT | Qty: -55.99 | IMPORT_CSV | Import Initial
+    16/02/2026 17:09:24 | ADJUSTMENT | Qty: 55.99 | IMPORT_CSV | Import Initial
+    15/02/2026 12:26:51 | ADJUSTMENT | Qty: -364.34 | IMPORT_CSV | Import Initial
+    29/01/2026 16:54:18 | ADJUSTMENT | Qty: -12.78 | IMPORT_CSV | Import Initial
+    26/01/2026 12:17:45 | ADJUSTMENT | Qty: -58.82 | IMPORT_CSV | Import Initial
+    26/12/2025 23:53:51 | ADJUSTMENT | Qty: 435.94 | IMPORT_CSV | Import Initial
+
+  === [MONIKA MARBRE POLI REC 45/90 (48C)] MONIKA MARBRE POLI REC 45/90 (48C) ===
+    05/03/2026 09:18:44 | OUT | Qty: 1.22 | ORDER | Vente ORD-2026-000558
+    26/01/2026 12:17:45 | ADJUSTMENT | Qty: -188.74 | IMPORT_CSV | Import Initial
+    26/12/2025 23:53:51 | ADJUSTMENT | Qty: 188.74 | IMPORT_CSV | Import Initial
+
+  === [PROSTYLE MARFIL 45/90] PROSTYLE MARFIL 45/90 ===
+    05/03/2026 10:10:45 | ADJUSTMENT | Qty: 3211.20 | MANUAL_ADJUSTMENT | Fix: Recalculated from Import + Correct_GR_SQM - Sales (GR unit conversion bug fix)
+    04/03/2026 12:45:59 | ADJUSTMENT | Qty: -3852.76 | MANUAL_ADJUSTMENT | Bulk fix: Recalculated from GoodsReceipts minus Sales to correct unit conversion and cleanup script errors
+    02/03/2026 12:48:46 | OUT | Qty: 116.64 | ORDER | Vente ORD-2026-000466
+    02/03/2026 12:33:47 | OUT | Qty: 116.64 | ORDER | Vente ORD-2026-000466
+    24/02/2026 10:40:44 | OUT | Qty: 116.64 | ORDER | Vente ORD-2026-000218
+    23/02/2026 11:23:20 | ADJUSTMENT | Qty: -226.59 | IMPORT_CSV | Import Initial
+    21/02/2026 15:12:52 | OUT | Qty: 3.65 | ORDER | Vente ORD-2026-000188
+    21/02/2026 10:37:09 | ADJUSTMENT | Qty: -232.72 | IMPORT_CSV | Import Initial
+    19/02/2026 09:35:27 | OUT | Qty: 174.96 | ORDER | Vente ORD-2026-000142
+    18/02/2026 13:57:30 | OUT | Qty: 174.96 | ORDER | Vente ORD-2026-000096
+    18/02/2026 11:59:15 | IN | Qty: 288.00 | GOODS_RECEIPT | 
+    17/02/2026 11:52:37 | ADJUSTMENT | Qty: 366.76 | IMPORT_CSV | Import Initial
+    17/02/2026 11:52:22 | ADJUSTMENT | Qty: -366.76 | IMPORT_CSV | Import Initial
+    17/02/2026 11:42:00 | ADJUSTMENT | Qty: 366.76 | IMPORT_CSV | Import Initial
+    17/02/2026 11:41:48 | ADJUSTMENT | Qty: -366.76 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:17 | ADJUSTMENT | Qty: 366.76 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:04 | ADJUSTMENT | Qty: -483.40 | IMPORT_CSV | Import Initial
+    17/02/2026 09:46:31 | IN | Qty: 116.64 | GOODS_RECEIPT | 
+    16/02/2026 17:10:04 | ADJUSTMENT | Qty: 366.76 | IMPORT_CSV | Import Initial
+    16/02/2026 17:09:24 | ADJUSTMENT | Qty: -716.68 | IMPORT_CSV | Import Initial
+    15/02/2026 12:26:51 | ADJUSTMENT | Qty: 4487.80 | IMPORT_CSV | Import Initial
+    29/01/2026 16:54:18 | ADJUSTMENT | Qty: 0.00 | IMPORT_CSV | Import Initial
+    26/01/2026 12:17:45 | ADJUSTMENT | Qty: -50.90 | IMPORT_CSV | Import Initial
+    26/12/2025 23:53:51 | ADJUSTMENT | Qty: 53.74 | IMPORT_CSV | Import Initial
+
+  === [EUROPA REC 60/60] EUROPA REC 60/60 ===
+    05/03/2026 12:57:56 | OUT | Qty: 207.36 | ORDER | Vente ORD-2026-000294
+    04/03/2026 12:45:59 | ADJUSTMENT | Qty: 743.04 | MANUAL_ADJUSTMENT | Bulk fix: Recalculated from GoodsReceipts minus Sales to correct unit conversion and cleanup script errors
+    04/03/2026 12:20:36 | IN | Qty: 3168.00 | GOODS_RECEIPT | 
+    04/03/2026 11:14:42 | OUT | Qty: 155.52 | ORDER | Vente ORD-2026-000540
+    03/03/2026 09:33:37 | IN | Qty: 1440.00 | GOODS_RECEIPT | 
+    02/03/2026 12:04:24 | IN | Qty: 1728.00 | GOODS_RECEIPT | 
+    01/03/2026 13:16:27 | IN | Qty: 1584.00 | GOODS_RECEIPT | 
+    01/03/2026 11:50:27 | OUT | Qty: 311.04 | ORDER | Vente ORD-2026-000422
+    01/03/2026 11:36:53 | OUT | Qty: 155.52 | ORDER | Vente ORD-2026-000390
+    01/03/2026 07:52:32 | IN | Qty: 1152.00 | GOODS_RECEIPT | 
+    28/02/2026 12:40:18 | IN | Qty: 3168.00 | GOODS_RECEIPT | 
+    28/02/2026 11:11:13 | OUT | Qty: 311.04 | ORDER | Vente ORD-2026-000315
+    28/02/2026 09:18:31 | IN | Qty: 3024.00 | GOODS_RECEIPT | 
+    26/02/2026 12:54:02 | IN | Qty: 1872.00 | GOODS_RECEIPT | 
+    25/02/2026 12:27:21 | IN | Qty: 2880.00 | GOODS_RECEIPT | 
+    25/02/2026 11:37:17 | OUT | Qty: 207.36 | ORDER | Vente ORD-2026-000311
+    25/02/2026 10:22:44 | OUT | Qty: 207.36 | ORDER | Vente ORD-2026-000285
+    25/02/2026 09:51:49 | IN | Qty: 2016.00 | GOODS_RECEIPT | 
+    24/02/2026 14:39:28 | OUT | Qty: 414.72 | ORDER | Vente ORD-2026-000304
+    24/02/2026 14:30:38 | OUT | Qty: 570.24 | ORDER | Vente ORD-2026-000300
+    24/02/2026 12:33:11 | IN | Qty: 3168.00 | GOODS_RECEIPT | 
+    15/02/2026 12:26:51 | ADJUSTMENT | Qty: -2.84 | IMPORT_CSV | Import Initial
+    29/01/2026 16:54:18 | ADJUSTMENT | Qty: 0.00 | IMPORT_CSV | Import Initial
+    26/01/2026 12:17:45 | ADJUSTMENT | Qty: 2.84 | IMPORT_CSV | Import Initial
+
+  === [COSTA WHITE REC 60/60] COSTA WHITE REC 60/60 ===
+    05/03/2026 11:40:24 | OUT | Qty: 311.04 | ORDER | Vente ORD-2026-000566
+    05/03/2026 11:14:49 | OUT | Qty: 518.40 | ORDER | Vente ORD-2026-000489
+    04/03/2026 12:45:59 | ADJUSTMENT | Qty: 1918.08 | MANUAL_ADJUSTMENT | Bulk fix: Recalculated from GoodsReceipts minus Sales to correct unit conversion and cleanup script errors
+    04/03/2026 12:30:33 | OUT | Qty: 800.64 | ORDER | Vente ORD-2026-000546
+    04/03/2026 11:46:17 | OUT | Qty: 207.36 | ORDER | Vente ORD-2026-000543
+    04/03/2026 11:14:42 | OUT | Qty: 155.52 | ORDER | Vente ORD-2026-000540
+    04/03/2026 09:39:52 | IN | Qty: 864.00 | GOODS_RECEIPT | 
+    04/03/2026 09:39:25 | IN | Qty: 1584.00 | GOODS_RECEIPT | 
+    03/03/2026 09:33:37 | IN | Qty: 1296.00 | GOODS_RECEIPT | 
+    02/03/2026 12:04:24 | IN | Qty: 1440.00 | GOODS_RECEIPT | 
+    01/03/2026 13:16:27 | IN | Qty: 1584.00 | GOODS_RECEIPT | 
+    01/03/2026 07:52:32 | IN | Qty: 1440.00 | GOODS_RECEIPT | 
+    28/02/2026 11:11:13 | OUT | Qty: 311.04 | ORDER | Vente ORD-2026-000315
+    28/02/2026 09:18:31 | IN | Qty: 3024.00 | GOODS_RECEIPT | 
+    25/02/2026 14:55:48 | OUT | Qty: 207.36 | ORDER | Vente ORD-2026-000316
+    25/02/2026 10:22:44 | OUT | Qty: 155.52 | ORDER | Vente ORD-2026-000285
+    25/02/2026 09:51:49 | IN | Qty: 1152.00 | GOODS_RECEIPT | 
+    24/02/2026 14:30:38 | OUT | Qty: 570.24 | ORDER | Vente ORD-2026-000300
+    24/02/2026 14:26:25 | IN | Qty: 1152.00 | GOODS_RECEIPT | 
+    24/02/2026 13:15:18 | IN | Qty: 2592.00 | GOODS_RECEIPT | 
+
+  === [EUROPA MATT 45/90 DECO] EUROPA MATT 45/90 DECO ===
+    05/03/2026 11:40:24 | OUT | Qty: 68.04 | ORDER | Vente ORD-2026-000566
+    05/03/2026 10:10:45 | ADJUSTMENT | Qty: -1360.80 | MANUAL_ADJUSTMENT | Fix: Recalculated from Import + Correct_GR_SQM - Sales (GR unit conversion bug fix)
+    04/03/2026 12:45:59 | ADJUSTMENT | Qty: 816.48 | MANUAL_ADJUSTMENT | Bulk fix: Recalculated from GoodsReceipts minus Sales to correct unit conversion and cleanup script errors
+    28/02/2026 11:06:40 | OUT | Qty: 68.04 | ORDER | Vente ORD-2026-000379
+    23/02/2026 12:58:35 | OUT | Qty: 136.08 | ORDER | Vente ORD-2026-000255
+    23/02/2026 11:23:20 | ADJUSTMENT | Qty: -3215.52 | IMPORT_CSV | Import Initial
+    23/02/2026 08:48:57 | OUT | Qty: 68.04 | ORDER | Vente ORD-2026-000219
+    21/02/2026 14:56:23 | IN | Qty: 2016.00 | GOODS_RECEIPT | 
+    21/02/2026 14:55:30 | IN | Qty: 2016.00 | GOODS_RECEIPT | 
+
+  === [QUEBEC GRIS TERRE CUITE 45/45] QUEBEC GRIS TERRE CUITE 45/45 ===
+    04/03/2026 10:15:22 | OUT | Qty: 437.40 | ORDER | Vente ORD-2026-000524
+    04/03/2026 09:55:33 | OUT | Qty: 437.40 | ORDER | Vente ORD-2026-000511
+    03/03/2026 13:14:03 | OUT | Qty: 437.40 | ORDER | Vente ORD-2026-000511
+    24/02/2026 14:27:01 | OUT | Qty: 145.80 | ORDER | Vente ORD-2026-000288
+    23/02/2026 11:23:20 | ADJUSTMENT | Qty: 1530.90 | IMPORT_CSV | Import Initial
+    21/02/2026 10:37:09 | ADJUSTMENT | Qty: -1530.90 | IMPORT_CSV | Import Initial
+    17/02/2026 11:52:37 | ADJUSTMENT | Qty: 1530.90 | IMPORT_CSV | Import Initial
+    17/02/2026 11:52:22 | ADJUSTMENT | Qty: -1530.90 | IMPORT_CSV | Import Initial
+    17/02/2026 11:42:00 | ADJUSTMENT | Qty: 1530.90 | IMPORT_CSV | Import Initial
+    17/02/2026 11:41:48 | ADJUSTMENT | Qty: -1530.90 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:17 | ADJUSTMENT | Qty: 1530.90 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:04 | ADJUSTMENT | Qty: -1530.90 | IMPORT_CSV | Import Initial
+    16/02/2026 17:10:04 | ADJUSTMENT | Qty: 1530.90 | IMPORT_CSV | Import Initial
+    16/02/2026 17:09:24 | ADJUSTMENT | Qty: -1530.90 | IMPORT_CSV | Import Initial
+    15/02/2026 12:26:51 | ADJUSTMENT | Qty: 1530.90 | IMPORT_CSV | Import Initial
+    26/01/2026 12:17:45 | ADJUSTMENT | Qty: -51.84 | IMPORT_CSV | Import Initial
+    27/12/2025 09:05:58 | ADJUSTMENT | Qty: 51.84 | MANUAL_ADJUSTMENT | Ajustement: +51.84 m² (1 pal, 36 ctn, 144 pcs)
+
+  === [LIFE BLANC FS 31/65] LIFE BLANC FS 31/65 ===
+    05/03/2026 12:45:11 | OUT | Qty: 1.49 | ORDER | Vente ORD-2026-000577
+    04/03/2026 10:23:35 | OUT | Qty: 53.24 | ORDER | Vente ORD-2026-000525
+    03/03/2026 10:47:47 | OUT | Qty: 5.45 | ORDER | Vente ORD-2026-000502
+
+  === [MIRNA EXTRA REC 60/60] MIRNA EXTRA REC 60/60 ===
+    05/03/2026 09:17:43 | OUT | Qty: 2.16 | ORDER | Vente ORD-2026-000556
+    28/02/2026 13:30:00 | OUT | Qty: 207.36 | ORDER | Vente ORD-2026-000278
+    28/02/2026 13:29:53 | OUT | Qty: 207.36 | ORDER | Vente ORD-2026-000278
+    25/02/2026 14:56:20 | OUT | Qty: 207.36 | ORDER | Vente ORD-2026-000278
+    23/02/2026 11:23:20 | ADJUSTMENT | Qty: -556.80 | IMPORT_CSV | Import Initial
+    21/02/2026 11:46:47 | ADJUSTMENT | Qty: 0.00 | IMPORT_CSV | Import Initial
+    21/02/2026 10:57:12 | ADJUSTMENT | Qty: 0.00 | IMPORT_CSV | Import Initial
+    21/02/2026 10:37:09 | ADJUSTMENT | Qty: 556.80 | IMPORT_CSV | Import Initial
+    18/02/2026 12:36:01 | OUT | Qty: 155.52 | ORDER | Vente ORD-2026-000098
+    17/02/2026 11:52:37 | ADJUSTMENT | Qty: -556.80 | IMPORT_CSV | Import Initial
+    17/02/2026 11:52:22 | ADJUSTMENT | Qty: 556.80 | IMPORT_CSV | Import Initial
+    17/02/2026 11:42:00 | ADJUSTMENT | Qty: -556.80 | IMPORT_CSV | Import Initial
+    17/02/2026 11:41:48 | ADJUSTMENT | Qty: 556.80 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:17 | ADJUSTMENT | Qty: -556.80 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:04 | ADJUSTMENT | Qty: 556.80 | IMPORT_CSV | Import Initial
+    16/02/2026 17:10:04 | ADJUSTMENT | Qty: -556.80 | IMPORT_CSV | Import Initial
+    16/02/2026 17:09:24 | ADJUSTMENT | Qty: 556.80 | IMPORT_CSV | Import Initial
+    15/02/2026 12:26:51 | ADJUSTMENT | Qty: -1811.52 | IMPORT_CSV | Import Initial
+    29/01/2026 16:54:18 | ADJUSTMENT | Qty: -521.28 | IMPORT_CSV | Import Initial
+    26/01/2026 12:17:45 | ADJUSTMENT | Qty: 3058.56 | IMPORT_CSV | Import Initial
+
+  === [MELINA MARFIL REC 60/60 (2éme)] MELINA MARFIL REC 60/60 (2éme) ===
+    04/03/2026 12:45:59 | ADJUSTMENT | Qty: -610.56 | MANUAL_ADJUSTMENT | Bulk fix: Recalculated from GoodsReceipts minus Sales to correct unit conversion and cleanup script errors
+    04/03/2026 11:30:16 | IN | Qty: 2736.00 | GOODS_RECEIPT | 
+    02/03/2026 08:03:51 | IN | Qty: 1584.00 | GOODS_RECEIPT | 
+
+  === [PALACE NOIR POLI REC 45/90 (2éme)] PALACE NOIR POLI REC 45/90 (2éme) ===
+    05/03/2026 09:17:43 | OUT | Qty: 0.41 | ORDER | Vente ORD-2026-000556
+    05/03/2026 08:02:13 | OUT | Qty: 7.29 | ORDER | Vente ORD-2026-000551
+    03/03/2026 09:36:58 | OUT | Qty: 0.41 | ORDER | Vente ORD-2026-000491
+
+  === [DRAGON GREEN POLI REC 120/60] DRAGON GREEN POLI REC 120/60 ===
+    05/03/2026 10:10:45 | ADJUSTMENT | Qty: -490.00 | MANUAL_ADJUSTMENT | Fix: Recalculated from Import + Correct_GR_SQM - Sales (GR unit conversion bug fix)
+    04/03/2026 12:45:59 | ADJUSTMENT | Qty: 1190.00 | MANUAL_ADJUSTMENT | Bulk fix: Recalculated from GoodsReceipts minus Sales to correct unit conversion and cleanup script errors
+    04/03/2026 11:14:42 | OUT | Qty: 70.00 | ORDER | Vente ORD-2026-000540
+    04/03/2026 10:15:22 | OUT | Qty: 140.00 | ORDER | Vente ORD-2026-000524
+    04/03/2026 09:55:33 | OUT | Qty: 140.00 | ORDER | Vente ORD-2026-000511
+    04/03/2026 09:39:52 | IN | Qty: 210.00 | GOODS_RECEIPT | 
+    04/03/2026 09:39:41 | IN | Qty: 770.00 | GOODS_RECEIPT | 
+    03/03/2026 13:14:03 | OUT | Qty: 140.00 | ORDER | Vente ORD-2026-000511
+    02/03/2026 12:48:46 | OUT | Qty: 140.00 | ORDER | Vente ORD-2026-000466
+    02/03/2026 12:33:47 | OUT | Qty: 140.00 | ORDER | Vente ORD-2026-000466
+    02/03/2026 09:11:08 | OUT | Qty: 140.00 | ORDER | Vente ORD-2026-000454
+    28/02/2026 11:44:32 | OUT | Qty: 70.00 | ORDER | Vente ORD-2026-000386
+    28/02/2026 09:20:18 | IN | Qty: 770.00 | GOODS_RECEIPT | 
+    29/01/2026 16:54:18 | ADJUSTMENT | Qty: -24.00 | IMPORT_CSV | Import Initial
+    26/01/2026 12:17:45 | ADJUSTMENT | Qty: -633.00 | IMPORT_CSV | Import Initial
+    26/12/2025 23:53:51 | ADJUSTMENT | Qty: 657.00 | IMPORT_CSV | Import Initial
+
+  === [KING CREMA 45/90] KING CREMA 45/90 ===
+    05/03/2026 10:10:45 | ADJUSTMENT | Qty: 1156.68 | MANUAL_ADJUSTMENT | Fix: Recalculated from Import + Correct_GR_SQM - Sales (GR unit conversion bug fix)
+    04/03/2026 12:45:59 | ADJUSTMENT | Qty: -1530.90 | MANUAL_ADJUSTMENT | Bulk fix: Recalculated from GoodsReceipts minus Sales to correct unit conversion and cleanup script errors
+    24/02/2026 10:40:44 | OUT | Qty: 136.08 | ORDER | Vente ORD-2026-000218
+    23/02/2026 11:23:20 | ADJUSTMENT | Qty: -170.10 | IMPORT_CSV | Import Initial
+    22/02/2026 13:20:14 | OUT | Qty: 34.02 | ORDER | Vente ORD-2026-000227
+    21/02/2026 10:37:09 | ADJUSTMENT | Qty: 136.08 | IMPORT_CSV | Import Initial
+    18/02/2026 12:38:46 | OUT | Qty: 136.08 | ORDER | Vente ORD-2026-000099
+    18/02/2026 12:36:01 | OUT | Qty: 68.04 | ORDER | Vente ORD-2026-000098
+    18/02/2026 11:44:20 | OUT | Qty: 34.02 | ORDER | Vente ORD-2026-000086
+    18/02/2026 11:44:17 | OUT | Qty: 34.02 | ORDER | Vente ORD-2026-000087
+    17/02/2026 11:52:37 | ADJUSTMENT | Qty: -68.04 | IMPORT_CSV | Import Initial
+    17/02/2026 11:52:22 | ADJUSTMENT | Qty: 68.04 | IMPORT_CSV | Import Initial
+    17/02/2026 11:42:00 | ADJUSTMENT | Qty: -68.04 | IMPORT_CSV | Import Initial
+    17/02/2026 11:41:48 | ADJUSTMENT | Qty: 68.04 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:17 | ADJUSTMENT | Qty: -68.04 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:04 | ADJUSTMENT | Qty: 68.04 | IMPORT_CSV | Import Initial
+    16/02/2026 17:10:04 | ADJUSTMENT | Qty: -68.04 | IMPORT_CSV | Import Initial
+    16/02/2026 17:09:24 | ADJUSTMENT | Qty: 340.20 | IMPORT_CSV | Import Initial
+    16/02/2026 13:37:39 | IN | Qty: 204.12 | GOODS_RECEIPT | 
+    15/02/2026 12:26:51 | ADJUSTMENT | Qty: 1156.68 | IMPORT_CSV | Import Initial
+
+  === [ROMA BLANC 30/90] ROMA BLANC 30/90 ===
+    05/03/2026 12:57:56 | OUT | Qty: 77.76 | ORDER | Vente ORD-2026-000294
+    05/03/2026 11:14:49 | OUT | Qty: 388.80 | ORDER | Vente ORD-2026-000489
+    05/03/2026 10:10:45 | ADJUSTMENT | Qty: 2431.62 | MANUAL_ADJUSTMENT | Fix: Recalculated from Import + Correct_GR_SQM - Sales (GR unit conversion bug fix)
+    04/03/2026 12:45:59 | ADJUSTMENT | Qty: -4951.80 | MANUAL_ADJUSTMENT | Bulk fix: Recalculated from GoodsReceipts minus Sales to correct unit conversion and cleanup script errors
+    04/03/2026 09:38:38 | IN | Qty: 6912.00 | GOODS_RECEIPT | 
+    03/03/2026 09:33:40 | IN | Qty: 9216.00 | GOODS_RECEIPT | 
+    01/03/2026 12:01:56 | OUT | Qty: 233.28 | ORDER | Vente ORD-2026-000423
+    01/03/2026 07:43:34 | OUT | Qty: 622.08 | ORDER | Vente ORD-2026-000374
+    28/02/2026 11:11:13 | OUT | Qty: 622.08 | ORDER | Vente ORD-2026-000315
+    28/02/2026 10:26:51 | OUT | Qty: 622.08 | ORDER | Vente ORD-2026-000374
+    28/02/2026 10:23:25 | OUT | Qty: 155.52 | ORDER | Vente ORD-2026-000215
+    28/02/2026 10:23:18 | OUT | Qty: 155.52 | ORDER | Vente ORD-2026-000215
+    28/02/2026 09:24:26 | OUT | Qty: 155.52 | ORDER | Vente ORD-2026-000266
+    28/02/2026 09:17:05 | OUT | Qty: 155.52 | ORDER | Vente ORD-2026-000266
+    28/02/2026 08:46:01 | OUT | Qty: 155.52 | ORDER | Vente ORD-2026-000266
+    26/02/2026 12:01:07 | OUT | Qty: 155.52 | ORDER | Vente ORD-2026-000215
+    26/02/2026 11:12:49 | OUT | Qty: 155.52 | ORDER | Vente ORD-2026-000266
+    23/02/2026 15:11:02 | OUT | Qty: 14.58 | ORDER | Vente ORD-2026-000268
+    23/02/2026 12:58:35 | OUT | Qty: 155.52 | ORDER | Vente ORD-2026-000255
+    23/02/2026 11:23:20 | ADJUSTMENT | Qty: 2410.56 | IMPORT_CSV | Import Initial
+    23/02/2026 08:37:42 | OUT | Qty: 25.92 | ORDER | Vente ORD-2026-000240
+    22/02/2026 14:32:39 | OUT | Qty: 155.52 | ORDER | Vente ORD-2026-000235
+    21/02/2026 10:37:09 | ADJUSTMENT | Qty: -1067.58 | IMPORT_CSV | Import Initial
+    19/02/2026 13:04:10 | OUT | Qty: 388.80 | ORDER | Vente ORD-2026-000148
+    17/02/2026 16:43:44 | OUT | Qty: 21.06 | ORDER | Vente ORD-2026-000045
+    17/02/2026 11:52:37 | ADJUSTMENT | Qty: 1085.23 | IMPORT_CSV | Import Initial
+    17/02/2026 11:52:22 | ADJUSTMENT | Qty: -1085.23 | IMPORT_CSV | Import Initial
+    17/02/2026 11:42:00 | ADJUSTMENT | Qty: 1085.23 | IMPORT_CSV | Import Initial
+    17/02/2026 11:41:48 | ADJUSTMENT | Qty: -1085.23 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:17 | ADJUSTMENT | Qty: 1085.23 | IMPORT_CSV | Import Initial
+    17/02/2026 11:11:04 | ADJUSTMENT | Qty: -1085.23 | IMPORT_CSV | Import Initial
+    16/02/2026 17:10:04 | ADJUSTMENT | Qty: 1085.23 | IMPORT_CSV | Import Initial
+    16/02/2026 17:09:24 | ADJUSTMENT | Qty: -2484.91 | IMPORT_CSV | Import Initial
+    15/02/2026 12:26:51 | ADJUSTMENT | Qty: 2488.32 | IMPORT_CSV | Import Initial
+
+  === [569] KING IVORY RELIEFE 45/90 ===
+    05/03/2026 10:10:45 | ADJUSTMENT | Qty: -199.92 | MANUAL_ADJUSTMENT | Fix: Recalculated from Import + Correct_GR_SQM - Sales (GR unit conversion bug fix)
+    04/03/2026 12:45:59 | ADJUSTMENT | Qty: 672.00 | MANUAL_ADJUSTMENT | Bulk fix: Recalculated from GoodsReceipts minus Sales to correct unit conversion and cleanup script errors
+
+  === [VICTORIA EXTRA REC 60/60] VICTORIA EXTRA REC 60/60 ===
+    05/03/2026 10:10:45 | ADJUSTMENT | Qty: 2280.96 | MANUAL_ADJUSTMENT | Fix: Recalculated from Import + Correct_GR_SQM - Sales (GR unit conversion bug fix)
+    05/03/2026 09:58:45 | ADJUSTMENT | Qty: -737.28 | MANUAL_ADJUSTMENT | Fix: GoodsReceipt unit conversion bug - correcting SQM/PCS inflation
+    05/03/2026 08:13:50 | IN | Qty: 414.72 | GOODS_RECEIPT | 
+    04/03/2026 12:45:59 | ADJUSTMENT | Qty: -1896.48 | MANUAL_ADJUSTMENT | Bulk fix: Recalculated from GoodsReceipts minus Sales to correct unit conversion and cleanup script errors
+    28/02/2026 09:50:47 | IN | Qty: 2592.00 | GOODS_RECEIPT | 
+    28/02/2026 09:24:26 | OUT | Qty: 311.04 | ORDER | Vente ORD-2026-000266
+    28/02/2026 09:17:05 | OUT | Qty: 311.04 | ORDER | Vente ORD-2026-000266
+    28/02/2026 08:46:01 | OUT | Qty: 311.04 | ORDER | Vente ORD-2026-000266
+    26/02/2026 14:53:15 | OUT | Qty: 30.24 | ORDER | Vente ORD-2026-000350
+    26/02/2026 13:32:19 | OUT | Qty: 30.24 | ORDER | Vente ORD-2026-000350
+    26/02/2026 11:12:49 | OUT | Qty: 311.04 | ORDER | Vente ORD-2026-000266
+    24/02/2026 10:10:28 | IN | Qty: 6336.00 | GOODS_RECEIPT | 
+    23/02/2026 11:23:20 | ADJUSTMENT | Qty: 2280.96 | IMPORT_CSV | Import Initial
+
+  === [TECHNO CERAM_NEW_IBL7] BIJOUX PERLA POLI REC 60/60 ===
+    05/03/2026 12:43:27 | OUT | Qty: 2.88 | ORDER | Vente ORD-2026-000569
+
+  === [GALA CERAM_NEW_LNGG] CAIRO 33/33 ===
+    05/03/2026 14:14:56 | OUT | Qty: 2.18 | ORDER | Vente ORD-2026-000588
+
+  === [TIMGAD CERAM_NEW_KB8W] DRAGON POLI REC 120/60 ===
+    05/03/2026 10:10:45 | ADJUSTMENT | Qty: -274.40 | MANUAL_ADJUSTMENT | Fix: Recalculated from Import + Correct_GR_SQM - Sales (GR unit conversion bug fix)
+    04/03/2026 12:45:59 | ADJUSTMENT | Qty: -509.60 | MANUAL_ADJUSTMENT | Bulk fix: Recalculated from GoodsReceipts minus Sales to correct unit conversion and cleanup script errors
+    04/03/2026 10:15:22 | OUT | Qty: 70.00 | ORDER | Vente ORD-2026-000524
+    04/03/2026 09:39:52 | IN | Qty: 210.00 | GOODS_RECEIPT | 
+    04/03/2026 09:39:41 | IN | Qty: 770.00 | GOODS_RECEIPT | 
+
+  === [TIMGAD CERAM_NEW_6ZSR] ROLEX GRIS POLI REC 60/60 ===
+    04/03/2026 11:14:42 | OUT | Qty: 24.48 | ORDER | Vente ORD-2026-000540
+
+  === [NEW TECH_NEW_9ORY] VENAS 45/45 ===
+    05/03/2026 08:02:13 | OUT | Qty: 5.68 | ORDER | Vente ORD-2026-000551

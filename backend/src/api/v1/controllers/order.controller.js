@@ -302,14 +302,75 @@ async function addOrderItem(req, res, next) {
 
     const customerId = orderResult.rows[0].customerid;
 
-    // Get product's purchase price for cost tracking (kept hidden from sales UI)
+    // Get product details for stock check + unit conversion
     const productResult = await client.query(
-      'SELECT PurchasePrice, BasePrice FROM Products WHERE ProductID = $1',
+      'SELECT p.PurchasePrice, p.BasePrice, p.ProductName, p.ProductCode, p.Size, p.PrimaryUnitID, u.UnitCode as PrimaryUnitCode FROM Products p LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID WHERE p.ProductID = $1',
       [productId]
     );
     const costPrice = parseFloat(productResult.rows[0]?.purchaseprice) || parseFloat(productResult.rows[0]?.baseprice) || 0;
+    const product = productResult.rows[0];
 
-    // CRITICAL: Use provided unitPrice from POS if available, else use Price Waterfall Logic
+    // ═══════════════════════════════════════════════════════════
+    // STOCK CHECK — MUST happen BEFORE insert, inside transaction
+    // ═══════════════════════════════════════════════════════════
+    if (product && product.productcode !== 'MANUAL') {
+      // Fetch Unit Code for the item
+      const unitRes = await client.query('SELECT UnitCode FROM Units WHERE UnitID = $1', [unitId]);
+      const unitCode = unitRes.rows.length > 0 ? unitRes.rows[0].unitcode : 'PCS';
+
+      // Parse Dimensions Helper
+      const parseDimensions = (str) => {
+        if (!str) return 0;
+        const match = str.match(/(\d{2,3})\s*[xX*\/]\s*(\d{2,3})/);
+        if (match) {
+          return (parseInt(match[1]) * parseInt(match[2])) / 10000; // cm*cm / 10000 = m2
+        }
+        return 0;
+      };
+
+      let qtyToReserve = parseFloat(quantity) || 0;
+
+      // UNIT CONVERSION LOGIC (Same as finalizeOrder)
+      const isSoldInPieces = unitCode === 'PCS';
+      const sqmPerPiece = parseDimensions(product.size || product.productname);
+      const isFicheProduct = (product.productname || '').toLowerCase().startsWith('fiche');
+
+      if (isSoldInPieces && !isFicheProduct && sqmPerPiece > 0) {
+        qtyToReserve = qtyToReserve * sqmPerPiece;
+      }
+
+      const warehouseId = orderResult.rows[0].warehouseid || 1;
+
+      // Check stock availability BEFORE inserting the order item
+      const inventoryCheck = await client.query('SELECT QuantityOnHand, QuantityReserved FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\'', [productId, warehouseId]);
+
+      let currentOnHand = 0;
+      let currentReserved = 0;
+
+      if (inventoryCheck.rows.length > 0) {
+        currentOnHand = parseFloat(inventoryCheck.rows[0].quantityonhand);
+        currentReserved = parseFloat(inventoryCheck.rows[0].quantityreserved);
+      }
+
+      const available = currentOnHand - currentReserved;
+      if (qtyToReserve > available) {
+        throw new Error(`Stock insuffisant. Disponible: ${available.toFixed(2)}, Demandé: ${qtyToReserve.toFixed(2)}`);
+      }
+
+      // Reserve inventory (still inside transaction — will rollback if anything fails)
+      await client.query(`
+          UPDATE Inventory 
+          SET QuantityReserved = QuantityReserved + $1,
+              UpdatedAt = CURRENT_TIMESTAMP
+          WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED'
+      `, [qtyToReserve, productId, warehouseId]);
+    } else if (product && product.productcode === 'MANUAL') {
+      console.log('Skipping inventory reservation for MANUAL product');
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // PRICING — Price Waterfall Logic
+    // ═══════════════════════════════════════════════════════════
     let unitPrice;
     let priceSource = 'POS'; // Default when price is provided from frontend
     if (providedUnitPrice !== undefined && providedUnitPrice !== null && providedUnitPrice > 0) {
@@ -382,77 +443,6 @@ async function addOrderItem(req, res, next) {
         order: updatedOrder.rows[0]
       }
     });
-
-    // Fetch product details for unit conversion
-    const productRes = await client.query(`
-      SELECT p.ProductName, p.ProductCode, p.Size, p.PrimaryUnitID, u.UnitCode as PrimaryUnitCode
-      FROM Products p
-      LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID
-      WHERE p.ProductID = $1
-    `, [productId]);
-
-    if (productRes.rows.length > 0) {
-      const product = productRes.rows[0];
-
-      // SKIP INVENTORY FOR MANUAL PRODUCTS
-      if (product.productcode === 'MANUAL') {
-        // Do not reserve inventory for manual products
-        console.log('Skipping inventory reservation for MANUAL product');
-      } else {
-
-        // Fetch Unit Code for the item
-        const unitRes = await client.query('SELECT UnitCode FROM Units WHERE UnitID = $1', [unitId]);
-        const unitCode = unitRes.rows.length > 0 ? unitRes.rows[0].unitcode : 'PCS';
-
-        // Parse Dimensions Helper
-        const parseDimensions = (str) => {
-          if (!str) return 0;
-          const match = str.match(/(\d{2,3})\s*[xX*\/]\s*(\d{2,3})/);
-          if (match) {
-            return (parseInt(match[1]) * parseInt(match[2])) / 10000; // cm*cm / 10000 = m2
-          }
-          return 0;
-        };
-
-        let qtyToReserve = parseFloat(quantity) || 0;
-
-        // UNIT CONVERSION LOGIC (Same as finalizeOrder)
-        const isSoldInPieces = unitCode === 'PCS';
-        const isPrimarySqm = product.primaryunitcode === 'SQM' || product.primaryunitcode === 'M2';
-        const sqmPerPiece = parseDimensions(product.size || product.productname);
-        const isFicheProduct = (product.productname || '').toLowerCase().startsWith('fiche');
-
-        if (isSoldInPieces && !isFicheProduct && sqmPerPiece > 0) {
-          qtyToReserve = qtyToReserve * sqmPerPiece;
-        }
-
-        const warehouseId = orderResult.rows[0].warehouseid || 1;
-
-        // Update Inventory Reserved
-        // CRITICAL: Check for negative stock / availability BEFORE reserving
-        const inventoryCheck = await client.query('SELECT QuantityOnHand, QuantityReserved FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\'', [productId, warehouseId]);
-
-        let currentOnHand = 0;
-        let currentReserved = 0;
-
-        if (inventoryCheck.rows.length > 0) {
-          currentOnHand = parseFloat(inventoryCheck.rows[0].quantityonhand);
-          currentReserved = parseFloat(inventoryCheck.rows[0].quantityreserved);
-        }
-
-        const available = currentOnHand - currentReserved;
-        if (qtyToReserve > available) {
-          throw new Error(`Stock insuffisant. Disponible: ${available.toFixed(2)}, Demandé: ${qtyToReserve.toFixed(2)}`);
-        }
-
-        await client.query(`
-            UPDATE Inventory 
-            SET QuantityReserved = QuantityReserved + $1,
-                UpdatedAt = CURRENT_TIMESTAMP
-            WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED'
-        `, [qtyToReserve, productId, warehouseId]);
-      } // End else (not MANUAL)
-    }
   } catch (error) {
     await client.query('ROLLBACK');
     next(error);

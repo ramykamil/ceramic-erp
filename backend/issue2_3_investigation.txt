@@ -1,0 +1,94 @@
+================================================================================
+  ISSUE 3: CONFIRMED ORDERS WITH ZERO-STOCK PRODUCTS
+================================================================================
+
+ORD-2026-000582 | 05/03/2026 13:10:55
+  [BERLIN BEIGE 45/45] BERLIN BEIGE 45/45
+  Order Qty: 7.10 | Current Stock: 0.00
+
+ORD-2026-000566 | 05/03/2026 10:24:24
+  [TRANSPORT FETICHE 4*2] TRANSPORT FETICHE 4*2
+  Order Qty: 1.00 | Current Stock: 0.00
+
+ORD-2026-000566 | 05/03/2026 10:24:24
+  [EUROPA MATT 45/90 DECO] EUROPA MATT 45/90 DECO
+  Order Qty: 68.04 | Current Stock: 0.00
+
+ORD-2026-000543 | 04/03/2026 11:35:04
+  [TRANSPORT KHELKHAL] TRANSPORT KHELKHAL
+  Order Qty: 1.00 | Current Stock: 0.00
+
+ORD-2026-000543 | 04/03/2026 11:35:04
+  [PROD-1772624124579] ARTISTIC BEIGE 33/33
+  Order Qty: 144.00 | Current Stock: 0.00
+
+ORD-2026-000540 | 04/03/2026 11:00:51
+  [PROSTYLE SILVER 45/90] PROSTYLE SILVER 45/90
+  Order Qty: 174.96 | Current Stock: 0.00
+
+ORD-2026-000540 | 04/03/2026 11:00:51
+  [TIMGAD CERAM_NEW_6ZSR] ROLEX GRIS POLI REC 60/60
+  Order Qty: 24.48 | Current Stock: 0.00
+
+ORD-2026-000540 | 04/03/2026 11:00:51
+  [ROMA BLANC BRILLANT RELIEFE 45/90] ROMA BLANC BRILLANT RELIEFE 45/90
+  Order Qty: 58.32 | Current Stock: 0.00
+
+ORD-2026-000540 | 04/03/2026 11:00:51
+  [TRANSPORT MOUNIR BORDJ] TRANSPORT MOUNIR BORDJ
+  Order Qty: 1.00 | Current Stock: 0.00
+
+ORD-2026-000524 | 04/03/2026 10:13:02
+  [TRANSPORT KHOUJA] TRANSPORT KHOUJA
+  Order Qty: 1.00 | Current Stock: 0.00
+
+ORD-2026-000524 | 04/03/2026 10:13:02
+  [ASCOT ROJO 20/75] ASCOT ROJO 20/75
+  Order Qty: 691.20 | Current Stock: 0.00
+
+ORD-2026-000524 | 04/03/2026 10:13:02
+  [FICHE:DRAGON GREEN POLI REC 120/60] FICHE:DRAGON GREEN POLI REC 120/60
+  Order Qty: 1.00 | Current Stock: 0.00
+
+ORD-2026-000521 | 04/03/2026 10:01:21
+  [ACRA BEIGE REC 60/60] ACRA BEIGE REC 60/60
+  Order Qty: 207.36 | Current Stock: 0.00
+
+
+================================================================================
+  PRODUCTS SOLD IN MULTIPLE CONFIRMED ORDERS (Last 2 Days)
+================================================================================
+
+[COSTA WHITE REC 60/60] COSTA WHITE REC 60/60
+  3 orders, Total Qty: 673.92
+  Orders: ORD-2026-000540, ORD-2026-000543, ORD-2026-000566
+
+[TECHNO CERAM_NEW_E985] RIVEL NATUREL 20/75
+  2 orders, Total Qty: 614.40
+  Orders: ORD-2026-000560, ORD-2026-000566
+
+[COTTO ROJO TERRE CUITE 45/45] COTTO ROJO TERRE CUITE 45/45
+  2 orders, Total Qty: 349.92
+  Orders: ORD-2026-000540, ORD-2026-000543
+
+[ACRA GRIS REC 60/60] ACRA GRIS REC 60/60
+  2 orders, Total Qty: 312.04
+  Orders: ORD-2026-000521, ORD-2026-000566
+
+[DRAGON GREEN POLI REC 120/60] DRAGON GREEN POLI REC 120/60
+  2 orders, Total Qty: 210.00
+  Orders: ORD-2026-000524, ORD-2026-000540
+
+[KING IVORY 45/90] KING IVORY 45/90
+  2 orders, Total Qty: 204.12
+  Orders: ORD-2026-000521, ORD-2026-000560
+
+[PROD-1772369566607] MOTIF KING IVORY LUXE 45/90
+  2 orders, Total Qty: 60.00
+  Orders: ORD-2026-000521, ORD-2026-000543
+
+
+================================================================================
+  PRODUCTS WITH NEGATIVE INVENTORY (Current State)
+================================================================================
+
