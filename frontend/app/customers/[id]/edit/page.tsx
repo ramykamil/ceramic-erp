@@ -70,18 +70,19 @@ function EditCustomerForm() {
       const priceListData = Array.isArray(priceListRes.data) ? priceListRes.data : [];
       setPriceLists(priceListData);
       // Pré-remplir le formulaire avec les données existantes
-      const customerData = customerRes.data as CustomerFormData & { pricelistid: number, isactive: boolean };
+      const customerData = customerRes.data as any;
       setFormData({
-        customerCode: customerData.customerCode || '',
-        customerName: customerData.customerName || '',
-        customerType: customerData.customerType || 'WHOLESALE',
-        priceListId: customerData.pricelistid || '',
+        customerCode: customerData.customercode || customerData.customerCode || '',
+        customerName: customerData.customername || customerData.customerName || '',
+        customerType: customerData.customertype || customerData.customerType || 'WHOLESALE',
+        priceListId: customerData.pricelistid || customerData.priceListId || '',
         phone: customerData.phone || '',
         email: customerData.email || '',
         address: customerData.address || '',
         // creditLimit: customerData.creditlimit || 0, // <-- RETIRÉ
-        paymentTerms: customerData.paymentTerms || 'NET30',
+        paymentTerms: customerData.paymentterms || customerData.paymentTerms || 'NET30',
         isActive: customerData.isactive !== undefined ? customerData.isactive : true,
+        currentBalance: customerData.currentbalance !== undefined ? customerData.currentbalance : (customerData.currentBalance !== undefined ? customerData.currentBalance : 0)
       });
 
     }).catch((error: any) => {
