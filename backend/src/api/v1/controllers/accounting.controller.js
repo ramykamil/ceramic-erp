@@ -275,6 +275,16 @@ const createCashTransaction = async (req, res) => {
                 'UPDATE Customers SET CurrentBalance = CurrentBalance + $1, UpdatedAt = NOW() WHERE CustomerID = $2',
                 [customerBalanceChange, referenceId]
             );
+        } else if (referenceType === 'ORDER' && referenceId) {
+            // Fetch customer ID from the order
+            const orderRes = await pool.query('SELECT CustomerID FROM Orders WHERE OrderID = $1', [referenceId]);
+            if (orderRes.rows.length > 0 && orderRes.rows[0].customerid) {
+                const customerBalanceChange = isIncome ? -Math.abs(amount) : Math.abs(amount);
+                await pool.query(
+                    'UPDATE Customers SET CurrentBalance = CurrentBalance + $1, UpdatedAt = NOW() WHERE CustomerID = $2',
+                    [customerBalanceChange, orderRes.rows[0].customerid]
+                );
+            }
         }
 
         // Update Supplier Balance if linked
@@ -738,19 +748,30 @@ const updateCashTransaction = async (req, res) => {
             RETURNING *
         `, [accountId || original.accountid, newAmount, tiers, motif, paymentMode, notes, id]);
 
-        // If amount changed and linked to a client, update customer balance
-        if (amountDifference !== 0 && original.referencetype === 'CLIENT' && original.referenceid) {
-            // VERSEMENT reduces debt, so if amount increased, more debt reduced
-            const balanceChange = -amountDifference;
-            await pool.query(
-                'UPDATE Customers SET CurrentBalance = CurrentBalance + $1, UpdatedAt = NOW() WHERE CustomerID = $2',
-                [balanceChange, original.referenceid]
-            );
+        const incomeTypes = ['VENTE', 'ENCAISSEMENT', 'VERSEMENT', 'RETOUR_ACHAT'];
+        const isIncome = incomeTypes.includes(original.transactiontype);
+
+        // If amount changed and linked to a client or order, update customer balance
+        if (amountDifference !== 0) {
+            const balanceChange = isIncome ? -amountDifference : amountDifference;
+
+            if ((original.referencetype === 'CLIENT' || original.referencetype === 'CUSTOMER') && original.referenceid) {
+                await pool.query(
+                    'UPDATE Customers SET CurrentBalance = CurrentBalance + $1, UpdatedAt = NOW() WHERE CustomerID = $2',
+                    [balanceChange, original.referenceid]
+                );
+            } else if (original.referencetype === 'ORDER' && original.referenceid) {
+                const orderRes = await pool.query('SELECT CustomerID FROM Orders WHERE OrderID = $1', [original.referenceid]);
+                if (orderRes.rows.length > 0 && orderRes.rows[0].customerid) {
+                    await pool.query(
+                        'UPDATE Customers SET CurrentBalance = CurrentBalance + $1, UpdatedAt = NOW() WHERE CustomerID = $2',
+                        [balanceChange, orderRes.rows[0].customerid]
+                    );
+                }
+            }
         }
 
         // If account changed or amount changed, update account balances
-        const incomeTypes = ['VENTE', 'ENCAISSEMENT', 'VERSEMENT', 'RETOUR_ACHAT'];
-        const isIncome = incomeTypes.includes(original.transactiontype);
 
         if (amountDifference !== 0) {
             const balanceChange = isIncome ? amountDifference : -amountDifference;
@@ -797,8 +818,8 @@ const deleteCashTransaction = async (req, res) => {
         const trans = transResult.rows[0];
         const amount = parseFloat(trans.amount);
 
-        // Reverse customer balance if linked to a client
-        if (trans.referencetype === 'CLIENT' && trans.referenceid) {
+        // Reverse customer balance if linked to a client or order
+        if ((trans.referencetype === 'CLIENT' || trans.referencetype === 'CUSTOMER') && trans.referenceid) {
             const incomeTypes = ['VENTE', 'ENCAISSEMENT', 'VERSEMENT', 'RETOUR_ACHAT'];
             const isIncome = incomeTypes.includes(trans.transactiontype);
             // Reverse: if was income (reduced debt), add back to debt
@@ -807,6 +828,18 @@ const deleteCashTransaction = async (req, res) => {
                 'UPDATE Customers SET CurrentBalance = CurrentBalance + $1, UpdatedAt = NOW() WHERE CustomerID = $2',
                 [balanceChange, trans.referenceid]
             );
+        } else if (trans.referencetype === 'ORDER' && trans.referenceid) {
+            const incomeTypes = ['VENTE', 'ENCAISSEMENT', 'VERSEMENT', 'RETOUR_ACHAT'];
+            const isIncome = incomeTypes.includes(trans.transactiontype);
+            const balanceChange = isIncome ? amount : -amount;
+
+            const orderRes = await pool.query('SELECT CustomerID FROM Orders WHERE OrderID = $1', [trans.referenceid]);
+            if (orderRes.rows.length > 0 && orderRes.rows[0].customerid) {
+                await pool.query(
+                    'UPDATE Customers SET CurrentBalance = CurrentBalance + $1, UpdatedAt = NOW() WHERE CustomerID = $2',
+                    [balanceChange, orderRes.rows[0].customerid]
+                );
+            }
         }
 
         // Reverse supplier balance if linked
