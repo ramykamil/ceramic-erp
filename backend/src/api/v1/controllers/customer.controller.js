@@ -447,7 +447,7 @@ async function getCustomerSituation(req, res, next) {
         NULL as paymentmethod
       FROM Orders o
       WHERE o.CustomerID = $1 
-        AND o.Status NOT IN ('CANCELLED', 'DRAFT')
+        AND o.Status IN ('CONFIRMED', 'PROCESSING', 'SHIPPED', 'DELIVERED')
         ${dateFilterOrders}
     `;
 
