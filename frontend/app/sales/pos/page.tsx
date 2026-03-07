@@ -573,11 +573,14 @@ function POSContent() {
     setIsRetailMode(role === 'SALES_RETAIL');
     // Set orderDate on client side only to avoid hydration mismatch
     // Use local time instead of UTC to avoid shifting to previous day
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    setOrderDate(`${year}-${month}-${day}`);
+    // Only set to today if NOT editing an existing order (edit mode loads the original date)
+    if (!editOrderId) {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      setOrderDate(`${year}-${month}-${day}`);
+    }
   }, []);
 
   // --- Loading Data ---

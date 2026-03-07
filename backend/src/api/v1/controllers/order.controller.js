@@ -571,6 +571,9 @@ async function finalizeOrder(req, res, next) {
       // is already accounted for in unpaidAmount calculation below.
     }
 
+    // Calculate unpaidAmount here so it's available for both balance update and response
+    const unpaidAmount = totalAmount - payment;
+
     // Update customer balance - ONLY for wholesale
     // WHOLESALE: Always add FULL totalAmount as debt. Payments are tracked
     // separately via standalone VERSEMENTs (from the orders versement section),
@@ -585,7 +588,6 @@ async function finalizeOrder(req, res, next) {
         );
       }
     } else {
-      const unpaidAmount = totalAmount - payment;
       if (unpaidAmount !== 0) {
         await client.query(
           'UPDATE Customers SET CurrentBalance = CurrentBalance + $1 WHERE CustomerID = $2',
