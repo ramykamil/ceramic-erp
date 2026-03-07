@@ -7,8 +7,7 @@ const auditService = require('../../../services/audit.service');
  */
 async function getCustomers(req, res, next) {
   try {
-    const { page = 1, limit = 50, customerType, search } = req.query;
-    const offset = (page - 1) * limit;
+    const { customerType, search } = req.query;
 
     let query = `
       SELECT
@@ -43,8 +42,7 @@ async function getCustomers(req, res, next) {
       paramIndex++;
     }
 
-    query += ` ORDER BY c.IsActive DESC, c.CustomerName LIMIT $${paramIndex++} OFFSET $${paramIndex++}`; // Trie les actifs en premier
-    params.push(limit, offset);
+    query += ` ORDER BY c.IsActive DESC, c.CustomerName`; // Trie les actifs en premier, retourne tous les clients
 
     const result = await pool.query(query, params);
 
