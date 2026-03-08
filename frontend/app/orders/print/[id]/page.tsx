@@ -126,20 +126,21 @@ export default function OrderPrintPage() {
     const finalDocumentData: DocumentData = useMemo(() => {
         if (!order) return documentData;
 
-        // "Ancien Solde" Fix:
-        // The `order` object from API likely contains the *current* customer balance in `order.currentbalance`.
-        // If the order is CONFIRMED or DELIVERED, this balance INCLUDES the order's debt.
-        // We must subtract the order's debt to show the true "Ancien Solde" (balance before this order).
-        // Debt added by this order = Total Amount - Payment Amount.
-
         let oldBalance = Number((order as any).currentbalance) || 0;
 
-        // Check status to decide if we need to subtract the debt
-        if (order.status === 'CONFIRMED' || order.status === 'DELIVERED') {
+        // Retail clients don't have a tracked balance in their BLs
+        const isRetail = (order as any).ordertype === 'RETAIL' ||
+            (order as any).customertype === 'RETAIL' ||
+            (order as any).retailclientname ||
+            (order.customername && order.customername.toUpperCase().includes('COMPTOIR'));
+
+        if (isRetail) {
+            oldBalance = 0;
+        } else if (order.status === 'CONFIRMED' || order.status === 'DELIVERED') {
             const orderTotal = Number(order.totalamount) || 0;
             const orderPayment = Number((order as any).paymentamount) || 0; // Use paymentamount from order, not calculated payment
             const orderDebt = orderTotal - orderPayment;
-            oldBalance = oldBalance - orderDebt;
+            oldBalance -= orderDebt;
         }
 
         return {

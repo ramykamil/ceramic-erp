@@ -763,23 +763,9 @@ async function finalizeOrder(req, res, next) {
     // ==========================================
     // 1. STRICT STOCK VALIDATION BEFORE ANY DEDUCTION
     // ==========================================
-    for (const item of itemsResult.rows) {
-      if (item.productid && (!item.productcode || item.productcode !== 'MANUAL')) {
-        let qtyToDeduct = parseFloat(item.quantity) || 0;
-        const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
-        qtyToDeduct = convertUnitToInventory(qtyToDeduct, item.unitcode, item.primaryunitcode, sqmPerPiece, item.productname, parseFloat(item.qteparcolis) || 0);
+    // Removed strict stock validation to allow confirmation even if stock is 0 or negative.
+    // Inventory deduction will still happen below, potentially driving stock negative.
 
-        const inventoryCheck = await client.query('SELECT QuantityOnHand FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\'', [item.productid, warehouseId]);
-        let currentOnHand = 0;
-        if (inventoryCheck.rows.length > 0) {
-          currentOnHand = parseFloat(inventoryCheck.rows[0].quantityonhand);
-        }
-
-        if (qtyToDeduct > currentOnHand) {
-          throw new Error(`Stock insuffisant. Produit: ${item.productname}. Disponible: ${currentOnHand.toFixed(2)} ${item.primaryunitcode || 'PCS'}, Demandé: ${qtyToDeduct.toFixed(2)} ${item.primaryunitcode || 'PCS'}`);
-        }
-      }
-    }
 
     // Deduct inventory for each item
     for (const item of itemsResult.rows) {

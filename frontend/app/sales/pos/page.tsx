@@ -516,9 +516,10 @@ function POSContent() {
     // Fix for "Ancien Solde" when editing a confirmed order
     // If we are editing a confirmed order, the clientBalance from DB ALREADY includes this order's debt.
     // So "Ancien Solde" (before this order) should be: CurrentBalance - (OrderTotal - OrderPayment)
-    let correctedOldBalance = isRetailMode ? 0 : clientBalance;
+    const isRetailClient = isRetailMode || selectedCustomer?.customertype === 'RETAIL' || selectedCustomer?.customercode === 'COMPTOIR' || selectedCustomer?.customername?.toUpperCase().includes('COMPTOIR');
+    let correctedOldBalance = isRetailClient ? 0 : clientBalance;
 
-    if (editOrderId && originalOrderState?.status === 'CONFIRMED' && !isRetailMode) {
+    if (editOrderId && originalOrderState?.status === 'CONFIRMED' && !isRetailClient) {
       const originalDebt = originalOrderState.totalAmount - originalOrderState.paymentAmount;
       // Subtract the debt this order originally added to the balance
       correctedOldBalance = clientBalance - originalDebt;
