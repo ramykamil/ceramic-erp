@@ -1,6 +1,6 @@
 const pool = require('./src/config/database');
-pool.query("SELECT * FROM Inventory WHERE ProductID = 4018")
+pool.query("SELECT pg_get_viewdef('mv_Catalogue')")
     .then(res => {
-        console.table(res.rows);
+        console.log(res.rows[0].pg_get_viewdef);
         pool.end();
     });

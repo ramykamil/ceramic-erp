@@ -817,11 +817,11 @@ function POSContent() {
       if (has12060) {
         // Exception: 120/60 defaults to PCS (Requested by user) - overriding previous exception
         defaultUnit = units.find(u => u.unitcode === 'PCS')?.unitid || defaultUnit;
-      } else if (!isIntegerPackaging) {
-        // Non-integer packaging (e.g. 1.44 treated as pcs/ctn in backend?) or just decimal logic -> SQM
+      } else {
+        // All other tiles ALWAYS default to SQM, preventing integer 
+        // packaging tiles from accidentally being ordered in PCS
         defaultUnit = units.find(u => u.unitcode === 'SQM')?.unitid || defaultUnit;
       }
-      // Else: Integer packaging -> Stays PCS
     }
 
     // Get stock data from product (aggregated in backend query)
