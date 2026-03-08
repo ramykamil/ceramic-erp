@@ -57,6 +57,8 @@ export default function ProductsPage() {
   const [brands, setBrands] = useState<{ brandid: number; brandname: string }[]>([]); // NEW
   const [uniqueChoix, setUniqueChoix] = useState<string[]>([]);
   const [warehouses, setWarehouses] = useState<{ warehouseid: number; warehousename: string }[]>([]); // Warehouses list
+  const [units, setUnits] = useState<{ unitid: number; unitname: string; unitcode: string }[]>([]); // NEW
+
 
   // Global Stats & Filter Totals
   const [globalStats, setGlobalStats] = useState<{ totalqty: number; totalpallets: number; totalcolis: number; totalpurchasevalue: number; totalsalevalue: number; totalproducts: number } | null>(null);
@@ -71,12 +73,12 @@ export default function ProductsPage() {
   const [newTotalQty, setNewTotalQty] = useState<string>('');
   const [isAdjusting, setIsAdjusting] = useState(false);
 
-  // Create Modal State
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [newProduct, setNewProduct] = useState({
     productcode: '',
     productname: '',
     brandid: 0, // NEW
+    primaryunitid: 0, // NEW
     prixvente: 0,
     prixachat: 0,
     calibre: '',
@@ -162,6 +164,11 @@ export default function ProductsPage() {
     const whRes = await api.getWarehouses();
     if (whRes.success && whRes.data) {
       setWarehouses(whRes.data as { warehouseid: number; warehousename: string }[]);
+    }
+    // Load units
+    const unitsRes = await api.getUnits();
+    if (unitsRes.success && unitsRes.data) {
+      setUnits(unitsRes.data as { unitid: number; unitname: string; unitcode: string }[]);
     }
   };
 
@@ -270,6 +277,7 @@ export default function ProductsPage() {
         productcode: editingProduct.productcode,
         productname: editingProduct.productname,
         brandid: editingProduct.brandid || null, // Updated
+        primaryunitid: editingProduct.primaryunitid || null, // NEW
         baseprice: editingProduct.prixvente,
         purchaseprice: editingProduct.prixachat,
         calibre: editingProduct.calibre,
@@ -350,6 +358,7 @@ export default function ProductsPage() {
         productcode: newProduct.productcode,
         productname: newProduct.productname,
         brandid: newProduct.brandid || null, // Updated
+        primaryunitid: newProduct.primaryunitid || null, // NEW
         baseprice: newProduct.prixvente,
         purchaseprice: newProduct.prixachat,
         calibre: newProduct.calibre,
@@ -366,6 +375,7 @@ export default function ProductsPage() {
           productcode: '',
           productname: '',
           brandid: 0,
+          primaryunitid: 0,
           prixvente: 0,
           prixachat: 0,
           calibre: '',
@@ -856,8 +866,8 @@ export default function ProductsPage() {
                   </div>
                 </div>
 
-                {/* Row 4: Calibre & Choix */}
-                <div className="grid grid-cols-2 gap-4">
+                {/* Row 4: Calibre, Choix, Unité Primaire */}
+                <div className="grid grid-cols-3 gap-4">
                   <div>
                     <label className="block text-xs font-medium text-slate-500 uppercase mb-1">Calibre</label>
                     <input
@@ -878,6 +888,19 @@ export default function ProductsPage() {
                       <option value="1er Choix">1er Choix</option>
                       <option value="2ème Choix">2ème Choix</option>
                       <option value="MS">MS</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-500 uppercase mb-1">Unité Primaire</label>
+                    <select
+                      value={editingProduct.primaryunitid || ''}
+                      onChange={e => setEditingProduct({ ...editingProduct, primaryunitid: Number(e.target.value) })}
+                      className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                    >
+                      <option value="">-- Sélectionner --</option>
+                      {units.map(u => (
+                        <option key={u.unitid} value={u.unitid}>{u.unitname} ({u.unitcode})</option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -1043,19 +1066,34 @@ export default function ProductsPage() {
                   />
                 </div>
 
-                {/* Added Choix here for new layout */}
-                <div>
-                  <label className="block text-xs font-medium text-slate-500 uppercase mb-1">Choix</label>
-                  <select
-                    value={newProduct.choix}
-                    onChange={e => setNewProduct({ ...newProduct, choix: e.target.value })}
-                    className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
-                  >
-                    <option value="">--</option>
-                    <option value="1er Choix">1er Choix</option>
-                    <option value="2ème Choix">2ème Choix</option>
-                    <option value="MS">MS</option>
-                  </select>
+                {/* Added Choix & Unité Primaire here for new layout */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-500 uppercase mb-1">Choix</label>
+                    <select
+                      value={newProduct.choix}
+                      onChange={e => setNewProduct({ ...newProduct, choix: e.target.value })}
+                      className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                    >
+                      <option value="">--</option>
+                      <option value="1er Choix">1er Choix</option>
+                      <option value="2ème Choix">2ème Choix</option>
+                      <option value="MS">MS</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-500 uppercase mb-1">Unité Primaire</label>
+                    <select
+                      value={newProduct.primaryunitid || ''}
+                      onChange={e => setNewProduct({ ...newProduct, primaryunitid: Number(e.target.value) })}
+                      className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                    >
+                      <option value="">-- Sélectionner --</option>
+                      {units.map(u => (
+                        <option key={u.unitid} value={u.unitid}>{u.unitname} ({u.unitcode})</option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
