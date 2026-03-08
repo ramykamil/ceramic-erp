@@ -1614,7 +1614,7 @@ function POSContent() {
                         <span className="font-medium text-slate-800">
                           {p.productname}
                           <span className="text-slate-500 text-xs ml-2 font-normal">
-                            ({p.famille || p.brandname || 'Sans marque'})
+                            ({p.famille || p.brandname || 'Sans marque'}) <span className="text-indigo-600 font-medium ml-1">Qté: {parseFloat(String(p.totalqty || 0)).toLocaleString('fr-FR', { maximumFractionDigits: 2 })}</span>
                           </span>
                         </span>
                         <span className="text-green-600 font-medium">{formatCurrency(Number(p.prixvente) || Number(p.baseprice) || 0)}</span>
@@ -1722,12 +1722,12 @@ function POSContent() {
                             value={item.unitPrice}
                             step="0.01"
                             onChange={(val) => updateItem(index, 'unitPrice', val)}
-                            className={`w-full text-right p-1 border rounded font-mono text-xs ${(item.purchasePrice && item.unitPrice < item.purchasePrice)
+                            className={`w-full text-right p-1 border rounded font-mono text-xs ${(item.purchasePrice && item.purchasePrice > 0 && item.unitPrice < item.purchasePrice)
                               ? 'border-red-500 text-red-600 bg-red-50'
                               : 'border-slate-200'
                               }`}
                           />
-                          {(item.purchasePrice && item.unitPrice < item.purchasePrice) && (
+                          {(item.purchasePrice !== undefined && item.purchasePrice > 0 && item.unitPrice < item.purchasePrice) && (
                             <div className="text-[10px] text-red-600 font-bold mt-0.5 text-right flex justify-end items-center gap-1">
                               <span>⚠️ &lt; Achat ({formatCurrency(item.purchasePrice)})</span>
                             </div>
@@ -1849,12 +1849,12 @@ function POSContent() {
                           value={item.unitPrice}
                           step="0.01"
                           onChange={(val) => updateItem(index, 'unitPrice', val)}
-                          className={`w-28 text-right p-3 border rounded-lg font-mono text-sm shadow-sm ${(item.purchasePrice && item.unitPrice < item.purchasePrice)
+                          className={`w-28 text-right p-3 border rounded-lg font-mono text-sm shadow-sm ${(item.purchasePrice && item.purchasePrice > 0 && item.unitPrice < item.purchasePrice)
                             ? 'border-red-500 text-red-600 bg-red-50'
                             : 'border-slate-200'
                             }`}
                         />
-                        {(item.purchasePrice && item.unitPrice < item.purchasePrice) && (
+                        {(item.purchasePrice !== undefined && item.purchasePrice > 0 && item.unitPrice < item.purchasePrice) && (
                           <div className="absolute right-0 -bottom-5 text-[10px] text-red-600 font-bold flex items-center gap-1 bg-white px-1 rounded border border-red-100 shadow-sm z-10">
                             <span>⚠️ &lt; Achat ({formatCurrency(item.purchasePrice)})</span>
                           </div>
