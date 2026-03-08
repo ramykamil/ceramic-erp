@@ -24,22 +24,11 @@ const convertUnitToInventory = (qty, cartUnitCode, primaryUnitCode, sqmPerPiece,
   // Intelligent deduction of effective primary unit (matches frontend POS logic)
   let effectivePrimaryUnit = primaryUnitCode;
 
-  const productNameLower = (productName || '').toLowerCase();
-  const has12060 = productNameLower.includes('120/60') || productNameLower.includes('120x60');
-  const hasTileDimensions = /\d+[x\/]\d+/.test(productName);
-
-  // Check if packaging is integer (approximate check to avoid float issues)
-  const isIntegerPackaging = qteParColis > 0 && Math.abs(qteParColis - Math.round(qteParColis)) < 0.01;
+  const hasTileDimensions = /\d+\s*[xX*\/]\s*\d+/.test(productName);
 
   if (hasTileDimensions && !isFicheProduct) {
-    if (has12060) {
-      effectivePrimaryUnit = 'PCS';
-    } else if (!isIntegerPackaging) {
-      // Non-integer packaging (e.g. 1.44 treated as pcs/ctn in DB) -> Nativity is SQM
-      effectivePrimaryUnit = 'SQM';
-    } else {
-      effectivePrimaryUnit = 'PCS';
-    }
+    // Treat all tiles with dimensions as tracked in SQM natively
+    effectivePrimaryUnit = 'SQM';
   }
 
   // If primary is not set, we default to PCS
