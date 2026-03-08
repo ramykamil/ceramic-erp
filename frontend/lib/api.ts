@@ -693,6 +693,7 @@ class ApiClient {
     paymentAmount?: number;
     paymentMethod?: string;
     orderDate?: string; // NEW
+    items?: any[]; // NEW: For atomic insertion
   }) {
     return this.request('/orders', {
       method: 'POST',

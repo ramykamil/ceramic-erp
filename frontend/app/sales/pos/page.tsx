@@ -1291,24 +1291,21 @@ function POSContent() {
           shippingAddress: shippingAddress || null,
           clientPhone: clientPhone || null,
           paymentAmount: payment,
-          paymentMethod: paymentMethod
-        });
-
-        if (!orderResponse.success) throw new Error(orderResponse.message || 'Échec création commande');
-
-        const orderId = (orderResponse.data as any).orderid;
-
-        await Promise.all(cart.map(item =>
-          api.addOrderItem(orderId, {
+          paymentMethod: paymentMethod,
+          items: cart.map(item => ({
             productId: item.productId,
             quantity: item.quantity,
             unitId: item.unitId,
             unitPrice: item.unitPrice,
             colisCount: item.cartons,
             palletCount: item.palettes,
-            productName: item.productCode === 'MANUEL' ? item.productName : undefined // Pass custom name for manual products
-          })
-        ));
+            productName: item.productCode === 'MANUEL' ? item.productName : undefined
+          }))
+        });
+
+        if (!orderResponse.success) throw new Error(orderResponse.message || 'Échec création commande');
+
+        const orderId = (orderResponse.data as any).orderid;
 
         // Update financials (Delivery, Discount, etc) which are not handled by addOrderItem
         await api.updateOrderFinancials(orderId, {

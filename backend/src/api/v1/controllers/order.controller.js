@@ -3,6 +3,41 @@ const pricingService = require('../services/pricing.service');
 const accountingService = require('../services/accounting.service');
 const auditService = require('../../../services/audit.service');
 
+// ===== UNIT CONVERSION HELPERS =====
+const parseSqmPerPiece = (str) => {
+  if (!str) return 0;
+  const match = str.match(/(\d{2,3})\s*[xX*\/]\s*(\d{2,3})/);
+  if (match) {
+    return (parseInt(match[1]) * parseInt(match[2])) / 10000; // cm*cm / 10000 = m2
+  }
+  return 0;
+};
+
+const convertUnitToInventory = (qty, cartUnitCode, primaryUnitCode, sqmPerPiece, productName) => {
+  let finalQty = parseFloat(qty) || 0;
+  const isFicheProduct = (productName || '').toLowerCase().startsWith('fiche');
+  if (isFicheProduct || sqmPerPiece <= 0) return finalQty;
+
+  const isCartPcs = (cartUnitCode === 'PCS' || cartUnitCode === 'PIECE');
+  const isCartSqm = (cartUnitCode === 'SQM' || cartUnitCode === 'M2');
+
+  // If primary is not set, we default to PCS (User tracks inventory by Pieces for missing unit codes)
+  const isPrimaryPcs = (primaryUnitCode === 'PCS' || primaryUnitCode === 'PIECE' || !primaryUnitCode);
+  const isPrimarySqm = (primaryUnitCode === 'SQM' || primaryUnitCode === 'M2');
+
+  // SQM cart -> PCS inventory
+  if (isCartSqm && isPrimaryPcs) {
+    return finalQty / sqmPerPiece;
+  }
+  // PCS cart -> SQM inventory
+  else if (isCartPcs && isPrimarySqm) {
+    return finalQty * sqmPerPiece;
+  }
+
+  return finalQty;
+};
+// ===================================
+
 /**
  * Get all orders with pagination and filtering
  * SALES_RETAIL and SALES_WHOLESALE users only see their own orders
@@ -203,7 +238,8 @@ async function createOrder(req, res, next) {
       shippingAddress, // NEW
       clientPhone,      // NEW
       paymentAmount, // NEW
-      paymentMethod  // NEW
+      paymentMethod,  // NEW
+      items           // NEW: Array of items for atomic creation
     } = req.body;
 
     // Generate order number
@@ -255,6 +291,118 @@ async function createOrder(req, res, next) {
     } catch (auditErr) {
       console.error('Audit log failed:', auditErr);
     }
+
+    // --- ATOMIC ITEM INSERTION IF PROVIDED ---
+    if (items && Array.isArray(items) && items.length > 0) {
+      const orderId = orderResult.rows[0].orderid;
+      const effectiveWarehouseId = warehouseId || 1;
+
+      for (const item of items) {
+        const { productId, quantity, unitId, unitPrice: providedUnitPrice, discountPercent = 0, taxPercent = 0, palletCount: rawPalletCount = 0, colisCount: rawColisCount = 0, productName } = item;
+        const palletCount = Number(rawPalletCount) || 0;
+        const colisCount = Number(rawColisCount) || 0;
+
+        // Get product details
+        const productResult = await client.query(
+          'SELECT p.PurchasePrice, p.BasePrice, p.ProductName, p.ProductCode, p.Size, p.PrimaryUnitID, u.UnitCode as PrimaryUnitCode FROM Products p LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID WHERE p.ProductID = $1',
+          [productId]
+        );
+        const costPrice = parseFloat(productResult.rows[0]?.purchaseprice) || parseFloat(productResult.rows[0]?.baseprice) || 0;
+        const product = productResult.rows[0];
+
+        // ═══════════════════════════════════════════════════════════
+        // STOCK CHECK — MUST happen BEFORE insert, inside transaction
+        // ═══════════════════════════════════════════════════════════
+        if (product && product.productcode !== 'MANUAL') {
+          const unitRes = await client.query('SELECT UnitCode FROM Units WHERE UnitID = $1', [unitId]);
+          const unitCode = unitRes.rows.length > 0 ? unitRes.rows[0].unitcode : 'PCS';
+
+          const sqmPerPiece = parseSqmPerPiece(product.size || product.productname);
+          let qtyToReserve = parseFloat(quantity) || 0;
+
+          // Universal UNIT CONVERSION LOGIC
+          qtyToReserve = convertUnitToInventory(qtyToReserve, unitCode, product.primaryunitcode, sqmPerPiece, product.productname);
+
+          // Check stock availability
+          const inventoryCheck = await client.query('SELECT QuantityOnHand, QuantityReserved FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\'', [productId, effectiveWarehouseId]);
+
+          let currentOnHand = 0;
+          let currentReserved = 0;
+
+          if (inventoryCheck.rows.length > 0) {
+            currentOnHand = parseFloat(inventoryCheck.rows[0].quantityonhand);
+            currentReserved = parseFloat(inventoryCheck.rows[0].quantityreserved);
+          }
+
+          const available = currentOnHand - currentReserved;
+          if (qtyToReserve > available) {
+            throw new Error(`Stock insuffisant. Produit: ${product.productname}. Disponible: ${available.toFixed(2)} ${product.primaryunitcode || 'PCS'}, Demandé: ${qtyToReserve.toFixed(2)} ${product.primaryunitcode || 'PCS'}`);
+          }
+
+          // Reserve inventory
+          await client.query(`
+              UPDATE Inventory 
+              SET QuantityReserved = QuantityReserved + $1,
+                  UpdatedAt = CURRENT_TIMESTAMP
+              WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED'
+          `, [qtyToReserve, productId, effectiveWarehouseId]);
+        } else if (product && product.productcode === 'MANUAL') {
+          console.log('Skipping inventory reservation for MANUAL product');
+        }
+
+        // ═══════════════════════════════════════════════════════════
+        // PRICING — Price Waterfall Logic
+        // ═══════════════════════════════════════════════════════════
+        let unitPrice;
+        let priceSource = 'POS';
+        if (providedUnitPrice !== undefined && providedUnitPrice !== null && providedUnitPrice > 0) {
+          unitPrice = parseFloat(providedUnitPrice);
+          priceSource = 'POS';
+        } else {
+          const priceInfo = await pricingService.getProductPriceForCustomer(productId, customerId);
+          if (priceInfo.source === 'NOT_FOUND') {
+            throw new Error('No valid price found for this product: ' + product?.productname);
+          }
+          unitPrice = priceInfo.price;
+          priceSource = priceInfo.source;
+        }
+
+        const discountAmount = (unitPrice * quantity * discountPercent) / 100;
+        const lineTotal = (unitPrice * quantity) - discountAmount;
+        const taxAmount = (lineTotal * taxPercent) / 100;
+        const finalLineTotal = lineTotal + taxAmount;
+
+        const itemQuery = `
+          INSERT INTO OrderItems (
+            OrderID, ProductID, Quantity, UnitID, UnitPrice,
+            DiscountPercent, DiscountAmount, TaxPercent, TaxAmount,
+            LineTotal, PriceSource, PalletCount, ColisCount, CostPrice, LinkProductName
+          )
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+        `;
+
+        await client.query(itemQuery, [
+          orderId, productId, quantity, unitId, unitPrice, discountPercent, discountAmount,
+          taxPercent, taxAmount, finalLineTotal, priceSource, palletCount, colisCount, costPrice,
+          productName || null
+        ]);
+      }
+
+      // Update order totals after inserting all items
+      const updateOrderQuery = `
+        UPDATE Orders
+        SET 
+          SubTotal = (SELECT SUM(LineTotal - TaxAmount) FROM OrderItems WHERE OrderID = $1),
+          TaxAmount = (SELECT SUM(TaxAmount) FROM OrderItems WHERE OrderID = $1),
+          TotalAmount = (SELECT SUM(LineTotal) FROM OrderItems WHERE OrderID = $1),
+          UpdatedAt = CURRENT_TIMESTAMP
+        WHERE OrderID = $1
+        RETURNING *
+      `;
+      const finalUpdatedOrder = await client.query(updateOrderQuery, [orderId]);
+      orderResult.rows[0] = finalUpdatedOrder.rows[0];
+    }
+    // ---------------------------------------------
 
     await client.query('COMMIT');
 
@@ -318,26 +466,11 @@ async function addOrderItem(req, res, next) {
       const unitRes = await client.query('SELECT UnitCode FROM Units WHERE UnitID = $1', [unitId]);
       const unitCode = unitRes.rows.length > 0 ? unitRes.rows[0].unitcode : 'PCS';
 
-      // Parse Dimensions Helper
-      const parseDimensions = (str) => {
-        if (!str) return 0;
-        const match = str.match(/(\d{2,3})\s*[xX*\/]\s*(\d{2,3})/);
-        if (match) {
-          return (parseInt(match[1]) * parseInt(match[2])) / 10000; // cm*cm / 10000 = m2
-        }
-        return 0;
-      };
-
       let qtyToReserve = parseFloat(quantity) || 0;
+      const sqmPerPiece = parseSqmPerPiece(product.size || product.productname);
 
-      // UNIT CONVERSION LOGIC (Same as finalizeOrder)
-      const isSoldInPieces = unitCode === 'PCS';
-      const sqmPerPiece = parseDimensions(product.size || product.productname);
-      const isFicheProduct = (product.productname || '').toLowerCase().startsWith('fiche');
-
-      if (isSoldInPieces && !isFicheProduct && sqmPerPiece > 0) {
-        qtyToReserve = qtyToReserve * sqmPerPiece;
-      }
+      // Universal UNIT CONVERSION LOGIC
+      qtyToReserve = convertUnitToInventory(qtyToReserve, unitCode, product.primaryunitcode, sqmPerPiece, product.productname);
 
       const warehouseId = orderResult.rows[0].warehouseid || 1;
 
@@ -354,7 +487,7 @@ async function addOrderItem(req, res, next) {
 
       const available = currentOnHand - currentReserved;
       if (qtyToReserve > available) {
-        throw new Error(`Stock insuffisant. Disponible: ${available.toFixed(2)}, Demandé: ${qtyToReserve.toFixed(2)}`);
+        throw new Error(`Stock insuffisant. Produit: ${product.productname}. Disponible: ${available.toFixed(2)} ${product.primaryunitcode || 'PCS'}, Demandé: ${qtyToReserve.toFixed(2)} ${product.primaryunitcode || 'PCS'}`);
       }
 
       // Reserve inventory (still inside transaction — will rollback if anything fails)
@@ -590,16 +723,6 @@ async function finalizeOrder(req, res, next) {
       [orderId]
     );
 
-    // Helper to parse dimensions (e.g. "60x60") and return SQM per piece
-    const parseDimensions = (str) => {
-      if (!str) return 0;
-      const match = str.match(/(\d{2,3})\s*[xX*\/]\s*(\d{2,3})/);
-      if (match) {
-        return (parseInt(match[1]) * parseInt(match[2])) / 10000; // cm*cm / 10000 = m2
-      }
-      return 0;
-    };
-
     // ===== INVENTORY DEDUCTION =====
     // Get all order items with product details for unit conversion
     const itemsResult = await client.query(`
@@ -622,25 +745,12 @@ async function finalizeOrder(req, res, next) {
     for (const item of itemsResult.rows) {
       let qtyToDeduct = parseFloat(item.quantity) || 0;
 
-      // UNIT CONVERSION LOGIC
-      // If sold in PCS but Primary Unit is SQM (common for tiles), convert PCS -> SQM
-      // We detect "SQM" primary unit explicitly, OR infer from dimensions if primary unit is missing/ambiguous
-      const isSoldInPieces = item.unitcode === 'PCS';
-      const isPrimarySqm = item.primaryunitcode === 'SQM' || item.primaryunitcode === 'M2';
-      const isFicheProduct = (item.productname || '').toLowerCase().startsWith('fiche');
+      // Universal UNIT CONVERSION LOGIC
+      const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
+      const convertedQty = convertUnitToInventory(qtyToDeduct, item.unitcode, item.primaryunitcode, sqmPerPiece, item.productname);
 
-      const sqmPerPiece = parseDimensions(item.size || item.productname);
-
-      if (isSoldInPieces && !isFicheProduct && sqmPerPiece > 0) {
-        // Cases:
-        // 1. Primary is SQM: We conversion is mandatory.
-        // 2. Primary is PCS (Misconfiguration): User stores Stock in SQM but Primary is PCS (Product 309 case).
-        //    We MUST convert to SQM to match the actual Inventory numbers convention.
-        // 3. Product is Tile (has dimensions): Always track in SQM.
-
-        // Force conversion for ANY tile product sold in pieces
-        const convertedQty = qtyToDeduct * sqmPerPiece;
-        console.log(`[Inventory] Converting ${qtyToDeduct} PCS of ${item.productname} to ${convertedQty.toFixed(4)} SQM`);
+      if (convertedQty !== qtyToDeduct) {
+        console.log(`[Inventory] Converting ${qtyToDeduct} ${item.unitcode} of ${item.productname} to ${convertedQty.toFixed(4)} ${item.primaryunitcode || 'PCS'}`);
         qtyToDeduct = convertedQty;
       }
 
@@ -772,30 +882,23 @@ const updateOrder = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Seules les commandes en attente, confirmées ou livrées peuvent être modifiées' });
     }
 
-    // Helper to parse dimensions (e.g. "60x60") -> m2
-    const parseDimensions = (str) => {
-      if (!str) return 0;
-      const match = str.match(/(\d{2,3})\s*[xX*\/]\s*(\d{2,3})/);
-      if (match) {
-        return (parseInt(match[1]) * parseInt(match[2])) / 10000;
-      }
-      return 0;
-    };
-
     // 2. REVERT LOGIC (Inventory & Financials)
 
     // 2a. Revert Inventory
     // Fetch old items with product details for unit conversion
     const oldItemsRes = await client.query(`
-        SELECT oi.*, p.ProductName, p.Size, u.UnitCode 
+        SELECT oi.*, p.ProductName, p.Size, p.PrimaryUnitID, pu_p.UnitCode as PrimaryUnitCode, u.UnitCode 
         FROM OrderItems oi
         JOIN Products p ON oi.ProductID = p.ProductID
+        LEFT JOIN Units pu_p ON p.PrimaryUnitID = pu_p.UnitID
         LEFT JOIN Units u ON oi.UnitID = u.UnitID
         WHERE oi.OrderID = $1
     `, [id]);
 
     for (const item of oldItemsRes.rows) {
       const qty = parseFloat(item.quantity);
+      const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
+      const convertedQty = convertUnitToInventory(qty, item.unitcode, item.primaryunitcode, sqmPerPiece, item.productname);
 
       if (order.status === 'PENDING') {
         // PENDING: Simply un-reserve
@@ -803,23 +906,14 @@ const updateOrder = async (req, res) => {
           UPDATE Inventory 
           SET QuantityReserved = GREATEST(0, QuantityReserved - $1)
           WHERE ProductID = $2 AND WarehouseID = 1 AND OwnershipType = 'OWNED'
-        `, [qty, item.productid]);
+        `, [convertedQty, item.productid]);
       } else if (order.status === 'CONFIRMED' || order.status === 'DELIVERED') {
         // CONFIRMED/DELIVERED: Item was SOLD (Deducted from OnHand). Add it back to OnHand.
-        // Must handle Unit Conversion (PCS -> SQM) same as finalizeOrder
-        let qtyToAddBack = qty;
-        const sqmPerPiece = parseDimensions(item.size || item.productname);
-        const isFicheProduct = (item.productname || '').toLowerCase().startsWith('fiche');
-
-        if (item.unitcode === 'PCS' && !isFicheProduct && sqmPerPiece > 0) {
-          qtyToAddBack = qty * sqmPerPiece;
-        }
-
         await client.query(`
           UPDATE Inventory 
           SET QuantityOnHand = QuantityOnHand + $1
           WHERE ProductID = $2 AND WarehouseID = 1 AND OwnershipType = 'OWNED'
-        `, [qtyToAddBack, item.productid]);
+        `, [convertedQty, item.productid]);
       }
     }
 
@@ -1060,22 +1154,9 @@ async function deleteOrder(req, res, next) {
 
     // Release Reserved Stock
     for (const item of itemsRes.rows) {
-      let qtyToRelease = parseFloat(item.quantity) || 0;
-
-      // Duplicate Unit Conversion Logic (Need a shared helper really, but for now inline)
-      const parseDimensions = (str) => {
-        if (!str) return 0;
-        const match = str.match(/(\d{2,3})\s*[xX*\/]\s*(\d{2,3})/);
-        if (match) return (parseInt(match[1]) * parseInt(match[2])) / 10000;
-        return 0;
-      };
-      const isSoldInPieces = item.unitcode === 'PCS';
-      const sqmPerPiece = parseDimensions(item.size || item.productname);
-      const isFicheProduct = (item.productname || '').toLowerCase().startsWith('fiche');
-
-      if (isSoldInPieces && !isFicheProduct && sqmPerPiece > 0) {
-        qtyToRelease = qtyToRelease * sqmPerPiece;
-      }
+      const qty = parseFloat(item.quantity) || 0;
+      const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
+      const qtyToRelease = convertUnitToInventory(qty, item.unitcode, item.primaryunitcode, sqmPerPiece, item.productname);
 
       await client.query(`
             UPDATE Inventory SET QuantityReserved = GREATEST(0, QuantityReserved - $1)
