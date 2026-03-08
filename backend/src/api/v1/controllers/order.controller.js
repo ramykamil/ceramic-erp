@@ -13,7 +13,7 @@ const parseSqmPerPiece = (str) => {
   return 0;
 };
 
-const convertUnitToInventory = (qty, cartUnitCode, primaryUnitCode, sqmPerPiece, productName) => {
+const convertUnitToInventory = (qty, cartUnitCode, primaryUnitCode, sqmPerPiece, productName, qteParColis = 0) => {
   let finalQty = parseFloat(qty) || 0;
   const isFicheProduct = (productName || '').toLowerCase().startsWith('fiche');
   if (isFicheProduct || sqmPerPiece <= 0) return finalQty;
@@ -21,9 +21,30 @@ const convertUnitToInventory = (qty, cartUnitCode, primaryUnitCode, sqmPerPiece,
   const isCartPcs = (cartUnitCode === 'PCS' || cartUnitCode === 'PIECE');
   const isCartSqm = (cartUnitCode === 'SQM' || cartUnitCode === 'M2');
 
-  // If primary is not set, we default to PCS (User tracks inventory by Pieces for missing unit codes)
-  const isPrimaryPcs = (primaryUnitCode === 'PCS' || primaryUnitCode === 'PIECE' || !primaryUnitCode);
-  const isPrimarySqm = (primaryUnitCode === 'SQM' || primaryUnitCode === 'M2');
+  // Intelligent deduction of effective primary unit (matches frontend POS logic)
+  let effectivePrimaryUnit = primaryUnitCode;
+
+  const productNameLower = (productName || '').toLowerCase();
+  const has12060 = productNameLower.includes('120/60') || productNameLower.includes('120x60');
+  const hasTileDimensions = /\d+[x\/]\d+/.test(productName);
+
+  // Check if packaging is integer (approximate check to avoid float issues)
+  const isIntegerPackaging = qteParColis > 0 && Math.abs(qteParColis - Math.round(qteParColis)) < 0.01;
+
+  if (hasTileDimensions && !isFicheProduct) {
+    if (has12060) {
+      effectivePrimaryUnit = 'PCS';
+    } else if (!isIntegerPackaging) {
+      // Non-integer packaging (e.g. 1.44 treated as pcs/ctn in DB) -> Nativity is SQM
+      effectivePrimaryUnit = 'SQM';
+    } else {
+      effectivePrimaryUnit = 'PCS';
+    }
+  }
+
+  // If primary is not set, we default to PCS
+  const isPrimaryPcs = (effectivePrimaryUnit === 'PCS' || effectivePrimaryUnit === 'PIECE' || !effectivePrimaryUnit);
+  const isPrimarySqm = (effectivePrimaryUnit === 'SQM' || effectivePrimaryUnit === 'M2');
 
   // SQM cart -> PCS inventory
   if (isCartSqm && isPrimaryPcs) {
@@ -304,7 +325,7 @@ async function createOrder(req, res, next) {
 
         // Get product details
         const productResult = await client.query(
-          'SELECT p.PurchasePrice, p.BasePrice, p.ProductName, p.ProductCode, p.Size, p.PrimaryUnitID, u.UnitCode as PrimaryUnitCode FROM Products p LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID WHERE p.ProductID = $1',
+          'SELECT p.PurchasePrice, p.BasePrice, p.ProductName, p.ProductCode, p.Size, p.PrimaryUnitID, p.QteParColis, u.UnitCode as PrimaryUnitCode FROM Products p LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID WHERE p.ProductID = $1',
           [productId]
         );
         const costPrice = parseFloat(productResult.rows[0]?.purchaseprice) || parseFloat(productResult.rows[0]?.baseprice) || 0;
@@ -321,7 +342,7 @@ async function createOrder(req, res, next) {
           let qtyToReserve = parseFloat(quantity) || 0;
 
           // Universal UNIT CONVERSION LOGIC
-          qtyToReserve = convertUnitToInventory(qtyToReserve, unitCode, product.primaryunitcode, sqmPerPiece, product.productname);
+          qtyToReserve = convertUnitToInventory(qtyToReserve, unitCode, product.primaryunitcode, sqmPerPiece, product.productname, parseFloat(product.qteparcolis) || 0);
 
           // Check stock availability
           const inventoryCheck = await client.query('SELECT QuantityOnHand, QuantityReserved FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\'', [productId, effectiveWarehouseId]);
@@ -335,9 +356,8 @@ async function createOrder(req, res, next) {
           }
 
           const available = currentOnHand - currentReserved;
-          if (qtyToReserve > available) {
-            throw new Error(`Stock insuffisant. Produit: ${product.productname}. Disponible: ${available.toFixed(2)} ${product.primaryunitcode || 'PCS'}, Demandé: ${qtyToReserve.toFixed(2)} ${product.primaryunitcode || 'PCS'}`);
-          }
+          // Stock constraint removed here to allow creating PENDING orders.
+          // The check is instead performed during finalizeOrder.
 
           // Reserve inventory
           await client.query(`
@@ -452,7 +472,7 @@ async function addOrderItem(req, res, next) {
 
     // Get product details for stock check + unit conversion
     const productResult = await client.query(
-      'SELECT p.PurchasePrice, p.BasePrice, p.ProductName, p.ProductCode, p.Size, p.PrimaryUnitID, u.UnitCode as PrimaryUnitCode FROM Products p LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID WHERE p.ProductID = $1',
+      'SELECT p.PurchasePrice, p.BasePrice, p.ProductName, p.ProductCode, p.Size, p.PrimaryUnitID, p.QteParColis, u.UnitCode as PrimaryUnitCode FROM Products p LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID WHERE p.ProductID = $1',
       [productId]
     );
     const costPrice = parseFloat(productResult.rows[0]?.purchaseprice) || parseFloat(productResult.rows[0]?.baseprice) || 0;
@@ -470,7 +490,7 @@ async function addOrderItem(req, res, next) {
       const sqmPerPiece = parseSqmPerPiece(product.size || product.productname);
 
       // Universal UNIT CONVERSION LOGIC
-      qtyToReserve = convertUnitToInventory(qtyToReserve, unitCode, product.primaryunitcode, sqmPerPiece, product.productname);
+      qtyToReserve = convertUnitToInventory(qtyToReserve, unitCode, product.primaryunitcode, sqmPerPiece, product.productname, parseFloat(product.qteparcolis) || 0);
 
       const warehouseId = orderResult.rows[0].warehouseid || 1;
 
@@ -486,9 +506,8 @@ async function addOrderItem(req, res, next) {
       }
 
       const available = currentOnHand - currentReserved;
-      if (qtyToReserve > available) {
-        throw new Error(`Stock insuffisant. Produit: ${product.productname}. Disponible: ${available.toFixed(2)} ${product.primaryunitcode || 'PCS'}, Demandé: ${qtyToReserve.toFixed(2)} ${product.primaryunitcode || 'PCS'}`);
-      }
+      // Stock constraint removed here to allow adding to PENDING orders.
+      // The check is instead performed during finalizeOrder.
 
       // Reserve inventory (still inside transaction — will rollback if anything fails)
       await client.query(`
@@ -729,7 +748,7 @@ async function finalizeOrder(req, res, next) {
       SELECT 
         oi.ProductID, oi.Quantity, oi.PalletCount, oi.ColisCount, 
         u.UnitCode,
-        p.ProductName, p.Size, p.PrimaryUnitID,
+        p.ProductName, p.ProductCode, p.Size, p.PrimaryUnitID, p.QteParColis,
         pu_p.UnitCode as PrimaryUnitCode
       FROM OrderItems oi
       LEFT JOIN Units u ON oi.UnitID = u.UnitID
@@ -741,13 +760,34 @@ async function finalizeOrder(req, res, next) {
     // Get warehouse from order (default to 1 if not specified)
     const warehouseId = order.warehouseid || 1;
 
+    // ==========================================
+    // 1. STRICT STOCK VALIDATION BEFORE ANY DEDUCTION
+    // ==========================================
+    for (const item of itemsResult.rows) {
+      if (item.productid && (!item.productcode || item.productcode !== 'MANUAL')) {
+        let qtyToDeduct = parseFloat(item.quantity) || 0;
+        const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
+        qtyToDeduct = convertUnitToInventory(qtyToDeduct, item.unitcode, item.primaryunitcode, sqmPerPiece, item.productname, parseFloat(item.qteparcolis) || 0);
+
+        const inventoryCheck = await client.query('SELECT QuantityOnHand FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\'', [item.productid, warehouseId]);
+        let currentOnHand = 0;
+        if (inventoryCheck.rows.length > 0) {
+          currentOnHand = parseFloat(inventoryCheck.rows[0].quantityonhand);
+        }
+
+        if (qtyToDeduct > currentOnHand) {
+          throw new Error(`Stock insuffisant. Produit: ${item.productname}. Disponible: ${currentOnHand.toFixed(2)} ${item.primaryunitcode || 'PCS'}, Demandé: ${qtyToDeduct.toFixed(2)} ${item.primaryunitcode || 'PCS'}`);
+        }
+      }
+    }
+
     // Deduct inventory for each item
     for (const item of itemsResult.rows) {
       let qtyToDeduct = parseFloat(item.quantity) || 0;
 
       // Universal UNIT CONVERSION LOGIC
       const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
-      const convertedQty = convertUnitToInventory(qtyToDeduct, item.unitcode, item.primaryunitcode, sqmPerPiece, item.productname);
+      const convertedQty = convertUnitToInventory(qtyToDeduct, item.unitcode, item.primaryunitcode, sqmPerPiece, item.productname, parseFloat(item.qteparcolis) || 0);
 
       if (convertedQty !== qtyToDeduct) {
         console.log(`[Inventory] Converting ${qtyToDeduct} ${item.unitcode} of ${item.productname} to ${convertedQty.toFixed(4)} ${item.primaryunitcode || 'PCS'}`);
