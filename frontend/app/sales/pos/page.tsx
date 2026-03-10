@@ -833,27 +833,26 @@ function POSContent() {
     const exists = cart.find(i => i.productId === product.productid);
     if (exists) return;
 
-    // Determine default unit: DB PrimaryUnitID is source of truth
-    // Fallback to name-based heuristics only when DB has no primary unit set
-    const dbPrimaryUnitCode = product.primaryunitcode?.toUpperCase();
-    let defaultUnit: number;
+    // Determine default unit using Emballage (packaging) logic as requested by user:
+    // Any product with an integer in Qté par Colis gets sold in PCS.
+    // If it's a decimal (e.g. 1.44 m2 per carton), it gets sold in SQM.
+    let defaultUnit = units.find((u: any) => u.unitcode === 'PCS')?.unitid || units[0]?.unitid;
+    const isIntegerPackaging = Math.abs(product.derivedpiecespercolis - Math.round(product.derivedpiecespercolis)) < 0.01;
 
-    if (dbPrimaryUnitCode === 'PCS') {
-      // Product's primary unit is PCS → always default to PCS
-      defaultUnit = units.find((u: any) => u.unitcode === 'PCS')?.unitid || units[0]?.unitid;
-    } else if (dbPrimaryUnitCode === 'SQM') {
-      // Product's primary unit is SQM → default to SQM
-      defaultUnit = units.find((u: any) => u.unitcode === 'SQM')?.unitid || units[0]?.unitid;
+    if (product.derivedpiecespercolis > 0) {
+      if (isIntegerPackaging) {
+        defaultUnit = units.find((u: any) => u.unitcode === 'PCS')?.unitid || defaultUnit;
+      } else {
+        defaultUnit = units.find((u: any) => u.unitcode === 'SQM')?.unitid || defaultUnit;
+      }
     } else {
-      // Fallback: use dimension-based heuristics for products without explicit primary unit
-      defaultUnit = units.find((u: any) => u.unitcode === 'PCS')?.unitid || units[0]?.unitid;
+      // Fallback if packaging is 0 (not set)
       const productNameLower = product.productname.toLowerCase();
       const has12060 = productNameLower.includes('120/60') || productNameLower.includes('120x60');
       const hasTileDimensions = /\d+[x\/]\d+/.test(product.productname);
       const isFicheProduct = productNameLower.startsWith('fiche');
-      const isSingleItemPackaging = (product.derivedpiecespercolis === 1 && product.derivedcolisperpalette === 1);
 
-      if (hasTileDimensions && !isFicheProduct && !isSingleItemPackaging) {
+      if (hasTileDimensions && !isFicheProduct) {
         if (has12060) {
           defaultUnit = units.find((u: any) => u.unitcode === 'PCS')?.unitid || defaultUnit;
         } else {
