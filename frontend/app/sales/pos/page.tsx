@@ -27,6 +27,9 @@ interface Product {
   // Derived packaging info
   derivedpiecespercolis: number;  // QteParColis or calculated
   derivedcolisperpalette: number; // QteColisParPalette or calculated
+  // Primary unit from DB
+  primaryunitid?: number;
+  primaryunitcode?: string;
   // Legacy fallbacks
   quantityonhand?: number;
   palletcount?: number;
@@ -641,24 +644,55 @@ function POSContent() {
     return `${year}-${month}-${day}`;
   };
 
-  // Fetch MANUAL product ID
+  // Fetch MANUAL product ID - first from loaded products, then API, then auto-create
   useEffect(() => {
-    const fetchManualProduct = async () => {
+    if (products.length === 0) return; // Wait for products to load
+
+    const findOrCreateManualProduct = async () => {
+      // 1. Try to find in already-loaded products array
+      const fromArray = products.find((p: any) => p.productcode === 'MANUAL');
+      if (fromArray) {
+        setManualProductId(fromArray.productid);
+        console.log('Manual Product ID found in products array:', fromArray.productid);
+        return;
+      }
+
+      // 2. Fallback: Direct API search (in case not in materialized view results)
       try {
-        const res = await api.getProducts({ search: 'MANUAL', limit: 1 });
+        const res = await api.getProducts({ search: 'MANUAL', limit: 10 });
         if (res.success && res.data && Array.isArray(res.data) && res.data.length > 0) {
           const manual = res.data.find((p: any) => p.productcode === 'MANUAL');
           if (manual) {
             setManualProductId(manual.productid);
-            console.log('Manual Product ID found:', manual.productid);
+            console.log('Manual Product ID found via API search:', manual.productid);
+            return;
           }
         }
       } catch (err) {
-        console.error('Failed to fetch MANUAL product:', err);
+        console.error('Failed to fetch MANUAL product via search:', err);
+      }
+
+      // 3. Last resort: Auto-create the MANUAL product
+      try {
+        console.log('MANUAL product not found, creating it...');
+        const createRes = await api.createProduct({
+          productcode: 'MANUAL',
+          productname: 'Produit Manuel',
+          primaryunitid: units.find((u: any) => u.unitcode === 'PCS')?.unitid || 1,
+          description: 'Generic product for manual entry',
+          baseprice: 0,
+        });
+        if (createRes.success && createRes.data) {
+          const newProduct = createRes.data as any;
+          setManualProductId(newProduct.productid);
+          console.log('Manual Product auto-created with ID:', newProduct.productid);
+        }
+      } catch (createErr) {
+        console.error('Failed to auto-create MANUAL product:', createErr);
       }
     };
-    fetchManualProduct();
-  }, []);
+    findOrCreateManualProduct();
+  }, [products, units]);
 
   // --- Check Edit Mode ---
   useEffect(() => {
@@ -799,29 +833,32 @@ function POSContent() {
     const exists = cart.find(i => i.productId === product.productid);
     if (exists) return;
 
-    // Determine default unit based on product name
-    // 120/60 products are sold in PCS (Exception requested by user)
-    // Other tiles with Integer PCS/CTN -> PCS
-    // Tiles with Decimal PCS/CTN -> SQM
+    // Determine default unit: DB PrimaryUnitID is source of truth
+    // Fallback to name-based heuristics only when DB has no primary unit set
+    const dbPrimaryUnitCode = product.primaryunitcode?.toUpperCase();
+    let defaultUnit: number;
 
-    let defaultUnit = units.find(u => u.unitcode === 'PCS')?.unitid || units[0]?.unitid;
-    const productNameLower = product.productname.toLowerCase();
-    const has12060 = productNameLower.includes('120/60') || productNameLower.includes('120x60');
-    const hasTileDimensions = /\d+[x\/]\d+/.test(product.productname);
-    const isFicheProduct = productNameLower.startsWith('fiche');
-    const isSingleItemPackaging = (product.derivedpiecespercolis === 1 && product.derivedcolisperpalette === 1);
+    if (dbPrimaryUnitCode === 'PCS') {
+      // Product's primary unit is PCS → always default to PCS
+      defaultUnit = units.find((u: any) => u.unitcode === 'PCS')?.unitid || units[0]?.unitid;
+    } else if (dbPrimaryUnitCode === 'SQM') {
+      // Product's primary unit is SQM → default to SQM
+      defaultUnit = units.find((u: any) => u.unitcode === 'SQM')?.unitid || units[0]?.unitid;
+    } else {
+      // Fallback: use dimension-based heuristics for products without explicit primary unit
+      defaultUnit = units.find((u: any) => u.unitcode === 'PCS')?.unitid || units[0]?.unitid;
+      const productNameLower = product.productname.toLowerCase();
+      const has12060 = productNameLower.includes('120/60') || productNameLower.includes('120x60');
+      const hasTileDimensions = /\d+[x\/]\d+/.test(product.productname);
+      const isFicheProduct = productNameLower.startsWith('fiche');
+      const isSingleItemPackaging = (product.derivedpiecespercolis === 1 && product.derivedcolisperpalette === 1);
 
-    // Check if packaging is integer (approximate check to avoid float issues)
-    const isIntegerPackaging = Math.abs(product.derivedpiecespercolis - Math.round(product.derivedpiecespercolis)) < 0.01;
-
-    if (hasTileDimensions && !isFicheProduct && !isSingleItemPackaging) {
-      if (has12060) {
-        // Exception: 120/60 defaults to PCS (Requested by user) - overriding previous exception
-        defaultUnit = units.find(u => u.unitcode === 'PCS')?.unitid || defaultUnit;
-      } else {
-        // All other tiles ALWAYS default to SQM, preventing integer 
-        // packaging tiles from accidentally being ordered in PCS
-        defaultUnit = units.find(u => u.unitcode === 'SQM')?.unitid || defaultUnit;
+      if (hasTileDimensions && !isFicheProduct && !isSingleItemPackaging) {
+        if (has12060) {
+          defaultUnit = units.find((u: any) => u.unitcode === 'PCS')?.unitid || defaultUnit;
+        } else {
+          defaultUnit = units.find((u: any) => u.unitcode === 'SQM')?.unitid || defaultUnit;
+        }
       }
     }
 

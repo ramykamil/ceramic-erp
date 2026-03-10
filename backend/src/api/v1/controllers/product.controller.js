@@ -131,14 +131,31 @@ async function getProducts(req, res, next) {
         invMap[row.productid] = row;
       }
 
-      // Merge live stock back into results
+      // Fetch PrimaryUnitID + UnitCode for the viewed items
+      const unitQuery = `
+        SELECT p.ProductID as productid, p.PrimaryUnitID as primaryunitid,
+               COALESCE(u.UnitCode, 'PCS') as primaryunitcode
+        FROM Products p
+        LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID
+        WHERE p.ProductID = ANY($1::int[])
+      `;
+      const unitResult = await pool.query(unitQuery, [productIds]);
+      const unitMap = {};
+      for (const row of unitResult.rows) {
+        unitMap[row.productid] = row;
+      }
+
+      // Merge live stock and primary unit info back into results
       data = data.map(p => {
         const live = invMap[p.productid];
+        const unitInfo = unitMap[p.productid];
         return {
           ...p,
           totalqty: live ? parseFloat(live.realtotalqty) : 0,
           nbpalette: live ? parseFloat(live.realnbpalette) : 0,
-          nbcolis: live ? parseFloat(live.realnbcolis) : 0
+          nbcolis: live ? parseFloat(live.realnbcolis) : 0,
+          primaryunitid: unitInfo?.primaryunitid || null,
+          primaryunitcode: unitInfo?.primaryunitcode || 'PCS',
         };
       });
     }
