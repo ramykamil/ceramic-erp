@@ -134,7 +134,7 @@ async function getProducts(req, res, next) {
       // Fetch PrimaryUnitID + UnitCode for the viewed items
       const unitQuery = `
         SELECT p.ProductID as productid, p.PrimaryUnitID as primaryunitid,
-               COALESCE(u.UnitCode, 'PCS') as primaryunitcode
+               u.UnitCode as primaryunitcode
         FROM Products p
         LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID
         WHERE p.ProductID = ANY($1::int[])
@@ -155,7 +155,7 @@ async function getProducts(req, res, next) {
           nbpalette: live ? parseFloat(live.realnbpalette) : 0,
           nbcolis: live ? parseFloat(live.realnbcolis) : 0,
           primaryunitid: unitInfo?.primaryunitid || null,
-          primaryunitcode: unitInfo?.primaryunitcode || 'PCS',
+          primaryunitcode: unitInfo?.primaryunitcode || null,
         };
       });
     }
