@@ -959,6 +959,48 @@ async function deletePurchaseOrder(req, res, next) {
             // Delete goods receipt items and headers
             await client.query('DELETE FROM GoodsReceiptItems WHERE ReceiptID = ANY($1::int[])', [receiptIds]);
             await client.query('DELETE FROM GoodsReceipts WHERE PurchaseOrderID = $1', [id]);
+        } else if (poStatus === 'RECEIVED' || poStatus === 'PARTIAL') {
+            // PO was received directly without Goods Receipts. Revert inventory from PO items.
+            const itemsRes = await client.query(`
+                SELECT poi.Quantity, poi.ProductID, po.WarehouseID, p.ProductName, p.Size, u.UnitCode as PrimaryUnitCode, pu.UnitCode as ItemUnitCode
+                FROM PurchaseOrderItems poi
+                JOIN PurchaseOrders po ON poi.PurchaseOrderID = po.PurchaseOrderID
+                JOIN Products p ON poi.ProductID = p.ProductID
+                LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID
+                LEFT JOIN Units pu ON poi.UnitID = pu.UnitID
+                WHERE poi.PurchaseOrderID = $1
+            `, [id]);
+
+            const parseDimensions = (str) => {
+                if (!str) return 0;
+                const match = str.match(/(\d{2,3})\s*[xX*\/]\s*(\d{2,3})/);
+                if (match) {
+                    return (parseInt(match[1]) * parseInt(match[2])) / 10000;
+                }
+                return 0;
+            };
+
+            for (const item of itemsRes.rows) {
+                let quantityToRevert = parseFloat(item.quantity);
+                const sqmPerPiece = parseDimensions(item.size || item.productname);
+                const primaryUnitCode = (item.primaryunitcode || '').toUpperCase();
+                const isFicheProduct = (item.productname || '').toLowerCase().startsWith('fiche');
+                const unitCode = (item.itemunitcode || 'PCS').toUpperCase();
+
+                if (unitCode === 'PCS' && ['SQM', 'M2', 'M²'].includes(primaryUnitCode) && !isFicheProduct && sqmPerPiece > 0) {
+                    quantityToRevert = quantityToRevert * sqmPerPiece;
+                }
+
+                await client.query(`
+                    UPDATE Inventory
+                    SET QuantityOnHand = QuantityOnHand - $1,
+                        UpdatedAt = CURRENT_TIMESTAMP
+                    WHERE ProductID = $2
+                      AND WarehouseID = $3
+                      AND OwnershipType = 'OWNED'
+                      AND FactoryID IS NULL
+                `, [quantityToRevert, item.productid, item.warehouseid]);
+            }
         }
 
         // Delete PO items and PO
