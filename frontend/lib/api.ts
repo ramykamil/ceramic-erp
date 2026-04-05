@@ -1045,7 +1045,8 @@ class ApiClient {
 
   // --- New Comprehensive Reports ---
   async getSalesReport(params?: { startDate?: string; endDate?: string; customerId?: number }) {
-    const query = params ? '?' + new URLSearchParams(params as any).toString() : '';
+    const cleanParams = Object.fromEntries(Object.entries(params || {}).filter(([_, v]) => v !== undefined));
+    const query = Object.keys(cleanParams).length > 0 ? '?' + new URLSearchParams(cleanParams as any).toString() : '';
     return this.request<any>(`/reports/sales${query}`);
   }
 
@@ -1065,7 +1066,8 @@ class ApiClient {
   }
 
   async getTopProductsReport(params?: { startDate?: string; endDate?: string; customerId?: number }) {
-    const query = params ? '?' + new URLSearchParams(params as any).toString() : '';
+    const cleanParams = Object.fromEntries(Object.entries(params || {}).filter(([_, v]) => v !== undefined));
+    const query = Object.keys(cleanParams).length > 0 ? '?' + new URLSearchParams(cleanParams as any).toString() : '';
     return this.request<any[]>(`/reports/top-products${query}`);
   }
 

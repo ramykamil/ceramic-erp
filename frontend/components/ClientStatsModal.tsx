@@ -27,7 +27,12 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
         const loadData = async () => {
             setIsLoading(true);
             try {
-                const customerId = client.customerid || client.id;
+                // Handle different potential casing from postgres/frontend
+                const customerId = client.customerid || client.CustomerID || client.Customerid || client.id;
+                
+                if (!customerId) {
+                    throw new Error("Client ID manquant");
+                }
                 
                 // Fetch in parallel
                 const [salesRes, productsRes, versementsRes] = await Promise.all([
