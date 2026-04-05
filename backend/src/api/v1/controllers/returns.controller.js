@@ -7,7 +7,7 @@ const accountingService = require('../services/accounting.service');
  */
 const getReturns = async (req, res) => {
     try {
-        const { customerId, status, startDate, endDate, createdBy, limit = 100, offset = 0 } = req.query;
+        const { customerId, status, startDate, endDate, createdBy, search, orderType, limit = 100, offset = 0 } = req.query;
 
         let query = `
       SELECT 
@@ -16,6 +16,7 @@ const getReturns = async (req, res) => {
         r.OrderID as orderid,
         r.CustomerID as customerid,
         COALESCE(c.CustomerName, r.ClientName) as customername,
+        c.CustomerType as customertype,
         r.ReturnDate as returndate,
         r.Reason as reason,
         r.Status as status,
@@ -23,10 +24,12 @@ const getReturns = async (req, res) => {
         r.Notes as notes,
         r.CreatedAt as createdat,
         r.CreatedBy as createdbyid,
+        u.Username as username,
         COUNT(ri.ReturnItemID) as itemcount
       FROM Returns r
       LEFT JOIN Customers c ON r.CustomerID = c.CustomerID
       LEFT JOIN ReturnItems ri ON r.ReturnID = ri.ReturnID
+      LEFT JOIN Users u ON r.CreatedBy = u.UserID
       WHERE 1=1
     `;
         const params = [];
@@ -62,9 +65,21 @@ const getReturns = async (req, res) => {
             params.push(createdBy);
         }
 
+        if (search) {
+            paramCount++;
+            query += ` AND (r.ReturnNumber ILIKE $${paramCount} OR r.ClientName ILIKE $${paramCount} OR c.CustomerName ILIKE $${paramCount})`;
+            params.push(`%${search}%`);
+        }
+
+        if (orderType && orderType !== 'ALL') {
+            paramCount++;
+            query += ` AND c.CustomerType = $${paramCount}`;
+            params.push(orderType);
+        }
+
         query += `
-      GROUP BY r.ReturnID, r.ReturnNumber, r.OrderID, r.CustomerID, c.CustomerName, 
-               r.ReturnDate, r.Reason, r.Status, r.TotalAmount, r.Notes, r.CreatedAt, r.CreatedBy
+      GROUP BY r.ReturnID, r.ReturnNumber, r.OrderID, r.CustomerID, c.CustomerName, c.CustomerType,
+               r.ReturnDate, r.Reason, r.Status, r.TotalAmount, r.Notes, r.CreatedAt, r.CreatedBy, u.Username
       ORDER BY r.ReturnDate DESC, r.ReturnID DESC
       LIMIT $${paramCount + 1} OFFSET $${paramCount + 2}
     `;

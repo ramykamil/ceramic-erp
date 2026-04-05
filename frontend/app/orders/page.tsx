@@ -119,7 +119,7 @@ export default function OrdersListPage() {
   // Re-fetch when server-side filters change
   useEffect(() => {
     fetchData();
-  }, [activeTab, selectedUserId, orderTypeFilter, recordTypeFilter, debouncedSearch]);
+  }, [activeTab, selectedUserId, orderTypeFilter, recordTypeFilter, debouncedSearch, dateRange]);
 
   useEffect(() => {
     // Apply client-side date filter
@@ -172,13 +172,25 @@ export default function OrdersListPage() {
       if (activeTab !== 'ALL') params.status = activeTab;
       if (selectedUserId) params.salesPersonId = selectedUserId;
       if (debouncedSearch.trim()) params.search = debouncedSearch.trim();
+      
+      // Pass date range to server-side if present
+      if (dateRange.startDate) params.startDate = dateRange.startDate;
+      if (dateRange.endDate) params.endDate = dateRange.endDate;
 
       const fetchOrders = recordTypeFilter === 'ALL' || recordTypeFilter === 'ORDER';
       const fetchReturns = recordTypeFilter === 'ALL' || recordTypeFilter === 'RETURN';
 
       const [ordersRes, returnsRes] = await Promise.all([
         fetchOrders ? api.getOrders({ ...params, orderType: orderTypeFilter !== 'ALL' ? orderTypeFilter : undefined }) : Promise.resolve({ success: true, data: [] }),
-        fetchReturns ? api.getReturns({ ...params, customerId: params.customerId }) : Promise.resolve({ success: true, data: [] })
+        fetchReturns ? api.getReturns({ 
+          ...params, 
+          // Map Order statuses to Return statuses for unified tab filtering
+          status: activeTab === 'CONFIRMED' ? 'APPROVED' : 
+                  activeTab === 'DELIVERED' ? 'PROCESSED' : 
+                  activeTab === 'CANCELLED' ? 'REJECTED' : 
+                  activeTab !== 'ALL' ? activeTab : undefined,
+          orderType: orderTypeFilter !== 'ALL' ? orderTypeFilter : undefined
+        }) : Promise.resolve({ success: true, data: [] })
       ]);
 
       let unified: UnifiedRow[] = [];
@@ -206,12 +218,14 @@ export default function OrdersListPage() {
           id: r.returnid,
           number: r.returnnumber || `RET-${r.returnid}`,
           customerName: r.customername,
-          retailClientName: r.clientname,
+          retailClientName: r.retailclientname, // Use normalized field
           date: r.returndate || r.createdat,
-          totalAmount: -Number(r.totalamount || 0), // Show returns as negative for clarity in totals
+          totalAmount: -Number(r.totalamount || 0), // Negative for CA Net calculation
           paymentAmount: 0,
           benefice: 0,
-          status: r.status,
+          status: r.status === 'APPROVED' ? 'CONFIRMED' : 
+                  r.status === 'PROCESSED' ? 'DELIVERED' : 
+                  r.status === 'REJECTED' ? 'CANCELLED' : r.status,
           salesPerson: r.username,
           recordType: 'RETURN'
         }));
