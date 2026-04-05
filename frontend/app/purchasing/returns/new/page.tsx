@@ -22,7 +22,8 @@ interface Product {
     productid: number;
     productcode: string;
     productname: string;
-    baseprice: number; // Purchase Price
+    prixachat: number; // Purchase Price (from mv_Catalogue)
+    prixvente: number; // Sale Price (from mv_Catalogue)
     derivedpiecespercolis?: number;
     derivedcolisperpalette?: number;
 }
@@ -174,7 +175,7 @@ export default function NewPurchaseReturnPage() {
         const cartonsPerPalette = product.derivedcolisperpalette || 0;
         const sqmPerPiece = parseSqmPerPiece(product.productname);
         // Default to BasePrice (Purchase Price)
-        const unitPrice = product.baseprice || 0;
+        const unitPrice = product.prixachat || 0;
 
         const newItem: ReturnFormItem = {
             productId: product.productid,
@@ -440,7 +441,7 @@ export default function NewPurchaseReturnPage() {
                                                         <div className="text-xs text-slate-500 font-mono">{p.productcode}</div>
                                                     </div>
                                                     <div className="text-sm font-bold text-slate-600 bg-slate-100 px-2 py-1 rounded group-hover:bg-white transition-colors">
-                                                        {formatCurrency(p.baseprice)}
+                                                        {formatCurrency(p.prixachat || 0)}
                                                     </div>
                                                 </button>
                                             ))}
