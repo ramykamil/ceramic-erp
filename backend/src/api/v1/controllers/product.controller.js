@@ -490,10 +490,12 @@ async function getProductSalesHistory(req, res, next) {
         COALESCE(oi.ColisCount, 0) as cartons,
         oi.UnitPrice as unitprice,
         oi.LineTotal as linetotal,
-        o.Status as orderstatus
+        o.Status as orderstatus,
+        COALESCE(u.Username, 'N/A') as createdby
       FROM OrderItems oi
       JOIN Orders o ON oi.OrderID = o.OrderID
       JOIN Customers c ON o.CustomerID = c.CustomerID
+      LEFT JOIN Users u ON o.CreatedBy = u.UserID
       WHERE oi.ProductID = $1
         AND o.Status NOT IN ('CANCELLED', 'DRAFT')
         ${dateFilter}
@@ -688,11 +690,13 @@ async function getProductPurchaseHistory(req, res, next) {
         poi.Quantity as qty,
         poi.UnitPrice as unitprice,
         poi.LineTotal as linetotal,
-        po.Status as orderstatus
+        po.Status as orderstatus,
+        COALESCE(u.Username, 'N/A') as createdby
       FROM PurchaseOrderItems poi
       JOIN PurchaseOrders po ON poi.PurchaseOrderID = po.PurchaseOrderID
       LEFT JOIN Factories f ON po.FactoryID = f.FactoryID
       LEFT JOIN Brands b ON po.BrandID = b.BrandID
+      LEFT JOIN Users u ON po.CreatedBy = u.UserID
       WHERE poi.ProductID = $1
         AND po.Status NOT IN ('CANCELLED')
         ${dateFilter}
@@ -844,11 +848,13 @@ async function getProductReturnHistory(req, res, next) {
         pri.UnitPrice as unitprice,
         pri.Total as linetotal,
         pri.Reason as reason,
-        'PURCHASE' as returntype
+        'PURCHASE' as returntype,
+        COALESCE(u.Username, 'N/A') as createdby
       FROM PurchaseReturnItems pri
       JOIN PurchaseReturns pr ON pri.ReturnID = pr.ReturnID
       LEFT JOIN Factories f ON pr.FactoryID = f.FactoryID
       LEFT JOIN Brands b ON pr.BrandID = b.BrandID
+      LEFT JOIN Users u ON pr.CreatedBy = u.UserID
       WHERE pri.ProductID = $1
         ${dateFilterPR}
       ORDER BY pr.ReturnDate DESC
@@ -867,10 +873,12 @@ async function getProductReturnHistory(req, res, next) {
         ri.UnitPrice as unitprice,
         ri.LineTotal as linetotal,
         ri.Reason as reason,
-        'SALES' as returntype
+        'SALES' as returntype,
+        COALESCE(u.Username, 'N/A') as createdby
       FROM ReturnItems ri
       JOIN Returns r ON ri.ReturnID = r.ReturnID
       LEFT JOIN Customers c ON r.CustomerID = c.CustomerID
+      LEFT JOIN Users u ON r.CreatedBy = u.UserID
       WHERE ri.ProductID = $1
         ${dateFilterSR}
       ORDER BY r.ReturnDate DESC

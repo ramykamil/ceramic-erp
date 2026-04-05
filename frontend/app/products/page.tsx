@@ -1327,7 +1327,7 @@ export default function ProductsPage() {
                                   <th className="p-3 text-center">N° Bon</th>
                                   <th className="p-3 text-center">Date</th>
                                   <th className="p-3 text-left">Client</th>
-                                  <th className="p-3 text-center">Type</th>
+                                  <th className="p-3 text-center">Utilisateur</th>
                                   <th className="p-3 text-right bg-indigo-100">Palettes</th>
                                   <th className="p-3 text-right bg-cyan-100">Cartons</th>
                                   <th className="p-3 text-right bg-emerald-100">Qté</th>
@@ -1341,7 +1341,7 @@ export default function ProductsPage() {
                                     <td className="p-3 text-center text-blue-600 text-xs font-mono font-semibold">{o.ordernumber || '-'}</td>
                                     <td className="p-3 text-center text-slate-600 text-xs font-mono">{o.orderdate ? new Date(o.orderdate).toLocaleDateString('fr-DZ') : '-'}</td>
                                     <td className="p-3 font-medium text-slate-800">{o.customername} <span className="text-xs text-slate-400 ml-1">{o.customercode}</span></td>
-                                    <td className="p-3 text-center"><span className={`px-2 py-1 rounded-full text-xs font-medium ${o.customertype === 'WHOLESALE' ? 'bg-purple-100 text-purple-700' : 'bg-teal-100 text-teal-700'}`}>{o.customertype === 'WHOLESALE' ? 'Gros' : 'Détail'}</span></td>
+                                    <td className="p-3 text-center"><span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700">{o.createdby}</span></td>
                                     <td className="p-3 text-right font-bold text-indigo-600 font-mono bg-indigo-50/50">{formatQty(o.pallets)}</td>
                                     <td className="p-3 text-right font-bold text-cyan-600 font-mono bg-cyan-50/50">{formatQty(o.cartons)}</td>
                                     <td className="p-3 text-right font-bold text-emerald-600 font-mono bg-emerald-50/50">{formatQty(o.qty)}</td>
@@ -1404,7 +1404,7 @@ export default function ProductsPage() {
                                   <th className="p-3 text-center">N° Bon</th>
                                   <th className="p-3 text-center">Date</th>
                                   <th className="p-3 text-left">Fournisseur</th>
-                                  <th className="p-3 text-center">Type</th>
+                                  <th className="p-3 text-center">Utilisateur</th>
                                   <th className="p-3 text-right bg-indigo-100">Palettes</th>
                                   <th className="p-3 text-right bg-cyan-100">Cartons</th>
                                   <th className="p-3 text-right bg-emerald-100">Qté</th>
@@ -1418,7 +1418,7 @@ export default function ProductsPage() {
                                     <td className="p-3 text-center text-orange-600 text-xs font-mono font-semibold">{o.ponumber || '-'}</td>
                                     <td className="p-3 text-center text-slate-600 text-xs font-mono">{o.orderdate ? new Date(o.orderdate).toLocaleDateString('fr-DZ') : '-'}</td>
                                     <td className="p-3 font-medium text-slate-800">{o.suppliername}{o.suppliercode && <span className="text-xs text-slate-400 ml-1">{o.suppliercode}</span>}</td>
-                                    <td className="p-3 text-center"><span className={`px-2 py-1 rounded-full text-xs font-medium ${o.ownershiptype === 'CONSIGNMENT' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'}`}>{o.ownershiptype === 'CONSIGNMENT' ? 'Dépôt' : 'Achat'}</span></td>
+                                    <td className="p-3 text-center"><span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700">{o.createdby}</span></td>
                                     <td className="p-3 text-right font-bold text-indigo-600 font-mono bg-indigo-50/50">{formatQty(o.pallets || 0)}</td>
                                     <td className="p-3 text-right font-bold text-cyan-600 font-mono bg-cyan-50/50">{formatQty(o.cartons || 0)}</td>
                                     <td className="p-3 text-right font-bold text-emerald-600 font-mono bg-emerald-50/50">{formatQty(o.qty)}</td>
@@ -1557,7 +1557,7 @@ export default function ProductsPage() {
                                     <th className="p-3 text-center">N° Retour</th>
                                     <th className="p-3 text-center">Date</th>
                                     <th className="p-3 text-left">Fournisseur</th>
-                                    <th className="p-3 text-center">Statut</th>
+                                    <th className="p-3 text-center">Utilisateur</th>
                                     <th className="p-3 text-right">Qté</th>
                                     <th className="p-3 text-right">Prix Unit.</th>
                                     <th className="p-3 text-right">Montant</th>
@@ -1570,15 +1570,7 @@ export default function ProductsPage() {
                                       <td className="p-3 text-center text-orange-600 text-xs font-mono font-semibold">{r.returnnumber || '-'}</td>
                                       <td className="p-3 text-center text-slate-600 text-xs font-mono">{r.returndate ? new Date(r.returndate).toLocaleDateString('fr-DZ') : '-'}</td>
                                       <td className="p-3 font-medium text-slate-800">{r.suppliername}</td>
-                                      <td className="p-3 text-center">
-                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                          r.status === 'APPROVED' ? 'bg-green-100 text-green-700' :
-                                          r.status === 'PENDING' ? 'bg-yellow-100 text-yellow-700' :
-                                          'bg-slate-100 text-slate-600'
-                                        }`}>
-                                          {r.status === 'APPROVED' ? 'Approuvé' : r.status === 'PENDING' ? 'En attente' : r.status}
-                                        </span>
-                                      </td>
+                                      <td className="p-3 text-center"><span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700">{r.createdby}</span></td>
                                       <td className="p-3 text-right font-bold text-orange-600 font-mono">{formatQty(r.qty)}</td>
                                       <td className="p-3 text-right text-slate-600 font-mono">{formatMoney(r.unitprice)}</td>
                                       <td className="p-3 text-right font-bold text-slate-800 font-mono">{formatMoney(r.linetotal)}</td>
@@ -1609,7 +1601,7 @@ export default function ProductsPage() {
                                     <th className="p-3 text-center">N° Retour</th>
                                     <th className="p-3 text-center">Date</th>
                                     <th className="p-3 text-left">Client</th>
-                                    <th className="p-3 text-center">Statut</th>
+                                    <th className="p-3 text-center">Utilisateur</th>
                                     <th className="p-3 text-right">Qté</th>
                                     <th className="p-3 text-right">Prix Unit.</th>
                                     <th className="p-3 text-right">Montant</th>
@@ -1622,15 +1614,7 @@ export default function ProductsPage() {
                                       <td className="p-3 text-center text-rose-600 text-xs font-mono font-semibold">{r.returnnumber || '-'}</td>
                                       <td className="p-3 text-center text-slate-600 text-xs font-mono">{r.returndate ? new Date(r.returndate).toLocaleDateString('fr-DZ') : '-'}</td>
                                       <td className="p-3 font-medium text-slate-800">{r.customername}</td>
-                                      <td className="p-3 text-center">
-                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                          r.status === 'APPROVED' ? 'bg-green-100 text-green-700' :
-                                          r.status === 'PENDING' ? 'bg-yellow-100 text-yellow-700' :
-                                          'bg-slate-100 text-slate-600'
-                                        }`}>
-                                          {r.status === 'APPROVED' ? 'Approuvé' : r.status === 'PENDING' ? 'En attente' : r.status}
-                                        </span>
-                                      </td>
+                                      <td className="p-3 text-center"><span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700">{r.createdby}</span></td>
                                       <td className="p-3 text-right font-bold text-rose-600 font-mono">{formatQty(r.qty)}</td>
                                       <td className="p-3 text-right text-slate-600 font-mono">{formatMoney(r.unitprice)}</td>
                                       <td className="p-3 text-right font-bold text-slate-800 font-mono">{formatMoney(r.linetotal)}</td>
