@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -52,7 +52,7 @@ const getStatusBadge = (status: string) => {
   return classes[status as keyof typeof classes] || 'bg-gray-100 text-gray-800';
 };
 
-export default function OrdersListPage() {
+function OrdersListContent() {
   const [records, setRecords] = useState<UnifiedRow[]>([]);
   const [filteredRecords, setFilteredRecords] = useState<UnifiedRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -577,5 +577,13 @@ export default function OrdersListPage() {
         )}
       </div>
     </div >
+  );
+}
+
+export default function OrdersListPage() {
+  return (
+    <Suspense fallback={<div className="p-20 text-center font-bold">Initialisation...</div>}>
+      <OrdersListContent />
+    </Suspense>
   );
 }
