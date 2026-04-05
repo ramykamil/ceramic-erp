@@ -61,7 +61,7 @@ function OrdersListContent() {
   const [selectedUserId, setSelectedUserId] = usePersistentState<number | null>('orders_userId', null);
   const [searchQuery, setSearchQuery] = usePersistentState('orders_search', '');
   const [orderTypeFilter, setOrderTypeFilter] = usePersistentState('orders_type', 'ALL');
-  const [recordTypeFilter, setRecordTypeFilter] = usePersistentState('orders_recordType', 'ALL'); // 'ALL' | 'ORDER' | 'RETURN'
+  const [recordTypeFilter, setRecordTypeFilter] = usePersistentState('orders_viewType', 'ALL'); // 'ALL' | 'ORDER' | 'RETURN'
   const [mainSection, setMainSection] = usePersistentState<'COMMANDES' | 'VERSEMENTS'>('orders_section', 'COMMANDES');
   const [userRole, setUserRole] = useState('');
   const router = useRouter();
@@ -77,13 +77,13 @@ function OrdersListContent() {
   useEffect(() => {
     const filter = searchParams.get('filter');
     if (filter === 'RETURN' || filter === 'ORDER') {
-      setRecordTypeFilter(filter);
+      setRecordTypeFilter(filter as any);
       setActiveTab('ALL');
       setDateRange(getDateRange('TODAY'));
       // Clear the URL param so it doesn't fight with manual dropdown changes
       router.replace('/orders');
     }
-  }, []);
+  }, [searchParams, router, setRecordTypeFilter, setActiveTab, setDateRange]);
 
   // Load user role from localStorage
   useEffect(() => {

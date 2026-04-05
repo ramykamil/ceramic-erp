@@ -146,6 +146,8 @@ const getReturnById = async (req, res) => {
         ri.ProductID as productid,
         p.ProductCode as productcode,
         p.ProductName as productname,
+        p.DerivedPiecesPerColis as derivedpiecespercolis,
+        p.DerivedColisPerPalette as derivedcolisperpalette,
         ri.Quantity as quantity,
         ri.UnitID as unitid,
         u.UnitCode as unitcode,
