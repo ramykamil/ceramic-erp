@@ -212,10 +212,10 @@ const createReturn = async (req, res) => {
 
         // Insert return header (with either customer ID or manual client info)
         const returnResult = await client.query(`
-      INSERT INTO Returns (ReturnNumber, OrderID, CustomerID, ClientName, ClientPhone, ClientAddress, Reason, TotalAmount, Notes, Status)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'PENDING')
+      INSERT INTO Returns (ReturnNumber, OrderID, CustomerID, ClientName, ClientPhone, ClientAddress, Reason, TotalAmount, Notes, Status, CreatedBy)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'PENDING', $10)
       RETURNING ReturnID, ReturnNumber
-    `, [returnNumber, orderId || null, customerId || null, clientName || null, clientPhone || null, clientAddress || null, reason, totalAmount, notes]);
+    `, [returnNumber, orderId || null, customerId || null, clientName || null, clientPhone || null, clientAddress || null, reason, totalAmount, notes, req.user?.userId]);
 
         const returnId = returnResult.rows[0].returnid;
 

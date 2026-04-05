@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import api from '@/lib/api';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { DateQuickFilter, DateRange, DateFilterPreset, getDateRange } from '@/components/DateQuickFilter';
 import { UserFilter } from '@/components/UserFilter';
 import { useSortableTable } from '@/hooks/useSortableTable';
@@ -71,6 +71,21 @@ export default function OrdersListPage() {
   useEffect(() => {
     containerRef.current?.focus();
   }, []);
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const filter = searchParams.get('filter');
+    if (filter === 'RETURN') {
+      setRecordTypeFilter('RETURN');
+      setActiveTab('ALL');
+      setDateRange(getDateRange('TODAY'));
+    } else if (filter === 'ORDER') {
+      setRecordTypeFilter('ORDER');
+      setActiveTab('ALL');
+      setDateRange(getDateRange('TODAY'));
+    }
+  }, [searchParams]);
 
   // Load user role from localStorage
   useEffect(() => {
