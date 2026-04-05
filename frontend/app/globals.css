@@ -280,11 +280,11 @@ a:hover {
   height: 100% !important;
 }
 
-.pos-zero-scroll-container tr {
+.pos-zero-scroll-container tbody tr {
   display: flex !important;
   flex: 1 1 0% !important;
-  min-height: 2.5rem !important; /* Minimum comfortable height */
-  max-height: 4.5rem !important; /* Maximum height when few items */
+  min-height: 2.25rem !important; /* Slightly more compact */
+  max-height: 4.5rem !important;
   align-items: center !important;
 }
 

@@ -596,7 +596,7 @@ function POSContent() {
 
       <div className="flex-1 flex overflow-hidden">
         {/* Left Panel: Customer & Logistics */}
-        <div className="w-80 flex-none bg-white border-r overflow-y-auto p-4 space-y-4 custom-scrollbar">
+        <div className="w-72 flex-none bg-white border-r overflow-y-auto p-4 space-y-4 custom-scrollbar">
           <section>
             <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-primary"></span> Client & Header
@@ -718,20 +718,20 @@ function POSContent() {
           {/* Table Container - This is the dynamic scaling part */}
           <div className="flex-1 p-4 overflow-hidden flex flex-col">
             <div className={`flex-1 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col ${cart.length > 10 ? 'pos-zero-scroll-container' : ''}`}>
-              <div className="overflow-x-auto flex-1 custom-scrollbar">
-                <table className="w-full border-collapse table-fixed min-w-[1200px]">
+              <div className="overflow-auto flex-1 custom-scrollbar">
+                <table className="w-full border-separate border-spacing-0 min-w-full">
                   <thead className="sticky top-0 bg-slate-800 text-white z-20">
                     <tr className="text-[11px] font-bold uppercase tracking-wider">
-                      <th style={{ width: cartWidths.designation }} className="px-3 py-3 text-left">Désignation</th>
-                      <th style={{ width: cartWidths.marque }} className="px-2 py-3 text-left">Marque</th>
-                      <th style={{ width: cartWidths.stock }} className="px-2 py-3 text-right">Stock</th>
-                      <th style={{ width: cartWidths.palettes }} className="px-2 py-3 text-center bg-indigo-900/30">Pals</th>
-                      <th style={{ width: cartWidths.cartons }} className="px-2 py-3 text-center bg-indigo-900/30">Ctns</th>
-                      <th style={{ width: cartWidths.quantity }} className="px-3 py-3 text-center bg-red-900/30">Quantité</th>
-                      <th style={{ width: cartWidths.unite }} className="px-2 py-3 text-center">Unité</th>
-                      <th style={{ width: cartWidths.prixunit }} className="px-2 py-3 text-right">Prix Unit</th>
-                      <th style={{ width: cartWidths.src }} className="px-2 py-3 text-center">Source</th>
-                      <th style={{ width: cartWidths.totalligne }} className="px-3 py-3 text-right">Total</th>
+                      <ResizableHeader columnKey="designation" width={cartWidths.designation} onResize={handleCartResize} className="px-3 py-3 text-left">Désignation</ResizableHeader>
+                      <ResizableHeader columnKey="marque" width={cartWidths.marque} onResize={handleCartResize} className="px-2 py-3 text-left">Marque</ResizableHeader>
+                      <ResizableHeader columnKey="stock" width={cartWidths.stock} onResize={handleCartResize} className="px-2 py-3 text-right">Stock</ResizableHeader>
+                      <ResizableHeader columnKey="palettes" width={cartWidths.palettes} onResize={handleCartResize} className="px-2 py-3 text-center bg-indigo-900/30">Pals</ResizableHeader>
+                      <ResizableHeader columnKey="cartons" width={cartWidths.cartons} onResize={handleCartResize} className="px-2 py-3 text-center bg-indigo-900/30">Ctns</ResizableHeader>
+                      <ResizableHeader columnKey="quantity" width={cartWidths.quantity} onResize={handleCartResize} className="px-3 py-3 text-center bg-red-900/30">Quantité</ResizableHeader>
+                      <ResizableHeader columnKey="unite" width={cartWidths.unite} onResize={handleCartResize} className="px-2 py-3 text-center">Unité</ResizableHeader>
+                      <ResizableHeader columnKey="prixunit" width={cartWidths.prixunit} onResize={handleCartResize} className="px-2 py-3 text-right">Prix Unit</ResizableHeader>
+                      <ResizableHeader columnKey="src" width={cartWidths.src} onResize={handleCartResize} className="px-2 py-3 text-center">Source</ResizableHeader>
+                      <ResizableHeader columnKey="totalligne" width={cartWidths.totalligne} onResize={handleCartResize} className="px-3 py-3 text-right">Total</ResizableHeader>
                       <th className="w-12 px-2 py-3"></th>
                     </tr>
                   </thead>
@@ -786,7 +786,7 @@ function POSContent() {
         </div>
 
         {/* Right Panel: Summary & Buttons */}
-        <div className="w-96 flex-none bg-slate-800 text-white p-6 flex flex-col shadow-2xl z-20">
+        <div className="w-80 flex-none bg-slate-800 text-white p-6 flex flex-col shadow-2xl z-20">
           <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">Récapitulatif & Paiement</h2>
           
           <div className="flex-1 space-y-4">
