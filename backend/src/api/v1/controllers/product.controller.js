@@ -705,11 +705,51 @@ async function getProductPurchaseHistory(req, res, next) {
     `;
     const purchaseResult = await pool.query(purchaseQuery, params);
 
-    // 3. Calculate palettes and cartons per line
+    // 3. Calculate palettes and cartons per line using Smart Packaging Detection
+    // (matches PO detail page logic — normalizes m²/ctn to integer pieces first)
+    const parseSqmPerPiece = (productName) => {
+      if (productName.toLowerCase().startsWith('fiche')) return 0;
+      const sizeMatch = productName.match(/(\d+)\s*[\/xX×]\s*(\d+)/i);
+      if (sizeMatch) {
+        const dim1 = parseInt(sizeMatch[1]) / 100;
+        const dim2 = parseInt(sizeMatch[2]) / 100;
+        return dim1 * dim2;
+      }
+      return 0;
+    };
+
+    const sqmPerPiece = parseSqmPerPiece(product.productname);
+    let piecesPerCarton = qteParColis;
+
+    // If qteparcolis is a decimal (e.g. 1.42 = m²/ctn), normalize to integer pieces
+    if (sqmPerPiece > 0 && piecesPerCarton > 0 && piecesPerCarton % 1 !== 0) {
+      const calculatedPieces = Math.round(piecesPerCarton / sqmPerPiece);
+      if (Math.abs(calculatedPieces * sqmPerPiece - piecesPerCarton) < 0.05) {
+        piecesPerCarton = calculatedPieces;
+      }
+    }
+
     const ordersWithPackaging = purchaseResult.rows.map(row => {
       const qty = parseFloat(row.qty || 0);
-      const cartons = qteParColis > 0 ? parseFloat((qty / qteParColis).toFixed(2)) : 0;
-      const pallets = colisParPalette > 0 ? parseFloat((cartons / colisParPalette).toFixed(2)) : 0;
+      let cartons = 0;
+      let pallets = 0;
+
+      if (piecesPerCarton > 0) {
+        // Convert qty to pieces first (if unit is SQM)
+        let pieces = qty;
+        if (sqmPerPiece > 0) {
+          pieces = qty / sqmPerPiece;
+        }
+        cartons = parseFloat((pieces / piecesPerCarton).toFixed(2));
+        if (colisParPalette > 0) {
+          pallets = parseFloat((cartons / colisParPalette).toFixed(2));
+        }
+      } else if (qteParColis > 0) {
+        // Fallback: direct division (PCS products)
+        cartons = parseFloat((qty / qteParColis).toFixed(2));
+        pallets = colisParPalette > 0 ? parseFloat((cartons / colisParPalette).toFixed(2)) : 0;
+      }
+
       return { ...row, pallets, cartons };
     });
 
