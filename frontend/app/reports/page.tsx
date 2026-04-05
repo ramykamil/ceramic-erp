@@ -5,6 +5,7 @@ import api from '@/lib/api';
 import Link from 'next/link';
 import { DateQuickFilter, DateRange, getDateRange } from '@/components/DateQuickFilter';
 import { UserFilter } from '@/components/UserFilter';
+import { ClientStatsModal } from '@/components/ClientStatsModal';
 
 // Format helpers
 const formatDZD = (n: number) => new Intl.NumberFormat('fr-DZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n || 0) + ' DA';
@@ -29,6 +30,7 @@ export default function ReportsPage() {
     const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
     const [isLoading, setIsLoading] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+    const [selectedClient, setSelectedClient] = useState<any>(null);
 
     // Data states
     const [salesData, setSalesData] = useState<any>(null);
@@ -322,7 +324,7 @@ export default function ReportsPage() {
                                                 {clientsData.length === 0 ? (
                                                     <tr><td colSpan={6} className="p-4 text-center text-slate-400">Aucun client actif pour cette période</td></tr>
                                                 ) : clientsData.map((c, i) => (
-                                                    <tr key={i} className="hover:bg-slate-50">
+                                                    <tr key={i} className="hover:bg-blue-50 cursor-pointer transition-colors" onClick={() => setSelectedClient(c)}>
                                                         <td className="p-2 font-medium">{c.nom}</td>
                                                         <td className="p-2">
                                                             <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${c.type === 'WHOLESALE' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'
@@ -347,6 +349,16 @@ export default function ReportsPage() {
                     </div>
                 </div>
             </div>
+            
+            {/* Client Details Modal */}
+            {selectedClient && (
+                <ClientStatsModal 
+                    client={selectedClient} 
+                    startDate={startDate} 
+                    endDate={endDate} 
+                    onClose={() => setSelectedClient(null)} 
+                />
+            )}
         </div>
     );
 }

@@ -8,7 +8,7 @@ const formatDZD = (amount) => new Intl.NumberFormat('fr-DZ', { style: 'currency'
  * Sales transactions with KPIs for date range
  */
 const getSalesReport = async (req, res) => {
-  const { startDate, endDate, salesPersonId } = req.query;
+  const { startDate, endDate, salesPersonId, customerId } = req.query;
   const start = startDate || new Date().toISOString().split('T')[0];
   const end = endDate || new Date().toISOString().split('T')[0];
 
@@ -16,9 +16,15 @@ const getSalesReport = async (req, res) => {
     let userFilter = '';
     const queryParams = [start, end];
     if (salesPersonId) {
-      userFilter = ` AND SalesPersonID = $3`;
+      userFilter += ` AND SalesPersonID = $${queryParams.length + 1}`;
       queryParams.push(salesPersonId);
     }
+    if (customerId) {
+      userFilter += ` AND CustomerID = $${queryParams.length + 1}`;
+      queryParams.push(customerId);
+    }
+    
+    let userFilterWithAlias = userFilter.replace(/SalesPersonID/g, 'o.SalesPersonID').replace(/CustomerID/g, 'o.CustomerID');
 
     // Get sales summary (using only Orders table)
     const summaryResult = await pool.query(`
@@ -41,8 +47,12 @@ const getSalesReport = async (req, res) => {
     const yesterdayParams = [yesterdayStr];
     let yesterdayUserFilter = '';
     if (salesPersonId) {
-      yesterdayUserFilter = ` AND SalesPersonID = $2`;
+      yesterdayUserFilter += ` AND SalesPersonID = $${yesterdayParams.length + 1}`;
       yesterdayParams.push(salesPersonId);
+    }
+    if (customerId) {
+      yesterdayUserFilter += ` AND CustomerID = $${yesterdayParams.length + 1}`;
+      yesterdayParams.push(customerId);
     }
 
     const yesterdayResult = await pool.query(`
@@ -70,7 +80,7 @@ const getSalesReport = async (req, res) => {
             LEFT JOIN Customers c ON o.CustomerID = c.CustomerID
             WHERE o.OrderDate BETWEEN $1 AND $2
             AND o.Status != 'CANCELLED'
-            ${salesPersonId ? ` AND o.SalesPersonID = $3` : ''}
+            ${userFilterWithAlias}
             ORDER BY o.CreatedAt DESC
             LIMIT 100
         `;
@@ -184,7 +194,7 @@ const getFinancialsReport = async (req, res) => {
  * Best-selling products
  */
 const getTopProductsReport = async (req, res) => {
-  const { startDate, endDate, salesPersonId } = req.query;
+  const { startDate, endDate, salesPersonId, customerId } = req.query;
   const start = startDate || new Date().toISOString().split('T')[0];
   const end = endDate || new Date().toISOString().split('T')[0];
 
@@ -192,8 +202,12 @@ const getTopProductsReport = async (req, res) => {
     const queryParams = [start, end];
     let userFilter = '';
     if (salesPersonId) {
-      userFilter = ` AND o.SalesPersonID = $3`;
+      userFilter += ` AND o.SalesPersonID = $${queryParams.length + 1}`;
       queryParams.push(salesPersonId);
+    }
+    if (customerId) {
+      userFilter += ` AND o.CustomerID = $${queryParams.length + 1}`;
+      queryParams.push(customerId);
     }
 
     const result = await pool.query(`

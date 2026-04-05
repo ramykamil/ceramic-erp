@@ -1044,7 +1044,7 @@ class ApiClient {
   }
 
   // --- New Comprehensive Reports ---
-  async getSalesReport(params?: { startDate?: string; endDate?: string }) {
+  async getSalesReport(params?: { startDate?: string; endDate?: string; customerId?: number }) {
     const query = params ? '?' + new URLSearchParams(params as any).toString() : '';
     return this.request<any>(`/reports/sales${query}`);
   }
@@ -1064,7 +1064,7 @@ class ApiClient {
     return this.request<any>(`/reports/payments${query}`);
   }
 
-  async getTopProductsReport(params?: { startDate?: string; endDate?: string }) {
+  async getTopProductsReport(params?: { startDate?: string; endDate?: string; customerId?: number }) {
     const query = params ? '?' + new URLSearchParams(params as any).toString() : '';
     return this.request<any[]>(`/reports/top-products${query}`);
   }
