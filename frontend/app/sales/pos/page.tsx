@@ -738,7 +738,15 @@ function POSContent() {
                   <tbody className="divide-y divide-slate-100">
                     {cart.map((item) => (
                       <tr key={item.rowId} className={`hover:bg-slate-50 group transition-colors pos-row-compact`}>
-                        <td className="px-3 py-2 truncate font-bold text-slate-700">{item.productName}</td>
+                        <td className="px-3 py-2 truncate text-slate-700">
+                          <div className="font-bold">{item.productName}</div>
+                          {(item.piecesPerCarton > 0 || item.cartonsPerPalette > 0) && (
+                            <div className="text-[10px] text-slate-400 font-medium tracking-tight">
+                              {item.piecesPerCarton > 0 && `${item.piecesPerCarton.toFixed(2)} / Colis`}
+                              {item.cartonsPerPalette > 0 && ` • ${item.cartonsPerPalette.toFixed(0)} Colis / Pal`}
+                            </div>
+                          )}
+                        </td>
                         <td className="px-2 py-2 truncate text-slate-500 text-xs uppercase">{item.brandName}</td>
                         <td className="px-2 py-2 text-right font-mono text-[11px] text-slate-400">{parseFloat(item.stockQty.toString()).toLocaleString()}</td>
                         <td className="px-2 py-2 text-center">
