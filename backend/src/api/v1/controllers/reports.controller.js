@@ -1,11 +1,8 @@
 const pool = require('../../../config/database');
-const fs = require('fs');
-const path = require('path');
 
 const logDebug = (msg) => {
-    const logPath = path.join(__dirname, '../../../../debug_reports.log');
-    const timestamp = new Date().toISOString();
-    fs.appendFileSync(logPath, `\n[${timestamp}] ${msg}\n`);
+    // console.info is visible in Vercel logs
+    console.log(`[DEBUG_STATS] ${msg}`);
 };
 
 // Helper to format money
@@ -24,30 +21,28 @@ const getSalesReport = async (req, res) => {
   if (salesPersonId === 'undefined' || salesPersonId === 'null') salesPersonId = null;
   if (customerId === 'undefined' || customerId === 'null') customerId = null;
 
-  try {
+    try {
     let userFilter = '';
     const queryParams = [start, end];
     if (salesPersonId) {
-      userFilter += ` AND SalesPersonID = $${queryParams.length + 1}`;
+      userFilter += ` AND o.SalesPersonID = $${queryParams.length + 1}`;
       queryParams.push(salesPersonId);
     }
     if (customerId) {
-      userFilter += ` AND CustomerID = $${queryParams.length + 1}`;
+      userFilter += ` AND o.CustomerID = $${queryParams.length + 1}`;
       queryParams.push(customerId);
     }
     
-    let userFilterWithAlias = userFilter.replace(/SalesPersonID/g, 'o.SalesPersonID').replace(/CustomerID/g, 'o.CustomerID');
-
-    // Get sales summary (using only Orders table)
+    // Get sales summary (use explicit o alias for consistency)
     const summaryResult = await pool.query(`
             SELECT 
-                COALESCE(SUM(TotalAmount), 0) as total_sales,
+                COALESCE(SUM(o.TotalAmount), 0) as total_sales,
                 0 as total_paid,
-                COALESCE(SUM(TotalAmount), 0) as total_remaining,
+                COALESCE(SUM(o.TotalAmount), 0) as total_remaining,
                 COUNT(*) as sale_count
-            FROM Orders
-            WHERE OrderDate BETWEEN $1 AND $2
-            AND Status != 'CANCELLED'
+            FROM Orders o
+            WHERE o.OrderDate BETWEEN $1 AND $2
+            AND o.Status != 'CANCELLED'
             ${userFilter}
         `, queryParams);
 
@@ -92,7 +87,7 @@ const getSalesReport = async (req, res) => {
             LEFT JOIN Customers c ON o.CustomerID = c.CustomerID
             WHERE o.OrderDate BETWEEN $1 AND $2
             AND o.Status != 'CANCELLED'
-            ${userFilterWithAlias}
+            ${userFilter}
             ORDER BY o.CreatedAt DESC
             LIMIT 100
         `;

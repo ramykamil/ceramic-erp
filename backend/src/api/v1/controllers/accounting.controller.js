@@ -1,11 +1,8 @@
 const pool = require('../../../config/database');
-const fs = require('fs');
-const path = require('path');
 
 const logDebug = (msg) => {
-    const logPath = path.join(__dirname, '../../../../debug_reports.log');
-    const timestamp = new Date().toISOString();
-    fs.appendFileSync(logPath, `\n[${timestamp}] ${msg}\n`);
+    // console.info is visible in Vercel logs
+    console.log(`[DEBUG_STATS] ${msg}`);
 };
 
 // ========================================
@@ -700,7 +697,9 @@ const getClientVersements = async (req, res) => {
         const totalQuery = `
             SELECT COALESCE(SUM(ct.Amount), 0) as total
             FROM CashTransactions ct
-            WHERE ${whereConditions.slice(0, -2).join(' AND ') || "ct.TransactionType = 'VERSEMENT'"}
+            JOIN CashAccounts ca ON ct.AccountID = ca.AccountID
+            LEFT JOIN Customers c ON (ct.ReferenceType = 'CLIENT' OR ct.ReferenceType = 'CUSTOMER') AND ct.ReferenceID = c.CustomerID
+            WHERE ${whereConditions.join(' AND ')}
         `;
         const totalResult = await pool.query(totalQuery, params.slice(0, -2));
 
