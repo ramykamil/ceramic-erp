@@ -14,18 +14,19 @@ import { usePersistentState } from '@/hooks/usePersistentState';
 import { useTableNavigation } from '@/hooks/useTableNavigation';
 
 // Interfaces
-interface Order {
-  orderid: number;
-  ordernumber: string;
-  customername: string;
-  retailclientname?: string;  // For retail mode orders
-  orderdate: string;
-  totalamount: number;
-  paymentamount?: number;  // Versement
-  benefice?: number;  // Bénéfice (profit)
+interface UnifiedRow {
+  id: number;
+  number: string;
+  customerName: string;
+  retailClientName?: string;
+  date: string;
+  totalAmount: number;
+  paymentAmount?: number;
+  benefice?: number;
   status: string;
-  salespersonname?: string;  // Username of who made the sale
-  ordertype?: string; // Added ordertype
+  salesPerson?: string;
+  orderType?: string; // GROS / RETAIL
+  recordType: 'ORDER' | 'RETURN';
 }
 
 // Helpers
@@ -52,14 +53,15 @@ const getStatusBadge = (status: string) => {
 };
 
 export default function OrdersListPage() {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
+  const [records, setRecords] = useState<UnifiedRow[]>([]);
+  const [filteredRecords, setFilteredRecords] = useState<UnifiedRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = usePersistentState('orders_activeTab', 'ALL');
   const [dateRange, setDateRange] = usePersistentState<DateRange>('orders_dateRange', getDateRange('TODAY'));
   const [selectedUserId, setSelectedUserId] = usePersistentState<number | null>('orders_userId', null);
   const [searchQuery, setSearchQuery] = usePersistentState('orders_search', '');
   const [orderTypeFilter, setOrderTypeFilter] = usePersistentState('orders_type', 'ALL');
+  const [recordTypeFilter, setRecordTypeFilter] = usePersistentState('orders_recordType', 'ALL'); // 'ALL' | 'ORDER' | 'RETURN'
   const [mainSection, setMainSection] = usePersistentState<'COMMANDES' | 'VERSEMENTS'>('orders_section', 'COMMANDES');
   const [userRole, setUserRole] = useState('');
   const router = useRouter();
@@ -77,17 +79,19 @@ export default function OrdersListPage() {
   }, []);
 
   // Sorting
-  const { sortedData, handleSort, getSortDirection } = useSortableTable<Order>(filteredOrders);
+  const { sortedData, handleSort, getSortDirection } = useSortableTable<UnifiedRow>(filteredRecords);
 
   // Keyboard navigation
   const { selectedIndex, handleKeyDown, getRowClass, getRowProps, setSelectedIndex } = useTableNavigation({
     rowCount: sortedData.length,
     onAction: (idx) => {
-      const order = sortedData[idx];
-      if (order.status === 'PENDING') {
-        handleConfirm(order.orderid);
+      const record = sortedData[idx];
+      if (record.recordType === 'RETURN') {
+        router.push(`/sales/returns/${record.id}`); // Assuming a return detail page exists
+      } else if (record.status === 'PENDING') {
+        handleConfirm(record.id);
       } else {
-        router.push(`/orders/${order.orderid}`);
+        router.push(`/orders/${record.id}`);
       }
     }
   });
@@ -114,66 +118,110 @@ export default function OrdersListPage() {
 
   // Re-fetch when server-side filters change
   useEffect(() => {
-    fetchOrders();
-  }, [activeTab, selectedUserId, orderTypeFilter, debouncedSearch]);
+    fetchData();
+  }, [activeTab, selectedUserId, orderTypeFilter, recordTypeFilter, debouncedSearch]);
 
   useEffect(() => {
-    // Apply client-side date filter only (search is now server-side)
-    let filtered = [...orders];
+    // Apply client-side date filter
+    let filtered = [...records];
 
     // Date Filter
     if (dateRange.startDate || dateRange.endDate) {
-      filtered = filtered.filter(order => {
-        // Parse the order date and convert to local date string (YYYY-MM-DD)
-        const orderDate = new Date(order.orderdate);
-        const year = orderDate.getFullYear();
-        const month = String(orderDate.getMonth() + 1).padStart(2, '0');
-        const day = String(orderDate.getDate()).padStart(2, '0');
-        const orderDateStr = `${year}-${month}-${day}`;
+      filtered = filtered.filter(record => {
+        const d = new Date(record.date);
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        const dateStr = `${year}-${month}-${day}`;
 
-        // Compare as strings (YYYY-MM-DD format is sortable)
-        if (dateRange.startDate && orderDateStr < dateRange.startDate) return false;
-        if (dateRange.endDate && orderDateStr > dateRange.endDate) return false;
+        if (dateRange.startDate && dateStr < dateRange.startDate) return false;
+        if (dateRange.endDate && dateStr > dateRange.endDate) return false;
         return true;
       });
     }
 
-    setFilteredOrders(filtered);
-  }, [orders, dateRange]);
+    setFilteredRecords(filtered);
+  }, [records, dateRange]);
 
-  const handleDelete = async (orderId: number) => {
-    if (!window.confirm('Êtes-vous sûr de vouloir supprimer cette commande ? (Stock réservé sera libéré)')) return;
+  const handleDelete = async (id: number, type: 'ORDER' | 'RETURN') => {
+    const msg = type === 'ORDER' ? 'Supprimer cette commande ? (Stock sera libéré)' : 'Supprimer ce retour ?';
+    if (!window.confirm(msg)) return;
     try {
-      await api.deleteOrder(orderId);
-      fetchOrders(); // Refresh
+      if (type === 'ORDER') await api.deleteOrder(id);
+      else await api.deleteReturn(id);
+      fetchData(); // Refresh
     } catch (e: any) {
-      alert('Erreur chargement: ' + e.message);
+      alert('Erreur: ' + e.message);
     }
   };
 
   const handleConfirm = async (orderId: number) => {
     if (!window.confirm('Confirmer cette commande ? (Stock sera déduit)')) return;
     try {
-      await api.finalizeOrder(orderId); // Uses stored payment info
-      fetchOrders(); // Refresh
+      await api.finalizeOrder(orderId);
+      fetchData(); // Refresh
     } catch (e: any) {
       alert('Erreur confirmation: ' + e.message);
     }
   };
 
-  const fetchOrders = async () => {
+  const fetchData = async () => {
     setIsLoading(true);
     try {
-      // Build params with status, user filter, and server-side search
       const params: any = {};
       if (activeTab !== 'ALL') params.status = activeTab;
       if (selectedUserId) params.salesPersonId = selectedUserId;
-      if (orderTypeFilter !== 'ALL') params.orderType = orderTypeFilter;
       if (debouncedSearch.trim()) params.search = debouncedSearch.trim();
 
-      const response = await api.getOrders(params);
-      if (response.success) setOrders((response.data as Order[]) || []);
-      else if (response.message?.includes('token')) router.push('/login');
+      const fetchOrders = recordTypeFilter === 'ALL' || recordTypeFilter === 'ORDER';
+      const fetchReturns = recordTypeFilter === 'ALL' || recordTypeFilter === 'RETURN';
+
+      const [ordersRes, returnsRes] = await Promise.all([
+        fetchOrders ? api.getOrders({ ...params, orderType: orderTypeFilter !== 'ALL' ? orderTypeFilter : undefined }) : Promise.resolve({ success: true, data: [] }),
+        fetchReturns ? api.getReturns({ ...params, customerId: params.customerId }) : Promise.resolve({ success: true, data: [] })
+      ]);
+
+      let unified: UnifiedRow[] = [];
+
+      if (ordersRes.success) {
+        const orderRows: UnifiedRow[] = (ordersRes.data as any[]).map(o => ({
+          id: o.orderid,
+          number: o.ordernumber,
+          customerName: o.customername,
+          retailClientName: o.retailclientname,
+          date: o.orderdate,
+          totalAmount: Number(o.totalamount),
+          paymentAmount: Number(o.paymentamount || 0),
+          benefice: Number(o.benefice || 0),
+          status: o.status,
+          salesPerson: o.salespersonname,
+          orderType: o.ordertype,
+          recordType: 'ORDER'
+        }));
+        unified = [...unified, ...orderRows];
+      }
+
+      if (returnsRes.success) {
+        const returnRows: UnifiedRow[] = (returnsRes.data as any[]).map(r => ({
+          id: r.returnid,
+          number: r.returnnumber || `RET-${r.returnid}`,
+          customerName: r.customername,
+          retailClientName: r.clientname,
+          date: r.returndate || r.createdat,
+          totalAmount: -Number(r.totalamount || 0), // Show returns as negative for clarity in totals
+          paymentAmount: 0,
+          benefice: 0,
+          status: r.status,
+          salesPerson: r.username,
+          recordType: 'RETURN'
+        }));
+        unified = [...unified, ...returnRows];
+      }
+
+      // Sort by date newest first by default
+      unified.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+      setRecords(unified);
     } catch (error) {
       console.error(error);
     } finally {
@@ -263,6 +311,9 @@ export default function OrdersListPage() {
                 <Link href="/sales/pos" className="bg-brand-primary text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-brand-primary-dark flex items-center gap-2 shadow-sm transition-colors">
                   + Nouvelle Vente
                 </Link>
+                <Link href="/sales/returns/new" className="bg-orange-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-orange-700 flex items-center gap-2 shadow-sm transition-colors">
+                  ↩ Nouveau Retour
+                </Link>
                 <Link href="/" className="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm hover:bg-slate-50">Retour</Link>
               </div>
             </div>
@@ -282,16 +333,29 @@ export default function OrdersListPage() {
                   onUserChange={setSelectedUserId}
                   label="Vendeur"
                 />
-                {/* Type Filter */}
+                {/* View Type Filter */}
+                <div className="flex items-center gap-2 border-l pl-4">
+                  <span className="text-xs text-slate-500 font-medium">Affichage:</span>
+                  <select
+                    className="border border-slate-300 rounded-md text-sm py-1 px-2 focus:ring-brand-primary/40 focus:border-brand-primary bg-slate-50 font-bold"
+                    value={recordTypeFilter}
+                    onChange={(e) => setRecordTypeFilter(e.target.value as any)}
+                  >
+                    <option value="ALL">Tout (Ventes + Retours)</option>
+                    <option value="ORDER">Commandes uniquement</option>
+                    <option value="RETURN">Retours uniquement</option>
+                  </select>
+                </div>
+                {/* Order Type Filter */}
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-500 font-medium">Type:</span>
+                  <span className="text-xs text-slate-500 font-medium">Type Vente:</span>
                   <select
                     className="border border-slate-300 rounded-md text-sm py-1 px-2 focus:ring-brand-primary/40 focus:border-brand-primary"
                     value={orderTypeFilter}
                     onChange={(e) => setOrderTypeFilter(e.target.value)}
                   >
                     <option value="ALL">Tout</option>
-                    <option value="GROS">Gros (Wholesale/Consignment)</option>
+                    <option value="GROS">Gros (Wholesale)</option>
                     <option value="RETAIL">Détail (Retail)</option>
                   </select>
                 </div>
@@ -331,7 +395,7 @@ export default function OrdersListPage() {
                 </button>
               ))}
               <span className="ml-auto text-sm text-slate-500 self-center">
-                {filteredOrders.length} commande(s)
+                {filteredRecords.length} élément(s)
               </span>
             </div>
 
@@ -339,126 +403,78 @@ export default function OrdersListPage() {
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
               {isLoading ? (
                 <p className="p-10 text-center text-slate-500">Chargement...</p>
-              ) : filteredOrders.length === 0 ? (
-                <p className="p-10 text-center text-slate-400">Aucune commande trouvée.</p>
+              ) : filteredRecords.length === 0 ? (
+                <p className="p-10 text-center text-slate-400">Aucun enregistrement trouvé.</p>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm text-left" style={{ tableLayout: 'fixed' }}>
                     <thead className="bg-slate-50 text-slate-500 uppercase text-xs font-semibold border-b border-slate-100">
                       <tr>
-                        <ResizableSortableHeader label="N° Commande" sortKey="ordernumber" currentDirection={getSortDirection('ordernumber' as keyof Order)} onSort={(k) => handleSort(k as keyof Order)} width={widths.ordernumber} onResize={handleResize} />
-                        <ResizableSortableHeader label="Client" sortKey="customername" currentDirection={getSortDirection('customername' as keyof Order)} onSort={(k) => handleSort(k as keyof Order)} width={widths.customername} onResize={handleResize} />
-                        <ResizableSortableHeader label="Date" sortKey="orderdate" currentDirection={getSortDirection('orderdate' as keyof Order)} onSort={(k) => handleSort(k as keyof Order)} width={widths.orderdate} onResize={handleResize} />
-                        <ResizableSortableHeader label="Total" sortKey="totalamount" currentDirection={getSortDirection('totalamount' as keyof Order)} onSort={(k) => handleSort(k as keyof Order)} width={widths.totalamount} onResize={handleResize} align="right" />
-                        <ResizableSortableHeader label="Versement" sortKey="paymentamount" currentDirection={getSortDirection('paymentamount' as keyof Order)} onSort={(k) => handleSort(k as keyof Order)} width={widths.versement} onResize={handleResize} align="right" />
-                        {userRole === 'ADMIN' && <ResizableSortableHeader label="Bénéfice" sortKey="benefice" currentDirection={getSortDirection('benefice' as keyof Order)} onSort={(k) => handleSort(k as keyof Order)} width={widths.benefice} onResize={handleResize} align="right" />}
-                        <ResizableSortableHeader label="Statut" sortKey="status" currentDirection={getSortDirection('status' as keyof Order)} onSort={(k) => handleSort(k as keyof Order)} width={widths.status} onResize={handleResize} align="center" />
-                        <ResizableSortableHeader label="Vendeur" sortKey="salespersonname" currentDirection={getSortDirection('salespersonname' as keyof Order)} onSort={(k) => handleSort(k as keyof Order)} width={widths.salespersonname} onResize={handleResize} />
-                        <ResizableSortableHeader label="Type" sortKey="ordertype" currentDirection={getSortDirection('ordertype' as keyof Order)} onSort={(k) => handleSort(k as keyof Order)} width={widths.ordertype} onResize={handleResize} />
+                        <th style={{ width: 80 }} className="px-4 py-3 text-center">Type</th>
+                        <ResizableSortableHeader label="Référence" sortKey="number" currentDirection={getSortDirection('number' as keyof UnifiedRow)} onSort={(k) => handleSort(k as keyof UnifiedRow)} width={widths.ordernumber} onResize={handleResize} />
+                        <ResizableSortableHeader label="Client" sortKey="customerName" currentDirection={getSortDirection('customerName' as keyof UnifiedRow)} onSort={(k) => handleSort(k as keyof UnifiedRow)} width={widths.customername} onResize={handleResize} />
+                        <ResizableSortableHeader label="Date" sortKey="date" currentDirection={getSortDirection('date' as keyof UnifiedRow)} onSort={(k) => handleSort(k as keyof UnifiedRow)} width={widths.orderdate} onResize={handleResize} />
+                        <ResizableSortableHeader label="Total" sortKey="totalAmount" currentDirection={getSortDirection('totalAmount' as keyof UnifiedRow)} onSort={(k) => handleSort(k as keyof UnifiedRow)} width={widths.totalamount} onResize={handleResize} align="right" />
+                        <ResizableSortableHeader label="Versement" sortKey="paymentAmount" currentDirection={getSortDirection('paymentAmount' as keyof UnifiedRow)} onSort={(k) => handleSort(k as keyof UnifiedRow)} width={widths.versement} onResize={handleResize} align="right" />
+                        {userRole === 'ADMIN' && <ResizableSortableHeader label="Bénéfice" sortKey="benefice" currentDirection={getSortDirection('benefice' as keyof UnifiedRow)} onSort={(k) => handleSort(k as keyof UnifiedRow)} width={widths.benefice} onResize={handleResize} align="right" />}
+                        <ResizableSortableHeader label="Statut" sortKey="status" currentDirection={getSortDirection('status' as keyof UnifiedRow)} onSort={(k) => handleSort(k as keyof UnifiedRow)} width={widths.status} onResize={handleResize} align="center" />
+                        <ResizableSortableHeader label="Agent" sortKey="salesPerson" currentDirection={getSortDirection('salesPerson' as keyof UnifiedRow)} onSort={(k) => handleSort(k as keyof UnifiedRow)} width={widths.salespersonname} onResize={handleResize} />
                         <th className="px-4 py-3 text-center" style={{ width: 280 }}>Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {sortedData.map((order, idx) => (
+                      {sortedData.map((record, idx) => (
                         <tr 
-                          key={order.orderid} 
+                          key={`${record.recordType}-${record.id}`} 
                           {...getRowProps(idx)}
                           className={getRowClass(idx, "hover:bg-slate-50 transition cursor-pointer")}
                         >
-                          <td className="px-4 py-3 font-mono font-medium truncate" style={{ width: widths.ordernumber }}>{order.ordernumber}</td>
-                          <td className="px-4 py-3 truncate" style={{ width: widths.customername }}>{order.retailclientname || order.customername || 'Passager'}</td>
-                          <td className="px-4 py-3 text-slate-500" style={{ width: widths.orderdate }}>{formatDate(order.orderdate)}</td>
-                          <td className="px-4 py-3 text-right font-bold" style={{ width: widths.totalamount }}>{formatCurrencyDZD(parseFloat(String(order.totalamount)) || 0)}</td>
-                          <td className="px-4 py-3 text-right text-green-600 font-medium" style={{ width: widths.versement }}>{formatCurrencyDZD(parseFloat(String(order.paymentamount)) || 0)}</td>
+                          <td className="px-4 py-3 text-center">
+                            <span className={`text-[10px] px-1.5 py-0.5 rounded font-black ${record.recordType === 'ORDER' ? 'bg-red-100 text-brand-primary' : 'bg-orange-100 text-orange-700'}`}>
+                              {record.recordType === 'ORDER' ? 'VENTE' : 'RETOUR'}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 font-mono font-medium truncate" style={{ width: widths.ordernumber }}>{record.number}</td>
+                          <td className="px-4 py-3 truncate" style={{ width: widths.customername }}>{record.retailClientName || record.customerName || 'Passager'}</td>
+                          <td className="px-4 py-3 text-slate-500" style={{ width: widths.orderdate }}>{formatDate(record.date)}</td>
+                          <td className={`px-4 py-3 text-right font-bold ${record.totalAmount < 0 ? 'text-orange-600' : ''}`} style={{ width: widths.totalamount }}>
+                            {formatCurrencyDZD(parseFloat(String(record.totalAmount)) || 0)}
+                          </td>
+                          <td className="px-4 py-3 text-right text-green-600 font-medium" style={{ width: widths.versement }}>{formatCurrencyDZD(parseFloat(String(record.paymentAmount)) || 0)}</td>
                           {userRole === 'ADMIN' && (
                             <td className="px-4 py-3 text-right font-medium" style={{ width: widths.benefice }}>
-                              <span className={(parseFloat(String(order.benefice)) || 0) >= 0 ? 'text-emerald-600' : 'text-red-600'}>
-                                {formatCurrencyDZD(parseFloat(String(order.benefice)) || 0)}
+                              <span className={(parseFloat(String(record.benefice)) || 0) >= 0 ? 'text-emerald-600' : 'text-red-600'}>
+                                {formatCurrencyDZD(parseFloat(String(record.benefice)) || 0)}
                               </span>
                             </td>
                           )}
                           <td className="px-4 py-3 text-center" style={{ width: widths.status }}>
-                            <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${getStatusBadge(order.status)}`}>
-                              {order.status}
+                            <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${getStatusBadge(record.status)}`}>
+                              {record.status}
                             </span>
                           </td>
-                          <td className="px-4 py-3 text-slate-600 text-xs truncate" style={{ width: widths.salespersonname }}>
-                            {order.salespersonname || '-'}
-                          </td>
-                          <td className="px-4 py-3 text-slate-600 text-xs truncate" style={{ width: widths.ordertype }}>
-                            {order.ordertype === 'WHOLESALE' ? 'Gros' : (order.ordertype === 'RETAIL' ? 'Détail' : order.ordertype)}
+                          <td className="px-4 py-3 text-slate-600 text-[10px] truncate" style={{ width: widths.salespersonname }}>
+                            {record.salesPerson || '-'}
+                            {record.orderType && <div className="text-[8px] opacity-50 uppercase">{record.orderType}</div>}
                           </td>
                           <td className="px-4 py-3 text-center flex gap-1 justify-center items-center" style={{ width: 140 }}>
-                            {/* Print Actions Data */}
-                            <div className="flex gap-1 mr-2 border-r border-slate-200 pr-2">
-                              <a
-                                href={`/orders/print/${order.orderid}?type=TICKET`}
-                                target="_blank"
-                                className="p-1.5 rounded hover:bg-slate-100 text-slate-600 hover:text-slate-800 transition"
-                                title="Imprimer Ticket"
-                              >
-                                <span className="font-bold text-xs leading-none">🎫</span>
-                              </a>
-                              <a
-                                href={`/orders/print/${order.orderid}?type=DELIVERY_NOTE`}
-                                target="_blank"
-                                className="p-1.5 rounded hover:bg-blue-50 text-blue-600 hover:text-blue-800 transition"
-                                title="Imprimer BL (Bon Livraison)"
-                              >
-                                <span className="font-bold text-xs leading-none">BL</span>
-                              </a>
-                              <a
-                                href={`/orders/print/${order.orderid}?type=PURCHASE_ORDER`}
-                                target="_blank"
-                                className="p-1.5 rounded hover:bg-purple-50 text-purple-600 hover:text-purple-800 transition"
-                                title="Imprimer BC (Bon Commande)"
-                              >
-                                <span className="font-bold text-xs leading-none">BC</span>
-                              </a>
-                              <a
-                                href={`/orders/print/${order.orderid}?type=LOADING_SLIP`}
-                                target="_blank"
-                                className="p-1.5 rounded hover:bg-orange-50 text-orange-600 hover:text-orange-800 transition"
-                                title="Imprimer BSS (Bon Sortie Stock)"
-                              >
-                                <span className="font-bold text-xs leading-none">BSS</span>
-                              </a>
-                            </div>
-
-                            {order.status === 'PENDING' && (
-                              <button
-                                onClick={() => handleConfirm(order.orderid)}
-                                className="p-1.5 rounded hover:bg-green-50 text-green-600 hover:text-green-700 transition"
-                                title="Confirmer"
-                              >
-                                <span className="font-bold text-lg leading-none">✓</span>
-                              </button>
-                            )}
-                            {(order.status === 'PENDING' || order.status === 'CONFIRMED' || order.status === 'DELIVERED') && (
-                              <Link
-                                href={`/sales/pos?editOrderId=${order.orderid}`}
-                                className="p-1.5 rounded hover:bg-blue-50 text-blue-600 hover:text-blue-700 transition"
-                                title="Modifier"
-                              >
-                                <span className="font-bold text-lg leading-none">✎</span>
-                              </Link>
-                            )}
-                            {order.status === 'PENDING' && (
-                              <button
-                                onClick={() => handleDelete(order.orderid)}
-                                className="p-1.5 rounded hover:bg-red-50 text-red-600 hover:text-red-700 transition"
-                                title="Supprimer"
-                              >
-                                <span className="font-bold text-lg leading-none">×</span>
-                              </button>
-                            )}
-                            {order.status !== 'PENDING' && (
-                              <Link
-                                href={`/orders/${order.orderid}`}
-                                className="text-blue-600 hover:text-blue-800 font-medium text-xs underline"
-                              >
-                                Détails
-                              </Link>
+                            {record.recordType === 'ORDER' ? (
+                              <>
+                                <div className="flex gap-1 mr-2 border-r border-slate-200 pr-2">
+                                  <a href={`/orders/print/${record.id}?type=TICKET`} target="_blank" className="p-1.5 rounded hover:bg-slate-100 text-slate-600"><span className="text-xs font-bold">🎫</span></a>
+                                  <a href={`/orders/print/${record.id}?type=DELIVERY_NOTE`} target="_blank" className="p-1.5 rounded hover:bg-red-50 text-red-600"><span className="text-xs font-bold">BL</span></a>
+                                </div>
+                                {record.status === 'PENDING' && (
+                                  <button onClick={() => handleConfirm(record.id)} className="p-1.5 text-green-600 hover:bg-green-50 rounded" title="Confirmer">✓</button>
+                                )}
+                                <Link href={`/sales/pos?editOrderId=${record.id}`} className="p-1.5 text-brand-primary hover:bg-red-50 rounded" title="Modifier">✎</Link>
+                                <button onClick={() => handleDelete(record.id, 'ORDER')} className="p-1.5 text-red-600 hover:bg-red-50 rounded" title="Supprimer">×</button>
+                              </>
+                            ) : (
+                              <>
+                                <Link href={`/sales/returns/${record.id}`} className="text-orange-600 hover:underline text-xs font-bold mr-3">Détails</Link>
+                                <button onClick={() => handleDelete(record.id, 'RETURN')} className="p-1.5 text-red-600 hover:bg-red-50 rounded" title="Supprimer Retour">×</button>
+                              </>
                             )}
                           </td>
                         </tr>
@@ -470,72 +486,54 @@ export default function OrdersListPage() {
             </div>
 
             {/* Totals Footer - hidden for retail users */}
-            {!isLoading && filteredOrders.length > 0 && userRole === 'ADMIN' && (
+            {!isLoading && filteredRecords.length > 0 && userRole === 'ADMIN' && (
               <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-slate-300 shadow-lg z-40 px-4 py-3">
                 <div className="max-w-7xl mx-auto">
                   {/* Filtered Totals Row */}
                   <div className="flex flex-wrap items-center justify-center gap-3 mb-2">
                     <span className="text-xs text-slate-500 font-medium uppercase">Sélection:</span>
-                    <div className="flex items-center gap-1 px-3 py-1.5 bg-blue-600 text-white rounded-lg shadow-sm">
-                      <span className="text-xs font-medium">Total</span>
+                    <div className="flex items-center gap-1 px-3 py-1.5 bg-brand-primary text-white rounded-lg shadow-sm">
+                      <span className="text-xs font-medium">Total Net</span>
                       <span className="font-bold text-sm ml-1">
-                        {formatCurrencyDZD(filteredOrders.reduce((sum, o) => sum + (parseFloat(String(o.totalamount)) || 0), 0))}
+                        {formatCurrencyDZD(filteredRecords.reduce((sum, r) => sum + (parseFloat(String(r.totalAmount)) || 0), 0))}
                       </span>
                     </div>
                     <div className="flex items-center gap-1 px-3 py-1.5 bg-green-600 text-white rounded-lg shadow-sm">
                       <span className="text-xs font-medium">Versement</span>
                       <span className="font-bold text-sm ml-1">
-                        {formatCurrencyDZD(filteredOrders.reduce((sum, o) => sum + (parseFloat(String(o.paymentamount)) || 0), 0))}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1 px-3 py-1.5 bg-red-600 text-white rounded-lg shadow-sm">
-                      <span className="text-xs font-medium">Reste</span>
-                      <span className="font-bold text-sm ml-1">
-                        {formatCurrencyDZD(filteredOrders.reduce((sum, o) => sum + ((parseFloat(String(o.totalamount)) || 0) - (parseFloat(String(o.paymentamount)) || 0)), 0))}
+                        {formatCurrencyDZD(filteredRecords.reduce((sum, r) => sum + (parseFloat(String(r.paymentAmount)) || 0), 0))}
                       </span>
                     </div>
                     <div className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 text-white rounded-lg shadow-sm">
                       <span className="text-xs font-medium">Bénéfice</span>
                       <span className="font-bold text-sm ml-1">
-                        {formatCurrencyDZD(filteredOrders.reduce((sum, o) => sum + (parseFloat(String(o.benefice)) || 0), 0))}
+                        {formatCurrencyDZD(filteredRecords.reduce((sum, r) => sum + (parseFloat(String(r.benefice)) || 0), 0))}
                       </span>
                     </div>
                     <div className="flex items-center gap-1 px-3 py-1.5 bg-slate-700 text-white rounded-lg shadow-sm">
-                      <span className="text-xs font-medium">Vente</span>
-                      <span className="font-bold text-sm ml-1">{filteredOrders.length}</span>
+                      <span className="text-xs font-medium">Éléments</span>
+                      <span className="font-bold text-sm ml-1">{filteredRecords.length}</span>
                     </div>
                   </div>
 
-                  {/* Overall Totals Row (all orders) */}
+                  {/* Overall Totals Row (all records) */}
                   <div className="flex flex-wrap items-center justify-center gap-3 pt-2 border-t border-slate-200">
                     <span className="text-xs text-slate-400 font-medium uppercase">Total Général:</span>
                     <div className="flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-lg border border-blue-200">
-                      <span className="text-xs font-medium">Total</span>
+                      <span className="text-xs font-medium">CA Net</span>
                       <span className="font-bold text-sm ml-1">
-                        {formatCurrencyDZD(orders.reduce((sum, o) => sum + (parseFloat(String(o.totalamount)) || 0), 0))}
+                        {formatCurrencyDZD(records.reduce((sum, r) => sum + (parseFloat(String(r.totalAmount)) || 0), 0))}
                       </span>
                     </div>
                     <div className="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-800 rounded-lg border border-green-200">
-                      <span className="text-xs font-medium">Versement</span>
+                      <span className="text-xs font-medium">Encaissement</span>
                       <span className="font-bold text-sm ml-1">
-                        {formatCurrencyDZD(orders.reduce((sum, o) => sum + (parseFloat(String(o.paymentamount)) || 0), 0))}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-800 rounded-lg border border-red-200">
-                      <span className="text-xs font-medium">Reste</span>
-                      <span className="font-bold text-sm ml-1">
-                        {formatCurrencyDZD(orders.reduce((sum, o) => sum + ((parseFloat(String(o.totalamount)) || 0) - (parseFloat(String(o.paymentamount)) || 0)), 0))}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1 px-3 py-1 bg-emerald-100 text-emerald-800 rounded-lg border border-emerald-200">
-                      <span className="text-xs font-medium">Bénéfice</span>
-                      <span className="font-bold text-sm ml-1">
-                        {formatCurrencyDZD(orders.reduce((sum, o) => sum + (parseFloat(String(o.benefice)) || 0), 0))}
+                        {formatCurrencyDZD(records.reduce((sum, r) => sum + (parseFloat(String(r.paymentAmount)) || 0), 0))}
                       </span>
                     </div>
                     <div className="flex items-center gap-1 px-3 py-1 bg-slate-100 text-slate-700 rounded-lg border border-slate-200">
-                      <span className="text-xs font-medium">Vente</span>
-                      <span className="font-bold text-sm ml-1">{orders.length}</span>
+                      <span className="text-xs font-medium">Vol. Transactions</span>
+                      <span className="font-bold text-sm ml-1">{records.length}</span>
                     </div>
                   </div>
                 </div>
@@ -543,7 +541,7 @@ export default function OrdersListPage() {
             )}
 
             {/* Spacer for fixed footer */}
-            {!isLoading && filteredOrders.length > 0 && userRole === 'ADMIN' && (
+            {!isLoading && filteredRecords.length > 0 && userRole === 'ADMIN' && (
               <div className="h-32"></div>
             )}
           </>

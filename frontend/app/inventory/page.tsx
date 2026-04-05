@@ -821,7 +821,7 @@ function InventoryLevelsContent() {
             <button
               onClick={() => setActiveTab('WHOLESALE')}
               className={`px-4 py-2 text-sm font-medium rounded-md transition ${activeTab === 'WHOLESALE'
-                ? 'bg-blue-100 text-blue-700 shadow-sm'
+                ? 'bg-brand-primary/10 text-brand-primary shadow-sm ring-1 ring-inset ring-brand-primary/20'
                 : 'text-slate-500 hover:text-slate-700'
                 }`}
             >
@@ -830,7 +830,7 @@ function InventoryLevelsContent() {
             <button
               onClick={() => setActiveTab('RETAIL')}
               className={`px-4 py-2 text-sm font-medium rounded-md transition ${activeTab === 'RETAIL'
-                ? 'bg-purple-100 text-purple-700 shadow-sm'
+                ? 'bg-brand-primary/10 text-brand-primary shadow-sm ring-1 ring-inset ring-brand-primary/20'
                 : 'text-slate-500 hover:text-slate-700'
                 }`}
             >
@@ -843,7 +843,7 @@ function InventoryLevelsContent() {
             <button
               onClick={() => setIsImportModalOpen(true)}
               disabled={isImporting}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2 disabled:opacity-50"
+              className="bg-brand-primary hover:bg-brand-primary-dark text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2 disabled:opacity-50"
             >
               <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
               {isImporting ? '...' : 'Import'}
@@ -883,14 +883,6 @@ function InventoryLevelsContent() {
               Ajustement
             </button>
 
-            {/* Retours (Returns) Button */}
-            <Link
-              href="/inventory/returns"
-              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2"
-            >
-              <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M7.707 3.293a1 1 0 010 1.414L5.414 7H11a7 7 0 017 7v2a1 1 0 11-2 0v-2a5 5 0 00-5-5H5.414l2.293 2.293a1 1 0 11-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
-              Retours
-            </Link>
 
             {/* Quick Stock Entry Button */}
             <Link

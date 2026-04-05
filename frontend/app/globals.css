@@ -269,3 +269,56 @@ a:hover {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--brand-primary-dark);
 }
+
+/* ============================================
+   POS Zero-Scroll Layout
+   Dynamically scales rows to fit screen
+   ============================================ */
+.pos-zero-scroll-container tbody {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+}
+
+.pos-zero-scroll-container tr {
+  display: flex !important;
+  flex: 1 1 0% !important;
+  min-height: 2.5rem !important; /* Minimum comfortable height */
+  max-height: 4.5rem !important; /* Maximum height when few items */
+  align-items: center !important;
+}
+
+.pos-zero-scroll-container td {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+.pos-zero-scroll-container td.text-right {
+  justify-content: flex-end !important;
+}
+
+.pos-zero-scroll-container td.text-center {
+  justify-content: center !important;
+}
+
+.pos-row-compact td {
+  font-size: 0.8rem !important;
+}
+
+.pos-row-compact input, 
+.pos-row-compact select {
+  height: 1.875rem !important;
+  font-size: 0.75rem !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}

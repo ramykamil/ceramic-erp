@@ -140,7 +140,7 @@ export default function ReportsPage() {
                                 className="px-3 py-1.5 border border-slate-300 rounded text-sm" />
                         </div>
                         <button onClick={handleRefresh} disabled={isLoading}
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium disabled:opacity-50 shadow-sm">
+                            className="bg-brand-primary hover:bg-brand-primary-dark text-white px-4 py-1.5 rounded-lg text-sm font-medium disabled:opacity-50 shadow-sm transition-colors">
                             {isLoading ? '⏳ Chargement...' : '🔄 Actualiser'}
                         </button>
                     </div>
@@ -191,7 +191,7 @@ export default function ReportsPage() {
                         {isLoading ? (
                             <div className="flex items-center justify-center h-32 text-slate-400">
                                 <div className="text-center">
-                                    <div className="inline-block w-6 h-6 border-2 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-2"></div>
+                                    <div className="inline-block w-6 h-6 border-2 border-brand-primary/20 border-t-brand-primary rounded-full animate-spin mb-2"></div>
                                     <p className="text-sm">Chargement...</p>
                                 </div>
                             </div>

@@ -530,7 +530,7 @@ export default function PurchaseOrdersListPage() {
                   <input
                     type="text"
                     placeholder="N° Bon ou Usine/Fournisseur..."
-                    className="block w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg leading-5 bg-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-700"
+                    className="block w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg leading-5 bg-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-brand-primary focus:border-brand-primary sm:text-sm text-slate-700"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -543,7 +543,7 @@ export default function PurchaseOrdersListPage() {
                     id="typeFilter"
                     value={typeFilter}
                     onChange={(e) => setTypeFilter(e.target.value as '' | 'order' | 'return')}
-                    className="w-40 p-2 border border-slate-300 rounded-lg text-sm text-slate-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-40 p-2 border border-slate-300 rounded-lg text-sm text-slate-700 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                   >
                     <option value="">Tous</option>
                     <option value="order">📦 Achats</option>
@@ -558,7 +558,7 @@ export default function PurchaseOrdersListPage() {
                     id="statusFilter"
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="w-40 p-2 border border-slate-300 rounded-lg text-sm text-slate-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-40 p-2 border border-slate-300 rounded-lg text-sm text-slate-700 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                   >
                     <option value="">Tous</option>
                     <option value="PENDING">En Attente</option>
@@ -575,7 +575,7 @@ export default function PurchaseOrdersListPage() {
             <div className="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm">
               {isLoading ? (
                 <div className="text-center py-20">
-                  <div className="inline-block w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+                  <div className="inline-block w-8 h-8 border-4 border-brand-primary/20 border-t-brand-primary rounded-full animate-spin mb-4"></div>
                   <p className="text-slate-500">Chargement...</p>
                 </div>
               ) : filteredUnifiedRows.length === 0 && !apiError ? (
