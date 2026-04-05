@@ -331,7 +331,7 @@ const createCashTransaction = async (req, res) => {
 const getCashSummary = async (req, res) => {
     const { startDate, endDate, accountId } = req.query;
 
-    try {
+  try {
         let dateFilter = '';
         let params = [];
         let paramIndex = 1;
@@ -603,7 +603,7 @@ const getAccountJournal = async (req, res) => {
  * Filters to VERSEMENT type only and enriches with client data
  */
 const getClientVersements = async (req, res) => {
-    const {
+    let {
         accountId,
         startDate,
         endDate,
@@ -613,6 +613,8 @@ const getClientVersements = async (req, res) => {
         limit = 500,
         offset = 0
     } = req.query;
+    
+    if (customerId === 'undefined' || customerId === 'null') customerId = null;
 
     try {
         let whereConditions = ["ct.TransactionType = 'VERSEMENT'"];

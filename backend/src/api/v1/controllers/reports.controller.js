@@ -8,9 +8,13 @@ const formatDZD = (amount) => new Intl.NumberFormat('fr-DZ', { style: 'currency'
  * Sales transactions with KPIs for date range
  */
 const getSalesReport = async (req, res) => {
-  const { startDate, endDate, salesPersonId, customerId } = req.query;
+  let { startDate, endDate, salesPersonId, customerId } = req.query;
   const start = startDate || new Date().toISOString().split('T')[0];
   const end = endDate || new Date().toISOString().split('T')[0];
+  
+  // Defensively clean params
+  if (salesPersonId === 'undefined' || salesPersonId === 'null') salesPersonId = null;
+  if (customerId === 'undefined' || customerId === 'null') customerId = null;
 
   try {
     let userFilter = '';
@@ -194,9 +198,13 @@ const getFinancialsReport = async (req, res) => {
  * Best-selling products
  */
 const getTopProductsReport = async (req, res) => {
-  const { startDate, endDate, salesPersonId, customerId } = req.query;
+  let { startDate, endDate, salesPersonId, customerId } = req.query;
   const start = startDate || new Date().toISOString().split('T')[0];
   const end = endDate || new Date().toISOString().split('T')[0];
+  
+  // Defensively clean params
+  if (salesPersonId === 'undefined' || salesPersonId === 'null') salesPersonId = null;
+  if (customerId === 'undefined' || customerId === 'null') customerId = null;
 
   try {
     const queryParams = [start, end];
@@ -426,7 +434,8 @@ const getClientsReport = async (req, res) => {
   try {
     const result = await pool.query(`
             SELECT 
-                c.CustomerID,
+                c.CustomerID as id,
+                c.CustomerID as customerid,
                 c.CustomerName as nom,
                 c.CustomerType as type,
                 COUNT(o.OrderID) as nb_commandes,
