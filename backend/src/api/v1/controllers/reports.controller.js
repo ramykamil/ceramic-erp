@@ -9,8 +9,8 @@ const formatDZD = (amount) => new Intl.NumberFormat('fr-DZ', { style: 'currency'
  */
 const getSalesReport = async (req, res) => {
   let { startDate, endDate, salesPersonId, customerId } = req.query;
-  const start = startDate || new Date().toISOString().split('T')[0];
-  const end = endDate || new Date().toISOString().split('T')[0];
+  const start = startDate || '2000-01-01';
+  const end = endDate || '2099-12-31';
   
   // Defensively clean params
   if (salesPersonId === 'undefined' || salesPersonId === 'null') salesPersonId = null;
@@ -120,8 +120,8 @@ const getSalesReport = async (req, res) => {
  */
 const getFinancialsReport = async (req, res) => {
   const { startDate, endDate, salesPersonId } = req.query;
-  const start = startDate || new Date().toISOString().split('T')[0];
-  const end = endDate || new Date().toISOString().split('T')[0];
+  const start = startDate || '2000-01-01';
+  const end = endDate || '2099-12-31';
 
   try {
     let orderFilter = '';
@@ -199,8 +199,8 @@ const getFinancialsReport = async (req, res) => {
  */
 const getTopProductsReport = async (req, res) => {
   let { startDate, endDate, salesPersonId, customerId } = req.query;
-  const start = startDate || new Date().toISOString().split('T')[0];
-  const end = endDate || new Date().toISOString().split('T')[0];
+  const start = startDate || '2000-01-01';
+  const end = endDate || '2099-12-31';
   
   // Defensively clean params
   if (salesPersonId === 'undefined' || salesPersonId === 'null') salesPersonId = null;
@@ -258,8 +258,8 @@ const getTopProductsReport = async (req, res) => {
  */
 const getTopBrandsReport = async (req, res) => {
   const { startDate, endDate, salesPersonId } = req.query;
-  const start = startDate || new Date().toISOString().split('T')[0];
-  const end = endDate || new Date().toISOString().split('T')[0];
+  const start = startDate || '2000-01-01';
+  const end = endDate || '2099-12-31';
 
   try {
     const queryParams = [start, end];
@@ -306,8 +306,8 @@ const getTopBrandsReport = async (req, res) => {
  */
 const getPurchasesReport = async (req, res) => {
   const { startDate, endDate } = req.query;
-  const start = startDate || new Date().toISOString().split('T')[0];
-  const end = endDate || new Date().toISOString().split('T')[0];
+  const start = startDate || '2000-01-01';
+  const end = endDate || '2099-12-31';
 
   try {
     // Get purchase summary
@@ -387,8 +387,8 @@ const getPurchasesReport = async (req, res) => {
  */
 const getProductsDetailReport = async (req, res) => {
   const { startDate, endDate } = req.query;
-  const start = startDate || new Date().toISOString().split('T')[0];
-  const end = endDate || new Date().toISOString().split('T')[0];
+  const start = startDate || '2000-01-01';
+  const end = endDate || '2099-12-31';
 
   try {
     const result = await pool.query(`
@@ -428,8 +428,8 @@ const getProductsDetailReport = async (req, res) => {
  */
 const getClientsReport = async (req, res) => {
   const { startDate, endDate } = req.query;
-  const start = startDate || new Date().toISOString().split('T')[0];
-  const end = endDate || new Date().toISOString().split('T')[0];
+  const start = startDate || '2000-01-01';
+  const end = endDate || '2099-12-31';
 
   try {
     const result = await pool.query(`

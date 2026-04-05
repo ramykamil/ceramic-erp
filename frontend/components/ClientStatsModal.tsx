@@ -36,9 +36,9 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
                 
                 // Fetch in parallel
                 const [salesRes, productsRes, versementsRes] = await Promise.all([
-                    api.getSalesReport({ customerId, startDate, endDate }),
-                    api.getTopProductsReport({ customerId, startDate, endDate }),
-                    api.getClientVersements({ customerId, startDate, endDate })
+                    api.getSalesReport({ startDate, endDate, customerId }),
+                    api.getTopProductsReport({ startDate, endDate, customerId }),
+                    api.getClientVersements({ startDate, endDate, customerId })
                 ]);
 
                 if (isMounted) {
@@ -46,8 +46,8 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
                     if (productsRes.success) setTopProducts(productsRes.data || []);
                     if (versementsRes.success) setVersements(versementsRes.data || []);
                 }
-            } catch (err) {
-                console.error("Failed to load client details", err);
+            } catch (error: any) {
+                console.error("Failed to load client details", error);
             } finally {
                 if (isMounted) setIsLoading(false);
             }
