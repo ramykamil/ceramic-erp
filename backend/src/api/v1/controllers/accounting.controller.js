@@ -1,4 +1,12 @@
 const pool = require('../../../config/database');
+const fs = require('fs');
+const path = require('path');
+
+const logDebug = (msg) => {
+    const logPath = path.join(__dirname, '../../../../debug_reports.log');
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(logPath, `\n[${timestamp}] ${msg}\n`);
+};
 
 // ========================================
 // CASH ACCOUNTS
@@ -682,7 +690,11 @@ const getClientVersements = async (req, res) => {
 
         params.push(limit, offset);
 
-        const result = await pool.query(query, params);
+        logDebug(`SQL (Versements): ${query.replace(/\s+/g, ' ')}`);
+    logDebug(`PARAMS (Versements): ${JSON.stringify(params)}`);
+
+    const result = await pool.query(query, params);
+    logDebug(`RESULT (Versements): ${result.rowCount} rows`);
 
         // Get total for the filtered versements
         const totalQuery = `

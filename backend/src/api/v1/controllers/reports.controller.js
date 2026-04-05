@@ -1,4 +1,12 @@
 const pool = require('../../../config/database');
+const fs = require('fs');
+const path = require('path');
+
+const logDebug = (msg) => {
+    const logPath = path.join(__dirname, '../../../../debug_reports.log');
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(logPath, `\n[${timestamp}] ${msg}\n`);
+};
 
 // Helper to format money
 const formatDZD = (amount) => new Intl.NumberFormat('fr-DZ', { style: 'currency', currency: 'DZD', maximumFractionDigits: 2 }).format(amount || 0);
@@ -89,7 +97,12 @@ const getSalesReport = async (req, res) => {
             LIMIT 100
         `;
 
+    logDebug(`QUERY (Summary): ${summaryResult.rowCount} rows`);
+    logDebug(`SQL (Transactions): ${transactionsQuery.replace(/\s+/g, ' ')}`);
+    logDebug(`PARAMS: ${JSON.stringify(queryParams)}`);
+
     const transactionsResult = await pool.query(transactionsQuery, queryParams);
+    logDebug(`RESULT (Transactions): ${transactionsResult.rowCount} rows`);
 
     const summary = summaryResult.rows[0];
 
@@ -239,6 +252,10 @@ const getTopProductsReport = async (req, res) => {
             ORDER BY total DESC
             LIMIT 50
         `, queryParams);
+
+    logDebug(`SQL (Top Products): Query executed`);
+    logDebug(`PARAMS (Top Products): ${JSON.stringify(queryParams)}`);
+    logDebug(`RESULT (Top Products): ${result.rowCount} rows`);
 
     res.json({
       success: true,
