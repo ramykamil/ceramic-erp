@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ResizableSortableHeader, useColumnWidths } from '@/components/ResizableSortableHeader';
 import { exportToExcel, formatQuantityExport } from '@/lib/exportToExcel';
+import { usePersistentState } from '@/hooks/usePersistentState';
+import { useTableNavigation } from '@/hooks/useTableNavigation';
 
 // --- Interfaces ---
 interface InventoryLevel {
@@ -609,14 +611,14 @@ function InventoryLevelsContent() {
   const searchParams = useSearchParams();
   const filterParam = searchParams.get('filter');
 
-  const [activeTab, setActiveTab] = useState<'WHOLESALE' | 'RETAIL'>('WHOLESALE');
+  const [activeTab, setActiveTab] = usePersistentState<'WHOLESALE' | 'RETAIL'>('inventory_activeTab', 'WHOLESALE');
   const [inventoryLevels, setInventoryLevels] = useState<InventoryLevel[]>([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = usePersistentState('inventory_search', '');
   const [isLoading, setIsLoading] = useState(true);
   const [apiError, setApiError] = useState<string | null>(null);
   const [lowStockFilter, setLowStockFilter] = useState(filterParam === 'low');
-  const [brandFilter, setBrandFilter] = useState<string>('');
-  const [stockLevelFilter, setStockLevelFilter] = useState<'all' | 'low' | 'out'>('all');
+  const [brandFilter, setBrandFilter] = usePersistentState<string>('inventory_brand', '');
+  const [stockLevelFilter, setStockLevelFilter] = usePersistentState<'all' | 'low' | 'out'>('inventory_level', 'all');
   const router = useRouter();
 
   const [isAdjustModalOpen, setIsAdjustModalOpen] = useState(false);
@@ -662,6 +664,17 @@ function InventoryLevelsContent() {
   const getSortDirection = (key: string): 'asc' | 'desc' | null => {
     return sortBy === key ? sortDir : null;
   };
+
+  // Keyboard navigation
+  const { selectedIndex, handleKeyDown, getRowClass, setSelectedIndex } = useTableNavigation({
+    rowCount: inventoryLevels.length,
+    onAction: (idx) => {
+      const item = inventoryLevels[idx];
+      // For now, navigating to product details or history could be an option
+      // router.push(`/products/${item.productid}`);
+      console.log('Action on inventory item:', item);
+    }
+  });
 
   // Data is now server-side filtered, so we just use inventoryLevels directly
   const filteredData = inventoryLevels;
@@ -780,7 +793,11 @@ function InventoryLevelsContent() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800">
+    <div 
+      className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800 outline-none"
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+    >
       <div className="max-w-7xl mx-auto">
 
         {/* --- Header --- */}
@@ -1003,8 +1020,12 @@ function InventoryLevelsContent() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {filteredData.map((item) => (
-                    <tr key={item.inventoryid} className="hover:bg-slate-50 transition-colors duration-150">
+                  {filteredData.map((item, idx) => (
+                    <tr 
+                      key={item.inventoryid} 
+                      className={getRowClass(idx, "hover:bg-slate-50 transition cursor-pointer")}
+                      onClick={() => setSelectedIndex(idx)}
+                    >
                       <td className="px-6 py-4">
                         <div className="font-medium text-slate-900">{item.productname}</div>
                         <div className="text-xs text-slate-500 font-mono mt-0.5">{item.productcode}</div>

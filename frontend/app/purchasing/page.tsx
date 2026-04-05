@@ -11,6 +11,8 @@ import { SortableTableHeader } from '@/components/SortableTableHeader';
 import { ResizableHeader, useColumnWidths } from '@/components/ResizableSortableHeader';
 import { exportToExcel, formatDateExport } from '@/lib/exportToExcel';
 import SupplierVersementsSection from '@/components/versements/SupplierVersementsSection';
+import { usePersistentState } from '@/hooks/usePersistentState';
+import { useTableNavigation } from '@/hooks/useTableNavigation';
 
 // --- Interfaces ---
 interface PurchaseOrder {
@@ -115,13 +117,13 @@ export default function PurchaseOrdersListPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [apiError, setApiError] = useState<string | null>(null);
   const router = useRouter();
-  const [statusFilter, setStatusFilter] = useState('');
-  const [typeFilter, setTypeFilter] = useState<'' | 'order' | 'return'>('');
+  const [statusFilter, setStatusFilter] = usePersistentState('purchasing_status', '');
+  const [typeFilter, setTypeFilter] = usePersistentState<'' | 'order' | 'return'>('purchasing_type', '');
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [dateRange, setDateRange] = useState<DateRange>(getDateRange('TODAY'));
-  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
-  const [activeTab, setActiveTab] = useState<'commandes' | 'versements'>('commandes');
+  const [searchQuery, setSearchQuery] = usePersistentState('purchasing_search', '');
+  const [dateRange, setDateRange] = usePersistentState<DateRange>('purchasing_dateRange', getDateRange('TODAY'));
+  const [selectedUserId, setSelectedUserId] = usePersistentState<number | null>('purchasing_userId', null);
+  const [activeTab, setActiveTab] = usePersistentState<'commandes' | 'versements'>('purchasing_activeTab', 'commandes');
   const [receivingPoId, setReceivingPoId] = useState<number | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
 
@@ -204,6 +206,19 @@ export default function PurchaseOrdersListPage() {
 
   // Sorting on the filtered list
   const { sortedData: displayData, handleSort: onSort, getSortDirection: getDir } = useSortableTable<UnifiedRow>(filteredUnifiedRows);
+
+  // Keyboard navigation
+  const { selectedIndex, handleKeyDown, getRowClass, setSelectedIndex } = useTableNavigation({
+    rowCount: displayData.length,
+    onAction: (idx) => {
+      const row = displayData[idx];
+      if (row._type === 'return') {
+        router.push(`/purchasing/returns/${row.returnid}`);
+      } else {
+        router.push(`/purchasing/${row.purchaseorderid}`);
+      }
+    }
+  });
 
   // Resizable column widths
   const { widths, handleResize } = useColumnWidths('purchasing-list-table', {
@@ -359,7 +374,11 @@ export default function PurchaseOrdersListPage() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800">
+    <div 
+      className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800 outline-none"
+      onKeyDown={activeTab === 'commandes' ? handleKeyDown : undefined}
+      tabIndex={0}
+    >
       <div className="max-w-7xl mx-auto">
 
         {/* --- Header --- */}
@@ -439,7 +458,7 @@ export default function PurchaseOrdersListPage() {
             <button
               onClick={() => setActiveTab('commandes')}
               className={`px-4 py-2.5 text-sm font-medium rounded-t-lg border-b-2 transition-colors ${activeTab === 'commandes'
-                ? 'border-blue-500 text-blue-600 bg-blue-50'
+                ? 'border-brand-primary text-brand-primary bg-red-50/30'
                 : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50'
                 }`}
             >
@@ -573,14 +592,15 @@ export default function PurchaseOrdersListPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {displayData.map((row) => {
+                      {displayData.map((row, idx) => {
                         const isReturn = row._type === 'return';
                         return (
                           <tr
                             key={row._id}
-                            className={`hover:bg-slate-50 transition-colors duration-150 ${
+                            className={getRowClass(idx, `transition-colors duration-150 cursor-pointer ${
                               isReturn ? 'bg-orange-50/40 border-l-4 border-l-orange-400' : ''
-                            }`}
+                            }`)}
+                            onClick={() => setSelectedIndex(idx)}
                           >
                             <td className="px-4 py-3 font-mono text-xs truncate">
                               <div className="flex items-center gap-2">

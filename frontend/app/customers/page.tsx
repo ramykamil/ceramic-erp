@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useSortableTable } from '@/hooks/useSortableTable';
 import { ResizableSortableHeader, useColumnWidths } from '@/components/ResizableSortableHeader';
 import { UserFilter } from '@/components/UserFilter';
+import { usePersistentState } from '@/hooks/usePersistentState';
+import { useTableNavigation } from '@/hooks/useTableNavigation';
 
 // --- Interface ---
 interface Customer {
@@ -32,7 +34,7 @@ const formatCurrencyDZD = (amount: number | null | undefined): string => {
 // --- Component ---
 export default function CustomersListPage() {
   const [customers, setCustomers] = useState<Customer[]>([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = usePersistentState('customers_search', '');
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -40,6 +42,15 @@ export default function CustomersListPage() {
 
   // Sorting
   const { sortedData, handleSort, getSortDirection } = useSortableTable<Customer>(customers);
+
+  // Keyboard navigation
+  const { selectedIndex, handleKeyDown, getRowClass, setSelectedIndex } = useTableNavigation({
+    rowCount: sortedData.length,
+    onAction: (idx) => {
+      const customer = sortedData[idx];
+      router.push(`/customers/${customer.customerid}`);
+    }
+  });
 
   // Resizable columns
   const { widths, handleResize } = useColumnWidths('customers-table', {
@@ -138,7 +149,11 @@ export default function CustomersListPage() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800">
+    <div 
+      className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800 outline-none"
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+    >
       <div className="max-w-7xl mx-auto">
 
         {/* --- Header --- */}
@@ -238,8 +253,12 @@ export default function CustomersListPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {sortedData.map((customer) => (
-                    <tr key={customer.customerid} className={`hover:bg-slate-50 transition-colors duration-150 ${!customer.isactive ? 'opacity-50 bg-slate-50' : ''}`}>
+                  {sortedData.map((customer, idx) => (
+                    <tr 
+                      key={customer.customerid} 
+                      className={getRowClass(idx, "hover:bg-slate-50 transition cursor-pointer")}
+                      onClick={() => setSelectedIndex(idx)}
+                    >
                       <td className="px-6 py-4 font-medium text-slate-900">
                         {customer.customername}
                         <div className="text-xs text-slate-400 font-mono mt-0.5">{customer.customercode}</div>

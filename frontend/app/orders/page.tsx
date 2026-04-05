@@ -10,6 +10,8 @@ import { useSortableTable } from '@/hooks/useSortableTable';
 import { ResizableSortableHeader, useColumnWidths } from '@/components/ResizableSortableHeader';
 import { exportToExcel, formatCurrencyExport, formatDateExport } from '@/lib/exportToExcel';
 import VersementsSection from '@/components/versements/VersementsSection';
+import { usePersistentState } from '@/hooks/usePersistentState';
+import { useTableNavigation } from '@/hooks/useTableNavigation';
 
 // Interfaces
 interface Order {
@@ -53,12 +55,12 @@ export default function OrdersListPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('ALL'); // 'ALL', 'PENDING', 'CONFIRMED', etc.
-  const [dateRange, setDateRange] = useState<DateRange>(getDateRange('TODAY'));
-  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [orderTypeFilter, setOrderTypeFilter] = useState('ALL'); // 'ALL', 'GROS', 'RETAIL'
-  const [mainSection, setMainSection] = useState<'COMMANDES' | 'VERSEMENTS'>('COMMANDES');
+  const [activeTab, setActiveTab] = usePersistentState('orders_activeTab', 'ALL');
+  const [dateRange, setDateRange] = usePersistentState<DateRange>('orders_dateRange', getDateRange('TODAY'));
+  const [selectedUserId, setSelectedUserId] = usePersistentState<number | null>('orders_userId', null);
+  const [searchQuery, setSearchQuery] = usePersistentState('orders_search', '');
+  const [orderTypeFilter, setOrderTypeFilter] = usePersistentState('orders_type', 'ALL');
+  const [mainSection, setMainSection] = usePersistentState<'COMMANDES' | 'VERSEMENTS'>('orders_section', 'COMMANDES');
   const [userRole, setUserRole] = useState('');
   const router = useRouter();
 
@@ -70,6 +72,19 @@ export default function OrdersListPage() {
 
   // Sorting
   const { sortedData, handleSort, getSortDirection } = useSortableTable<Order>(filteredOrders);
+
+  // Keyboard navigation
+  const { selectedIndex, handleKeyDown, getRowClass, setSelectedIndex } = useTableNavigation({
+    rowCount: sortedData.length,
+    onAction: (idx) => {
+      const order = sortedData[idx];
+      if (order.status === 'PENDING') {
+        handleConfirm(order.orderid);
+      } else {
+        router.push(`/orders/${order.orderid}`);
+      }
+    }
+  });
 
   // Resizable columns
   const { widths, handleResize } = useColumnWidths('orders-table', {
@@ -176,7 +191,11 @@ export default function OrdersListPage() {
   ];
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800">
+    <div 
+      className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800 outline-none"
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+    >
       <div className="max-w-7xl mx-auto">
 
         {/* Main Section Tabs */}
@@ -184,7 +203,7 @@ export default function OrdersListPage() {
           <button
             onClick={() => setMainSection('COMMANDES')}
             className={`px-6 py-3 font-medium text-sm border-b-2 -mb-px transition ${mainSection === 'COMMANDES'
-              ? 'border-blue-600 text-blue-600 bg-white'
+              ? 'border-brand-primary text-brand-primary bg-white'
               : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
               }`}
           >
@@ -193,7 +212,7 @@ export default function OrdersListPage() {
           <button
             onClick={() => setMainSection('VERSEMENTS')}
             className={`px-6 py-3 font-medium text-sm border-b-2 -mb-px transition ${mainSection === 'VERSEMENTS'
-              ? 'border-blue-600 text-blue-600 bg-white'
+              ? 'border-brand-primary text-brand-primary bg-white'
               : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
               }`}
           >
@@ -333,8 +352,12 @@ export default function OrdersListPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {sortedData.map((order) => (
-                        <tr key={order.orderid} className="hover:bg-slate-50 transition">
+                      {sortedData.map((order, idx) => (
+                        <tr 
+                          key={order.orderid} 
+                          className={getRowClass(idx, "hover:bg-slate-50 transition cursor-pointer")}
+                          onClick={() => setSelectedIndex(idx)}
+                        >
                           <td className="px-4 py-3 font-mono font-medium truncate" style={{ width: widths.ordernumber }}>{order.ordernumber}</td>
                           <td className="px-4 py-3 truncate" style={{ width: widths.customername }}>{order.retailclientname || order.customername || 'Passager'}</td>
                           <td className="px-4 py-3 text-slate-500" style={{ width: widths.orderdate }}>{formatDate(order.orderdate)}</td>

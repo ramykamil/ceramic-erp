@@ -140,7 +140,7 @@ async function getOrders(req, res, next) {
           WHERE oi.OrderID = o.OrderID
         ), 0) as benefice
       ${baseQuery}
-      ORDER BY o.OrderDate DESC, o.CreatedAt DESC LIMIT $${paramIndex++} OFFSET $${paramIndex++}
+      ORDER BY o.CreatedAt DESC, o.OrderID DESC, o.OrderDate DESC LIMIT $${paramIndex++} OFFSET $${paramIndex++}
     `;
     params.push(limit, offset);
 

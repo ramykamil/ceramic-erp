@@ -68,7 +68,7 @@ async function getPurchaseOrders(req, res, next) {
             params.push(req.query.userId);
         }
 
-        query += ` ORDER BY po.PurchaseOrderID DESC LIMIT $${paramIndex++} OFFSET $${paramIndex++}`;
+        query += ` ORDER BY po.OrderDate DESC, po.PurchaseOrderID DESC LIMIT $${paramIndex++} OFFSET $${paramIndex++}`;
         params.push(limit, offset);
 
         const result = await pool.query(query, params);
