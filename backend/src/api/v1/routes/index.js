@@ -69,6 +69,7 @@ router.post('/products/adjust-quantity', authenticateToken, requireRole('ADMIN',
 router.get('/products/:id/sales-history', authenticateToken, productController.getProductSalesHistory);
 router.get('/products/:id/purchase-history', authenticateToken, productController.getProductPurchaseHistory);
 router.get('/products/:id/adjustment-history', authenticateToken, productController.getProductAdjustmentHistory);
+router.get('/products/:id/return-history', authenticateToken, productController.getProductReturnHistory);
 router.get('/products/:productId/units', authenticateToken, productController.getProductUnits); // This might conflict if :id captures it, but :productId is different param name? No, express matches path.
 // Actually /products/:productId/units is /products/:id/units. It is more specific than /products/:id? 
 // No, /products/:id matches /products/123. It does NOT match /products/123/units.

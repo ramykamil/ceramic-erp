@@ -791,6 +791,120 @@ async function getProductAdjustmentHistory(req, res, next) {
   }
 }
 
+/**
+ * Get return history for a specific product
+ * Shows both purchase returns (retour d'achat) and sales returns (retour de vente)
+ */
+async function getProductReturnHistory(req, res, next) {
+  try {
+    const { id } = req.params;
+    const { startDate, endDate } = req.query;
+
+    // Build date filter
+    let dateFilterPR = '';
+    let dateFilterSR = '';
+    const paramsPR = [id];
+    const paramsSR = [id];
+    let piPR = 2;
+    let piSR = 2;
+
+    if (startDate) {
+      dateFilterPR += ` AND pr.ReturnDate >= $${piPR++}`;
+      paramsPR.push(startDate);
+      dateFilterSR += ` AND r.ReturnDate >= $${piSR++}`;
+      paramsSR.push(startDate);
+    }
+    if (endDate) {
+      dateFilterPR += ` AND pr.ReturnDate <= $${piPR++}`;
+      paramsPR.push(endDate);
+      dateFilterSR += ` AND r.ReturnDate <= $${piSR++}`;
+      paramsSR.push(endDate);
+    }
+
+    // 1. Get product info
+    const productResult = await pool.query(
+      `SELECT p.ProductID, p.ProductCode, p.ProductName, b.BrandName as Famille, p.BasePrice, p.PurchasePrice, p.Size
+       FROM Products p LEFT JOIN Brands b ON p.BrandID = b.BrandID WHERE p.ProductID = $1`,
+      [id]
+    );
+
+    if (productResult.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Produit non trouvé' });
+    }
+
+    // 2. Get purchase returns for this product
+    const purchaseReturnQuery = `
+      SELECT 
+        pr.ReturnID as returnid,
+        pr.ReturnNumber as returnnumber,
+        pr.ReturnDate as returndate,
+        COALESCE(f.FactoryName, b.BrandName, 'Fournisseur inconnu') as suppliername,
+        pr.Status as status,
+        pri.Quantity as qty,
+        pri.UnitPrice as unitprice,
+        pri.Total as linetotal,
+        pri.Reason as reason,
+        'PURCHASE' as returntype
+      FROM PurchaseReturnItems pri
+      JOIN PurchaseReturns pr ON pri.ReturnID = pr.ReturnID
+      LEFT JOIN Factories f ON pr.FactoryID = f.FactoryID
+      LEFT JOIN Brands b ON pr.BrandID = b.BrandID
+      WHERE pri.ProductID = $1
+        ${dateFilterPR}
+      ORDER BY pr.ReturnDate DESC
+    `;
+    const purchaseReturnResult = await pool.query(purchaseReturnQuery, paramsPR);
+
+    // 3. Get sales returns for this product
+    const salesReturnQuery = `
+      SELECT 
+        r.ReturnID as returnid,
+        r.ReturnNumber as returnnumber,
+        r.ReturnDate as returndate,
+        COALESCE(c.CustomerName, 'Client inconnu') as customername,
+        r.Status as status,
+        ri.Quantity as qty,
+        ri.UnitPrice as unitprice,
+        ri.LineTotal as linetotal,
+        ri.Reason as reason,
+        'SALES' as returntype
+      FROM ReturnItems ri
+      JOIN Returns r ON ri.ReturnID = r.ReturnID
+      LEFT JOIN Customers c ON r.CustomerID = c.CustomerID
+      WHERE ri.ProductID = $1
+        ${dateFilterSR}
+      ORDER BY r.ReturnDate DESC
+    `;
+    const salesReturnResult = await pool.query(salesReturnQuery, paramsSR);
+
+    // 4. Calculate totals
+    const purchaseReturns = purchaseReturnResult.rows;
+    const salesReturns = salesReturnResult.rows;
+
+    const totals = {
+      totalPurchaseReturns: purchaseReturns.length,
+      totalPurchaseReturnQty: purchaseReturns.reduce((sum, r) => sum + parseFloat(r.qty || 0), 0),
+      totalPurchaseReturnAmount: purchaseReturns.reduce((sum, r) => sum + parseFloat(r.linetotal || 0), 0),
+      totalSalesReturns: salesReturns.length,
+      totalSalesReturnQty: salesReturns.reduce((sum, r) => sum + parseFloat(r.qty || 0), 0),
+      totalSalesReturnAmount: salesReturns.reduce((sum, r) => sum + parseFloat(r.linetotal || 0), 0),
+    };
+
+    res.json({
+      success: true,
+      data: {
+        product: productResult.rows[0],
+        purchaseReturns,
+        salesReturns,
+        totals
+      }
+    });
+  } catch (error) {
+    console.error('Error in getProductReturnHistory:', error);
+    next(error);
+  }
+}
+
 module.exports = {
   getProducts,
   getProductById,
@@ -805,6 +919,7 @@ module.exports = {
   getProductSalesHistory,
   getProductPurchaseHistory,
   getProductAdjustmentHistory,
+  getProductReturnHistory,
   getProductFilters,
   getProductStats,
   adjustProductQuantity

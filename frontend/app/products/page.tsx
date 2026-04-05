@@ -100,7 +100,7 @@ export default function ProductsPage() {
     totals: any;
   } | null>(null);
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
-  const [historyTab, setHistoryTab] = useState<'ventes' | 'achats' | 'ajustements'>('ventes');
+  const [historyTab, setHistoryTab] = useState<'ventes' | 'achats' | 'ajustements' | 'retours'>('ventes');
   const [purchaseHistoryData, setPurchaseHistoryData] = useState<{
     product: any;
     orders: any[];
@@ -114,6 +114,14 @@ export default function ProductsPage() {
     totals: any;
   } | null>(null);
   const [isLoadingAdjustmentHistory, setIsLoadingAdjustmentHistory] = useState(false);
+
+  const [returnHistoryData, setReturnHistoryData] = useState<{
+    product: any;
+    purchaseReturns: any[];
+    salesReturns: any[];
+    totals: any;
+  } | null>(null);
+  const [isLoadingReturnHistory, setIsLoadingReturnHistory] = useState(false);
 
   const [historyStartDate, setHistoryStartDate] = useState('');
   const [historyEndDate, setHistoryEndDate] = useState('');
@@ -396,11 +404,12 @@ export default function ProductsPage() {
     }
   };
 
-  // Load Sales, Purchase & Adjustment History for a product
+  // Load Sales, Purchase, Adjustment & Return History for a product
   const loadSalesHistory = async (productId: number, startDate?: string, endDate?: string) => {
     setIsLoadingHistory(true);
     setIsLoadingPurchaseHistory(true);
     setIsLoadingAdjustmentHistory(true);
+    setIsLoadingReturnHistory(true);
     setIsHistoryModalOpen(true);
     setHistoryProductId(productId);
     if (!startDate && !endDate) {
@@ -411,14 +420,16 @@ export default function ProductsPage() {
     setPurchaseHistoryData(null);
     setHistoryData(null);
     setAdjustmentHistoryData(null);
+    setReturnHistoryData(null);
     const dateParams: any = {};
     if (startDate) dateParams.startDate = startDate;
     if (endDate) dateParams.endDate = endDate;
     try {
-      const [salesRes, purchaseRes, adjustmentRes] = await Promise.all([
+      const [salesRes, purchaseRes, adjustmentRes, returnRes] = await Promise.all([
         api.getProductSalesHistory(productId, Object.keys(dateParams).length > 0 ? dateParams : undefined),
         api.getProductPurchaseHistory(productId, Object.keys(dateParams).length > 0 ? dateParams : undefined),
-        api.getProductAdjustmentHistory(productId, Object.keys(dateParams).length > 0 ? dateParams : undefined)
+        api.getProductAdjustmentHistory(productId, Object.keys(dateParams).length > 0 ? dateParams : undefined),
+        api.getProductReturnHistory(productId, Object.keys(dateParams).length > 0 ? dateParams : undefined)
       ]);
       if (salesRes.success && salesRes.data) {
         setHistoryData(salesRes.data as any);
@@ -428,6 +439,9 @@ export default function ProductsPage() {
       }
       if (adjustmentRes.success && adjustmentRes.data) {
         setAdjustmentHistoryData(adjustmentRes.data as any);
+      }
+      if (returnRes.success && returnRes.data) {
+        setReturnHistoryData(returnRes.data as any);
       }
       if (!salesRes.success && !purchaseRes.success && !adjustmentRes.success) {
         throw new Error('Échec du chargement de l\'historique');
@@ -439,6 +453,7 @@ export default function ProductsPage() {
       setIsLoadingHistory(false);
       setIsLoadingPurchaseHistory(false);
       setIsLoadingAdjustmentHistory(false);
+      setIsLoadingReturnHistory(false);
     }
   };
 
@@ -1244,6 +1259,15 @@ export default function ProductsPage() {
                   >
                     ⚡ Ajustements
                   </button>
+                  <button
+                    onClick={() => setHistoryTab('retours')}
+                    className={`px-4 py-3 text-sm font-semibold border-b-2 transition-colors ${historyTab === 'retours'
+                      ? 'border-rose-500 text-rose-700 bg-rose-50/50'
+                      : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                      }`}
+                  >
+                    ↩️ Retours
+                  </button>
                 </div>
                 <div className="flex items-center gap-2 py-2">
                   <input type="date" value={historyStartDate} onChange={(e) => setHistoryStartDate(e.target.value)} className="border border-slate-300 rounded-lg px-2 py-1.5 text-xs" />
@@ -1473,6 +1497,154 @@ export default function ProductsPage() {
                       </>
                     ) : (
                       <div className="text-center py-12 text-slate-400"><p className="text-lg">Aucun ajustement enregistré pour ce produit</p></div>
+                    )}
+                  </>
+                )}
+
+                {/* === RETOURS TAB === */}
+                {historyTab === 'retours' && (
+                  <>
+                    {isLoadingReturnHistory ? (
+                      <div className="text-center py-12">
+                        <div className="inline-block w-8 h-8 border-4 border-rose-200 border-t-rose-600 rounded-full animate-spin mb-4"></div>
+                        <p className="text-slate-500">Chargement...</p>
+                      </div>
+                    ) : returnHistoryData ? (
+                      <>
+                        {/* Summary Cards */}
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+                          <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                            <p className="text-xs text-orange-600 font-medium uppercase">Retours Achat</p>
+                            <p className="text-2xl font-bold text-orange-700">{returnHistoryData.totals.totalPurchaseReturns}</p>
+                          </div>
+                          <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                            <p className="text-xs text-orange-600 font-medium uppercase">Qté Achat</p>
+                            <p className="text-2xl font-bold text-orange-700">{formatQty(returnHistoryData.totals.totalPurchaseReturnQty)}</p>
+                          </div>
+                          <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                            <p className="text-xs text-orange-600 font-medium uppercase">Montant Achat</p>
+                            <p className="text-2xl font-bold text-orange-700">{formatMoney(returnHistoryData.totals.totalPurchaseReturnAmount)}</p>
+                          </div>
+                          <div className="bg-rose-50 p-4 rounded-lg border border-rose-200">
+                            <p className="text-xs text-rose-600 font-medium uppercase">Retours Vente</p>
+                            <p className="text-2xl font-bold text-rose-700">{returnHistoryData.totals.totalSalesReturns}</p>
+                          </div>
+                          <div className="bg-rose-50 p-4 rounded-lg border border-rose-200">
+                            <p className="text-xs text-rose-600 font-medium uppercase">Qté Vente</p>
+                            <p className="text-2xl font-bold text-rose-700">{formatQty(returnHistoryData.totals.totalSalesReturnQty)}</p>
+                          </div>
+                          <div className="bg-rose-50 p-4 rounded-lg border border-rose-200">
+                            <p className="text-xs text-rose-600 font-medium uppercase">Montant Vente</p>
+                            <p className="text-2xl font-bold text-rose-700">{formatMoney(returnHistoryData.totals.totalSalesReturnAmount)}</p>
+                          </div>
+                        </div>
+
+                        {/* Purchase Returns Section */}
+                        <div className="mb-8">
+                          <h3 className="text-sm font-bold text-orange-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+                            Retours d&apos;Achat (Fournisseurs)
+                          </h3>
+                          {returnHistoryData.purchaseReturns.length === 0 ? (
+                            <div className="text-center py-6 text-slate-400 bg-slate-50 rounded-lg">
+                              <p>Aucun retour d&apos;achat pour ce produit</p>
+                            </div>
+                          ) : (
+                            <div className="overflow-x-auto">
+                              <table className="w-full text-sm">
+                                <thead className="bg-orange-100 text-xs text-orange-700 uppercase sticky top-0">
+                                  <tr>
+                                    <th className="p-3 text-center">N° Retour</th>
+                                    <th className="p-3 text-center">Date</th>
+                                    <th className="p-3 text-left">Fournisseur</th>
+                                    <th className="p-3 text-center">Statut</th>
+                                    <th className="p-3 text-right">Qté</th>
+                                    <th className="p-3 text-right">Prix Unit.</th>
+                                    <th className="p-3 text-right">Montant</th>
+                                    <th className="p-3 text-left">Motif</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-100">
+                                  {returnHistoryData.purchaseReturns.map((r: any, idx: number) => (
+                                    <tr key={`pr-${r.returnid}-${idx}`} className="hover:bg-orange-50/30">
+                                      <td className="p-3 text-center text-orange-600 text-xs font-mono font-semibold">{r.returnnumber || '-'}</td>
+                                      <td className="p-3 text-center text-slate-600 text-xs font-mono">{r.returndate ? new Date(r.returndate).toLocaleDateString('fr-DZ') : '-'}</td>
+                                      <td className="p-3 font-medium text-slate-800">{r.suppliername}</td>
+                                      <td className="p-3 text-center">
+                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                          r.status === 'APPROVED' ? 'bg-green-100 text-green-700' :
+                                          r.status === 'PENDING' ? 'bg-yellow-100 text-yellow-700' :
+                                          'bg-slate-100 text-slate-600'
+                                        }`}>
+                                          {r.status === 'APPROVED' ? 'Approuvé' : r.status === 'PENDING' ? 'En attente' : r.status}
+                                        </span>
+                                      </td>
+                                      <td className="p-3 text-right font-bold text-orange-600 font-mono">{formatQty(r.qty)}</td>
+                                      <td className="p-3 text-right text-slate-600 font-mono">{formatMoney(r.unitprice)}</td>
+                                      <td className="p-3 text-right font-bold text-slate-800 font-mono">{formatMoney(r.linetotal)}</td>
+                                      <td className="p-3 text-slate-600 text-xs">{r.reason || '-'}</td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Sales Returns Section */}
+                        <div>
+                          <h3 className="text-sm font-bold text-rose-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-rose-500"></span>
+                            Retours de Vente (Clients)
+                          </h3>
+                          {returnHistoryData.salesReturns.length === 0 ? (
+                            <div className="text-center py-6 text-slate-400 bg-slate-50 rounded-lg">
+                              <p>Aucun retour de vente pour ce produit</p>
+                            </div>
+                          ) : (
+                            <div className="overflow-x-auto">
+                              <table className="w-full text-sm">
+                                <thead className="bg-rose-100 text-xs text-rose-700 uppercase sticky top-0">
+                                  <tr>
+                                    <th className="p-3 text-center">N° Retour</th>
+                                    <th className="p-3 text-center">Date</th>
+                                    <th className="p-3 text-left">Client</th>
+                                    <th className="p-3 text-center">Statut</th>
+                                    <th className="p-3 text-right">Qté</th>
+                                    <th className="p-3 text-right">Prix Unit.</th>
+                                    <th className="p-3 text-right">Montant</th>
+                                    <th className="p-3 text-left">Motif</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-100">
+                                  {returnHistoryData.salesReturns.map((r: any, idx: number) => (
+                                    <tr key={`sr-${r.returnid}-${idx}`} className="hover:bg-rose-50/30">
+                                      <td className="p-3 text-center text-rose-600 text-xs font-mono font-semibold">{r.returnnumber || '-'}</td>
+                                      <td className="p-3 text-center text-slate-600 text-xs font-mono">{r.returndate ? new Date(r.returndate).toLocaleDateString('fr-DZ') : '-'}</td>
+                                      <td className="p-3 font-medium text-slate-800">{r.customername}</td>
+                                      <td className="p-3 text-center">
+                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                          r.status === 'APPROVED' ? 'bg-green-100 text-green-700' :
+                                          r.status === 'PENDING' ? 'bg-yellow-100 text-yellow-700' :
+                                          'bg-slate-100 text-slate-600'
+                                        }`}>
+                                          {r.status === 'APPROVED' ? 'Approuvé' : r.status === 'PENDING' ? 'En attente' : r.status}
+                                        </span>
+                                      </td>
+                                      <td className="p-3 text-right font-bold text-rose-600 font-mono">{formatQty(r.qty)}</td>
+                                      <td className="p-3 text-right text-slate-600 font-mono">{formatMoney(r.unitprice)}</td>
+                                      <td className="p-3 text-right font-bold text-slate-800 font-mono">{formatMoney(r.linetotal)}</td>
+                                      <td className="p-3 text-slate-600 text-xs">{r.reason || '-'}</td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          )}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-center py-12 text-slate-400"><p className="text-lg">Aucun retour enregistré pour ce produit</p></div>
                     )}
                   </>
                 )}
