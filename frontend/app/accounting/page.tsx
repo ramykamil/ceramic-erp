@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSortableTable, SortDirection } from '@/hooks/useSortableTable';
 import { DateQuickFilter, DateRange } from '@/components/DateQuickFilter';
+import { useTableNavigation } from '@/hooks/useTableNavigation';
 
 // --- Interfaces ---
 interface CashAccount {
@@ -631,6 +632,12 @@ function AccountListModal({ isOpen, onClose, accounts, onRefresh }: AccountListM
 // --- Main Page Component ---
 export default function AccountingPage() {
     const router = useRouter();
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    // Auto-focus the container on mount
+    useEffect(() => {
+        containerRef.current?.focus();
+    }, []);
 
     const [accounts, setAccounts] = useState<CashAccount[]>([]);
     const [transactions, setTransactions] = useState<CashTransaction[]>([]);
@@ -658,6 +665,15 @@ export default function AccountingPage() {
 
     // Sorting
     const { sortedData, handleSort, getSortDirection } = useSortableTable<CashTransaction>(transactions);
+
+    // Keyboard navigation
+    const { selectedIndex, handleKeyDown, getRowClass, getRowProps } = useTableNavigation({
+        rowCount: sortedData.length,
+        onAction: (idx) => {
+            const tx = sortedData[idx];
+            console.log('Action on cash transaction:', tx);
+        }
+    });
 
     useEffect(() => {
         fetchInitialData();
@@ -726,7 +742,12 @@ export default function AccountingPage() {
     const previousBalance = summary?.previousBalance || 0;
 
     return (
-        <div className="min-h-screen bg-slate-50 p-3 sm:p-4 lg:p-6 text-slate-800">
+        <div 
+            ref={containerRef}
+            className="min-h-screen bg-slate-50 p-3 sm:p-4 lg:p-6 text-slate-800 outline-none"
+            onKeyDown={handleKeyDown}
+            tabIndex={0}
+        >
             <div className="max-w-[1600px] mx-auto">
 
                 {/* === HEADER === */}
@@ -773,9 +794,9 @@ export default function AccountingPage() {
                             {(currentBalance - previousBalance) >= 0 ? '+' : ''}{formatCurrency(currentBalance - previousBalance)}
                         </div>
                     </div>
-                    <div className="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg shadow-sm p-4">
+                    <div className="bg-gradient-to-r from-brand-primary to-red-500 rounded-lg shadow-sm p-4 text-white">
                         <div className="text-xs text-white/80 uppercase font-medium">Solde actuel</div>
-                        <div className="text-2xl font-bold text-white font-mono mt-1">{formatCurrency(currentBalance)}</div>
+                        <div className="text-2xl font-bold font-mono mt-1">{formatCurrency(currentBalance)}</div>
                     </div>
                 </div>
 
@@ -814,7 +835,7 @@ export default function AccountingPage() {
                     </button>
 
                     <button onClick={() => setIsAddModalOpen(true)}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-lg flex items-center gap-2">
+                        className="bg-brand-primary hover:bg-brand-primary-dark text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-lg flex items-center gap-2">
                         ➕ Ajouter opération
                     </button>
 
@@ -854,8 +875,8 @@ export default function AccountingPage() {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
-                                    {sortedData.map((tx) => (
-                                        <tr key={tx.transactionid} className="hover:bg-slate-50 transition-colors">
+                                    {sortedData.map((tx, idx) => (
+                                        <tr key={tx.transactionid} {...getRowProps(idx)} className={getRowClass(idx, "hover:bg-slate-50 transition-colors cursor-pointer")}>
                                             <td className="px-3 py-2.5">
                                                 <div className="font-medium text-slate-800">{tx.tiers || '-'}</div>
                                                 <span className={`inline-block mt-0.5 px-2 py-0.5 rounded text-xs font-medium border ${getTransactionTypeBadge(tx.transactiontype)}`}>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -42,7 +42,7 @@ const formatDate = (dateString: string) => {
 const getStatusBadge = (status: string) => {
   const classes = {
     PENDING: 'bg-amber-100 text-amber-800',
-    CONFIRMED: 'bg-blue-100 text-blue-800',
+    CONFIRMED: 'bg-red-100 text-brand-primary',
     PROCESSING: 'bg-purple-100 text-purple-800',
     SHIPPED: 'bg-indigo-100 text-indigo-800',
     DELIVERED: 'bg-emerald-100 text-emerald-800',
@@ -63,6 +63,12 @@ export default function OrdersListPage() {
   const [mainSection, setMainSection] = usePersistentState<'COMMANDES' | 'VERSEMENTS'>('orders_section', 'COMMANDES');
   const [userRole, setUserRole] = useState('');
   const router = useRouter();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Auto-focus the container on mount for immediate keyboard navigation
+  useEffect(() => {
+    containerRef.current?.focus();
+  }, []);
 
   // Load user role from localStorage
   useEffect(() => {
@@ -74,7 +80,7 @@ export default function OrdersListPage() {
   const { sortedData, handleSort, getSortDirection } = useSortableTable<Order>(filteredOrders);
 
   // Keyboard navigation
-  const { selectedIndex, handleKeyDown, getRowClass, setSelectedIndex } = useTableNavigation({
+  const { selectedIndex, handleKeyDown, getRowClass, getRowProps, setSelectedIndex } = useTableNavigation({
     rowCount: sortedData.length,
     onAction: (idx) => {
       const order = sortedData[idx];
@@ -192,6 +198,7 @@ export default function OrdersListPage() {
 
   return (
     <div 
+      ref={containerRef}
       className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800 outline-none"
       onKeyDown={handleKeyDown}
       tabIndex={0}
@@ -253,7 +260,7 @@ export default function OrdersListPage() {
                 >
                   📄
                 </button>
-                <Link href="/sales/pos" className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-blue-700 flex items-center gap-2 shadow-sm">
+                <Link href="/sales/pos" className="bg-brand-primary text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-brand-primary-dark flex items-center gap-2 shadow-sm transition-colors">
                   + Nouvelle Vente
                 </Link>
                 <Link href="/" className="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm hover:bg-slate-50">Retour</Link>
@@ -279,7 +286,7 @@ export default function OrdersListPage() {
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-slate-500 font-medium">Type:</span>
                   <select
-                    className="border border-slate-300 rounded-md text-sm py-1 px-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="border border-slate-300 rounded-md text-sm py-1 px-2 focus:ring-brand-primary/40 focus:border-brand-primary"
                     value={orderTypeFilter}
                     onChange={(e) => setOrderTypeFilter(e.target.value)}
                   >
@@ -301,7 +308,7 @@ export default function OrdersListPage() {
                   <input
                     type="text"
                     placeholder="Rechercher par N° Commande ou Client..."
-                    className="block w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg leading-5 bg-white placeholder-slate-500 focus:outline-none focus:placeholder-slate-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition duration-150 ease-in-out"
+                    className="block w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg leading-5 bg-white placeholder-slate-500 focus:outline-none focus:placeholder-slate-400 focus:ring-1 focus:ring-brand-primary focus:border-brand-primary sm:text-sm transition duration-150 ease-in-out"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -355,8 +362,8 @@ export default function OrdersListPage() {
                       {sortedData.map((order, idx) => (
                         <tr 
                           key={order.orderid} 
+                          {...getRowProps(idx)}
                           className={getRowClass(idx, "hover:bg-slate-50 transition cursor-pointer")}
-                          onClick={() => setSelectedIndex(idx)}
                         >
                           <td className="px-4 py-3 font-mono font-medium truncate" style={{ width: widths.ordernumber }}>{order.ordernumber}</td>
                           <td className="px-4 py-3 truncate" style={{ width: widths.customername }}>{order.retailclientname || order.customername || 'Passager'}</td>

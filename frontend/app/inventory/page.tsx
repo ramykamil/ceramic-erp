@@ -299,7 +299,7 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
                   }}
                   onFocus={() => setShowProductDropdown(true)}
                   placeholder="🔍 Rechercher un produit..."
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white text-slate-800"
+                  className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-slate-800"
                 />
                 {selectedProduct && (
                   <button
@@ -320,7 +320,7 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
                       key={p.productid}
                       type="button"
                       onClick={() => selectProduct(p)}
-                      className="w-full px-3 py-2 text-left text-sm hover:bg-purple-50 border-b border-slate-100 last:border-0"
+                      className="w-full px-3 py-2 text-left text-sm hover:bg-indigo-50 border-b border-slate-100 last:border-0"
                     >
                       <span className="font-medium text-slate-800">{p.productname}</span>
                       <span className="text-slate-400 ml-2">({p.productcode})</span>
@@ -331,21 +331,21 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
 
               {/* Selected Product Badge */}
               {selectedProduct && (
-                <div className="mt-2 p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                <div className="mt-2 p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-purple-600">✓</span>
-                    <span className="text-sm font-medium text-purple-800">{selectedProduct.productname}</span>
-                    <span className="text-xs text-purple-500">({selectedProduct.productcode})</span>
+                    <span className="text-indigo-600">✓</span>
+                    <span className="text-sm font-medium text-indigo-800">{selectedProduct.productname}</span>
+                    <span className="text-xs text-indigo-500">({selectedProduct.productcode})</span>
                   </div>
 
                   {/* Current Stock Display */}
                   {currentInventory && (
-                    <div className="bg-white p-2 rounded-lg border border-purple-100">
+                    <div className="bg-white p-2 rounded-lg border border-indigo-100">
                       <p className="text-xs text-slate-500 mb-2 font-medium">📊 Stock actuel:</p>
                       <div className="grid grid-cols-4 gap-2 text-center">
-                        <div className="bg-purple-100 rounded p-1.5">
-                          <p className="text-lg font-bold text-purple-700">{currentInventory.palettes}</p>
-                          <p className="text-[10px] text-purple-600">Palettes</p>
+                        <div className="bg-indigo-100 rounded p-1.5">
+                          <p className="text-lg font-bold text-indigo-700">{currentInventory.palettes}</p>
+                          <p className="text-[10px] text-indigo-600">Palettes</p>
                         </div>
                         <div className="bg-cyan-100 rounded p-1.5">
                           <p className="text-lg font-bold text-cyan-700">{currentInventory.cartons}</p>
@@ -355,9 +355,9 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
                           <p className="text-lg font-bold text-orange-700">{currentInventory.pieces}</p>
                           <p className="text-[10px] text-orange-600">Pièces</p>
                         </div>
-                        <div className="bg-blue-100 rounded p-1.5">
-                          <p className="text-lg font-bold text-blue-700">{currentInventory.sqm.toFixed(2)}</p>
-                          <p className="text-[10px] text-blue-600">m²</p>
+                        <div className="bg-indigo-100 rounded p-1.5">
+                          <p className="text-lg font-bold text-indigo-700">{currentInventory.sqm.toFixed(2)}</p>
+                          <p className="text-[10px] text-indigo-600">m²</p>
                         </div>
                       </div>
                     </div>
@@ -412,10 +412,10 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
             {/* Pal/Ctn/Pcs/SQM Inputs */}
             <div className="grid grid-cols-4 gap-3">
               <div>
-                <label className="block text-sm font-medium text-purple-700 mb-1">🎨 Palettes</label>
+                <label className="block text-sm font-medium text-indigo-700 mb-1">🎨 Palettes</label>
                 <input type="number" min="0" step="any" value={palettes}
                   onChange={e => handlePalettesChange(Number(e.target.value))}
-                  className="w-full p-2 border-2 border-purple-300 rounded-lg text-center font-bold text-purple-700 bg-purple-50" />
+                  className="w-full p-2 border-2 border-indigo-300 rounded-lg text-center font-bold text-indigo-700 bg-indigo-50" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-cyan-700 mb-1">📦 Cartons</label>
@@ -430,10 +430,10 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
                   className="w-full p-2 border-2 border-orange-300 rounded-lg text-center font-bold text-orange-700 bg-orange-50" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-blue-700 mb-1">📐 Quantité (m²)</label>
+                <label className="block text-sm font-medium text-indigo-700 mb-1">📐 Quantité (m²)</label>
                 <input type="number" min="0" step="0.01" value={quantity}
                   onChange={e => handleQuantityChange(Number(e.target.value))}
-                  className="w-full p-2 border-2 border-blue-400 rounded-lg text-center font-bold text-blue-700 bg-blue-50" />
+                  className="w-full p-2 border-2 border-indigo-400 rounded-lg text-center font-bold text-indigo-700 bg-indigo-50" />
               </div>
             </div>
 
@@ -442,7 +442,7 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Entrepôt *</label>
                 <select value={warehouseId} onChange={(e) => setWarehouseId(Number(e.target.value))} required
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white text-slate-800">
+                  className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-slate-800">
                   <option value="">-- Sélectionner --</option>
                   {warehouses.map(w => <option key={w.warehouseid} value={w.warehouseid}>{w.warehousename}</option>)}
                 </select>
@@ -451,7 +451,7 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Type *</label>
                 <select value={ownershipType} onChange={(e) => setOwnershipType(e.target.value as 'OWNED' | 'CONSIGNMENT')} required
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white text-slate-800">
+                  className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-slate-800">
                   <option value="OWNED">Propre</option>
                   <option value="CONSIGNMENT">Consignation</option>
                 </select>
@@ -462,7 +462,7 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Usine *</label>
                 <select value={factoryId} onChange={(e) => setFactoryId(Number(e.target.value))} required
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white text-slate-800">
+                  className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-slate-800">
                   <option value="">-- Sélectionner --</option>
                   {factories.map(f => <option key={f.factoryid} value={f.factoryid}>{f.factoryname}</option>)}
                 </select>
@@ -473,7 +473,7 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
               <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Note / Raison</label>
               <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2}
                 placeholder="Ex: Inventaire physique, correction d'erreur..."
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white text-slate-800" />
+                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-slate-800" />
             </div>
           </div>
 
@@ -491,7 +491,7 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
                 Annuler
               </button>
               <button type="submit" disabled={isSaving || quantity <= 0}
-                className="bg-purple-600 text-white hover:bg-purple-700 px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2 disabled:opacity-50">
+                className="bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2 disabled:opacity-50">
                 {isSaving ? 'Sauvegarde...' : 'Enregistrer'}
               </button>
             </div>
@@ -570,7 +570,7 @@ function ImportStockModal({ isOpen, onClose, onImport, isImporting }: ImportStoc
                 id="importFile"
                 accept=".csv"
                 onChange={(e) => setSelectedFile(e.target.files ? e.target.files[0] : null)}
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white text-slate-800"
+                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-slate-800"
                 required
               />
             </div>
@@ -581,7 +581,7 @@ function ImportStockModal({ isOpen, onClose, onImport, isImporting }: ImportStoc
                 id="importWarehouse"
                 value={selectedWarehouseId}
                 onChange={(e) => setSelectedWarehouseId(Number(e.target.value))}
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white text-slate-800"
+                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-slate-800"
                 required
               >
                 <option value="">-- Sélectionner Entrepôt --</option>
@@ -596,7 +596,7 @@ function ImportStockModal({ isOpen, onClose, onImport, isImporting }: ImportStoc
               Annuler
             </button>
             <button type="submit" disabled={isImporting || !selectedFile || !selectedWarehouseId}
-              className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2">
+              className="bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2">
               {isImporting ? 'Importation...' : 'Importer'}
             </button>
           </div>
@@ -620,6 +620,12 @@ function InventoryLevelsContent() {
   const [brandFilter, setBrandFilter] = usePersistentState<string>('inventory_brand', '');
   const [stockLevelFilter, setStockLevelFilter] = usePersistentState<'all' | 'low' | 'out'>('inventory_level', 'all');
   const router = useRouter();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Auto-focus the container on mount for immediate keyboard navigation
+  useEffect(() => {
+    containerRef.current?.focus();
+  }, []);
 
   const [isAdjustModalOpen, setIsAdjustModalOpen] = useState(false);
   const [isSavingAdjustment, setIsSavingAdjustment] = useState(false);
@@ -666,7 +672,7 @@ function InventoryLevelsContent() {
   };
 
   // Keyboard navigation
-  const { selectedIndex, handleKeyDown, getRowClass, setSelectedIndex } = useTableNavigation({
+  const { selectedIndex, handleKeyDown, getRowClass, getRowProps, setSelectedIndex } = useTableNavigation({
     rowCount: inventoryLevels.length,
     onAction: (idx) => {
       const item = inventoryLevels[idx];
@@ -794,6 +800,7 @@ function InventoryLevelsContent() {
 
   return (
     <div 
+      ref={containerRef}
       className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800 outline-none"
       onKeyDown={handleKeyDown}
       tabIndex={0}
@@ -1023,8 +1030,8 @@ function InventoryLevelsContent() {
                   {filteredData.map((item, idx) => (
                     <tr 
                       key={item.inventoryid} 
+                      {...getRowProps(idx)}
                       className={getRowClass(idx, "hover:bg-slate-50 transition cursor-pointer")}
-                      onClick={() => setSelectedIndex(idx)}
                     >
                       <td className="px-6 py-4">
                         <div className="font-medium text-slate-900">{item.productname}</div>

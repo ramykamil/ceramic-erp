@@ -131,7 +131,7 @@ export function DateQuickFilter({
                     key={preset}
                     onClick={() => handlePresetClick(preset)}
                     className={`px-3 py-1.5 text-xs font-medium rounded-full transition ${activePreset === preset
-                        ? 'bg-blue-600 text-white shadow-sm'
+                        ? 'bg-brand-primary text-white shadow-sm'
                         : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                         }`}
                 >

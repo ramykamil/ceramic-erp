@@ -20,10 +20,31 @@ export function useTableNavigation({ rowCount, onAction }: UseTableNavigationPro
 
     // Reset selected index if rowCount changes (e.g., search/filter)
     useEffect(() => {
+        if (rowCount === 0) {
+            setSelectedIndex(-1);
+            return;
+        }
         if (selectedIndex >= rowCount) {
-            setSelectedIndex(rowCount > 0 ? 0 : -1);
+            setSelectedIndex(0);
         }
     }, [rowCount, selectedIndex]);
+
+    // Selection-into-view logic to make navigation feel 'less stiff'
+    useEffect(() => {
+        if (selectedIndex >= 0) {
+            // We use a small timeout to ensure the DOM has updated
+            const timer = setTimeout(() => {
+                const element = document.querySelector(`[data-row-index="${selectedIndex}"]`);
+                if (element) {
+                    element.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest',
+                    });
+                }
+            }, 50);
+            return () => clearTimeout(timer);
+        }
+    }, [selectedIndex]);
 
     const handleKeyDown = useCallback((e: KeyboardEvent | React.KeyboardEvent) => {
         if (rowCount === 0) return;
@@ -58,11 +79,19 @@ export function useTableNavigation({ rowCount, onAction }: UseTableNavigationPro
         return `${baseClass} ${isSelected ? 'bg-red-50/50 ring-1 ring-inset ring-brand-primary/20 shadow-sm z-10' : ''}`;
     };
 
+    // Props to apply to each row
+    const getRowProps = (index: number) => ({
+        'data-row-index': index,
+        className: getRowClass(index),
+        onClick: () => setSelectedIndex(index),
+    });
+
     return {
         selectedIndex,
         setSelectedIndex,
         handleKeyDown,
         getRowClass,
+        getRowProps,
         isSelected: (index: number) => selectedIndex === index
     };
 }

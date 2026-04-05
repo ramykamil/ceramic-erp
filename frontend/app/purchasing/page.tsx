@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -117,6 +117,12 @@ export default function PurchaseOrdersListPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [apiError, setApiError] = useState<string | null>(null);
   const router = useRouter();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Auto-focus the container on mount for immediate keyboard navigation
+  useEffect(() => {
+    containerRef.current?.focus();
+  }, []);
   const [statusFilter, setStatusFilter] = usePersistentState('purchasing_status', '');
   const [typeFilter, setTypeFilter] = usePersistentState<'' | 'order' | 'return'>('purchasing_type', '');
 
@@ -208,7 +214,7 @@ export default function PurchaseOrdersListPage() {
   const { sortedData: displayData, handleSort: onSort, getSortDirection: getDir } = useSortableTable<UnifiedRow>(filteredUnifiedRows);
 
   // Keyboard navigation
-  const { selectedIndex, handleKeyDown, getRowClass, setSelectedIndex } = useTableNavigation({
+  const { selectedIndex, handleKeyDown, getRowClass, getRowProps, setSelectedIndex } = useTableNavigation({
     rowCount: displayData.length,
     onAction: (idx) => {
       const row = displayData[idx];
@@ -375,8 +381,9 @@ export default function PurchaseOrdersListPage() {
 
   return (
     <div 
+      ref={containerRef}
       className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800 outline-none"
-      onKeyDown={activeTab === 'commandes' ? handleKeyDown : undefined}
+      onKeyDown={handleKeyDown}
       tabIndex={0}
     >
       <div className="max-w-7xl mx-auto">
@@ -418,7 +425,7 @@ export default function PurchaseOrdersListPage() {
             {/* Nouveau Bon Button */}
             <Link
               href="/purchasing/new"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2"
+              className="bg-brand-primary text-white px-4 py-2.5 rounded-lg font-medium text-sm transition hover:bg-brand-primary-dark shadow-sm flex items-center gap-2"
             >
               <span className="text-lg leading-none">+</span> Nouveau Bon
             </Link>
@@ -426,7 +433,7 @@ export default function PurchaseOrdersListPage() {
             {/* Historique Button */}
             <Link
               href="/purchasing/history"
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2"
+              className="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition shadow-sm flex items-center gap-2"
             >
               📊 Historique
             </Link>
@@ -597,10 +604,10 @@ export default function PurchaseOrdersListPage() {
                         return (
                           <tr
                             key={row._id}
+                            {...getRowProps(idx)}
                             className={getRowClass(idx, `transition-colors duration-150 cursor-pointer ${
                               isReturn ? 'bg-orange-50/40 border-l-4 border-l-orange-400' : ''
                             }`)}
-                            onClick={() => setSelectedIndex(idx)}
                           >
                             <td className="px-4 py-3 font-mono text-xs truncate">
                               <div className="flex items-center gap-2">

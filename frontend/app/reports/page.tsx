@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { DateQuickFilter, DateRange, getDateRange } from '@/components/DateQuickFilter';
 import { UserFilter } from '@/components/UserFilter';
 import { ClientStatsModal } from '@/components/ClientStatsModal';
+import { useTableNavigation } from '@/hooks/useTableNavigation';
 
 // Format helpers
 const formatDZD = (n: number) => new Intl.NumberFormat('fr-DZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n || 0) + ' DA';
@@ -22,6 +23,12 @@ const TABS = [
 
 export default function ReportsPage() {
     const [activeTab, setActiveTab] = useState('vente');
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    // Auto-focus the container on mount
+    useEffect(() => {
+        containerRef.current?.focus();
+    }, []);
     const [startDate, setStartDate] = useState(() => {
         const d = new Date();
         d.setMonth(d.getMonth() - 1);
@@ -38,6 +45,15 @@ export default function ReportsPage() {
     const [topProductsData, setTopProductsData] = useState<any[]>([]);
     const [topBrandsData, setTopBrandsData] = useState<any[]>([]);
     const [clientsData, setClientsData] = useState<any[]>([]);
+
+    // Keyboard navigation
+    const { selectedIndex, handleKeyDown, getRowClass, getRowProps } = useTableNavigation({
+        rowCount: salesData?.transactions?.length || 0,
+        onAction: (idx) => {
+            const t = salesData.transactions[idx];
+            console.log('Action on report transaction:', t);
+        }
+    });
 
     const loadData = async () => {
         setIsLoading(true);
@@ -77,7 +93,12 @@ export default function ReportsPage() {
     const kpis = salesData?.kpis;
 
     return (
-        <div className="min-h-screen bg-slate-50 p-3 sm:p-4 lg:p-6 text-slate-800">
+        <div 
+            ref={containerRef}
+            className="min-h-screen bg-slate-50 p-3 sm:p-4 lg:p-6 text-slate-800 outline-none"
+            onKeyDown={handleKeyDown}
+            tabIndex={0}
+        >
             <div className="max-w-[1920px] mx-auto">
 
                 {/* === HEADER BAR === */}
@@ -128,15 +149,15 @@ export default function ReportsPage() {
                 {/* === KPI CARDS === */}
                 {kpis && (
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
-                        <div className="bg-blue-600 text-white rounded-lg p-4 shadow-sm">
+                        <div className="bg-slate-800 text-white rounded-lg p-4 shadow-sm">
                             <div className="text-xs font-medium opacity-80 uppercase">Total Hier</div>
                             <div className="text-xl md:text-2xl font-bold mt-1">{formatDZD(kpis.totalHier)}</div>
                         </div>
-                        <div className="bg-blue-700 text-white rounded-lg p-4 shadow-sm">
+                        <div className="bg-brand-primary text-white rounded-lg p-4 shadow-sm">
                             <div className="text-xs font-medium opacity-80 uppercase">Total Période</div>
                             <div className="text-xl md:text-2xl font-bold mt-1">{formatDZD(kpis.total)}</div>
                         </div>
-                        <div className="bg-green-600 text-white rounded-lg p-4 shadow-sm">
+                        <div className="bg-emerald-600 text-white rounded-lg p-4 shadow-sm">
                             <div className="text-xs font-medium opacity-80 uppercase">Versements</div>
                             <div className="text-xl md:text-2xl font-bold mt-1">{formatDZD(kpis.versement)}</div>
                         </div>
@@ -194,13 +215,13 @@ export default function ReportsPage() {
                                                 {salesData.transactions?.length === 0 ? (
                                                     <tr><td colSpan={6} className="p-4 text-center text-slate-400">Aucune vente pour cette période</td></tr>
                                                 ) : salesData.transactions?.map((t: any, i: number) => (
-                                                    <tr key={i} className="hover:bg-slate-50">
-                                                        <td className="p-2 font-mono text-blue-600">{t.numero}</td>
+                                                    <tr key={i} {...getRowProps(i)} className={getRowClass(i, "hover:bg-slate-50 transition cursor-pointer")}>
+                                                        <td className="p-2 font-mono text-brand-primary">{t.numero}</td>
                                                         <td className="p-2 font-medium">{t.client || 'Client Comptoir'}</td>
                                                         <td className="p-2 text-slate-600">{formatDate(t.date)}</td>
                                                         <td className="p-2 text-slate-500">{t.heure || '-'}</td>
                                                         <td className="p-2 text-right font-mono font-bold">{formatDZD(t.total)}</td>
-                                                        <td className={`p-2 text-right font-mono font-bold ${parseFloat(t.reste) > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                                                        <td className={`p-2 text-right font-mono font-bold ${parseFloat(t.reste) > 0 ? 'text-brand-primary' : 'text-emerald-600'}`}>
                                                             {formatDZD(t.reste)}
                                                         </td>
                                                     </tr>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -39,6 +39,12 @@ export default function CustomersListPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [apiError, setApiError] = useState<string | null>(null);
   const router = useRouter();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Auto-focus the container on mount for immediate keyboard navigation
+  useEffect(() => {
+    containerRef.current?.focus();
+  }, []);
 
   // Sorting
   const { sortedData, handleSort, getSortDirection } = useSortableTable<Customer>(customers);
@@ -150,6 +156,7 @@ export default function CustomersListPage() {
 
   return (
     <div 
+      ref={containerRef}
       className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800 outline-none"
       onKeyDown={handleKeyDown}
       tabIndex={0}
@@ -180,12 +187,12 @@ export default function CustomersListPage() {
 
           <div className="flex flex-wrap items-center gap-3">
             {/* Nouveau Client Button */}
-            <button
-              onClick={() => router.push('/customers/new')}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2"
+            <Link
+              href="/customers/new"
+              className="bg-brand-primary hover:bg-brand-primary-dark text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2"
             >
               <span className="text-lg leading-none">+</span> Nouveau Client
-            </button>
+            </Link>
 
             {/* Retour Button (Clean Light Style) */}
             <Link
