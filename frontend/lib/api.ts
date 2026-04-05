@@ -1213,9 +1213,17 @@ class ApiClient {
   }
 
   // --- Returns ---
-  async getReturns(params?: { customerId?: number; status?: string; startDate?: string; endDate?: string }) {
-    const query = params ? '?' + new URLSearchParams(params as any).toString() : '';
-    return this.request<any>(`/returns${query}`);
+  async getReturns(params?: Record<string, any>) {
+    if (params) {
+      // Strip undefined/null values so URLSearchParams doesn't convert them to "undefined"/"null"
+      const clean: Record<string, string> = {};
+      for (const [k, v] of Object.entries(params)) {
+        if (v !== undefined && v !== null && v !== '') clean[k] = String(v);
+      }
+      const query = Object.keys(clean).length > 0 ? '?' + new URLSearchParams(clean).toString() : '';
+      return this.request<any>(`/returns${query}`);
+    }
+    return this.request<any>(`/returns`);
   }
 
   async getReturnById(id: number) {

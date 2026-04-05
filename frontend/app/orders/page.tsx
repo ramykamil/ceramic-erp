@@ -76,16 +76,14 @@ function OrdersListContent() {
 
   useEffect(() => {
     const filter = searchParams.get('filter');
-    if (filter === 'RETURN') {
-      setRecordTypeFilter('RETURN');
+    if (filter === 'RETURN' || filter === 'ORDER') {
+      setRecordTypeFilter(filter);
       setActiveTab('ALL');
       setDateRange(getDateRange('TODAY'));
-    } else if (filter === 'ORDER') {
-      setRecordTypeFilter('ORDER');
-      setActiveTab('ALL');
-      setDateRange(getDateRange('TODAY'));
+      // Clear the URL param so it doesn't fight with manual dropdown changes
+      router.replace('/orders');
     }
-  }, [searchParams]);
+  }, []);
 
   // Load user role from localStorage
   useEffect(() => {
@@ -195,17 +193,24 @@ function OrdersListContent() {
       const fetchOrders = recordTypeFilter === 'ALL' || recordTypeFilter === 'ORDER';
       const fetchReturns = recordTypeFilter === 'ALL' || recordTypeFilter === 'RETURN';
 
+      // Build clean params for orders (no undefined values)
+      const orderParams: any = { ...params };
+      if (orderTypeFilter !== 'ALL') orderParams.orderType = orderTypeFilter;
+
+      // Build clean params for returns (no undefined values - URLSearchParams converts undefined to string "undefined")
+      const returnParams: any = { ...params };
+      // Map order status tabs to return status equivalents
+      delete returnParams.status; // Remove the order status, set the correct return status below
+      const mappedStatus = activeTab === 'CONFIRMED' ? 'APPROVED' : 
+                           activeTab === 'DELIVERED' ? 'PROCESSED' : 
+                           activeTab === 'CANCELLED' ? 'REJECTED' : 
+                           activeTab === 'PENDING' ? 'PENDING' : null;
+      if (mappedStatus) returnParams.status = mappedStatus;
+      if (orderTypeFilter !== 'ALL') returnParams.orderType = orderTypeFilter;
+
       const [ordersRes, returnsRes] = await Promise.all([
-        fetchOrders ? api.getOrders({ ...params, orderType: orderTypeFilter !== 'ALL' ? orderTypeFilter : undefined }) : Promise.resolve({ success: true, data: [] }),
-        fetchReturns ? api.getReturns({ 
-          ...params, 
-          // Map Order statuses to Return statuses for unified tab filtering
-          status: activeTab === 'CONFIRMED' ? 'APPROVED' : 
-                  activeTab === 'DELIVERED' ? 'PROCESSED' : 
-                  activeTab === 'CANCELLED' ? 'REJECTED' : 
-                  activeTab !== 'ALL' ? activeTab : undefined,
-          orderType: orderTypeFilter !== 'ALL' ? orderTypeFilter : undefined
-        }) : Promise.resolve({ success: true, data: [] })
+        fetchOrders ? api.getOrders(orderParams) : Promise.resolve({ success: true, data: [] }),
+        fetchReturns ? api.getReturns(returnParams) : Promise.resolve({ success: true, data: [] })
       ]);
 
       let unified: UnifiedRow[] = [];
