@@ -1,0 +1,21 @@
+=== FULL INVENTORY RESET REPORT ===
+Baseline: Table Produit NOUVEAUX.xls
+Cutoff Date: 2026-03-03 00:00:00
+Run Date: 2026-03-06T02:31:56.312Z
+
+[ASCOT ROJO 20/75] ASCOT ROJO 20/75
+  Excel=691.20 + GR=0.00 - Sales=691.20 = 0.00
+  Was: 691.20, Diff: -691.20
+
+[DRAGON GREEN POLI REC 120/60] DRAGON GREEN POLI REC 120/60
+  Excel=560.00 + GR=705.60 - Sales=210.00 = 1055.60
+  Was: 915.60, Diff: +140.00
+
+[QUEBEC GRIS TERRE CUITE 45/45] QUEBEC GRIS TERRE CUITE 45/45
+  Excel=1385.10 + GR=0.00 - Sales=437.40 = 947.70
+  Was: 510.30, Diff: +437.40
+
+
+--- SUMMARY ---
+Products fixed: 3
+Products already correct: 1496

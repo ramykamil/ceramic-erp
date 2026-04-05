@@ -1,0 +1,758 @@
+[
+  {
+    "CustomerID": 35,
+    "CustomerName": "FETICH BLIDA",
+    "OldBalance": 1210804.8,
+    "NewBalance": 436944.840896,
+    "Difference": -773859.9591040001
+  },
+  {
+    "CustomerID": 17,
+    "CustomerName": "BERKANE BISKRA ",
+    "OldBalance": 0,
+    "NewBalance": 263109.091083,
+    "Difference": 263109.091083
+  },
+  {
+    "CustomerID": 103,
+    "CustomerName": "AKRAM CERAM BATNA",
+    "OldBalance": 0,
+    "NewBalance": 15.6,
+    "Difference": 15.6
+  },
+  {
+    "CustomerID": 28,
+    "CustomerName": "MOUHAMED AZABA",
+    "OldBalance": 1231800,
+    "NewBalance": 1237576.354025,
+    "Difference": 5776.354025000008
+  },
+  {
+    "CustomerID": 22,
+    "CustomerName": "HAMZA OURGLA 1",
+    "OldBalance": 0,
+    "NewBalance": 5368558.7884,
+    "Difference": 5368558.7884
+  },
+  {
+    "CustomerID": 9,
+    "CustomerName": "AZAYZIYA ABD NOOR",
+    "OldBalance": 1333268.6,
+    "NewBalance": 772470.734417,
+    "Difference": -560797.8655830001
+  },
+  {
+    "CustomerID": 12,
+    "CustomerName": "RIDA HASSAD",
+    "OldBalance": 511430.4,
+    "NewBalance": 2037147.494228,
+    "Difference": 1525717.094228
+  },
+  {
+    "CustomerID": 18,
+    "CustomerName": "ABD EL MOUN3IM AIN TWILA ",
+    "OldBalance": 605692.4,
+    "NewBalance": 216065.317479,
+    "Difference": -389627.08252100006
+  },
+  {
+    "CustomerID": 4,
+    "CustomerName": "YACINE CHAT",
+    "OldBalance": 0,
+    "NewBalance": 1407407.282688,
+    "Difference": 1407407.282688
+  },
+  {
+    "CustomerID": 19,
+    "CustomerName": "NACER CHECHER",
+    "OldBalance": 0,
+    "NewBalance": 904735.323228,
+    "Difference": 904735.323228
+  },
+  {
+    "CustomerID": 20,
+    "CustomerName": "TAHER ATER",
+    "OldBalance": 0,
+    "NewBalance": 1443154.032583,
+    "Difference": 1443154.032583
+  },
+  {
+    "CustomerID": 39,
+    "CustomerName": "TAHRI HAROUN",
+    "OldBalance": 0,
+    "NewBalance": 109200.779264,
+    "Difference": 109200.779264
+  },
+  {
+    "CustomerID": 101,
+    "CustomerName": "OUADI AKREM",
+    "OldBalance": 0,
+    "NewBalance": 28732,
+    "Difference": 28732
+  },
+  {
+    "CustomerID": 42,
+    "CustomerName": "YOUCEF DALIL",
+    "OldBalance": 1244132.7,
+    "NewBalance": 12127165.71704,
+    "Difference": 10883033.017040001
+  },
+  {
+    "CustomerID": 44,
+    "CustomerName": "YOUNES KOUASEH",
+    "OldBalance": 0,
+    "NewBalance": 3982596.826394,
+    "Difference": 3982596.826394
+  },
+  {
+    "CustomerID": 10,
+    "CustomerName": "SALIM CHERIA ",
+    "OldBalance": 594573.45,
+    "NewBalance": 2913755.342956,
+    "Difference": 2319181.892956
+  },
+  {
+    "CustomerID": 31,
+    "CustomerName": "SLIMAN KHROUB",
+    "OldBalance": 0,
+    "NewBalance": 68138.854528,
+    "Difference": 68138.854528
+  },
+  {
+    "CustomerID": 15,
+    "CustomerName": "YAZID HAFIANE",
+    "OldBalance": 335212.8,
+    "NewBalance": 1776038.38136,
+    "Difference": 1440825.58136
+  },
+  {
+    "CustomerID": 85,
+    "CustomerName": "AMINE LOUAFI",
+    "OldBalance": 307864,
+    "NewBalance": 107864.80332,
+    "Difference": -199999.19668
+  },
+  {
+    "CustomerID": 122,
+    "CustomerName": " BILEL AIN MLILA",
+    "OldBalance": 0,
+    "NewBalance": 0,
+    "Difference": 0
+  },
+  {
+    "CustomerID": 45,
+    "CustomerName": "WALID TEBASSA ",
+    "OldBalance": 0,
+    "NewBalance": 1265551.32611,
+    "Difference": 1265551.32611
+  },
+  {
+    "CustomerID": 123,
+    "CustomerName": "TIM CERAM ",
+    "OldBalance": 203212.8,
+    "NewBalance": 0,
+    "Difference": -203212.8
+  },
+  {
+    "CustomerID": 46,
+    "CustomerName": "ABAS EL OUED",
+    "OldBalance": 0,
+    "NewBalance": 1389145.633461,
+    "Difference": 1389145.633461
+  },
+  {
+    "CustomerID": 48,
+    "CustomerName": "DJALEL CHLEF",
+    "OldBalance": 2143152.2,
+    "NewBalance": 7738.711974,
+    "Difference": -2135413.488026
+  },
+  {
+    "CustomerID": 51,
+    "CustomerName": "HASSEN AIN MLILA",
+    "OldBalance": 0,
+    "NewBalance": 1009080,
+    "Difference": 1009080
+  },
+  {
+    "CustomerID": 94,
+    "CustomerName": "RABEH AIN FAKROUN",
+    "OldBalance": 0,
+    "NewBalance": 290.942031,
+    "Difference": 290.942031
+  },
+  {
+    "CustomerID": 52,
+    "CustomerName": "NSSIB CHEMISSOU",
+    "OldBalance": 0,
+    "NewBalance": 5849362.117174,
+    "Difference": 5849362.117174
+  },
+  {
+    "CustomerID": 23,
+    "CustomerName": "NABIL OULED FAYET ",
+    "OldBalance": 3435168,
+    "NewBalance": 2144970.881744,
+    "Difference": -1290197.1182559999
+  },
+  {
+    "CustomerID": 32,
+    "CustomerName": "NACIR SETIF ",
+    "OldBalance": 0,
+    "NewBalance": 1477253.8,
+    "Difference": 1477253.8
+  },
+  {
+    "CustomerID": 86,
+    "CustomerName": "MALEK LKHROUB",
+    "OldBalance": 0,
+    "NewBalance": 0.004528,
+    "Difference": 0.004528
+  },
+  {
+    "CustomerID": 55,
+    "CustomerName": "HICHEM JIJEL",
+    "OldBalance": 0,
+    "NewBalance": 3219777.132476,
+    "Difference": 3219777.132476
+  },
+  {
+    "CustomerID": 102,
+    "CustomerName": "KHOUTHIR PUMA",
+    "OldBalance": 0,
+    "NewBalance": 126000,
+    "Difference": 126000
+  },
+  {
+    "CustomerID": 14,
+    "CustomerName": "NADIR HAFIANE",
+    "OldBalance": 0,
+    "NewBalance": 701080.557389,
+    "Difference": 701080.557389
+  },
+  {
+    "CustomerID": 79,
+    "CustomerName": "AMARA KASSI",
+    "OldBalance": 0,
+    "NewBalance": 3490404.553376,
+    "Difference": 3490404.553376
+  },
+  {
+    "CustomerID": 59,
+    "CustomerName": "SOUHEIB TEBASSA",
+    "OldBalance": 0,
+    "NewBalance": 1910209.367528,
+    "Difference": 1910209.367528
+  },
+  {
+    "CustomerID": 82,
+    "CustomerName": "NADIR ARIS",
+    "OldBalance": 0,
+    "NewBalance": 0.003605,
+    "Difference": 0.003605
+  },
+  {
+    "CustomerID": 87,
+    "CustomerName": "AYMEN CERAM",
+    "OldBalance": 0,
+    "NewBalance": 1298776.8,
+    "Difference": 1298776.8
+  },
+  {
+    "CustomerID": 27,
+    "CustomerName": "KADOUR MSILA",
+    "OldBalance": 0,
+    "NewBalance": 927566.038724,
+    "Difference": 927566.038724
+  },
+  {
+    "CustomerID": 30,
+    "CustomerName": "BORDJI ZEWAY ",
+    "OldBalance": 0,
+    "NewBalance": 70.360762,
+    "Difference": 70.360762
+  },
+  {
+    "CustomerID": 60,
+    "CustomerName": "HAMZA TAMALOUS",
+    "OldBalance": 0,
+    "NewBalance": 735392.049709,
+    "Difference": 735392.049709
+  },
+  {
+    "CustomerID": 62,
+    "CustomerName": "MUSTAFA RAJAL ",
+    "OldBalance": 0,
+    "NewBalance": 37.468174,
+    "Difference": 37.468174
+  },
+  {
+    "CustomerID": 89,
+    "CustomerName": "MOUHAMED TOUNSI",
+    "OldBalance": 0,
+    "NewBalance": 464134.079079,
+    "Difference": 464134.079079
+  },
+  {
+    "CustomerID": 64,
+    "CustomerName": "LAID BISKRA",
+    "OldBalance": 0,
+    "NewBalance": 19335.071507,
+    "Difference": 19335.071507
+  },
+  {
+    "CustomerID": 65,
+    "CustomerName": "AURES CERAM-SADAM-",
+    "OldBalance": 0,
+    "NewBalance": 1720925.414602,
+    "Difference": 1720925.414602
+  },
+  {
+    "CustomerID": 21,
+    "CustomerName": "ALLA KAIS",
+    "OldBalance": 0,
+    "NewBalance": 693632.312868,
+    "Difference": 693632.312868
+  },
+  {
+    "CustomerID": 93,
+    "CustomerName": "KARIM BOUMAIZA",
+    "OldBalance": 0,
+    "NewBalance": 218155.4,
+    "Difference": 218155.4
+  },
+  {
+    "CustomerID": 67,
+    "CustomerName": "FARID TIZI OUZOU",
+    "OldBalance": 0,
+    "NewBalance": 6081.2,
+    "Difference": 6081.2
+  },
+  {
+    "CustomerID": 92,
+    "CustomerName": "BOUFOULA",
+    "OldBalance": 0,
+    "NewBalance": 1104,
+    "Difference": 1104
+  },
+  {
+    "CustomerID": 68,
+    "CustomerName": "HAMADA AGGOUN",
+    "OldBalance": 0,
+    "NewBalance": 795646.43408,
+    "Difference": 795646.43408
+  },
+  {
+    "CustomerID": 88,
+    "CustomerName": "ZINE EL ABIDINE HAMMOU",
+    "OldBalance": 0,
+    "NewBalance": 88.389632,
+    "Difference": 88.389632
+  },
+  {
+    "CustomerID": 76,
+    "CustomerName": "BOUBAKER BELHOUL ",
+    "OldBalance": 0,
+    "NewBalance": 720,
+    "Difference": 720
+  },
+  {
+    "CustomerID": 81,
+    "CustomerName": "NASROU ORAN ",
+    "OldBalance": 0,
+    "NewBalance": 19.253988,
+    "Difference": 19.253988
+  },
+  {
+    "CustomerID": 74,
+    "CustomerName": "JATIVA CERAM",
+    "OldBalance": 0,
+    "NewBalance": 4279304.11,
+    "Difference": 4279304.11
+  },
+  {
+    "CustomerID": 99,
+    "CustomerName": "TAMALOUS NV",
+    "OldBalance": 0,
+    "NewBalance": 4422.386968,
+    "Difference": 4422.386968
+  },
+  {
+    "CustomerID": 91,
+    "CustomerName": "AIDOUN KHENCHLA",
+    "OldBalance": 0,
+    "NewBalance": 612480,
+    "Difference": 612480
+  },
+  {
+    "CustomerID": 75,
+    "CustomerName": "AMER GHIYABA",
+    "OldBalance": 0,
+    "NewBalance": 155225.300568,
+    "Difference": 155225.300568
+  },
+  {
+    "CustomerID": 77,
+    "CustomerName": "RAMI BEN DAAS",
+    "OldBalance": 0,
+    "NewBalance": 33.985947,
+    "Difference": 33.985947
+  },
+  {
+    "CustomerID": 78,
+    "CustomerName": "BELHOUANE HAITHEM",
+    "OldBalance": 0,
+    "NewBalance": 0.004498,
+    "Difference": 0.004498
+  },
+  {
+    "CustomerID": 118,
+    "CustomerName": "PROMOTEUR SALIM BADIS ",
+    "OldBalance": 0,
+    "NewBalance": 0.00183,
+    "Difference": 0.00183
+  },
+  {
+    "CustomerID": 116,
+    "CustomerName": "YOUNES ALLAOUA",
+    "OldBalance": 0,
+    "NewBalance": 0,
+    "Difference": 0
+  },
+  {
+    "CustomerID": 69,
+    "CustomerName": "NADJIB ASSAM",
+    "OldBalance": 0,
+    "NewBalance": 2128201.6,
+    "Difference": 2128201.6
+  },
+  {
+    "CustomerID": 72,
+    "CustomerName": "OUMNIA CERAM",
+    "OldBalance": 0,
+    "NewBalance": 594.4,
+    "Difference": 594.4
+  },
+  {
+    "CustomerID": 90,
+    "CustomerName": "DERBAL AIN FAKROUN",
+    "OldBalance": 0,
+    "NewBalance": 478720,
+    "Difference": 478720
+  },
+  {
+    "CustomerID": 97,
+    "CustomerName": "HAMADA SOUG AHRAS ",
+    "OldBalance": 0,
+    "NewBalance": 4616,
+    "Difference": 4616
+  },
+  {
+    "CustomerID": 119,
+    "CustomerName": "ALLAOUA",
+    "OldBalance": 0,
+    "NewBalance": 0,
+    "Difference": 0
+  },
+  {
+    "CustomerID": 124,
+    "CustomerName": "DAR EL FAKHAMA",
+    "OldBalance": 115331.3,
+    "NewBalance": 0,
+    "Difference": -115331.3
+  },
+  {
+    "CustomerID": 106,
+    "CustomerName": "ABD LATIF ABITA",
+    "OldBalance": 0,
+    "NewBalance": 2080147.972736,
+    "Difference": 2080147.972736
+  },
+  {
+    "CustomerID": 121,
+    "CustomerName": "TESTF",
+    "OldBalance": 0,
+    "NewBalance": 0,
+    "Difference": 0
+  },
+  {
+    "CustomerID": 7,
+    "CustomerName": "CLIENT COMPTOIR",
+    "OldBalance": 3584830.32,
+    "NewBalance": 0,
+    "Difference": -3584830.32
+  },
+  {
+    "CustomerID": 114,
+    "CustomerName": "ALLAOUA ALLAOUA",
+    "OldBalance": 0,
+    "NewBalance": 0,
+    "Difference": 0
+  },
+  {
+    "CustomerID": 96,
+    "CustomerName": "NASSIM NASSRI",
+    "OldBalance": 0,
+    "NewBalance": 0.00032,
+    "Difference": 0.00032
+  },
+  {
+    "CustomerID": 84,
+    "CustomerName": "1SASI",
+    "OldBalance": 0,
+    "NewBalance": 0,
+    "Difference": 0
+  },
+  {
+    "CustomerID": 8,
+    "CustomerName": "YASSINE CHATt",
+    "OldBalance": 0,
+    "NewBalance": 0,
+    "Difference": 0
+  },
+  {
+    "CustomerID": 56,
+    "CustomerName": "HASSANI ABD EL ALI",
+    "OldBalance": 0,
+    "NewBalance": 0.00032,
+    "Difference": 0.00032
+  },
+  {
+    "CustomerID": 120,
+    "CustomerName": "DJAMEL EDDIN CHAT",
+    "OldBalance": 0,
+    "NewBalance": 0.0023,
+    "Difference": 0.0023
+  },
+  {
+    "CustomerID": 38,
+    "CustomerName": "NABIL LAFOULII",
+    "OldBalance": 0,
+    "NewBalance": -160.062208,
+    "Difference": -160.062208
+  },
+  {
+    "CustomerID": 108,
+    "CustomerName": "SOUFIAN LEFOUILI",
+    "OldBalance": 0,
+    "NewBalance": 8088.056842,
+    "Difference": 8088.056842
+  },
+  {
+    "CustomerID": 109,
+    "CustomerName": "RIFF BELABBAS",
+    "OldBalance": 0,
+    "NewBalance": 32712.221728,
+    "Difference": 32712.221728
+  },
+  {
+    "CustomerID": 95,
+    "CustomerName": "SALAH TAMALOUS",
+    "OldBalance": 0,
+    "NewBalance": 1386794,
+    "Difference": 1386794
+  },
+  {
+    "CustomerID": 54,
+    "CustomerName": "RAMI DLANDA",
+    "OldBalance": 0,
+    "NewBalance": 1237.2,
+    "Difference": 1237.2
+  },
+  {
+    "CustomerID": 24,
+    "CustomerName": "FERJANI ATHMEN",
+    "OldBalance": 0,
+    "NewBalance": 398.786624,
+    "Difference": 398.786624
+  },
+  {
+    "CustomerID": 16,
+    "CustomerName": "FETHI HAFIANE",
+    "OldBalance": 0,
+    "NewBalance": 3685179.674867,
+    "Difference": 3685179.674867
+  },
+  {
+    "CustomerID": 33,
+    "CustomerName": "CHE3LANE SOUG AHRAS",
+    "OldBalance": 0,
+    "NewBalance": 205827.482755,
+    "Difference": 205827.482755
+  },
+  {
+    "CustomerID": 41,
+    "CustomerName": "HOUSSAM BATNA",
+    "OldBalance": 0,
+    "NewBalance": 494875.561136,
+    "Difference": 494875.561136
+  },
+  {
+    "CustomerID": 40,
+    "CustomerName": "DJELABI AIN BEIDHA",
+    "OldBalance": 0,
+    "NewBalance": 238.999758,
+    "Difference": 238.999758
+  },
+  {
+    "CustomerID": 34,
+    "CustomerName": "CHEMISSOU CERAM",
+    "OldBalance": 0,
+    "NewBalance": 172557.879165,
+    "Difference": 172557.879165
+  },
+  {
+    "CustomerID": 37,
+    "CustomerName": "WALID THABET",
+    "OldBalance": 0,
+    "NewBalance": 9664713.8,
+    "Difference": 9664713.8
+  },
+  {
+    "CustomerID": 57,
+    "CustomerName": "AIZEM ",
+    "OldBalance": 0,
+    "NewBalance": 388476.645887,
+    "Difference": 388476.645887
+  },
+  {
+    "CustomerID": 47,
+    "CustomerName": "ADAM CHAT ",
+    "OldBalance": 0,
+    "NewBalance": 0,
+    "Difference": 0
+  },
+  {
+    "CustomerID": 61,
+    "CustomerName": "RAOUF ANABA",
+    "OldBalance": 0,
+    "NewBalance": -0.00788,
+    "Difference": -0.00788
+  },
+  {
+    "CustomerID": 13,
+    "CustomerName": "EL HADJ HAFIANE",
+    "OldBalance": 0,
+    "NewBalance": 38.383619,
+    "Difference": 38.383619
+  },
+  {
+    "CustomerID": 49,
+    "CustomerName": "YOUCEF SAAIDIA",
+    "OldBalance": 0,
+    "NewBalance": 1437180.228339,
+    "Difference": 1437180.228339
+  },
+  {
+    "CustomerID": 73,
+    "CustomerName": "BRAHIM BEN ABD ALLAH",
+    "OldBalance": 0,
+    "NewBalance": 184350.408675,
+    "Difference": 184350.408675
+  },
+  {
+    "CustomerID": 71,
+    "CustomerName": "BOUBAKER KALYPYUS",
+    "OldBalance": 0,
+    "NewBalance": 7849.603744,
+    "Difference": 7849.603744
+  },
+  {
+    "CustomerID": 70,
+    "CustomerName": "BILEL KAZA CERAM",
+    "OldBalance": 0,
+    "NewBalance": 25909.2,
+    "Difference": 25909.2
+  },
+  {
+    "CustomerID": 63,
+    "CustomerName": "ABD RAHMAN DJELFA",
+    "OldBalance": 0,
+    "NewBalance": -187.4,
+    "Difference": -187.4
+  },
+  {
+    "CustomerID": 66,
+    "CustomerName": "AMEUR GUELMA ",
+    "OldBalance": 0,
+    "NewBalance": 463258.3346,
+    "Difference": 463258.3346
+  },
+  {
+    "CustomerID": 58,
+    "CustomerName": "DAHMANE IBRAHIM GHERDAIA",
+    "OldBalance": 0,
+    "NewBalance": 646622.168636,
+    "Difference": 646622.168636
+  },
+  {
+    "CustomerID": 25,
+    "CustomerName": "QUSSAI CERAM",
+    "OldBalance": 0,
+    "NewBalance": 329520.504528,
+    "Difference": 329520.504528
+  },
+  {
+    "CustomerID": 29,
+    "CustomerName": "YACINE CHAT",
+    "OldBalance": 0,
+    "NewBalance": 1560614.8,
+    "Difference": 1560614.8
+  },
+  {
+    "CustomerID": 43,
+    "CustomerName": "IBRAHIM BOUMARDAS",
+    "OldBalance": 0,
+    "NewBalance": 7566996.609854,
+    "Difference": 7566996.609854
+  },
+  {
+    "CustomerID": 80,
+    "CustomerName": "BOUBAKER LKHROUB ",
+    "OldBalance": 0,
+    "NewBalance": 190.645939,
+    "Difference": 190.645939
+  },
+  {
+    "CustomerID": 26,
+    "CustomerName": "ADELANE KHENCHLA",
+    "OldBalance": 0,
+    "NewBalance": 966857.8,
+    "Difference": 966857.8
+  },
+  {
+    "CustomerID": 53,
+    "CustomerName": "KHELKHAL DRID",
+    "OldBalance": 0,
+    "NewBalance": 496007.373392,
+    "Difference": 496007.373392
+  },
+  {
+    "CustomerID": 104,
+    "CustomerName": "KHOUDJA AIN NAAJA",
+    "OldBalance": 0,
+    "NewBalance": 3226449.12,
+    "Difference": 3226449.12
+  },
+  {
+    "CustomerID": 50,
+    "CustomerName": "MOUNIR EL BOURDJ",
+    "OldBalance": 0,
+    "NewBalance": 10309694.208512,
+    "Difference": 10309694.208512
+  },
+  {
+    "CustomerID": 36,
+    "CustomerName": "RAMZI HASAD",
+    "OldBalance": 0,
+    "NewBalance": 1230248.596251,
+    "Difference": 1230248.596251
+  },
+  {
+    "CustomerID": 83,
+    "CustomerName": "AMAR EL ATER",
+    "OldBalance": 0,
+    "NewBalance": 2959093.17808,
+    "Difference": 2959093.17808
+  }
+]

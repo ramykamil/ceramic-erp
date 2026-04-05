@@ -1,0 +1,20 @@
+# render.yaml
+# Blueprint for Render.com deployment
+# This allows you to deploy the backend with one click
+
+services:
+  - type: web
+    name: ceramic-erp-backend
+    env: node
+    plan: free # Change to 'starter' for $7/mo to avoid sleep
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: FRONTEND_URL
+        value: "" # TODO: Fill with your Vercel URL
+      - key: DATABASE_URL
+        sync: false # To be provided securely in Render dashboard

@@ -1,0 +1,127 @@
+=== INVENTORY RESTORATION REPORT ===
+
+[BARCELONA OCRE 20/75] BARCELONA OCRE 20/75
+  Previous DB Stock: 0.00
+  True Ledger Total: 7659.60
+  Adjustment Applied: +7659.60
+
+[ACRA BEIGE REC 60/60] ACRA BEIGE REC 60/60
+  Previous DB Stock: 0.00
+  True Ledger Total: 7856.64
+  Adjustment Applied: +7856.64
+
+[SWISS BEIGE REC 60/60] SWISS BEIGE REC 60/60
+  Previous DB Stock: 0.00
+  True Ledger Total: 6739.20
+  Adjustment Applied: +6739.20
+
+[ASCOT ROJO 20/75] ASCOT ROJO 20/75
+  Previous DB Stock: 0.00
+  True Ledger Total: -1382.40
+  Adjustment Applied: -1382.40
+
+[BERLIN BEIGE 45/45] BERLIN BEIGE 45/45
+  Previous DB Stock: 0.00
+  True Ledger Total: -28.40
+  Adjustment Applied: -28.40
+
+[COSTA WHITE REC 60/60] COSTA WHITE REC 60/60
+  Previous DB Stock: 2776.32
+  True Ledger Total: 12890.88
+  Adjustment Applied: +10114.56
+
+[COTTO ROJO TERRE CUITE 45/45] COTTO ROJO TERRE CUITE 45/45
+  Previous DB Stock: 4075.11
+  True Ledger Total: 27008.73
+  Adjustment Applied: +22933.62
+
+[EUROPA MATT 45/90 DECO] EUROPA MATT 45/90 DECO
+  Previous DB Stock: 0.00
+  True Ledger Total: 476.28
+  Adjustment Applied: +476.28
+
+[ROMA BLANC 30/90] ROMA BLANC 30/90
+  Previous DB Stock: 4936.14
+  True Ledger Total: 14143.50
+  Adjustment Applied: +9207.36
+
+[VICTORIA EXTRA REC 60/60] VICTORIA EXTRA REC 60/60
+  Previous DB Stock: 5879.52
+  True Ledger Total: 9581.76
+  Adjustment Applied: +3702.24
+
+[STYLE 25/75] STYLE 25/75
+  Previous DB Stock: 4608.00
+  True Ledger Total: 24576.00
+  Adjustment Applied: +19968.00
+
+[PROSTYLE MARFIL 45/90] PROSTYLE MARFIL 45/90
+  Previous DB Stock: 3211.20
+  True Ledger Total: 3265.92
+  Adjustment Applied: +54.72
+
+[MELINA MARFIL REC 60/60] MELINA MARFIL REC 60/60
+  Previous DB Stock: 2540.16
+  True Ledger Total: -316.80
+  Adjustment Applied: -2856.96
+
+[MIRNA EXTRA REC 60/60] MIRNA EXTRA REC 60/60
+  Previous DB Stock: 0.00
+  True Ledger Total: -54.00
+  Adjustment Applied: -54.00
+
+[MAUREEN BLACK POLI REC 120/60] MAUREEN BLACK POLI REC 120/60
+  Previous DB Stock: 0.00
+  True Ledger Total: -139.48
+  Adjustment Applied: -139.48
+
+[DRAGON GREEN POLI REC 120/60] DRAGON GREEN POLI REC 120/60
+  Previous DB Stock: 700.00
+  True Ledger Total: 770.00
+  Adjustment Applied: +70.00
+
+[ACRA GRIS 45/90] ACRA GRIS 45/90
+  Previous DB Stock: 4490.64
+  True Ledger Total: 6021.96
+  Adjustment Applied: +1531.32
+
+[EUROPA REC 60/60] EUROPA REC 60/60
+  Previous DB Stock: 6531.84
+  True Ledger Total: 22659.84
+  Adjustment Applied: +16128.00
+
+[KING IVORY RELIEFE 45/90] KING IVORY RELIEFE LUXE 45/90
+  Previous DB Stock: 15.69
+  True Ledger Total: 615.45
+  Adjustment Applied: +599.76
+
+[TECHNO CERAM_NEW_E985] RIVEL NATUREL 20/75
+  Previous DB Stock: 1766.40
+  True Ledger Total: 15257.60
+  Adjustment Applied: +13491.20
+
+[TECHNO CERAM_NEW_IBL7] BIJOUX PERLA POLI REC 60/60
+  Previous DB Stock: 0.00
+  True Ledger Total: -2.88
+  Adjustment Applied: -2.88
+
+[GALA CERAM_NEW_LNGG] CAIRO 33/33
+  Previous DB Stock: 0.00
+  True Ledger Total: -2.18
+  Adjustment Applied: -2.18
+
+[TIMGAD CERAM_NEW_KB8W] DRAGON POLI REC 120/60
+  Previous DB Stock: 635.60
+  True Ledger Total: 910.00
+  Adjustment Applied: +274.40
+
+[TIMGAD CERAM_NEW_6ZSR] ROLEX GRIS POLI REC 60/60
+  Previous DB Stock: 0.00
+  True Ledger Total: -24.48
+  Adjustment Applied: -24.48
+
+[NEW TECH_NEW_9ORY] VENAS 45/45
+  Previous DB Stock: 0.00
+  True Ledger Total: -5.68
+  Adjustment Applied: -5.68
+

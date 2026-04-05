@@ -1,0 +1,21 @@
+{
+  "companyName": "Retail ERP Standard",
+  "shortName": "RetailERP",
+  "logo": "logo.svg",
+  "primaryColor": "#2563eb",
+  "secondaryColor": "#1e40af",
+  "accentColor": "#3b82f6",
+  "loadingMessage": "Démarrage de l'application...",
+  "windowTitle": "Retail ERP - Système de Gestion",
+  "language": "fr",
+  "currency": "DZD",
+  "currencySymbol": "DA",
+  "features": {
+    "retail": true,
+    "wholesale": false,
+    "consignment": false,
+    "factories": false,
+    "employees": true,
+    "logistics": true
+  }
+}

@@ -1,0 +1,271 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* ============================================
+   ALLAOUA CERAM - Brand Color System
+   Primary: Red (#DC2626)
+   Secondary: Black (#1F2937)
+   Background: White/Light Gray (#F8FAFC)
+   ============================================ */
+
+:root {
+  /* Brand Colors */
+  --brand-primary: #DC2626;
+  --brand-primary-dark: #B91C1C;
+  --brand-primary-light: #FEE2E2;
+  --brand-secondary: #1F2937;
+  --brand-secondary-light: #374151;
+  --brand-accent: #991B1B;
+
+  /* UI Colors */
+  --bg-primary: #F8FAFC;
+  --bg-secondary: #FFFFFF;
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --border-color: #E5E7EB;
+}
+
+/* Global Body Background with Logo Pattern */
+body {
+  background-color: #F8FAFC;
+  position: relative;
+}
+
+/* Main centered large watermark */
+body::before {
+  content: '';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70vmin;
+  height: 70vmin;
+  max-width: 600px;
+  max-height: 600px;
+  background-image: url('/logo-allaoua-ceram.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Subtle diagonal pattern overlay */
+body::after {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url('/logo-allaoua-ceram.png');
+  background-size: 200px;
+  background-repeat: repeat;
+  transform: rotate(-15deg);
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: -2;
+}
+
+/* Custom Brand Utilities */
+.bg-brand-primary {
+  background-color: var(--brand-primary);
+}
+
+.bg-brand-primary-light {
+  background-color: var(--brand-primary-light);
+}
+
+.text-brand-primary {
+  color: var(--brand-primary);
+}
+
+.border-brand-primary {
+  border-color: var(--brand-primary);
+}
+
+/* Brand Button Styles */
+.btn-brand-primary {
+  background-color: var(--brand-primary);
+  color: white;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.btn-brand-primary:hover {
+  background-color: var(--brand-primary-dark);
+  box-shadow: 0 4px 6px rgba(220, 38, 38, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-brand-secondary {
+  background-color: var(--brand-secondary);
+  color: white;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-brand-secondary:hover {
+  background-color: var(--brand-secondary-light);
+}
+
+/* Brand Card Style */
+.brand-card {
+  background: white;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.brand-card:hover {
+  border-color: var(--brand-primary);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+}
+
+/* Brand Header Gradient */
+.brand-header {
+  background: linear-gradient(135deg, var(--brand-secondary) 0%, #374151 100%);
+  color: white;
+}
+
+.brand-header-red {
+  background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
+  color: white;
+}
+
+/* Glassy Container - Updated for brand */
+.glassy-container {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 0.75rem !important;
+  border: 1px solid rgba(220, 38, 38, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1) !important;
+}
+
+/* Brand Section Title */
+.section-title {
+  font-weight: 700;
+  color: var(--brand-secondary);
+  padding-left: 0.75rem;
+  border-left: 4px solid var(--brand-primary);
+}
+
+/* Brand Table Header */
+.brand-table-header {
+  background: linear-gradient(135deg, var(--brand-secondary) 0%, #374151 100%);
+  color: white;
+}
+
+/* Brand Badge */
+.brand-badge {
+  background-color: var(--brand-primary);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.brand-badge-outline {
+  background-color: transparent;
+  color: var(--brand-primary);
+  border: 1px solid var(--brand-primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Mobile-specific utilities */
+@media (max-width: 768px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+
+  .show-on-mobile {
+    display: block !important;
+  }
+
+  .mobile-fullscreen-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    border-radius: 0 !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+  }
+
+  .mobile-bottom-padding {
+    padding-bottom: 10rem !important;
+  }
+
+  .mobile-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Desktop-only elements */
+@media (min-width: 769px) {
+  .show-on-mobile {
+    display: none !important;
+  }
+}
+
+/* Print-specific styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+}
+
+/* Input Focus States - Brand Color */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15) !important;
+}
+
+/* Link Hover - Brand Color */
+a:hover {
+  color: var(--brand-primary);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--brand-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-primary-dark);
+}
