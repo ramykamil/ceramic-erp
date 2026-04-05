@@ -7,7 +7,7 @@ const accountingService = require('../services/accounting.service');
  */
 const getReturns = async (req, res) => {
     try {
-        const { customerId, status, startDate, endDate, createdBy, search, orderType, limit = 100, offset = 0 } = req.query;
+        const { customerId, status, startDate, endDate, salesPersonId, search, orderType, limit = 100, offset = 0 } = req.query;
 
         let query = `
       SELECT 
@@ -35,6 +35,18 @@ const getReturns = async (req, res) => {
         const params = [];
         let paramCount = 0;
 
+        // Role-based filtering for returns
+        const userRole = req.user?.role;
+        if (userRole === 'SALES_RETAIL' || userRole === 'SALES') {
+            paramCount++;
+            query += ` AND r.CreatedBy = $${paramCount}`;
+            params.push(req.user.userId);
+        } else if (salesPersonId) {
+            paramCount++;
+            query += ` AND r.CreatedBy = $${paramCount}`;
+            params.push(salesPersonId);
+        }
+
         if (customerId) {
             paramCount++;
             query += ` AND r.CustomerID = $${paramCount}`;
@@ -57,12 +69,6 @@ const getReturns = async (req, res) => {
             paramCount++;
             query += ` AND r.ReturnDate <= $${paramCount}`;
             params.push(endDate);
-        }
-
-        if (createdBy) {
-            paramCount++;
-            query += ` AND r.CreatedBy = $${paramCount}`;
-            params.push(createdBy);
         }
 
         if (search) {
