@@ -238,7 +238,9 @@ export default function VersementsSection() {
                                     <th className="px-4 py-3">Nom</th>
                                     <th className="px-4 py-3">Motif</th>
                                     <th className="px-4 py-3">Date</th>
+                                    <th className="px-4 py-3 text-right">Ancien Solde</th>
                                     <th className="px-4 py-3 text-right">Montant</th>
+                                    <th className="px-4 py-3 text-right">Nouveau Solde</th>
                                     <th className="px-4 py-3">Type</th>
                                     <th className="px-4 py-3">Mode de Règlement</th>
                                     <th className="px-4 py-3">Ajouté Par</th>
@@ -253,7 +255,13 @@ export default function VersementsSection() {
                                         <td className="px-4 py-3 font-medium">{v.customername || v.tiers}</td>
                                         <td className="px-4 py-3 text-slate-600">{v.motif || '-'}</td>
                                         <td className="px-4 py-3 text-slate-500">{formatDate(v.createdat)}</td>
+                                        <td className="px-4 py-3 text-right font-mono text-slate-600">
+                                            {formatCurrencyDZD((Number(v.customerbalance) || 0) + (Number(v.amount) || 0))}
+                                        </td>
                                         <td className="px-4 py-3 text-right font-bold text-green-600">{formatCurrencyDZD(v.amount)}</td>
+                                        <td className="px-4 py-3 text-right font-mono font-semibold text-blue-700">
+                                            {formatCurrencyDZD(Number(v.customerbalance) || 0)}
+                                        </td>
                                         <td className="px-4 py-3">
                                             <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Standard</span>
                                         </td>
