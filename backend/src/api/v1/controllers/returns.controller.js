@@ -61,13 +61,13 @@ const getReturns = async (req, res) => {
 
         if (startDate) {
             paramCount++;
-            query += ` AND r.ReturnDate >= $${paramCount}`;
+            query += ` AND COALESCE(r.ReturnDate, r.CreatedAt::date) >= $${paramCount}`;
             params.push(startDate);
         }
 
         if (endDate) {
             paramCount++;
-            query += ` AND r.ReturnDate <= $${paramCount}`;
+            query += ` AND COALESCE(r.ReturnDate, r.CreatedAt::date) <= $${paramCount}`;
             params.push(endDate);
         }
 
@@ -212,8 +212,8 @@ const createReturn = async (req, res) => {
 
         // Insert return header (with either customer ID or manual client info)
         const returnResult = await client.query(`
-      INSERT INTO Returns (ReturnNumber, OrderID, CustomerID, ClientName, ClientPhone, ClientAddress, Reason, TotalAmount, Notes, Status, CreatedBy)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'PENDING', $10)
+      INSERT INTO Returns (ReturnNumber, OrderID, CustomerID, ClientName, ClientPhone, ClientAddress, Reason, TotalAmount, Notes, Status, CreatedBy, ReturnDate)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'PENDING', $10, CURRENT_DATE)
       RETURNING ReturnID, ReturnNumber
     `, [returnNumber, orderId || null, customerId || null, clientName || null, clientPhone || null, clientAddress || null, reason, totalAmount, notes, req.user?.userId]);
 
