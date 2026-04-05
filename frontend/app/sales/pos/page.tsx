@@ -742,8 +742,8 @@ function POSContent() {
                           <div className="font-bold">{item.productName}</div>
                           {(item.piecesPerCarton > 0 || item.cartonsPerPalette > 0) && (
                             <div className="text-[10px] text-slate-400 font-medium tracking-tight">
-                              {item.piecesPerCarton > 0 && `${item.piecesPerCarton.toFixed(2)} / Colis`}
-                              {item.cartonsPerPalette > 0 && ` • ${item.cartonsPerPalette.toFixed(0)} Colis / Pal`}
+                              {Number(item.piecesPerCarton) > 0 && `${Number(item.piecesPerCarton).toFixed(2)} / Colis`}
+                              {Number(item.cartonsPerPalette) > 0 && ` • ${Number(item.cartonsPerPalette).toFixed(0)} Colis / Pal`}
                             </div>
                           )}
                         </td>
