@@ -16,6 +16,7 @@ interface Product {
     productcode: string;
     productname: string;
     baseprice: number;
+    primaryunitid?: number;
     prixvente?: number;
     derivedpiecespercolis?: number;
     derivedcolisperpalette?: number;
@@ -25,6 +26,7 @@ interface ReturnFormItem {
     productId: number;
     productCode: string;
     productName: string;
+    unitId?: number;
     palettes: number;
     cartons: number;
     quantity: number;  // pieces
@@ -114,6 +116,7 @@ export default function NewReturnPage() {
             productId: product.productid,
             productCode: product.productcode,
             productName: product.productname,
+            unitId: product.primaryunitid,
             palettes: 0,
             cartons: 0,
             quantity: 1,
@@ -183,6 +186,7 @@ export default function NewReturnPage() {
                 items: formItems.map(item => ({
                     productId: item.productId,
                     quantity: item.quantity,
+                    unitId: item.unitId,
                     unitPrice: item.unitPrice,
                 })),
             };
