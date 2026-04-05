@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation';
 export default function MobileNav() {
   const pathname = usePathname();
 
-  // Ne pas afficher sur la page de connexion
-  if (pathname === '/login') return null;
+  // Ne pas afficher sur la page de connexion, POS, ou Retours
+  if (pathname === '/login' || pathname.startsWith('/sales/pos') || pathname.startsWith('/sales/returns')) return null;
 
   const isActive = (path: string) => pathname === path ? 'text-red-600 font-semibold' : 'text-gray-500';
 

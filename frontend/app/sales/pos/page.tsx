@@ -284,6 +284,7 @@ function POSContent() {
   const [retailClientName, setRetailClientName] = useState('');
   const [employerName, setEmployerName] = useState('');
   const [customerSearchQuery, setCustomerSearchQuery] = useState('');
+  const [activeMobileTab, setActiveMobileTab] = useState<'CLIENT' | 'CART' | 'PAYMENT'>('CART');
 
   const handlePrint = useReactToPrint({
     content: () => printRef.current,
@@ -586,7 +587,7 @@ function POSContent() {
       <div className="flex-none p-3 border-b bg-white flex justify-between items-center shadow-sm z-10">
         <div className="flex items-center gap-4">
           <h1 className="text-xl font-bold text-slate-800">Point de Vente</h1>
-          <div className="hidden md:flex items-center gap-2 text-xs text-slate-500">
+          <div className="hidden lg:flex items-center gap-2 text-xs text-slate-500">
             <span className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100 uppercase tracking-wider font-bold">F1</span> Valider
             <span className="bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-200 uppercase tracking-wider font-bold ml-2">ESC</span> Retour
           </div>
@@ -594,9 +595,9 @@ function POSContent() {
         <Link href="/" className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition-colors">← Tableau de Bord</Link>
       </div>
 
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden relative">
         {/* Left Panel: Customer & Logistics */}
-        <div className="w-72 flex-none bg-white border-r overflow-y-auto p-4 space-y-4 custom-scrollbar">
+        <div className={`w-full lg:w-72 flex-none bg-white border-r overflow-y-auto p-4 space-y-4 custom-scrollbar ${activeMobileTab === 'CLIENT' ? 'block' : 'hidden lg:block'}`}>
           <section>
             <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-primary"></span> Client & Header
@@ -681,29 +682,29 @@ function POSContent() {
           </section>
         </div>
 
-        {/* Middle Panel: Shopping Cart (The Zero-Scroll Container) */}
-        <div className="flex-1 flex flex-col min-w-0 bg-slate-50 relative">
+        {/* Middle Panel: Shopping Cart */}
+        <div className={`flex-1 flex flex-col min-w-0 bg-slate-50 relative ${activeMobileTab === 'CART' ? 'flex' : 'hidden lg:flex'}`}>
           {/* Internal Search / Browser */}
-          <div className="flex-none p-4 pb-0 flex gap-2">
+          <div className="flex-none p-4 pb-2 flex flex-col lg:flex-row gap-2">
             <div className="flex-1 relative">
               <input 
                 type="text" 
                 value={searchQuery} 
                 onChange={e => setSearchQuery(e.target.value)} 
-                placeholder="🔍 Scanner un code ou rechercher un produit... (Entrée pour ajouter)" 
-                className="w-full p-3 pl-10 border-2 border-slate-200 rounded-xl bg-white shadow-sm focus:border-brand-primary/40 outline-none transition-all font-medium"
+                placeholder="🔍 Scanner ou rechercher..." 
+                className="w-full p-4 lg:p-3 pl-12 lg:pl-10 border-2 border-slate-200 rounded-2xl lg:rounded-xl bg-white shadow-sm focus:border-brand-primary/40 outline-none transition-all font-medium text-lg lg:text-base"
               />
-              <div className="absolute left-3 top-3.5 text-slate-400">🔍</div>
+              <div className="absolute left-4 lg:left-3 top-4.5 lg:top-3.5 text-slate-400">🔍</div>
               {searchQuery.length > 2 && filteredProducts.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white border shadow-2xl rounded-xl z-50 overflow-hidden">
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white border shadow-2xl rounded-2xl z-[60] overflow-hidden">
                   {filteredProducts.map(p => (
-                    <div key={p.productid} onClick={() => addToCart(p)} className="p-3 hover:bg-red-50 cursor-pointer flex items-center justify-between border-b last:border-0 border-slate-100">
-                      <div>
-                        <div className="font-bold text-slate-800">{p.productname}</div>
-                        <div className="text-[10px] text-slate-500 uppercase">{p.famille || p.brandname} • {p.productcode}</div>
+                    <div key={p.productid} onClick={() => addToCart(p)} className="p-4 lg:p-3 hover:bg-red-50 cursor-pointer flex items-center justify-between border-b last:border-0 border-slate-100">
+                      <div className="flex-1 min-w-0">
+                        <div className="font-bold text-slate-800 truncate">{p.productname}</div>
+                        <div className="text-[10px] text-slate-500 uppercase truncate">{p.famille || p.brandname} • {p.productcode}</div>
                       </div>
-                      <div className="text-right">
-                        <div className="text-xs font-bold text-brand-primary">{formatCurrency(p.prixvente || p.baseprice)}</div>
+                      <div className="text-right flex-none ml-2">
+                        <div className="text-sm font-bold text-brand-primary">{formatCurrency(p.prixvente || p.baseprice)}</div>
                         <div className="text-[10px] text-slate-400">Stock: {p.totalqty}</div>
                       </div>
                     </div>
@@ -711,90 +712,164 @@ function POSContent() {
                 </div>
               )}
             </div>
-            <button onClick={() => setIsProductBrowserOpen(true)} className="px-5 bg-white border border-slate-200 text-slate-600 rounded-xl font-bold text-xs shadow-sm hover:bg-slate-50 flex items-center gap-2">📋 Catalogue</button>
-            <button onClick={() => setIsManualProductOpen(true)} className="px-5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold text-xs shadow-sm flex items-center gap-2">✏️ Manuel</button>
+            <div className="flex gap-2">
+              <button onClick={() => setIsProductBrowserOpen(true)} className="flex-1 lg:flex-none px-5 py-3 lg:py-0 bg-white border border-slate-200 text-slate-600 rounded-xl font-bold text-xs shadow-sm hover:bg-slate-50 flex items-center justify-center gap-2">📋 Catalogue</button>
+              <button onClick={() => setIsManualProductOpen(true)} className="flex-1 lg:flex-none px-5 py-3 lg:py-0 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold text-xs shadow-sm flex items-center justify-center gap-2">✏️ Manuel</button>
+            </div>
           </div>
 
           {/* Table Container - This is the dynamic scaling part */}
           <div className="flex-1 p-4 overflow-hidden flex flex-col">
             <div className={`flex-1 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col ${cart.length > 10 ? 'pos-zero-scroll-container' : ''}`}>
-              <div className="overflow-auto flex-1 custom-scrollbar">
-                <table className="w-full border-separate border-spacing-0 min-w-full">
-                  <thead className="sticky top-0 bg-slate-800 text-white z-20">
-                    <tr className="text-[11px] font-bold uppercase tracking-wider">
-                      <ResizableHeader columnKey="designation" width={cartWidths.designation} onResize={handleCartResize} className="px-3 py-3 text-left">Désignation</ResizableHeader>
-                      <ResizableHeader columnKey="marque" width={cartWidths.marque} onResize={handleCartResize} className="px-2 py-3 text-left">Marque</ResizableHeader>
-                      <ResizableHeader columnKey="stock" width={cartWidths.stock} onResize={handleCartResize} className="px-2 py-3 text-right">Stock</ResizableHeader>
-                      <ResizableHeader columnKey="palettes" width={cartWidths.palettes} onResize={handleCartResize} className="px-2 py-3 text-center bg-indigo-900/30">Pals</ResizableHeader>
-                      <ResizableHeader columnKey="cartons" width={cartWidths.cartons} onResize={handleCartResize} className="px-2 py-3 text-center bg-indigo-900/30">Ctns</ResizableHeader>
-                      <ResizableHeader columnKey="quantity" width={cartWidths.quantity} onResize={handleCartResize} className="px-3 py-3 text-center bg-red-900/30">Quantité</ResizableHeader>
-                      <ResizableHeader columnKey="unite" width={cartWidths.unite} onResize={handleCartResize} className="px-2 py-3 text-center">Unité</ResizableHeader>
-                      <ResizableHeader columnKey="prixunit" width={cartWidths.prixunit} onResize={handleCartResize} className="px-2 py-3 text-right">Prix Unit</ResizableHeader>
-                      <ResizableHeader columnKey="src" width={cartWidths.src} onResize={handleCartResize} className="px-2 py-3 text-center">Source</ResizableHeader>
-                      <ResizableHeader columnKey="totalligne" width={cartWidths.totalligne} onResize={handleCartResize} className="px-3 py-3 text-right">Total</ResizableHeader>
-                      <th className="w-12 px-2 py-3"></th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {cart.map((item) => (
-                      <tr key={item.rowId} className={`hover:bg-slate-50 group transition-colors pos-row-compact`}>
-                        <td className="px-3 py-2 truncate text-slate-700">
-                          <div className="font-bold">{item.productName}</div>
-                          {(item.piecesPerCarton > 0 || item.cartonsPerPalette > 0) && (
-                            <div className="text-[10px] text-slate-400 font-medium tracking-tight">
-                              {Number(item.piecesPerCarton) > 0 && `${Number(item.piecesPerCarton).toFixed(2)} / Colis`}
-                              {Number(item.cartonsPerPalette) > 0 && ` • ${Number(item.cartonsPerPalette).toFixed(0)} Colis / Pal`}
-                            </div>
-                          )}
-                        </td>
-                        <td className="px-2 py-2 truncate text-slate-500 text-xs uppercase">{item.brandName}</td>
-                        <td className="px-2 py-2 text-right font-mono text-[11px] text-slate-400">{parseFloat(item.stockQty.toString()).toLocaleString()}</td>
-                        <td className="px-2 py-2 text-center">
-                          <SmartNumberInput value={item.palettes} onChange={val => updateItem(item.rowId, 'palettes', val)} className="w-full text-center p-1.5 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-sm" />
-                        </td>
-                        <td className="px-2 py-2 text-center">
-                          <SmartNumberInput value={item.cartons} onChange={val => updateItem(item.rowId, 'cartons', val)} className="w-full text-center p-1.5 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-sm" />
-                        </td>
-                        <td className="px-3 py-2 text-center">
-                          <SmartNumberInput value={item.quantity} onChange={val => updateItem(item.rowId, 'quantity', val)} className="w-full text-center p-1.5 border-2 border-red-200 rounded font-bold text-red-700 bg-red-50 text-base" />
-                        </td>
-                        <td className="px-2 py-2 text-center">
-                          <select value={item.unitId} onChange={e => updateItem(item.rowId, 'unitId', Number(e.target.value))} className="w-full p-1 border border-slate-200 rounded text-xs bg-white">
-                            {units.filter(u => u.unitcode !== 'BOX').map(u => <option key={u.unitid} value={u.unitid}>{u.unitcode}</option>)}
-                          </select>
-                        </td>
-                        <td className="px-2 py-2 text-right">
-                          <SmartNumberInput value={item.unitPrice} onChange={val => updateItem(item.rowId, 'unitPrice', val)} className={`w-full text-right p-1.5 border rounded font-mono text-sm ${item.purchasePrice && item.unitPrice < item.purchasePrice ? 'border-red-500 text-red-600 bg-red-50' : 'border-slate-200'}`} />
-                        </td>
-                        <td className="px-2 py-2 text-center">
-                          <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${getPriceSourceBadge(item.priceSource)}`}>{item.priceSource}</span>
-                        </td>
-                        <td className="px-3 py-2 text-right font-bold text-slate-800">{formatCurrency(item.lineTotal)}</td>
-                        <td className="px-2 py-2 text-center">
-                          <button onClick={() => removeItem(item.rowId)} className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity text-xl">&times;</button>
-                        </td>
+              <div className="flex-1 flex flex-col min-h-0">
+                {/* Desktop Table View */}
+                <div className="hidden lg:block overflow-auto flex-1 custom-scrollbar">
+                  <table className="w-full border-separate border-spacing-0 min-w-full">
+                    <thead className="sticky top-0 bg-slate-800 text-white z-20">
+                      <tr className="text-[11px] font-bold uppercase tracking-wider">
+                        <ResizableHeader columnKey="designation" width={cartWidths.designation} onResize={handleCartResize} className="px-3 py-3 text-left">Désignation</ResizableHeader>
+                        <ResizableHeader columnKey="marque" width={cartWidths.marque} onResize={handleCartResize} className="px-2 py-3 text-left">Marque</ResizableHeader>
+                        <ResizableHeader columnKey="stock" width={cartWidths.stock} onResize={handleCartResize} className="px-2 py-3 text-right">Stock</ResizableHeader>
+                        <ResizableHeader columnKey="palettes" width={cartWidths.palettes} onResize={handleCartResize} className="px-2 py-3 text-center bg-indigo-900/30">Pals</ResizableHeader>
+                        <ResizableHeader columnKey="cartons" width={cartWidths.cartons} onResize={handleCartResize} className="px-2 py-3 text-center bg-indigo-900/30">Ctns</ResizableHeader>
+                        <ResizableHeader columnKey="quantity" width={cartWidths.quantity} onResize={handleCartResize} className="px-3 py-3 text-center bg-red-900/30">Quantité</ResizableHeader>
+                        <ResizableHeader columnKey="unite" width={cartWidths.unite} onResize={handleCartResize} className="px-2 py-3 text-center">Unité</ResizableHeader>
+                        <ResizableHeader columnKey="prixunit" width={cartWidths.prixunit} onResize={handleCartResize} className="px-2 py-3 text-right">Prix Unit</ResizableHeader>
+                        <ResizableHeader columnKey="src" width={cartWidths.src} onResize={handleCartResize} className="px-2 py-3 text-center">Source</ResizableHeader>
+                        <ResizableHeader columnKey="totalligne" width={cartWidths.totalligne} onResize={handleCartResize} className="px-3 py-3 text-right">Total</ResizableHeader>
+                        <th className="w-12 px-2 py-3"></th>
                       </tr>
-                    ))}
-                    {cart.length === 0 && (
-                      <tr className="h-48 border-0">
-                        <td colSpan={11} className="text-center p-10 bg-slate-50/50">
-                          <div className="text-slate-400 flex flex-col items-center">
-                            <div className="text-4xl mb-2">🛒</div>
-                            <div className="font-medium">Le panier est encore vide</div>
-                            <div className="text-xs">Recherchez un produit pour commencer la vente</div>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {cart.map((item) => (
+                        <tr key={item.rowId} className={`hover:bg-slate-50 group transition-colors pos-row-compact`}>
+                          <td className="px-3 py-2 truncate text-slate-700">
+                            <div className="font-bold">{item.productName}</div>
+                            {(item.piecesPerCarton > 0 || item.cartonsPerPalette > 0) && (
+                              <div className="text-[10px] text-slate-400 font-medium tracking-tight">
+                                {Number(item.piecesPerCarton) > 0 && `${Number(item.piecesPerCarton).toFixed(2)} / Colis`}
+                                {Number(item.cartonsPerPalette) > 0 && ` • ${Number(item.cartonsPerPalette).toFixed(0)} Colis / Pal`}
+                              </div>
+                            )}
+                          </td>
+                          <td className="px-2 py-2 truncate text-slate-500 text-xs uppercase">{item.brandName}</td>
+                          <td className="px-2 py-2 text-right font-mono text-[11px] text-slate-400">{parseFloat(item.stockQty.toString()).toLocaleString()}</td>
+                          <td className="px-2 py-2 text-center">
+                            <SmartNumberInput value={item.palettes} onChange={val => updateItem(item.rowId, 'palettes', val)} className="w-full text-center p-1.5 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-sm" />
+                          </td>
+                          <td className="px-2 py-2 text-center">
+                            <SmartNumberInput value={item.cartons} onChange={val => updateItem(item.rowId, 'cartons', val)} className="w-full text-center p-1.5 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-sm" />
+                          </td>
+                          <td className="px-3 py-2 text-center">
+                            <SmartNumberInput value={item.quantity} onChange={val => updateItem(item.rowId, 'quantity', val)} className="w-full text-center p-1.5 border-2 border-red-200 rounded font-bold text-red-700 bg-red-50 text-base" />
+                          </td>
+                          <td className="px-2 py-2 text-center">
+                            <select value={item.unitId} onChange={e => updateItem(item.rowId, 'unitId', Number(e.target.value))} className="w-full p-1 border border-slate-200 rounded text-xs bg-white">
+                              {units.filter(u => u.unitcode !== 'BOX').map(u => <option key={u.unitid} value={u.unitid}>{u.unitcode}</option>)}
+                            </select>
+                          </td>
+                          <td className="px-2 py-2 text-right">
+                            <SmartNumberInput value={item.unitPrice} onChange={val => updateItem(item.rowId, 'unitPrice', val)} className={`w-full text-right p-1.5 border rounded font-mono text-sm ${item.purchasePrice && item.unitPrice < item.purchasePrice ? 'border-red-500 text-red-600 bg-red-50' : 'border-slate-200'}`} />
+                          </td>
+                          <td className="px-2 py-2 text-center">
+                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${getPriceSourceBadge(item.priceSource)}`}>{item.priceSource}</span>
+                          </td>
+                          <td className="px-3 py-2 text-right font-bold text-slate-800">{formatCurrency(item.lineTotal)}</td>
+                          <td className="px-2 py-2 text-center">
+                            <button onClick={() => removeItem(item.rowId)} className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity text-xl">&times;</button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Mobile Cards View */}
+                <div className="lg:hidden flex-1 overflow-auto p-2 space-y-3 custom-scrollbar bg-slate-50">
+                  {cart.map((item) => (
+                    <div key={item.rowId} className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 space-y-4">
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-black text-slate-800 leading-tight truncate">{item.productName}</h4>
+                          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{item.brandName || 'SANS MARQUE'}</p>
+                        </div>
+                        <button onClick={() => removeItem(item.rowId)} className="p-2 text-red-400 hover:bg-red-50 rounded-full transition-colors">&times;</button>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-1">
+                          <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Quantité</label>
+                          <div className="flex items-center gap-2">
+                             <SmartNumberInput 
+                               value={item.quantity} 
+                               onChange={val => updateItem(item.rowId, 'quantity', val)} 
+                               className="w-full text-center p-3 border-2 border-red-200 rounded-xl font-black text-red-700 bg-red-50 text-xl" 
+                             />
+                             <select value={item.unitId} onChange={e => updateItem(item.rowId, 'unitId', Number(e.target.value))} className="p-3 border border-slate-200 rounded-xl text-xs bg-slate-50 font-bold">
+                                {units.filter(u => u.unitcode !== 'BOX').map(u => <option key={u.unitid} value={u.unitid}>{u.unitcode}</option>)}
+                             </select>
                           </div>
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                        </div>
+                        <div className="space-y-1">
+                           <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Prix Unitaire</label>
+                           <SmartNumberInput 
+                             value={item.unitPrice} 
+                             onChange={val => updateItem(item.rowId, 'unitPrice', val)} 
+                             className="w-full text-right p-3 border border-slate-200 rounded-xl font-bold bg-slate-50 text-lg" 
+                           />
+                        </div>
+                      </div>
+
+                      {(item.piecesPerCarton > 0 || item.cartonsPerPalette > 0) && (
+                        <div className="bg-indigo-50/50 rounded-xl p-3 grid grid-cols-2 gap-4">
+                          <div className="space-y-1">
+                            <label className="text-[9px] font-bold text-indigo-400 uppercase tracking-wider">Cartons (Ctns)</label>
+                            <SmartNumberInput value={item.cartons} onChange={val => updateItem(item.rowId, 'cartons', val)} className="w-full text-center p-2 border border-indigo-100 rounded-lg font-bold text-indigo-700 bg-white" />
+                          </div>
+                          <div className="space-y-1">
+                            <label className="text-[9px] font-bold text-indigo-400 uppercase tracking-wider">Palettes (Pals)</label>
+                            <SmartNumberInput value={item.palettes} onChange={val => updateItem(item.rowId, 'palettes', val)} className="w-full text-center p-2 border border-indigo-100 rounded-lg font-bold text-indigo-700 bg-white" />
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="pt-3 border-t border-slate-100 flex justify-between items-center">
+                        <span className={`text-[10px] px-2 py-1 rounded-full font-bold ${getPriceSourceBadge(item.priceSource)}`}>{item.priceSource}</span>
+                        <div className="text-right">
+                          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Total Ligne</p>
+                          <p className="text-xl font-black text-slate-900 leading-none">{formatCurrency(item.lineTotal)}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {cart.length === 0 && (
+                    <div className="py-20 text-center text-slate-300">
+                      <div className="text-6xl mb-4">🛒</div>
+                      <p className="font-bold uppercase tracking-widest">Le panier est vide</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Mobile Mini-Summary Bar (sticky inside Middle Panel) */}
+                <div className="lg:hidden flex-none bg-slate-800 text-white p-4 flex justify-between items-center">
+                   <div>
+                     <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Total Net</p>
+                     <p className="text-2xl font-black">{formatCurrency(totalNet)}</p>
+                   </div>
+                   <button 
+                     onClick={() => setActiveMobileTab('PAYMENT')}
+                     className="bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-xl font-black text-sm shadow-lg shadow-green-900/40"
+                   >
+                     CAISSE →
+                   </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Right Panel: Summary & Buttons */}
-        <div className="w-80 flex-none bg-slate-800 text-white p-6 flex flex-col shadow-2xl z-20">
+        <div className={`w-full lg:w-80 flex-none bg-slate-800 text-white p-6 flex flex-col shadow-2xl z-20 ${activeMobileTab === 'PAYMENT' ? 'flex' : 'hidden lg:flex'}`}>
           <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">Récapitulatif & Paiement</h2>
           
           <div className="flex-1 space-y-4">
@@ -955,6 +1030,33 @@ function POSContent() {
         <StandardDocument ref={bcRef} type="LOADING_SLIP" data={getPrintData()} />
         <StandardDocument ref={bssRef} type="NO_BALANCE_SLIP" data={getPrintData()} />
         <StandardDocument ref={ticketRef} type="TICKET" data={getPrintData()} />
+      </div>
+      {/* Mobile Navigation Bar */}
+      <div className="lg:hidden flex-none bg-white border-t p-2 flex justify-around items-center h-20 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-50">
+        <button 
+          onClick={() => setActiveMobileTab('CLIENT')}
+          className={`flex flex-col items-center gap-1 transition-all ${activeMobileTab === 'CLIENT' ? 'text-brand-primary' : 'text-slate-400'}`}
+        >
+          <span className="text-2xl">{selectedCustomerId ? '✅' : '👤'}</span>
+          <span className="text-[10px] font-black uppercase tracking-widest">Client</span>
+        </button>
+        <button 
+          onClick={() => setActiveMobileTab('CART')}
+          className={`relative flex flex-col items-center gap-1 transition-all ${activeMobileTab === 'CART' ? 'text-brand-primary' : 'text-slate-400'}`}
+        >
+          <span className="text-2xl">🛒</span>
+          {cart.length > 0 && (
+            <span className="absolute -top-1 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">{cart.length}</span>
+          )}
+          <span className="text-[10px] font-black uppercase tracking-widest">Panier</span>
+        </button>
+        <button 
+          onClick={() => setActiveMobileTab('PAYMENT')}
+          className={`flex flex-col items-center gap-1 transition-all ${activeMobileTab === 'PAYMENT' ? 'text-brand-primary' : 'text-slate-400'}`}
+        >
+          <span className="text-2xl">💰</span>
+          <span className="text-[10px] font-black uppercase tracking-widest">Paiement</span>
+        </button>
       </div>
     </div>
   );
