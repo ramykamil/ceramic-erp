@@ -116,6 +116,7 @@ export default function PurchaseOrdersListPage() {
   const [apiError, setApiError] = useState<string | null>(null);
   const router = useRouter();
   const [statusFilter, setStatusFilter] = useState('');
+  const [typeFilter, setTypeFilter] = useState<'' | 'order' | 'return'>('');
 
   const [searchQuery, setSearchQuery] = useState('');
   const [dateRange, setDateRange] = useState<DateRange>(getDateRange('TODAY'));
@@ -257,6 +258,11 @@ export default function PurchaseOrdersListPage() {
   useEffect(() => {
     let result = buildUnifiedRows();
 
+    // Type Filter (Achats / Retours)
+    if (typeFilter) {
+      result = result.filter(row => row._type === typeFilter);
+    }
+
     // Date Filter
     if (dateRange.startDate || dateRange.endDate) {
       result = result.filter(row => {
@@ -285,7 +291,7 @@ export default function PurchaseOrdersListPage() {
     result.sort((a, b) => new Date(b.orderdate).getTime() - new Date(a.orderdate).getTime());
 
     setFilteredUnifiedRows(result);
-  }, [purchaseOrders, purchaseReturns, dateRange, searchQuery]);
+  }, [purchaseOrders, purchaseReturns, dateRange, searchQuery, typeFilter]);
 
   const fetchPurchaseOrders = async () => {
     setIsLoading(true);
@@ -497,6 +503,21 @@ export default function PurchaseOrdersListPage() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
+                </div>
+
+                {/* Type Select (Achats / Retours) */}
+                <div className="flex items-center gap-2">
+                  <label htmlFor="typeFilter" className="text-sm font-medium text-slate-700 whitespace-nowrap">Type:</label>
+                  <select
+                    id="typeFilter"
+                    value={typeFilter}
+                    onChange={(e) => setTypeFilter(e.target.value as '' | 'order' | 'return')}
+                    className="w-40 p-2 border border-slate-300 rounded-lg text-sm text-slate-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Tous</option>
+                    <option value="order">📦 Achats</option>
+                    <option value="return">↩️ Retours</option>
+                  </select>
                 </div>
 
                 {/* Status Select */}
