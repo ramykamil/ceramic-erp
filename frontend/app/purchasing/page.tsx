@@ -9,7 +9,7 @@ import { DateQuickFilter, DateRange, DateFilterPreset, getDateRange } from '@/co
 import { UserFilter } from '@/components/UserFilter';
 import { useSortableTable } from '@/hooks/useSortableTable';
 import { SortableTableHeader } from '@/components/SortableTableHeader';
-import { ResizableHeader, useColumnWidths } from '@/components/ResizableSortableHeader';
+import { ResizableHeader, ResizableSortableHeader, useColumnWidths } from '@/components/ResizableSortableHeader';
 import { exportToExcel, formatDateExport } from '@/lib/exportToExcel';
 import SupplierVersementsSection from '@/components/versements/SupplierVersementsSection';
 import { usePersistentState } from '@/hooks/usePersistentState';
@@ -569,15 +569,82 @@ export default function PurchaseOrdersListPage() {
                   <table className="w-full text-sm text-left" style={{ tableLayout: 'fixed' }}>
                     <thead className="text-xs text-slate-500 uppercase bg-slate-50 font-semibold border-b border-slate-100">
                       <tr>
-                        <ResizableHeader columnKey="ponumber" width={widths.ponumber} onResize={handleResize} className="px-4 py-3 text-left">Numéro</ResizableHeader>
-                        <ResizableHeader columnKey="factoryname" width={widths.factoryname} onResize={handleResize} className="px-4 py-3 text-left">Marque</ResizableHeader>
-                        <ResizableHeader columnKey="warehousename" width={widths.warehousename} onResize={handleResize} className="px-4 py-3 text-left">Entrepôt</ResizableHeader>
-                        <ResizableHeader columnKey="orderdate" width={widths.orderdate} onResize={handleResize} className="px-4 py-3 text-left">Date</ResizableHeader>
-                        <ResizableHeader columnKey="totalamount" width={widths.totalamount} onResize={handleResize} className="px-4 py-3 text-right">Mt. Total</ResizableHeader>
-                        <ResizableHeader columnKey="amountpaid" width={widths.amountpaid} onResize={handleResize} className="px-4 py-3 text-right">Versement</ResizableHeader>
-                        <ResizableHeader columnKey="createdbyname" width={widths.createdbyname} onResize={handleResize} className="px-4 py-3 text-left">Créé par</ResizableHeader>
-                        <ResizableHeader columnKey="status" width={widths.status} onResize={handleResize} className="px-4 py-3 text-center">Statut</ResizableHeader>
-                        <th scope="col" className="px-4 py-3 text-center" style={{ width: widths.actions }}>Actions</th>
+                        <ResizableSortableHeader
+                          label="Numéro"
+                          sortKey="ponumber"
+                          width={widths.ponumber}
+                          currentDirection={getDir('ponumber')}
+                          onSort={onSort}
+                          onResize={handleResize}
+                          className="px-4 py-3"
+                        />
+                        <ResizableSortableHeader
+                          label="Marque"
+                          sortKey="factoryname"
+                          width={widths.factoryname}
+                          currentDirection={getDir('factoryname')}
+                          onSort={onSort}
+                          onResize={handleResize}
+                          className="px-4 py-3"
+                        />
+                        <ResizableSortableHeader
+                          label="Entrepôt"
+                          sortKey="warehousename"
+                          width={widths.warehousename}
+                          currentDirection={getDir('warehousename')}
+                          onSort={onSort}
+                          onResize={handleResize}
+                          className="px-4 py-3"
+                        />
+                        <ResizableSortableHeader
+                          label="Date"
+                          sortKey="orderdate"
+                          width={widths.orderdate}
+                          currentDirection={getDir('orderdate')}
+                          onSort={onSort}
+                          onResize={handleResize}
+                          className="px-4 py-3"
+                        />
+                        <ResizableSortableHeader
+                          label="Mt. Total"
+                          sortKey="totalamount"
+                          width={widths.totalamount}
+                          currentDirection={getDir('totalamount')}
+                          onSort={onSort}
+                          onResize={handleResize}
+                          align="right"
+                          className="px-4 py-3"
+                        />
+                        <ResizableSortableHeader
+                          label="Versement"
+                          sortKey="amountpaid"
+                          width={widths.amountpaid}
+                          currentDirection={getDir('amountpaid')}
+                          onSort={onSort}
+                          onResize={handleResize}
+                          align="right"
+                          className="px-4 py-3"
+                        />
+                        <ResizableSortableHeader
+                          label="Créé par"
+                          sortKey="createdbyname"
+                          width={widths.createdbyname}
+                          currentDirection={getDir('createdbyname')}
+                          onSort={onSort}
+                          onResize={handleResize}
+                          className="px-4 py-3"
+                        />
+                        <ResizableSortableHeader
+                          label="Statut"
+                          sortKey="status"
+                          width={widths.status}
+                          currentDirection={getDir('status')}
+                          onSort={onSort}
+                          onResize={handleResize}
+                          align="center"
+                          className="px-4 py-3"
+                        />
+                        <th scope="col" className="px-4 py-3 text-center font-bold text-[10px] uppercase tracking-wider text-slate-500 bg-slate-50 border-b border-slate-100" style={{ width: widths.actions }}>Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
