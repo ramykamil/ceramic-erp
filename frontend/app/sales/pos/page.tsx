@@ -744,7 +744,7 @@ function POSContent() {
                       {cart.map((item) => {
                         const isTransport = item.productName.toUpperCase().includes('TRANSPORT');
                         return (
-                        <tr key={item.rowId} className={`group transition-colors pos-row-compact ${isTransport ? 'bg-slate-200/90 hover:bg-slate-300' : 'hover:bg-slate-50'}`}>
+                        <tr key={item.rowId} className={`group transition-colors pos-row-compact ${isTransport ? 'bg-slate-300 hover:bg-slate-400 shadow-[inset_0_2px_8px_rgba(0,0,0,0.1)] border-y border-slate-400/50' : 'hover:bg-slate-50'}`}>
                           <td className="px-2 py-1.5 truncate text-slate-700">
                             <div className="font-bold text-xs">{item.productName}</div>
                             {(item.piecesPerCarton > 0 || item.cartonsPerPalette > 0) && (
@@ -821,7 +821,7 @@ function POSContent() {
                   {cart.map((item) => {
                     const isTransport = item.productName.toUpperCase().includes('TRANSPORT');
                     return (
-                    <div key={item.rowId} className={`rounded-2xl shadow-sm border p-4 space-y-4 ${isTransport ? 'bg-slate-200/90 border-slate-400' : 'bg-white border-slate-200'}`}>
+                    <div key={item.rowId} className={`rounded-2xl border p-4 space-y-4 ${isTransport ? 'bg-slate-300 border-2 border-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.1)]' : 'bg-white border-slate-200 shadow-sm'}`}>
                       <div className="flex justify-between items-start">
                         <div className="flex-1 min-w-0">
                           <h4 className="font-black text-slate-800 leading-tight truncate">{item.productName}</h4>
