@@ -307,8 +307,16 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
 
                 {/* Items List */}
                 <div style={{ marginBottom: '8px' }}>
-                    {data.items.map((item, index) => (
-                        <div key={index} style={{ borderBottom: '1px dotted #ccc', paddingBottom: '4px', marginBottom: '4px' }}>
+                    {data.items.map((item, index) => {
+                        const isTransport = item.productName.toUpperCase().includes('TRANSPORT');
+                        return (
+                        <div key={index} style={{ 
+                            borderBottom: '1px dotted #ccc', 
+                            padding: isTransport ? '4px 2px' : '0 0 4px 0', 
+                            marginBottom: '4px',
+                            backgroundColor: isTransport ? '#cbd5e1' : 'transparent',
+                            WebkitPrintColorAdjust: 'exact',
+                        }}>
                             <div style={{ fontSize: '8px', fontWeight: 'bold' }}>{item.productName}</div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '8px' }}>
                                 <span>
@@ -320,7 +328,8 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
                                 @ {formatCurrency(item.unitPrice)} / {item.unitCode}
                             </div>
                         </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 {/* Totals Summary */}
@@ -727,8 +736,13 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
                     </tr>
                 </thead>
                 <tbody>
-                    {data.items.map((item, index) => (
-                        <tr key={index} style={{ backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9fafb' }}>
+                    {data.items.map((item, index) => {
+                        const isTransport = item.productName.toUpperCase().includes('TRANSPORT');
+                        return (
+                        <tr key={index} style={{ 
+                            backgroundColor: isTransport ? '#cbd5e1' : (index % 2 === 0 ? '#ffffff' : '#f9fafb'),
+                            WebkitPrintColorAdjust: 'exact',
+                        }}>
                             <td style={{ ...cellStyle, textAlign: 'center', fontWeight: 'bold', color: '#6b7280' }}>{index + 1}</td>
                             <td style={{ ...cellStyle, fontSize: '8px', color: '#4b5563' }}>{item.productCode || '-'}</td>
                             <td style={cellStyle}>
@@ -747,9 +761,10 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
                             <td style={{ ...cellStyle, textAlign: 'center', fontWeight: 'bold', fontSize: '11px', backgroundColor: '#dbeafe' }}>{Number(item.quantity || 0).toFixed(2)}</td>
                             <td style={{ ...cellStyle, textAlign: 'center', fontSize: '8px' }}>{item.unitCode}</td>
                             {showPrices && <td style={{ ...cellStyle, textAlign: 'right', fontFamily: 'monospace' }}>{formatCurrency(item.unitPrice)}</td>}
-                            {showPrices && <td style={{ ...cellStyle, textAlign: 'right', fontWeight: 'bold', fontFamily: 'monospace', backgroundColor: '#f0fdf4' }}>{formatCurrency(item.lineTotal)}</td>}
+                            {showPrices && <td style={{ ...cellStyle, textAlign: 'right', fontWeight: 'bold', fontFamily: 'monospace', backgroundColor: isTransport ? 'transparent' : '#f0fdf4' }}>{formatCurrency(item.lineTotal)}</td>}
                         </tr>
-                    ))}
+                        );
+                    })}
                     {/* Empty rows to fill space */}
                     {data.items.length < 10 && Array.from({ length: Math.min(10 - data.items.length, 5) }).map((_, i) => (
                         <tr key={`empty-${i}`}>
