@@ -221,17 +221,17 @@ function POSContent() {
 
   const [manualProductId, setManualProductId] = useState<number | null>(null);
 
-  const { widths: cartWidths, handleResize: handleCartResize } = useColumnWidths('pos-cart-table', {
-    designation: 240,
-    marque: 100,
-    stock: 80,
-    palettes: 80,
-    cartons: 80,
-    quantity: 110,
-    unite: 70,
-    prixunit: 110,
-    src: 80,
-    totalligne: 120,
+  const { widths: cartWidths, handleResize: handleCartResize } = useColumnWidths('pos-cart-v2', {
+    designation: 160,
+    marque: 80,
+    stock: 55,
+    palettes: 60,
+    cartons: 60,
+    quantity: 70,
+    unite: 55,
+    prixunit: 80,
+    src: 55,
+    totalligne: 90,
   });
 
   const [selectedCustomerId, setSelectedCustomerId] = useState<number | ''>('');
@@ -597,7 +597,7 @@ function POSContent() {
 
       <div className="flex-1 flex overflow-hidden relative">
         {/* Left Panel: Customer & Logistics */}
-        <div className={`w-full lg:w-72 flex-none bg-white border-r overflow-y-auto p-4 space-y-4 custom-scrollbar ${activeMobileTab === 'CLIENT' ? 'block' : 'hidden lg:block'}`}>
+        <div className={`w-full lg:w-60 flex-none bg-white border-r overflow-y-auto p-3 space-y-3 custom-scrollbar ${activeMobileTab === 'CLIENT' ? 'block' : 'hidden lg:block'}`}>
           <section>
             <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-primary"></span> Client & Header
@@ -724,7 +724,7 @@ function POSContent() {
               <div className="flex-1 flex flex-col min-h-0">
                 {/* Desktop Table View */}
                 <div className="hidden lg:block overflow-auto flex-1 custom-scrollbar">
-                  <table className="border-separate border-spacing-0" style={{ minWidth: '950px', width: '100%' }}>
+                  <table className="border-separate border-spacing-0" style={{ minWidth: '680px', width: '100%' }}> 
                     <thead className="sticky top-0 bg-slate-800 text-white z-20">
                       <tr className="text-[10px] font-bold uppercase tracking-wider">
                         <ResizableHeader columnKey="designation" width={cartWidths.designation} onResize={handleCartResize} className="px-2 py-2 text-left">Désignation</ResizableHeader>
@@ -869,7 +869,7 @@ function POSContent() {
         </div>
 
         {/* Right Panel: Summary & Buttons */}
-        <div className={`w-full lg:w-80 flex-none bg-slate-800 text-white p-4 lg:p-5 flex flex-col shadow-2xl z-20 overflow-y-auto ${activeMobileTab === 'PAYMENT' ? 'flex' : 'hidden lg:flex'}`}>
+        <div className={`w-full lg:w-72 flex-none bg-slate-800 text-white p-4 flex flex-col shadow-2xl z-20 overflow-y-auto ${activeMobileTab === 'PAYMENT' ? 'flex' : 'hidden lg:flex'}`}>
           <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Récapitulatif & Paiement</h2>
           
           <div className="flex-1 space-y-3 min-h-0">
