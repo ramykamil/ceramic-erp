@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { formatDate } from '@/lib/utils';
 import api from '@/lib/api';
 import { DateQuickFilter, DateRange, DateFilterPreset } from '@/components/DateQuickFilter';
 import VersementModal from '@/components/versements/VersementModal';
@@ -27,12 +28,9 @@ interface Versement {
 const formatCurrencyDZD = (amount: number) =>
     new Intl.NumberFormat('fr-DZ', { style: 'currency', currency: 'DZD' }).format(amount || 0);
 
-const formatDate = (dateString: string) =>
-    new Date(dateString).toLocaleDateString('fr-DZ');
-
 const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
-    return `${date.toLocaleDateString('fr-DZ')} ${date.toLocaleTimeString('fr-DZ', { hour: '2-digit', minute: '2-digit' })}`;
+    return `${formatDate(dateString)} ${date.toLocaleTimeString('fr-DZ', { hour: '2-digit', minute: '2-digit' })}`;
 };
 
 export default function VersementsSection() {

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useMemo } from 'react';
+import { formatDate, cn } from '@/lib/utils';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
@@ -450,7 +451,7 @@ export default function ReceivePurchaseOrderPage() {
             <div className="flex items-center gap-4">
               <span className="text-xs text-slate-500 font-medium">Date Commande:</span>
               <span className="font-bold text-slate-800">
-                {new Date(po.orderdate).toLocaleDateString('fr-DZ')}
+                {formatDate(po.orderdate)}
               </span>
             </div>
             <div className="flex items-center gap-4">

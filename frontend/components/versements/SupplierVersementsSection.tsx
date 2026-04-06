@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { formatDate } from '@/lib/utils';
 import api from '@/lib/api';
 import { DateQuickFilter, DateRange, DateFilterPreset } from '@/components/DateQuickFilter';
 import SupplierVersementModal from '@/components/versements/SupplierVersementModal';
@@ -24,9 +25,6 @@ interface SupplierVersement {
 
 const formatCurrencyDZD = (amount: number) =>
     new Intl.NumberFormat('fr-DZ', { style: 'currency', currency: 'DZD' }).format(amount || 0);
-
-const formatDate = (dateString: string) =>
-    new Date(dateString).toLocaleDateString('fr-DZ');
 
 export default function SupplierVersementsSection() {
     const [versements, setVersements] = useState<SupplierVersement[]>([]);

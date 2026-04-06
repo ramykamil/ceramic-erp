@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { formatDate, cn } from '@/lib/utils';
 import api from '@/lib/api';
-import { useSortableTable, SortDirection } from '@/hooks/useSortableTable'; // Can remove if unused, but let's keep import for now or just remove it. Remove it.
+import { useSortableTable } from '@/hooks/useSortableTable';
 import Link from 'next/link';
-// import { useSortableTable, SortDirection } from '@/hooks/useSortableTable'; // Removed
 import { TableVirtuoso } from 'react-virtuoso';
 import { ResizableHeader, useColumnWidths } from '@/components/ResizableSortableHeader';
 import { exportToExcel, formatCurrencyExport, formatQuantityExport } from '@/lib/exportToExcel';
@@ -1381,7 +1381,7 @@ export default function ProductsPage() {
                                 {sortedVentes.map((o: any, idx: number) => (
                                   <tr key={`${o.orderid}-${idx}`} className="hover:bg-slate-50">
                                     <td className="p-3 text-center text-blue-600 text-xs font-mono font-semibold">{o.ordernumber || '-'}</td>
-                                    <td className="p-3 text-center text-slate-600 text-xs font-mono">{o.orderdate ? new Date(o.orderdate).toLocaleDateString('fr-DZ') : '-'}</td>
+                                    <td className="p-3 text-center text-slate-600 text-xs font-mono">{formatDate(o.orderdate)}</td>
                                     <td className="p-3 font-medium text-slate-800">{o.customername} <span className="text-xs text-slate-400 ml-1">{o.customercode}</span></td>
                                     <td className="p-3 text-center"><span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700">{o.createdby}</span></td>
                                     <td className="p-3 text-right font-bold text-indigo-600 font-mono bg-indigo-50/50">{formatQty(o.pallets)}</td>
@@ -1458,7 +1458,7 @@ export default function ProductsPage() {
                                 {sortedAchats.map((o: any, idx: number) => (
                                   <tr key={`${o.orderid}-${idx}`} className="hover:bg-orange-50/30">
                                     <td className="p-3 text-center text-orange-600 text-xs font-mono font-semibold">{o.ponumber || '-'}</td>
-                                    <td className="p-3 text-center text-slate-600 text-xs font-mono">{o.orderdate ? new Date(o.orderdate).toLocaleDateString('fr-DZ') : '-'}</td>
+                                    <td className="p-3 text-center text-slate-600 text-xs font-mono">{formatDate(o.orderdate)}</td>
                                     <td className="p-3 font-medium text-slate-800">{o.suppliername}{o.suppliercode && <span className="text-xs text-slate-400 ml-1">{o.suppliercode}</span>}</td>
                                     <td className="p-3 text-center"><span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700">{o.createdby}</span></td>
                                     <td className="p-3 text-right font-bold text-indigo-600 font-mono bg-indigo-50/50">{formatQty(o.pallets || 0)}</td>
@@ -1522,7 +1522,7 @@ export default function ProductsPage() {
                                   return (
                                     <tr key={adj.transactionid} className="hover:bg-amber-50/20">
                                       <td className="p-3 text-center text-slate-600 font-mono">
-                                        {new Date(adj.createdat).toLocaleString('fr-DZ')}
+                                        {formatDate(adj.createdat, true)}
                                       </td>
                                       <td className="p-3 font-medium text-slate-800">{adj.createdbyuser || '-'}</td>
                                       <td className={`p-3 text-right font-bold font-mono ${qty > 0 ? 'text-emerald-600 bg-emerald-50/30' : 'text-red-600 bg-red-50/30'}`}>
@@ -1610,7 +1610,7 @@ export default function ProductsPage() {
                                   {sortedRetoursAchat.map((r: any, idx: number) => (
                                     <tr key={`pr-${r.returnid}-${idx}`} className="hover:bg-orange-50/30">
                                       <td className="p-3 text-center text-orange-600 text-xs font-mono font-semibold">{r.returnnumber || '-'}</td>
-                                      <td className="p-3 text-center text-slate-600 text-xs font-mono">{r.returndate ? new Date(r.returndate).toLocaleDateString('fr-DZ') : '-'}</td>
+                                      <td className="p-3 text-center text-slate-600 text-xs font-mono">{formatDate(r.returndate)}</td>
                                       <td className="p-3 font-medium text-slate-800">{r.suppliername}</td>
                                       <td className="p-3 text-center"><span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700">{r.createdby}</span></td>
                                       <td className="p-3 text-right font-bold text-orange-600 font-mono">{formatQty(r.qty)}</td>
@@ -1654,7 +1654,7 @@ export default function ProductsPage() {
                                   {sortedRetoursVente.map((r: any, idx: number) => (
                                     <tr key={`sr-${r.returnid}-${idx}`} className="hover:bg-rose-50/30">
                                       <td className="p-3 text-center text-rose-600 text-xs font-mono font-semibold">{r.returnnumber || '-'}</td>
-                                      <td className="p-3 text-center text-slate-600 text-xs font-mono">{r.returndate ? new Date(r.returndate).toLocaleDateString('fr-DZ') : '-'}</td>
+                                      <td className="p-3 text-center text-slate-600 text-xs font-mono">{formatDate(r.returndate)}</td>
                                       <td className="p-3 font-medium text-slate-800">{r.customername}</td>
                                       <td className="p-3 text-center"><span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700">{r.createdby}</span></td>
                                       <td className="p-3 text-right font-bold text-rose-600 font-mono">{formatQty(r.qty)}</td>

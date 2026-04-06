@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { formatDate, cn } from '@/lib/utils';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { DateQuickFilter, DateRange, getDateRange } from '@/components/DateQuickFilter';
@@ -23,11 +24,6 @@ interface PurchaseReturn {
 
 const formatCurrency = (amount: number) =>
     new Intl.NumberFormat('fr-DZ', { style: 'currency', currency: 'DZD' }).format(amount);
-
-const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('fr-DZ');
-};
 
 const getStatusBadge = (status: string) => {
     const badges: Record<string, string> = {

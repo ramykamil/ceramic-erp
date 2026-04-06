@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from '@/lib/utils';
 
 export interface OrderItem {
     orderitemid: number;
@@ -58,16 +59,6 @@ export const ReceiptTemplate = React.forwardRef<HTMLDivElement, ReceiptTemplateP
 
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat('fr-DZ', { style: 'currency', currency: 'DZD' }).format(amount);
-    };
-
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('fr-DZ', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-        });
     };
 
     // Calculate totals

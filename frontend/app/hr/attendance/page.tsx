@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import api from '@/lib/api';
 import Link from 'next/link';
+import { formatDate } from '@/lib/utils';
 
 interface AttendanceRecord {
     attendanceid: number;
@@ -125,18 +126,6 @@ export default function AttendancePage() {
                 return `${parts[0]}:${parts[1]}`;
             }
             return timeStr;
-        } catch {
-            return '-';
-        }
-    };
-
-    // Format date
-    const formatDate = (dateStr: string | null) => {
-        if (!dateStr) return '-';
-        try {
-            const date = new Date(dateStr);
-            if (isNaN(date.getTime())) return '-';
-            return date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
         } catch {
             return '-';
         }

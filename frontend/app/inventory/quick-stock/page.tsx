@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useReactToPrint } from 'react-to-print';
 import { StandardDocument, DocumentData } from '@/components/print/StandardDocument';
+import { formatDate } from '@/lib/utils';
 
 interface QuickStockItem {
     itemid: number;
@@ -440,7 +441,7 @@ export default function QuickStockPage() {
                                                 <td className="px-4 py-3">
                                                     <div className="font-medium text-slate-800">{item.itemname}</div>
                                                     <div className="text-xs text-slate-400">
-                                                        ID: QS-{item.itemid} • {new Date(item.createdat).toLocaleDateString('fr-DZ')}
+                                                        ID: QS-{item.itemid} • {formatDate(item.createdat)}
                                                     </div>
                                                 </td>
                                                 <td className="px-4 py-3 text-center font-mono">{Number(item.quantity).toFixed(2)} m²</td>

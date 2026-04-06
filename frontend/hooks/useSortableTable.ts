@@ -67,30 +67,51 @@ export function useSortableTable<T extends Record<string, any>>(
             if (aEmpty) return 1;  // Empty values always go to the end
             if (bEmpty) return -1;
 
-            // Try to parse as numbers first (handles numeric strings like "123.45")
-            const aNum = typeof aVal === 'number' ? aVal : parseFloat(String(aVal));
-            const bNum = typeof bVal === 'number' ? bVal : parseFloat(String(bVal));
+            const aStr = String(aVal);
+            const bStr = String(bVal);
 
-            if (!isNaN(aNum) && !isNaN(bNum)) {
-                // Both are valid numbers
+            // 1. Try Date comparison first (prevents dates being parsed as partial numbers)
+            // Support ISO: YYYY-MM-DD and EU: DD/MM/YYYY
+            const isoRegex = /^\d{4}-\d{2}-\d{2}/;
+            const euRegex = /^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/;
+
+            let dateA: number | null = null;
+            let dateB: number | null = null;
+
+            if (isoRegex.test(aStr) && isoRegex.test(bStr)) {
+                dateA = new Date(aStr).getTime();
+                dateB = new Date(bStr).getTime();
+            } else {
+                const matchA = aStr.match(euRegex);
+                const matchB = bStr.match(euRegex);
+                if (matchA && matchB) {
+                    dateA = new Date(`${matchA[3]}-${matchA[2]}-${matchA[1]}`).getTime();
+                    dateB = new Date(`${matchB[3]}-${matchB[2]}-${matchB[1]}`).getTime();
+                }
+            }
+
+            if (dateA !== null && dateB !== null && !isNaN(dateA) && !isNaN(dateB)) {
+                const diff = dateA - dateB;
+                return sortConfig.direction === 'asc' ? diff : -diff;
+            }
+
+            // 2. Try Numeric comparison (only for pure numbers or numeric strings)
+            // We use a stricter check to avoid years in dates being parsed as numbers
+            const isNumeric = (s: string) => /^-?\d*\.?\d+$/.test(s.trim());
+            
+            if (typeof aVal === 'number' && typeof bVal === 'number') {
+                const diff = (aVal as number) - (bVal as number);
+                return sortConfig.direction === 'asc' ? diff : -diff;
+            }
+
+            if (isNumeric(aStr) && isNumeric(bStr)) {
+                const aNum = parseFloat(aStr);
+                const bNum = parseFloat(bStr);
                 const diff = aNum - bNum;
                 return sortConfig.direction === 'asc' ? diff : -diff;
             }
 
-            // Try date comparison for ISO date strings (YYYY-MM-DD...)
-            const aStr = String(aVal);
-            const bStr = String(bVal);
-
-            if (aStr.match(/^\d{4}-\d{2}-\d{2}/) && bStr.match(/^\d{4}-\d{2}-\d{2}/)) {
-                const dateA = new Date(aStr).getTime();
-                const dateB = new Date(bStr).getTime();
-                if (!isNaN(dateA) && !isNaN(dateB)) {
-                    const diff = dateA - dateB;
-                    return sortConfig.direction === 'asc' ? diff : -diff;
-                }
-            }
-
-            // Fallback: String comparison (case-insensitive, locale-aware)
+            // 3. Fallback: String comparison (case-insensitive, locale-aware)
             const strA = aStr.toLowerCase().trim();
             const strB = bStr.toLowerCase().trim();
 

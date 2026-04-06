@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { formatDate } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
 
@@ -292,7 +293,7 @@ export default function DashboardHomePage() {
             <div className="flex items-center gap-3">
               <div className="hidden md:block text-right mr-4">
                 <p className="text-xs text-gray-400">Date du jour</p>
-                <p className="text-sm font-semibold text-gray-700">{new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                <p className="text-sm font-semibold text-gray-700">{formatDate(new Date())}</p>
               </div>
               <button
                 onClick={handleLogout}

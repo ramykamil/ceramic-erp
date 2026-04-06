@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from '@/lib/utils';
 
 // Types
 export type DocumentType = 'DELIVERY_NOTE' | 'LOADING_SLIP' | 'PURCHASE_ORDER' | 'NO_BALANCE_SLIP' | 'RETURN_SLIP' | 'FACTURE' | 'TICKET' | 'BON_VERSEMENT';
@@ -293,7 +294,7 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
                 <div style={{ textAlign: 'center', marginBottom: '8px' }}>
                     <div style={{ fontWeight: 'bold', fontSize: '12px' }}>TICKET DE CAISSE</div>
                     <div style={{ fontSize: '9px' }}>N°: <strong>{data.number}</strong></div>
-                    <div style={{ fontSize: '8px' }}>Date: {new Date(data.date).toLocaleDateString('fr-DZ')}</div>
+                    <div style={{ fontSize: '8px' }}>Date: {formatDate(data.date)}</div>
                     {data.createdBy && <div style={{ fontSize: '9px', fontWeight: 'bold' }}>Établie par: {data.createdBy}</div>}
                 </div>
 
@@ -465,7 +466,7 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
                             N°: <strong style={{ color: '#16a34a', fontSize: '15px' }}>{data.number}</strong>
                         </p>
                         <p style={{ margin: '4px 0', fontSize: '11px', color: '#4b5563' }}>
-                            Le: <strong>{versementDate.toLocaleDateString('fr-DZ')}</strong>
+                            Le: <strong>{formatDate(data.date)}</strong>
                             <span> à <strong>{data.time || versementDate.toLocaleTimeString('fr-DZ', { hour: '2-digit', minute: '2-digit' })}</strong></span>
                         </p>
                     </div>
@@ -659,7 +660,7 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
                         N°: <strong style={{ color: '#b91c1c', fontSize: '14px' }}>{data.number}</strong>
                     </p>
                     <p style={{ margin: '4px 0', fontSize: '10px', color: '#4b5563' }}>
-                        Le: <strong>{new Date(data.date).toLocaleDateString('fr-DZ')}</strong>
+                        Le: <strong>{formatDate(data.date)}</strong>
                         {data.time && <span> à <strong>{data.time}</strong></span>}
                     </p>
                     {data.createdBy && (

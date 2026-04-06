@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { formatDate, cn } from '@/lib/utils';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -122,7 +123,7 @@ export default function PurchaseReturnDetailsPage() {
                                 </div>
                                 <div className="text-right">
                                     <div className="font-bold text-lg">{returnnumber}</div>
-                                    <div className="text-slate-500 text-sm">{new Date(returndate).toLocaleDateString('fr-FR')}</div>
+                                    <div className="text-slate-500 text-sm">{formatDate(returndate)}</div>
                                 </div>
                             </div>
                         </div>
@@ -135,7 +136,7 @@ export default function PurchaseReturnDetailsPage() {
                                     <p className="text-slate-500">{returnnumber}</p>
                                 </div>
                                 <div className="text-right text-sm text-slate-500">
-                                    <p>Date: <span className="font-medium text-slate-900">{new Date(returndate).toLocaleDateString('fr-FR')}</span></p>
+                                    <p>Date: <span className="font-medium text-slate-900">{formatDate(returndate)}</span></p>
                                     <p>Créé par: <span className="font-medium text-slate-900">{createdbyname || 'Système'}</span></p>
                                 </div>
                             </div>
@@ -219,7 +220,7 @@ export default function PurchaseReturnDetailsPage() {
 
                         {/* Footer (Print Only) */}
                         <div className="hidden print:block fixed bottom-4 left-0 right-0 text-center text-xs text-slate-400">
-                            <p>Document généré le {new Date().toLocaleString('fr-FR')} - Ceramic ERP Platform</p>
+                            <p>Document généré le {formatDate(new Date(), true)} - Ceramic ERP Platform</p>
                         </div>
                     </div>
                 </div>

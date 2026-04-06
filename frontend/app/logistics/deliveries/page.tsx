@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { formatDate } from '@/lib/utils';
 
 // --- Interfaces ---
 interface Delivery {
@@ -21,15 +22,6 @@ interface Delivery {
 }
 
 // --- Helpers ---
-const formatDate = (dateString: string) => {
-    if (!dateString) return '—';
-    try {
-        return new Date(dateString).toLocaleDateString('fr-DZ', {
-            year: 'numeric', month: '2-digit', day: '2-digit'
-        });
-    } catch { return dateString; }
-};
-
 const getStatusBadge = (status: string) => {
     const classes = {
         SCHEDULED: 'bg-blue-50 text-blue-700 border-blue-200',

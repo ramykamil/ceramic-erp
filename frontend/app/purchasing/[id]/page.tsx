@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useMemo } from 'react';
+import { formatDate, cn } from '@/lib/utils';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
@@ -42,21 +43,6 @@ const formatCurrencyDZD = (amount: number | null | undefined): string => {
   const numericAmount = Number(amount);
   if (isNaN(numericAmount)) return new Intl.NumberFormat('fr-DZ', { style: 'currency', currency: 'DZD' }).format(0);
   return new Intl.NumberFormat('fr-DZ', { style: 'currency', currency: 'DZD' }).format(numericAmount);
-};
-
-const formatDate = (dateString: string | null | undefined): string => {
-  if (!dateString) return '—';
-  try {
-    const match = dateString.match(/^(\d{4})-\d{2}-\d{2}/);
-    if (match && dateString.length <= 10) {
-      const parts = dateString.split('-');
-      return `${parts[2]}/${parts[1]}/${parts[0]}`;
-    } else if (match) {
-      const parts = match[0].split('-');
-      return `${parts[2]}/${parts[1]}/${parts[0]}`;
-    }
-    return new Date(dateString).toLocaleDateString('fr-DZ', { year: 'numeric', month: '2-digit', day: '2-digit' });
-  } catch (e) { return dateString; }
 };
 
 const getStatusBadge = (status: string): string => {

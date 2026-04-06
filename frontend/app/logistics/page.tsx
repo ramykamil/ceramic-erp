@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { formatDate } from '@/lib/utils';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -135,7 +136,7 @@ export default function LogisticsPage() {
                                                 <>
                                                     <td className="px-6 py-4 font-mono">{row.deliverynumber}</td>
                                                     <td className="px-6 py-4 font-medium">{row.customername}</td>
-                                                    <td className="px-6 py-4">{new Date(row.deliverydate).toLocaleDateString()}</td>
+                                                    <td className="px-6 py-4">{formatDate(row.deliverydate)}</td>
                                                     <td className="px-6 py-4"><span className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs">{row.status}</span></td>
                                                 </>
                                             )}

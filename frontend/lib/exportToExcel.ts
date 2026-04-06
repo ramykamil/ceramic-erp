@@ -1,6 +1,7 @@
 'use client';
 
 import * as XLSX from 'xlsx';
+import { formatDate } from './utils';
 
 export interface ExportColumn {
     key: string;
@@ -71,7 +72,7 @@ export const formatDateExport = (value: string | null | undefined): string => {
             const parts = match[0].split('-');
             return `${parts[2]}/${parts[1]}/${parts[0]}`;
         }
-        return new Date(value).toLocaleDateString('fr-FR');
+        return formatDate(value);
     } catch {
         return value;
     }

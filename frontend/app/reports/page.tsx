@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { formatDate } from '@/lib/utils';
 import api from '@/lib/api';
 import { useSortableTable } from '@/hooks/useSortableTable';
 import Link from 'next/link';
@@ -11,7 +12,6 @@ import { useTableNavigation } from '@/hooks/useTableNavigation';
 
 // Format helpers
 const formatDZD = (n: number) => new Intl.NumberFormat('fr-DZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n || 0) + ' DA';
-const formatDate = (d: string) => d ? new Date(d).toLocaleDateString('fr-FR') : '-';
 
 // Tabs
 const TABS = [

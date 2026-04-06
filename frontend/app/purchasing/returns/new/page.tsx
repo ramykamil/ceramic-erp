@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { formatDate, cn } from '@/lib/utils';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -369,7 +370,7 @@ export default function NewPurchaseReturnPage() {
                                         <option value="">-- Aucun (Retour libre) --</option>
                                         {purchaseOrders.map(po => (
                                             <option key={po.purchaseorderid} value={po.purchaseorderid}>
-                                                {po.ponumber} ({new Date(po.orderdate).toLocaleDateString()})
+                                                {po.ponumber} ({formatDate(po.orderdate)})
                                             </option>
                                         ))}
                                     </select>

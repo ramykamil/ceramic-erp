@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { formatDate } from '@/lib/utils';
 import api from '@/lib/api';
 
 interface ClientStatsModalProps {
@@ -9,7 +10,7 @@ interface ClientStatsModalProps {
 }
 
 const formatDZD = (n: number) => new Intl.NumberFormat('fr-DZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n || 0) + ' DA';
-const formatDate = (d: string) => d ? new Date(d).toLocaleDateString('fr-FR') : '-';
+// Helper
 
 export function ClientStatsModal({ client, startDate, endDate, onClose }: ClientStatsModalProps) {
     const [activeTab, setActiveTab] = useState<'achats' | 'versements'>('achats');

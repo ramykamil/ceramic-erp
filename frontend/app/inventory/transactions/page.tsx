@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo, Suspense } from 'react';
+import { formatDate } from '@/lib/utils';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -24,18 +25,6 @@ interface InventoryTransaction {
   qteparcolis?: number;  // Pieces per carton
   qtecolisparpalette?: number;  // Cartons per palette
 }
-
-// Fonction pour formater la date/heure
-const formatDateTime = (dateTimeString: string): string => {
-  try {
-    return new Date(dateTimeString).toLocaleString('fr-DZ', {
-      year: 'numeric', month: '2-digit', day: '2-digit',
-      hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
-    });
-  } catch (e) {
-    return dateTimeString;
-  }
-};
 
 // Fonction pour formater les quantités
 const formatQuantityChange = (qty: number | null | undefined, type: string): string => {
@@ -265,7 +254,7 @@ function InventoryTransactionsContent() {
 
                     return (
                       <tr key={tx.transactionid} className="hover:bg-blue-50/50">
-                        <td className="px-4 py-3 whitespace-nowrap">{formatDateTime(tx.createdat)}</td>
+                        <td className="px-4 py-3 whitespace-nowrap">{formatDate(tx.createdat)}</td>
                         <td className="px-4 py-3">
                           <div className="font-medium text-slate-900">{tx.productname}</div>
                           <div className="text-xs text-slate-500 font-mono">{tx.productcode}</div>

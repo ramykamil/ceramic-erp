@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { formatDate } from '@/lib/utils';
 import api from '@/lib/api';
 import { useSortableTable } from '@/hooks/useSortableTable';
 import Link from 'next/link';
@@ -122,10 +123,6 @@ export default function SettlementsPage() {
         return new Intl.NumberFormat('fr-DZ', { style: 'currency', currency: 'DZD' }).format(amount);
     };
 
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('fr-FR');
-    };
-
     return (
         <div className="p-6 min-h-screen bg-slate-50">
             <div className="max-w-7xl mx-auto">
@@ -221,7 +218,7 @@ export default function SettlementsPage() {
                                             {sortedSettlements.map((settlement) => (
                                                 <tr key={settlement.settlementid} className="hover:bg-slate-50">
                                                     <td className="p-4 text-sm text-slate-600">
-                                                        {new Date(settlement.createdat).toLocaleDateString()}
+                                                        {formatDate(settlement.createdat)}
                                                     </td>
                                                     <td className="p-4 font-medium text-slate-800">
                                                         {settlement.factoryname}

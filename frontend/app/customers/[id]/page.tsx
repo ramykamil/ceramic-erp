@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import api from '@/lib/api';
 import Link from 'next/link';
+import { formatDate } from '@/lib/utils';
 
 // Interfaces
 interface Customer {
@@ -57,11 +58,6 @@ interface SituationSummary {
 // Helper
 const formatCurrencyDZD = (amount: number): string => {
   return new Intl.NumberFormat('fr-DZ', { style: 'currency', currency: 'DZD' }).format(amount || 0);
-};
-
-const formatDate = (dateString: string): string => {
-  if (!dateString) return '-';
-  return new Date(dateString).toLocaleDateString('fr-FR');
 };
 
 export default function CustomerDetailPage() {

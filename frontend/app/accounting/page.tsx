@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { formatDate } from '@/lib/utils';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -72,11 +73,6 @@ interface Factory {
 const formatCurrency = (amount: number | null | undefined): string => {
     const num = Number(amount) || 0;
     return num.toLocaleString('fr-DZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' DA';
-};
-
-const formatDate = (dateStr: string): string => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('fr-DZ');
 };
 
 const formatTime = (dateStr: string): string => {
