@@ -241,7 +241,7 @@ export default function VersementModal({ isOpen, onClose, onSave, editData }: Ve
                                             >
                                                 <div className="font-medium">{c.customername}</div>
                                                 <div className="text-xs text-slate-500">
-                                                    {c.phone} | Solde: {formatCurrencyDZD(c.currentbalance)}
+                                                    Solde: {formatCurrencyDZD(c.currentbalance)}
                                                 </div>
                                             </div>
                                         ))}
