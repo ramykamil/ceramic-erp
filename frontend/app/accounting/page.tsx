@@ -6,7 +6,7 @@ import api from '@/lib/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSortableTable, SortDirection } from '@/hooks/useSortableTable';
-import { DateQuickFilter, DateRange } from '@/components/DateQuickFilter';
+import { DateQuickFilter, DateRange, StandardDateInput } from '@/components/DateQuickFilter';
 import { useTableNavigation } from '@/hooks/useTableNavigation';
 
 // --- Interfaces ---
@@ -763,11 +763,15 @@ export default function AccountingPage() {
                     {/* Manual Date Range Filter */}
                     <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-lg border border-slate-200 shadow-sm">
                         <span className="text-xs text-slate-500 font-medium">Dates</span>
-                        <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)}
-                            className="bg-transparent border border-slate-200 rounded px-2 py-1 text-sm" />
+                        <StandardDateInput
+                            value={startDate}
+                            onChange={(val) => setStartDate(val)}
+                        />
                         <span className="text-slate-400">→</span>
-                        <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)}
-                            className="bg-transparent border border-slate-200 rounded px-2 py-1 text-sm" />
+                        <StandardDateInput
+                            value={endDate}
+                            onChange={(val) => setEndDate(val)}
+                        />
                         <button onClick={handleRefresh} className="p-1.5 hover:bg-slate-100 rounded text-slate-600" title="Actualiser">🔄</button>
                     </div>
 

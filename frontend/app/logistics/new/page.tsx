@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import api from '@/lib/api';
+import { StandardDateInput } from '@/components/DateQuickFilter';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -120,8 +121,10 @@ export default function NewDeliveryPage() {
 
                             <div>
                                 <label className="block text-sm font-medium text-slate-600 mb-1">Date de Livraison *</label>
-                                <input type="date" value={deliveryDate} onChange={e => setDeliveryDate(e.target.value)} required
-                                    className="w-full p-2.5 border border-slate-300 rounded-lg text-slate-800 focus:ring-2 focus:ring-cyan-500" />
+                                <StandardDateInput
+                                    value={deliveryDate}
+                                    onChange={(val) => setDeliveryDate(val)}
+                                />
                             </div>
 
                             <div>

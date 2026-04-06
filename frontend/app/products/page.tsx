@@ -10,6 +10,7 @@ import { ResizableHeader, useColumnWidths } from '@/components/ResizableSortable
 import { exportToExcel, formatCurrencyExport, formatQuantityExport } from '@/lib/exportToExcel';
 import CatalogueSyncModal from '@/components/CatalogueSyncModal';
 import { useTableNavigation } from '@/hooks/useTableNavigation';
+import { StandardDateInput } from '@/components/DateQuickFilter';
 
 // Helper for formatting money
 const formatMoney = (amount: number) => new Intl.NumberFormat('fr-DZ', { style: 'currency', currency: 'DZD', minimumFractionDigits: 2 }).format(amount || 0);
@@ -1312,9 +1313,15 @@ export default function ProductsPage() {
                   </button>
                 </div>
                 <div className="flex items-center gap-2 py-2">
-                  <input type="date" value={historyStartDate} onChange={(e) => setHistoryStartDate(e.target.value)} className="border border-slate-300 rounded-lg px-2 py-1.5 text-xs" />
+                  <StandardDateInput
+                    value={historyStartDate}
+                    onChange={(val) => setHistoryStartDate(val)}
+                  />
                   <span className="text-slate-400 text-xs">→</span>
-                  <input type="date" value={historyEndDate} onChange={(e) => setHistoryEndDate(e.target.value)} className="border border-slate-300 rounded-lg px-2 py-1.5 text-xs" />
+                  <StandardDateInput
+                    value={historyEndDate}
+                    onChange={(val) => setHistoryEndDate(val)}
+                  />
                   <button onClick={() => { if (historyProductId) loadSalesHistory(historyProductId, historyStartDate || undefined, historyEndDate || undefined); }} className="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-blue-700">Filtrer</button>
                   {(historyStartDate || historyEndDate) && (
                     <button onClick={() => { setHistoryStartDate(''); setHistoryEndDate(''); if (historyProductId) loadSalesHistory(historyProductId); }} className="text-slate-400 hover:text-red-500 text-xs">✕</button>

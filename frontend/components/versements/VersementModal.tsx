@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import api from '@/lib/api';
+import { StandardDateInput } from '@/components/DateQuickFilter';
 
 interface VersementModalProps {
     isOpen: boolean;
@@ -262,12 +263,12 @@ export default function VersementModal({ isOpen, onClose, onSave, editData }: Ve
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-1">Date</label>
-                                    <input
-                                        type="date"
-                                        value={versementDate}
-                                        onChange={(e) => setVersementDate(e.target.value)}
-                                        className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
-                                    />
+                                    <div className="w-full">
+                                        <StandardDateInput
+                                            value={versementDate}
+                                            onChange={(val) => setVersementDate(val)}
+                                        />
+                                    </div>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-1">Mode Règlement</label>

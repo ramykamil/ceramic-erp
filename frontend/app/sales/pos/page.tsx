@@ -11,6 +11,7 @@ import { StandardDocument, DocumentType, DocumentData } from '@/components/print
 import { ResizableHeader, useColumnWidths } from '@/components/ResizableSortableHeader';
 import { useTableNavigation } from '@/hooks/useTableNavigation';
 import { useSortableTable } from '@/hooks/useSortableTable';
+import { StandardDateInput } from '@/components/DateQuickFilter';
 
 // --- Interfaces ---
 interface Product {
@@ -654,8 +655,10 @@ function POSContent() {
             </h3>
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-500 mb-1">Date</label>
-                <input type="date" value={orderDate} onChange={e => setOrderDate(e.target.value)} className="w-full p-2 border rounded-lg text-sm focus:ring-2 focus:ring-brand-primary/20" />
+                <StandardDateInput
+                  value={orderDate}
+                  onChange={(val) => setOrderDate(val)}
+                />
               </div>
 
               {isRetailMode ? (

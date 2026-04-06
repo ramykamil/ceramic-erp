@@ -5,7 +5,7 @@ import { formatDate } from '@/lib/utils';
 import api from '@/lib/api';
 import { useSortableTable } from '@/hooks/useSortableTable';
 import Link from 'next/link';
-import { DateQuickFilter, DateRange, getDateRange } from '@/components/DateQuickFilter';
+import { DateQuickFilter, DateRange, getDateRange, StandardDateInput } from '@/components/DateQuickFilter';
 import { UserFilter } from '@/components/UserFilter';
 import { ClientStatsModal } from '@/components/ClientStatsModal';
 import { useTableNavigation } from '@/hooks/useTableNavigation';
@@ -141,13 +141,11 @@ export default function ReportsPage() {
                     <div className="px-3 pb-3 pt-2 border-t border-slate-100 flex flex-wrap items-center gap-3">
                         <div className="flex items-center gap-2 text-sm">
                             <label className="text-slate-500 font-medium">Du</label>
-                            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)}
-                                className="px-3 py-1.5 border border-slate-300 rounded text-sm" />
+                            <StandardDateInput value={startDate} onChange={setStartDate} />
                         </div>
                         <div className="flex items-center gap-2 text-sm">
                             <label className="text-slate-500 font-medium">Au</label>
-                            <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)}
-                                className="px-3 py-1.5 border border-slate-300 rounded text-sm" />
+                            <StandardDateInput value={endDate} onChange={setEndDate} />
                         </div>
                         <button onClick={handleRefresh} disabled={isLoading}
                             className="bg-brand-primary hover:bg-brand-primary-dark text-white px-4 py-1.5 rounded-lg text-sm font-medium disabled:opacity-50 shadow-sm transition-colors">

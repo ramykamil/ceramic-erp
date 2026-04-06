@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { formatDate, cn } from '@/lib/utils';
 import api from '@/lib/api';
+import { StandardDateInput } from '@/components/DateQuickFilter';
 import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
 import { useReactToPrint } from 'react-to-print';
@@ -572,11 +573,13 @@ export default function ReceivePurchaseOrderPage() {
           {/* Détails Réception & Soumission */}
           <div className="glassy-container p-6 flex flex-col md:flex-row justify-between items-start gap-6">
             <div className="w-full md:w-1/2 space-y-4">
-              <div>
-                <label htmlFor="receiptDate" className="block text-sm font-medium text-slate-700 mb-1">Date de Réception *</label>
-                <input type="date" id="receiptDate" value={receiptDate} onChange={(e) => setReceiptDate(e.target.value)} required
-                  className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80" />
-              </div>
+                <div className="w-full">
+                  <StandardDateInput
+                    id="receiptDate"
+                    value={receiptDate}
+                    onChange={(val) => setReceiptDate(val)}
+                  />
+                </div>
               <div>
                 <label htmlFor="receiptNotes" className="block text-sm font-medium text-slate-700 mb-1">Notes (N° BL, etc.)</label>
                 <textarea id="receiptNotes" value={receiptNotes} onChange={(e) => setReceiptNotes(e.target.value)} rows={3}
