@@ -582,7 +582,7 @@ function POSContent() {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-slate-50 overflow-hidden text-slate-800">
+    <div className="flex flex-col bg-slate-50 overflow-hidden text-slate-800" style={{ zoom: 0.88, height: '113.6vh' }}>
       {/* Header */}
       <div className="flex-none p-3 border-b bg-white flex justify-between items-center shadow-sm z-10">
         <div className="flex items-center gap-4">
