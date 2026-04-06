@@ -9,6 +9,7 @@ import { TableVirtuoso } from 'react-virtuoso';
 import { ResizableHeader, useColumnWidths } from '@/components/ResizableSortableHeader';
 import { exportToExcel, formatCurrencyExport, formatQuantityExport } from '@/lib/exportToExcel';
 import CatalogueSyncModal from '@/components/CatalogueSyncModal';
+import { useTableNavigation } from '@/hooks/useTableNavigation';
 
 // Helper for formatting money
 const formatMoney = (amount: number) => new Intl.NumberFormat('fr-DZ', { style: 'currency', currency: 'DZD', minimumFractionDigits: 2 }).format(amount || 0);
@@ -146,6 +147,15 @@ export default function ProductsPage() {
     qteparcolis: 70,
     qtecolisparpalette: 70,
     valeur: 100,
+  });
+
+  // Table Navigation
+  const { selectedIndex, handleKeyDown, getRowClass, getRowProps, setSelectedIndex } = useTableNavigation({
+    rowCount: products.length,
+    onAction: (idx) => {
+      const product = products[idx];
+      if (product) openEditModal(product);
+    }
   });
 
   // Initial load - fetch filters only
@@ -651,9 +661,19 @@ export default function ProductsPage() {
                   }
                 }}
                 components={{
-                  Table: (props) => <table {...props} className="w-full text-xs [&>tbody>tr:nth-child(even)]:bg-slate-50 [&>tbody>tr:nth-child(odd)]:bg-white" style={{ tableLayout: 'fixed' }} />,
+                  Table: (props) => <table {...props} className="w-full text-xs" style={{ tableLayout: 'fixed' }} />,
                   TableHead: (props) => <thead {...props} className="bg-slate-700 text-white text-[10px] uppercase sticky top-0 z-10" />,
-                  TableRow: (props) => <tr {...props} className="hover:bg-blue-50 transition" />,
+                  TableRow: (props) => {
+                    const index = (props as any)['data-index'];
+                    return (
+                      <tr 
+                        {...props} 
+                        {...getRowProps(index)} 
+                        className={getRowClass(index, "hover:bg-blue-50 transition-colors cursor-pointer")}
+                        onClick={() => setSelectedIndex(index)}
+                      />
+                    );
+                  },
                 }}
                 fixedHeaderContent={() => (
                   <tr>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef, Suspense } from 'react';
+import { useState, useEffect, useCallback, useRef, Suspense, useMemo } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import api from '@/lib/api';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -9,6 +9,7 @@ import { useReactToPrint } from 'react-to-print';
 import { ReceiptTemplate, Order as ReceiptOrder } from '@/components/print/ReceiptTemplate';
 import { StandardDocument, DocumentType, DocumentData } from '@/components/print/StandardDocument';
 import { ResizableHeader, useColumnWidths } from '@/components/ResizableSortableHeader';
+import { useTableNavigation } from '@/hooks/useTableNavigation';
 
 // --- Interfaces ---
 interface Product {
@@ -272,6 +273,34 @@ function POSContent() {
   const [isProductBrowserOpen, setIsProductBrowserOpen] = useState(false);
   const [browserSearch, setBrowserSearch] = useState('');
 
+  // Table Navigation for Product Browser
+  const filteredBrowserProducts = useMemo(() => {
+    return products.filter(p => 
+      !browserSearch || 
+      p.productname.toLowerCase().includes(browserSearch.toLowerCase()) || 
+      p.productcode.toLowerCase().includes(browserSearch.toLowerCase()) || 
+      p.famille?.toLowerCase().includes(browserSearch.toLowerCase())
+    ).slice(0, 100);
+  }, [products, browserSearch]);
+
+  const { 
+    selectedIndex, 
+    getRowClass, 
+    getRowProps, 
+    setSelectedIndex 
+  } = useTableNavigation({
+    rowCount: filteredBrowserProducts.length,
+    onAction: (idx) => {
+      const p = filteredBrowserProducts[idx];
+      if (p) {
+        addToCart(p);
+        // Optional: close browser on select if desired, but usually POS users want to add multiple
+        // setIsProductBrowserOpen(false); 
+      }
+    }
+  });
+
+  // --- Effects ---
   const [isManualProductOpen, setIsManualProductOpen] = useState(false);
   const [manualProductName, setManualProductName] = useState('');
   const [manualProductQty, setManualProductQty] = useState(1);
@@ -1038,8 +1067,13 @@ function POSContent() {
                     </tr>
                   </thead>
                   <tbody className="divide-y">
-                    {products.filter(p => !browserSearch || p.productname.toLowerCase().includes(browserSearch.toLowerCase()) || p.productcode.toLowerCase().includes(browserSearch.toLowerCase()) || p.famille?.toLowerCase().includes(browserSearch.toLowerCase())).slice(0, 100).map(p => (
-                      <tr key={p.productid} className="hover:bg-slate-50 transition-colors group">
+                    {filteredBrowserProducts.map((p, idx) => (
+                      <tr 
+                        key={p.productid} 
+                        {...getRowProps(idx)}
+                        className={getRowClass(idx, "hover:bg-slate-50 transition-colors group cursor-pointer")}
+                        onClick={() => setSelectedIndex(idx)}
+                      >
                         <td className="px-4 py-4">
                           <div className="font-bold text-slate-800">{p.productname}</div>
                           <div className="text-[10px] text-slate-500">{p.productcode}</div>
@@ -1048,7 +1082,12 @@ function POSContent() {
                         <td className="px-4 py-4 text-right font-black text-green-600">{formatCurrency(p.prixvente || p.baseprice)}</td>
                         <td className="px-4 py-4 text-right font-mono font-bold text-slate-500">{p.totalqty}</td>
                         <td className="px-4 py-4 text-center">
-                          <button onClick={() => { addToCart(p); }} className="px-6 py-2 bg-slate-800 text-white rounded-full text-[10px] font-black hover:bg-brand-primary transition-colors">AJOUTER</button>
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); addToCart(p); }} 
+                            className="px-6 py-2 bg-slate-800 text-white rounded-full text-[10px] font-black hover:bg-brand-primary transition-colors"
+                          >
+                            AJOUTER
+                          </button>
                         </td>
                       </tr>
                     ))}

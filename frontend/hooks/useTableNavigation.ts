@@ -90,7 +90,7 @@ export function useTableNavigation({ rowCount, onAction }: UseTableNavigationPro
     // Helper to determine tailwind classes for the row
     const getRowClass = (index: number, baseClass: string = "hover:bg-slate-50 transition-colors") => {
         const isSelected = selectedIndex === index;
-        return `${baseClass} ${isSelected ? '!bg-slate-300 font-bold shadow-[inset_0_2px_12px_rgba(0,0,0,0.15)] ring-2 ring-inset ring-slate-400 relative z-10' : ''}`;
+        return `${baseClass} ${isSelected ? 'table-row-selected' : ''}`;
     };
 
     // Props to apply to each row

@@ -96,8 +96,6 @@ export default function ReportsPage() {
         <div 
             ref={containerRef}
             className="min-h-screen bg-slate-50 p-3 sm:p-4 lg:p-6 text-slate-800 outline-none"
-            onKeyDown={handleKeyDown}
-            tabIndex={0}
         >
             <div className="max-w-[1920px] mx-auto">
 

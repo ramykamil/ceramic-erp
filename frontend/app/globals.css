@@ -322,3 +322,20 @@ a:hover {
   background: rgba(0, 0, 0, 0.1);
   border-radius: 10px;
 }
+/* ============================================
+   Table Navigation & Selection Styles
+   ============================================ */
+.table-row-selected {
+  background-color: #CBD5E1 !important; /* slate-300 */
+  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.15) !important;
+  font-weight: 700 !important;
+  position: relative !important;
+  z-index: 10 !important;
+  outline: 2px solid #94A3B8 !important; /* slate-400 */
+  outline-offset: -2px !important;
+}
+
+.table-row-selected td {
+  background-color: transparent !important;
+  color: #1F2937 !important; /* brand-secondary */
+}

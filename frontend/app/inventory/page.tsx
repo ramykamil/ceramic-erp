@@ -802,8 +802,6 @@ function InventoryLevelsContent() {
     <div 
       ref={containerRef}
       className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800 outline-none"
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
     >
       <div className="max-w-7xl mx-auto">
 
