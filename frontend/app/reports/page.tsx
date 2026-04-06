@@ -311,13 +311,15 @@ export default function ReportsPage() {
                                                     <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortProducts('designation')}>Désignation {getSortIcon(sortConfigProducts, 'designation')}</th>
                                                     <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortProducts('brand')}>Marque {getSortIcon(sortConfigProducts, 'brand')}</th>
                                                     <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortProducts('qty_total')}>Qté Vendue {getSortIcon(sortConfigProducts, 'qty_total')}</th>
+                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortProducts('colis_total')}>Colis {getSortIcon(sortConfigProducts, 'colis_total')}</th>
+                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortProducts('pallets_total')}>Palettes {getSortIcon(sortConfigProducts, 'pallets_total')}</th>
                                                     <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortProducts('vente_count')}>Nb Ventes {getSortIcon(sortConfigProducts, 'vente_count')}</th>
                                                     <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortProducts('total')}>Total {getSortIcon(sortConfigProducts, 'total')}</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-slate-100">
                                                 {sortedProducts.length === 0 ? (
-                                                    <tr><td colSpan={6} className="p-4 text-center text-slate-400">Aucun produit vendu pour cette période</td></tr>
+                                                    <tr><td colSpan={8} className="p-4 text-center text-slate-400">Aucun produit vendu pour cette période</td></tr>
                                                 ) : sortedProducts.map((p, i) => (
                                                     <tr key={i} className="hover:bg-slate-50">
                                                         <td className="p-2 font-mono text-blue-600">{p.reference}</td>
@@ -326,6 +328,8 @@ export default function ReportsPage() {
                                                             <span className="inline-block bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs">{p.brand || 'N/A'}</span>
                                                         </td>
                                                         <td className="p-2 text-right font-mono">{Math.round(p.qty_total)}</td>
+                                                        <td className="p-2 text-right font-mono text-orange-600">{Math.round(p.colis_total || 0)}</td>
+                                                        <td className="p-2 text-right font-mono text-indigo-600">{Math.round(p.pallets_total || 0)}</td>
                                                         <td className="p-2 text-right font-mono text-slate-600">{p.vente_count}x</td>
                                                         <td className="p-2 text-right font-mono font-bold text-green-600">{formatDZD(p.total)}</td>
                                                     </tr>

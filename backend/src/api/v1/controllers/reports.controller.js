@@ -233,6 +233,8 @@ const getTopProductsReport = async (req, res) => {
                 p.ProductName as designation,
                 b.BrandName as brand,
                 COALESCE(SUM(oi.Quantity), 0) as qty_total,
+                COALESCE(SUM(oi.ColisCount), 0) as colis_total,
+                COALESCE(SUM(oi.PalletCount), 0) as pallets_total,
                 COALESCE(SUM(oi.LineTotal), 0) as total,
                 COUNT(DISTINCT o.OrderID) as vente_count
             FROM Products p
