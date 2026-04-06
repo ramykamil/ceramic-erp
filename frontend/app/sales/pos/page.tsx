@@ -724,59 +724,59 @@ function POSContent() {
               <div className="flex-1 flex flex-col min-h-0">
                 {/* Desktop Table View */}
                 <div className="hidden lg:block overflow-auto flex-1 custom-scrollbar">
-                  <table className="w-full border-separate border-spacing-0 min-w-full">
+                  <table className="border-separate border-spacing-0" style={{ minWidth: '950px', width: '100%' }}>
                     <thead className="sticky top-0 bg-slate-800 text-white z-20">
-                      <tr className="text-[11px] font-bold uppercase tracking-wider">
-                        <ResizableHeader columnKey="designation" width={cartWidths.designation} onResize={handleCartResize} className="px-3 py-3 text-left">Désignation</ResizableHeader>
-                        <ResizableHeader columnKey="marque" width={cartWidths.marque} onResize={handleCartResize} className="px-2 py-3 text-left">Marque</ResizableHeader>
-                        <ResizableHeader columnKey="stock" width={cartWidths.stock} onResize={handleCartResize} className="px-2 py-3 text-right">Stock</ResizableHeader>
-                        <ResizableHeader columnKey="palettes" width={cartWidths.palettes} onResize={handleCartResize} className="px-2 py-3 text-center bg-indigo-900/30">Pals</ResizableHeader>
-                        <ResizableHeader columnKey="cartons" width={cartWidths.cartons} onResize={handleCartResize} className="px-2 py-3 text-center bg-indigo-900/30">Ctns</ResizableHeader>
-                        <ResizableHeader columnKey="quantity" width={cartWidths.quantity} onResize={handleCartResize} className="px-3 py-3 text-center bg-red-900/30">Quantité</ResizableHeader>
-                        <ResizableHeader columnKey="unite" width={cartWidths.unite} onResize={handleCartResize} className="px-2 py-3 text-center">Unité</ResizableHeader>
-                        <ResizableHeader columnKey="prixunit" width={cartWidths.prixunit} onResize={handleCartResize} className="px-2 py-3 text-right">Prix Unit</ResizableHeader>
-                        <ResizableHeader columnKey="src" width={cartWidths.src} onResize={handleCartResize} className="px-2 py-3 text-center">Source</ResizableHeader>
-                        <ResizableHeader columnKey="totalligne" width={cartWidths.totalligne} onResize={handleCartResize} className="px-3 py-3 text-right">Total</ResizableHeader>
-                        <th className="w-12 px-2 py-3"></th>
+                      <tr className="text-[10px] font-bold uppercase tracking-wider">
+                        <ResizableHeader columnKey="designation" width={cartWidths.designation} onResize={handleCartResize} className="px-2 py-2 text-left">Désignation</ResizableHeader>
+                        <ResizableHeader columnKey="marque" width={cartWidths.marque} onResize={handleCartResize} className="px-1.5 py-2 text-left">Marque</ResizableHeader>
+                        <ResizableHeader columnKey="stock" width={cartWidths.stock} onResize={handleCartResize} className="px-1.5 py-2 text-right">Stock</ResizableHeader>
+                        <ResizableHeader columnKey="palettes" width={cartWidths.palettes} onResize={handleCartResize} className="px-1.5 py-2 text-center bg-indigo-900/30">Pals</ResizableHeader>
+                        <ResizableHeader columnKey="cartons" width={cartWidths.cartons} onResize={handleCartResize} className="px-1.5 py-2 text-center bg-indigo-900/30">Ctns</ResizableHeader>
+                        <ResizableHeader columnKey="quantity" width={cartWidths.quantity} onResize={handleCartResize} className="px-2 py-2 text-center bg-red-900/30">Quantité</ResizableHeader>
+                        <ResizableHeader columnKey="unite" width={cartWidths.unite} onResize={handleCartResize} className="px-1.5 py-2 text-center">Unité</ResizableHeader>
+                        <ResizableHeader columnKey="prixunit" width={cartWidths.prixunit} onResize={handleCartResize} className="px-1.5 py-2 text-right">Prix Unit</ResizableHeader>
+                        <ResizableHeader columnKey="src" width={cartWidths.src} onResize={handleCartResize} className="px-1.5 py-2 text-center">Src</ResizableHeader>
+                        <ResizableHeader columnKey="totalligne" width={cartWidths.totalligne} onResize={handleCartResize} className="px-2 py-2 text-right">Total</ResizableHeader>
+                        <th className="w-10 px-1 py-2"></th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-slate-100 text-xs">
                       {cart.map((item) => (
                         <tr key={item.rowId} className={`hover:bg-slate-50 group transition-colors pos-row-compact`}>
-                          <td className="px-3 py-2 truncate text-slate-700">
-                            <div className="font-bold">{item.productName}</div>
+                          <td className="px-2 py-1.5 truncate text-slate-700">
+                            <div className="font-bold text-xs">{item.productName}</div>
                             {(item.piecesPerCarton > 0 || item.cartonsPerPalette > 0) && (
-                              <div className="text-[10px] text-slate-400 font-medium tracking-tight">
+                              <div className="text-[9px] text-slate-400 font-medium tracking-tight">
                                 {Number(item.piecesPerCarton) > 0 && `${Number(item.piecesPerCarton).toFixed(2)} / Colis`}
                                 {Number(item.cartonsPerPalette) > 0 && ` • ${Number(item.cartonsPerPalette).toFixed(0)} Colis / Pal`}
                               </div>
                             )}
                           </td>
-                          <td className="px-2 py-2 truncate text-slate-500 text-xs uppercase">{item.brandName}</td>
-                          <td className="px-2 py-2 text-right font-mono text-[11px] text-slate-400">{parseFloat(item.stockQty.toString()).toLocaleString()}</td>
-                          <td className="px-2 py-2 text-center">
-                            <SmartNumberInput value={item.palettes} onChange={val => updateItem(item.rowId, 'palettes', val)} className="w-full text-center p-1.5 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-sm" />
+                          <td className="px-1.5 py-1.5 truncate text-slate-500 text-[10px] uppercase">{item.brandName}</td>
+                          <td className="px-1.5 py-1.5 text-right font-mono text-[10px] text-slate-400">{parseFloat(item.stockQty.toString()).toLocaleString()}</td>
+                          <td className="px-1.5 py-1.5 text-center">
+                            <SmartNumberInput value={item.palettes} onChange={val => updateItem(item.rowId, 'palettes', val)} className="w-full text-center p-1 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-xs" />
                           </td>
-                          <td className="px-2 py-2 text-center">
-                            <SmartNumberInput value={item.cartons} onChange={val => updateItem(item.rowId, 'cartons', val)} className="w-full text-center p-1.5 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-sm" />
+                          <td className="px-1.5 py-1.5 text-center">
+                            <SmartNumberInput value={item.cartons} onChange={val => updateItem(item.rowId, 'cartons', val)} className="w-full text-center p-1 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-xs" />
                           </td>
-                          <td className="px-3 py-2 text-center">
-                            <SmartNumberInput value={item.quantity} onChange={val => updateItem(item.rowId, 'quantity', val)} className="w-full text-center p-1.5 border-2 border-red-200 rounded font-bold text-red-700 bg-red-50 text-base" />
+                          <td className="px-2 py-1.5 text-center">
+                            <SmartNumberInput value={item.quantity} onChange={val => updateItem(item.rowId, 'quantity', val)} className="w-full text-center p-1 border-2 border-red-200 rounded font-bold text-red-700 bg-red-50 text-sm" />
                           </td>
-                          <td className="px-2 py-2 text-center">
-                            <select value={item.unitId} onChange={e => updateItem(item.rowId, 'unitId', Number(e.target.value))} className="w-full p-1 border border-slate-200 rounded text-xs bg-white">
+                          <td className="px-1.5 py-1.5 text-center">
+                            <select value={item.unitId} onChange={e => updateItem(item.rowId, 'unitId', Number(e.target.value))} className="w-full p-0.5 border border-slate-200 rounded text-[10px] bg-white">
                               {units.filter(u => u.unitcode !== 'BOX').map(u => <option key={u.unitid} value={u.unitid}>{u.unitcode}</option>)}
                             </select>
                           </td>
-                          <td className="px-2 py-2 text-right">
-                            <SmartNumberInput value={item.unitPrice} onChange={val => updateItem(item.rowId, 'unitPrice', val)} className={`w-full text-right p-1.5 border rounded font-mono text-sm ${item.purchasePrice && item.unitPrice < item.purchasePrice ? 'border-red-500 text-red-600 bg-red-50' : 'border-slate-200'}`} />
+                          <td className="px-1.5 py-1.5 text-right">
+                            <SmartNumberInput value={item.unitPrice} onChange={val => updateItem(item.rowId, 'unitPrice', val)} className={`w-full text-right p-1 border rounded font-mono text-xs ${item.purchasePrice && item.unitPrice < item.purchasePrice ? 'border-red-500 text-red-600 bg-red-50' : 'border-slate-200'}`} />
                           </td>
-                          <td className="px-2 py-2 text-center">
-                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${getPriceSourceBadge(item.priceSource)}`}>{item.priceSource}</span>
+                          <td className="px-1.5 py-1.5 text-center">
+                            <span className={`text-[9px] px-1 py-0.5 rounded-full font-bold ${getPriceSourceBadge(item.priceSource)}`}>{item.priceSource}</span>
                           </td>
-                          <td className="px-3 py-2 text-right font-bold text-slate-800">{formatCurrency(item.lineTotal)}</td>
-                          <td className="px-2 py-2 text-center">
-                            <button onClick={() => removeItem(item.rowId)} className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity text-xl">&times;</button>
+                          <td className="px-2 py-1.5 text-right font-bold text-slate-800 text-xs">{formatCurrency(item.lineTotal)}</td>
+                          <td className="px-1 py-1.5 text-center">
+                            <button onClick={() => removeItem(item.rowId)} className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity text-lg">&times;</button>
                           </td>
                         </tr>
                       ))}
