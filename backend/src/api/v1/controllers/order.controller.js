@@ -695,7 +695,66 @@ async function finalizeOrder(req, res, next) {
     // Retail orders don't affect customer balance as they are POS cash sales
     const isRetailOrder = order.ordertype === 'RETAIL' || order.customertype === 'RETAIL';
 
-    // 1. Record VENTE transaction (the sale amount)
+    // 1. Check if order is in PENDING status
+    if (order.status !== 'PENDING') {
+      throw new Error(`Cette commande ne peut pas être validée. Statut actuel: ${order.status}`);
+    }
+
+    // 2. PRE-VALIDATION: Get items and check stock BEFORE any accounting entries
+    const itemsResult = await client.query(`
+      SELECT 
+        oi.ProductID as productid, 
+        oi.Quantity as quantity, 
+        oi.PalletCount as palletcount, 
+        oi.ColisCount as coliscount, 
+        u.UnitCode as unitcode,
+        p.ProductName as productname, 
+        p.ProductCode as productcode, 
+        p.Size as size, 
+        p.PrimaryUnitID as primaryunitid, 
+        p.QteParColis as qteparcolis,
+        pu_p.UnitCode as primaryunitcode
+      FROM OrderItems oi
+      LEFT JOIN Units u ON oi.UnitID = u.UnitID
+      JOIN Products p ON oi.ProductID = p.ProductID
+      LEFT JOIN Units pu_p ON p.PrimaryUnitID = pu_p.UnitID
+      WHERE oi.OrderID = $1
+    `, [orderId]);
+
+    if (itemsResult.rows.length === 0) {
+      throw new Error('La commande ne contient aucun produit.');
+    }
+
+    // Get warehouse from order (default to 1 if not specified)
+    const warehouseId = order.warehouseid || 1;
+
+    // Restriction: Prevent validation if any item has quantity <= 0 or insufficient stock
+    for (const item of itemsResult.rows) {
+      const qtyNum = parseFloat(item.quantity) || 0;
+      if (qtyNum <= 0) {
+        throw new Error(`Le produit "${item.productname}" a une quantité non valide (${item.quantity}). Veuillez corriger avant de valider.`);
+      }
+
+      if (item.productcode === 'MANUAL') continue;
+
+      const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
+      const requiredQty = convertUnitToInventory(qtyNum, item.unitcode, item.primaryunitcode, sqmPerPiece, item.productname, parseFloat(item.qteparcolis) || 0);
+
+      const inventoryCheck = await client.query(
+        'SELECT QuantityOnHand, QuantityReserved FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\'',
+        [item.productid, warehouseId]
+      );
+
+      const onHand = inventoryCheck.rows.length > 0 ? parseFloat(inventoryCheck.rows[0].quantityonhand) : 0;
+      
+      // Strict absolute check: Total available in inventory must be enough for this order
+      if (onHand < requiredQty) {
+         throw new Error(`Stock insuffisant pour "${item.productname}". En stock: ${onHand.toFixed(2)}, Requis: ${requiredQty.toFixed(2)} (Entrepôt: ${warehouseId})`);
+      }
+    }
+
+    // 3. Validation passed, proceed with accounting
+    // Record VENTE transaction (the sale amount)
     await accountingService.recordSaleTransaction({
       amount: totalAmount,
       customerName: order.customername,
@@ -704,7 +763,7 @@ async function finalizeOrder(req, res, next) {
       userId: req.user?.userId
     }, client);
 
-    // 2. If there's a payment, record VERSEMENT transaction
+    // If there's a payment, record VERSEMENT transaction
     const payment = parseFloat(paymentAmount) || 0;
     if (payment > 0) {
       await accountingService.recordPaymentTransaction({
@@ -716,18 +775,12 @@ async function finalizeOrder(req, res, next) {
         type: 'VERSEMENT',
         paymentMethod: paymentMethod // ESPECE, VIREMENT, CHEQUE
       }, client);
-
-      // Only update customer balance for WHOLESALE orders (not retail)
-      // Note: We DO NOT reduce balance by payment amount here because the payment 
-      // is already accounted for in unpaidAmount calculation below.
     }
 
     // Calculate unpaidAmount here so it's available for both balance update and response
     const unpaidAmount = totalAmount - payment;
 
     // Update customer balance
-    // Use unpaidAmount since both WHOLESALE and RETAIL payments 
-    // made inside the order should immediately reduce the debt created by this order.
     if (unpaidAmount !== 0 && order.customerid) {
       await client.query(
         'UPDATE Customers SET CurrentBalance = CurrentBalance + $1 WHERE CustomerID = $2',
@@ -742,69 +795,7 @@ async function finalizeOrder(req, res, next) {
     );
 
     // ===== INVENTORY DEDUCTION =====
-    // Get all order items with product details for unit conversion
-    const itemsResult = await client.query(`
-      SELECT 
-        oi.ProductID, oi.Quantity, oi.PalletCount, oi.ColisCount, 
-        u.UnitCode,
-        p.ProductName, p.ProductCode, p.Size, p.PrimaryUnitID, p.QteParColis,
-        pu_p.UnitCode as PrimaryUnitCode
-      FROM OrderItems oi
-      LEFT JOIN Units u ON oi.UnitID = u.UnitID
-      JOIN Products p ON oi.ProductID = p.ProductID
-      LEFT JOIN Units pu_p ON p.PrimaryUnitID = pu_p.UnitID
-      WHERE oi.OrderID = $1
-    `, [orderId]);
-
-    // Restriction: Prevent validation if any item has quantity <= 0
-    for (const item of itemsResult.rows) {
-      if (parseFloat(item.quantity) <= 0) {
-        throw new Error(`Le produit "${item.productname}" a une quantité de 0 ou moins. Veuillez corriger la quantité avant de valider.`);
-      }
-    }
-
-    // Get warehouse from order (default to 1 if not specified)
-    const warehouseId = order.warehouseid || 1;
-
-    // ==========================================
-    // 1. STRICT STOCK VALIDATION BEFORE ANY DEDUCTION
-    // ==========================================
-    for (const item of itemsResult.rows) {
-      if (item.productcode === 'MANUAL') continue;
-
-      const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
-      const requiredQty = convertUnitToInventory(parseFloat(item.quantity), item.unitcode, item.primaryunitcode, sqmPerPiece, item.productname, parseFloat(item.qteparcolis) || 0);
-
-      const inventoryCheck = await client.query(
-        'SELECT QuantityOnHand, QuantityReserved FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\'',
-        [item.productid, warehouseId]
-      );
-
-      let available = 0;
-      if (inventoryCheck.rows.length > 0) {
-        available = parseFloat(inventoryCheck.rows[0].quantityonhand) - parseFloat(inventoryCheck.rows[0].quantityreserved);
-        
-        // Note: When we add an item to an order, we already reserve it in addOrderItem/createOrder.
-        // So the "available" stock already has this order's quantity reserved.
-        // Actually, during finalizeOrder, we are DEDUCTING the reserved amount and OnHand.
-        // So we should check if OnHand is enough.
-        // Wait, if it was already reserved, Available (OnHand - Reserved) will be 0 if we took the last ones.
-        // But we want to allow validation if we ALREADY reserved it.
-        // So the check should be: Can we fulfill this order?
-        // If we reserved 10 units for THIS order, and OnHand is 10, then OnHand - (Reserved - THIS_ORDER_QTY) should be >= THIS_ORDER_QTY.
-        // Simpler: Is QuantityOnHand >= RequiredQty? (Since Reserved includes THIS order and others).
-      }
-
-      if (available < 0) {
-        throw new Error(`Stock insuffisant pour "${item.productname}". Disponible: ${available.toFixed(2)}, Requis additionnel: ${requiredQty.toFixed(2)}`);
-      }
-      
-      // Traditional absolute check:
-      const totalAvailable = inventoryCheck.rows.length > 0 ? parseFloat(inventoryCheck.rows[0].quantityonhand) : 0;
-      if (totalAvailable < requiredQty) {
-         throw new Error(`Stock insuffisant pour "${item.productname}". En stock: ${totalAvailable.toFixed(2)}, Requis: ${requiredQty.toFixed(2)}`);
-      }
-    }
+    // Use the same itemsResult gathered above for deduction
 
 
     // Deduct inventory for each item
