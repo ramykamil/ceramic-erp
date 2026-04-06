@@ -498,6 +498,7 @@ function OrdersListContent() {
                                   <a href={`/orders/print/${record.id}?type=TICKET`} target="_blank" className="p-1.5 rounded hover:bg-slate-100 text-slate-600"><span className="text-xs font-bold">🎫</span></a>
                                   <a href={`/orders/print/${record.id}?type=DELIVERY_NOTE`} target="_blank" className="p-1.5 rounded hover:bg-red-50 text-red-600"><span className="text-xs font-bold">BL</span></a>
                                 </div>
+                                <Link href={`/orders/${record.id}`} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded" title="Détails">👁</Link>
                                 {record.status === 'PENDING' && (
                                   <button onClick={() => handleConfirm(record.id)} className="p-1.5 text-green-600 hover:bg-green-50 rounded" title="Confirmer">✓</button>
                                 )}
