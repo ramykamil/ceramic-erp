@@ -307,270 +307,144 @@ async function executeCatalogueSync(req, res, next) {
     }
 
     const targetWarehouseId = warehouseId || 1;
-
-    // 1. Load session data
     const sessionFile = path.join(SYNC_TEMP_DIR, `${syncSessionId}.json`);
+    
     if (!fs.existsSync(sessionFile)) {
-        return res.status(404).json({ success: false, message: 'Session de synchronisation expirée ou introuvable. Veuillez relancer l\'analyse.' });
+        return res.status(404).json({ success: false, message: 'Session expirée.' });
     }
 
     let sessionData;
     try {
         sessionData = JSON.parse(fs.readFileSync(sessionFile, 'utf8'));
     } catch (e) {
-        return res.status(500).json({ success: false, message: 'Erreur lors de la lecture de la session.' });
+        return res.status(500).json({ success: false, message: 'Erreur session.' });
     }
 
     const { newProducts, updatedProducts, removedProducts } = sessionData;
-    const results = {
-        created: 0,
-        updated: 0,
-        removed: 0,
-        skipped: 0,
-        errors: []
-    };
+    const results = { created: 0, updated: 0, removed: 0, skipped: 0, errors: [] };
 
     const client = await pool.connect();
     try {
         await client.query('BEGIN');
 
-        // Get unit IDs
+        // 1. BATCH BRANDS
+        const brandNames = [...new Set([
+            ...newProducts.map(p => p.brandName),
+            ...updatedProducts.map(p => p.brandName)
+        ].filter(Boolean).map(b => b.trim()))];
+
+        const brandMap = new Map();
+        if (brandNames.length > 0) {
+            const existing = await client.query(
+                "SELECT BrandID, BrandName FROM Brands WHERE LOWER(TRIM(BrandName)) = ANY($1)",
+                [brandNames.map(b => b.toLowerCase())]
+            );
+            existing.rows.forEach(b => brandMap.set(b.brandname.toLowerCase().trim(), b.brandid));
+
+            for (const name of brandNames) {
+                const key = name.toLowerCase();
+                if (!brandMap.has(key)) {
+                    const ins = await client.query("INSERT INTO Brands (BrandName, IsActive) VALUES ($1, TRUE) RETURNING BrandID", [name.trim()]);
+                    brandMap.set(key, ins.rows[0].brandid);
+                }
+            }
+        }
+
+        // Get Units
         const unitsRes = await client.query("SELECT UnitID, UnitCode FROM Units");
         const unitPCS = unitsRes.rows.find(u => u.unitcode === 'PCS')?.unitid || 1;
         const unitSQM = unitsRes.rows.find(u => u.unitcode === 'SQM')?.unitid || 3;
 
-        // ========================================
-        // A. CREATE NEW PRODUCTS
-        // ========================================
-        for (const item of newProducts) {
-            try {
-                await client.query(`SAVEPOINT new_${item.rowIndex}`);
-
-                // 1. Handle Brand
-                let brandID = null;
-                if (item.brandName) {
-                    const bRes = await client.query("SELECT BrandID FROM Brands WHERE LOWER(TRIM(BrandName)) = $1", [item.brandName.toLowerCase().trim()]);
-                    if (bRes.rows.length > 0) {
-                        brandID = bRes.rows[0].brandid;
-                    } else {
-                        const newB = await client.query("INSERT INTO Brands (BrandName, IsActive) VALUES ($1, TRUE) RETURNING BrandID", [item.brandName.trim()]);
-                        brandID = newB.rows[0].brandid;
+        // 2. BATCH CREATE NEW PRODUCTS (Chunks of 50)
+        const CREATE_BATCH_SIZE = 50;
+        for (let i = 0; i < newProducts.length; i += CREATE_BATCH_SIZE) {
+            const chunk = newProducts.slice(i, i + CREATE_BATCH_SIZE);
+            for (const p of chunk) {
+                try {
+                    const bID = p.brandName ? brandMap.get(p.brandName.toLowerCase().trim()) : null;
+                    const uID = (p.productName.toUpperCase().match(/\(M²\)|M2/)) ? unitSQM : unitPCS;
+                    
+                    const resP = await client.query(`
+                        INSERT INTO Products (ProductCode, ProductName, PrimaryUnitID, BasePrice, PurchasePrice, BrandID, Calibre, Choix, QteParColis, QteColisParPalette, IsActive)
+                        VALUES ($1, $1, $2, $3, $4, $5, $6, $7, $8, $9, TRUE) RETURNING ProductID
+                    `, [p.productName, uID, p.basePrice || 0, p.purchasePrice || 0, bID, p.calibre, p.choix, p.qteParColis || 0, p.qteColisParPalette || 0]);
+                    
+                    const pid = resP.rows[0].productid;
+                    await client.query("INSERT INTO ProductUnits (ProductID, UnitID, ConversionFactor, IsDefault) VALUES ($1, $2, 1.0, TRUE)", [pid, uID]);
+                    await client.query("INSERT INTO Inventory (ProductID, WarehouseID, OwnershipType, QuantityOnHand, PalletCount, ColisCount) VALUES ($1, $2, 'OWNED', $3, $4, $5)", 
+                        [pid, targetWarehouseId, p.quantity || 0, p.nbPalette || 0, p.nbColis || 0]);
+                    
+                    if ((p.quantity || 0) > 0) {
+                        await client.query(`INSERT INTO InventoryTransactions (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, Notes, CreatedBy, OwnershipType)
+                            VALUES ($1, $2, 'ADJUSTMENT', $3, 'CATALOGUE_SYNC', 'Initial sync', $4, 'OWNED')`, [pid, targetWarehouseId, p.quantity, userId]);
                     }
-                }
-
-                // 2. Detect Unit (SQM for m² products, PCS otherwise)
-                let targetUnitId = unitPCS;
-                if (item.productName.toUpperCase().includes('(M²)') || item.productName.toUpperCase().includes('M2')) {
-                    targetUnitId = unitSQM;
-                }
-
-                // 3. Create Product
-                const newP = await client.query(`
-                    INSERT INTO Products (ProductCode, ProductName, PrimaryUnitID, BasePrice, PurchasePrice, BrandID, 
-                                         Calibre, Choix, QteParColis, QteColisParPalette, IsActive)
-                    VALUES ($1, $2, $3, $4::NUMERIC, $5::NUMERIC, $6, $7, $8, $9::NUMERIC, $10::NUMERIC, TRUE)
-                    RETURNING ProductID
-                `, [item.productName, item.productName, targetUnitId, item.basePrice, item.purchasePrice, brandID,
-                    item.calibre, item.choix, item.qteParColis, item.qteColisParPalette]);
-                const pID = newP.rows[0].productid;
-
-                // 4. Link Unit
-                await client.query(`
-                    INSERT INTO ProductUnits (ProductID, UnitID, ConversionFactor, IsDefault)
-                    VALUES ($1, $2, 1.0, TRUE)
-                    ON CONFLICT (ProductID, UnitID) DO UPDATE SET IsDefault = TRUE
-                `, [pID, targetUnitId]);
-
-                // 5. Create Inventory
-                await client.query(`
-                    INSERT INTO Inventory (ProductID, WarehouseID, OwnershipType, QuantityOnHand, PalletCount, ColisCount, FactoryID)
-                    VALUES ($1, $2, 'OWNED', $3::NUMERIC, $4::NUMERIC, $5::NUMERIC, NULL)
-                `, [pID, targetWarehouseId, item.quantity, item.nbPalette, item.nbColis]);
-
-                // 6. Log Transaction
-                if (item.quantity > 0) {
-                    await client.query(`
-                        INSERT INTO InventoryTransactions 
-                        (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, Notes, CreatedBy, OwnershipType)
-                        VALUES ($1, $2, 'ADJUSTMENT', $3, 'CATALOGUE_SYNC', 'Nouveau produit - Sync catalogue', $4, 'OWNED')
-                    `, [pID, targetWarehouseId, item.quantity, userId]);
-                }
-
-                results.created++;
-                await client.query(`RELEASE SAVEPOINT new_${item.rowIndex}`);
-            } catch (err) {
-                await client.query(`ROLLBACK TO SAVEPOINT new_${item.rowIndex}`);
-                results.errors.push({ product: item.productName, error: err.message, action: 'CREATE' });
-                console.error(`[CatalogueSync] Create error for "${item.productName}":`, err.message);
+                    results.created++;
+                } catch (e) { results.errors.push({ name: p.productName, error: e.message }); }
             }
         }
 
-        // ========================================
-        // B. UPDATE EXISTING PRODUCTS
-        // ========================================
-        const changedProducts = updatedProducts.filter(p => p.hasChanges);
-        for (const item of changedProducts) {
-            try {
-                await client.query(`SAVEPOINT upd_${item.productId}`);
-
-                // 1. Update Product fields (non-zero prices only)
+        // 3. BATCH UPDATE PRODUCTS (Using UNNEST for high performance)
+        const toUpdate = updatedProducts.filter(p => p.hasChanges);
+        if (toUpdate.length > 0) {
+            const BATCH_SIZE = 100;
+            for (let i = 0; i < toUpdate.length; i += BATCH_SIZE) {
+                const chunk = toUpdate.slice(i, i + BATCH_SIZE);
+                
+                // Update Product basic info
                 await client.query(`
-                    UPDATE Products SET 
-                        BasePrice = COALESCE(NULLIF($1::NUMERIC, 0), BasePrice),
-                        PurchasePrice = COALESCE(NULLIF($2::NUMERIC, 0), PurchasePrice),
-                        QteParColis = CASE WHEN $3::NUMERIC > 0 THEN $3::NUMERIC ELSE QteParColis END,
-                        QteColisParPalette = CASE WHEN $4::NUMERIC > 0 THEN $4::NUMERIC ELSE QteColisParPalette END,
+                    UPDATE Products AS p SET
+                        BasePrice = CASE WHEN u.base_price > 0 THEN u.base_price ELSE p.BasePrice END,
+                        PurchasePrice = CASE WHEN u.purchase_price > 0 THEN u.purchase_price ELSE p.PurchasePrice END,
+                        QteParColis = CASE WHEN u.qpc > 0 THEN u.qpc ELSE p.QteParColis END,
+                        QteColisParPalette = CASE WHEN u.cpp > 0 THEN u.cpp ELSE p.QteColisParPalette END,
                         UpdatedAt = CURRENT_TIMESTAMP
-                    WHERE ProductID = $5
-                `, [item.basePrice, item.purchasePrice, item.qteParColis, item.qteColisParPalette, item.productId]);
+                    FROM (
+                        SELECT * FROM UNNEST($1::int[], $2::numeric[], $3::numeric[], $4::numeric[], $5::numeric[])
+                        AS t(id, base_price, purchase_price, qpc, cpp)
+                    ) AS u
+                    WHERE p.ProductID = u.id
+                `, [
+                    chunk.map(p => p.productId),
+                    chunk.map(p => p.basePrice || 0),
+                    chunk.map(p => p.purchasePrice || 0),
+                    chunk.map(p => p.qteParColis || 0),
+                    chunk.map(p => p.qteColisParPalette || 0)
+                ]);
 
-                // 2. Update Inventory quantity (if changed)
-                if (item.qtyChanged) {
-                    // Find the OWNED inventory record
-                    const invRes = await client.query(`
-                        SELECT InventoryID, QuantityOnHand FROM Inventory 
-                        WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = 'OWNED' 
-                        AND FactoryID IS NULL LIMIT 1
-                    `, [item.productId, targetWarehouseId]);
-
-                    if (invRes.rows.length > 0) {
-                        const currentQty = parseFloat(invRes.rows[0].quantityonhand) || 0;
-                        const diff = item.quantity - currentQty;
-
-                        // Update QuantityOnHand directly to new value
-                        await client.query(`
-                            UPDATE Inventory SET 
-                                QuantityOnHand = $1::NUMERIC,
-                                UpdatedAt = CURRENT_TIMESTAMP
-                            WHERE InventoryID = $2
-                        `, [item.quantity, invRes.rows[0].inventoryid]);
-
-                        // Recalculate packaging
-                        const ppc = item.qteParColis > 0 ? item.qteParColis : (item.currentQteParColis || 0);
-                        const cpp = item.qteColisParPalette > 0 ? item.qteColisParPalette : (item.currentQteColisParPalette || 0);
-                        const newColis = ppc > 0 ? parseFloat((item.quantity / ppc).toFixed(4)) : item.nbColis;
-                        const newPallets = cpp > 0 ? parseFloat((newColis / cpp).toFixed(4)) : item.nbPalette;
-
-                        await client.query(`
-                            UPDATE Inventory SET ColisCount = $1, PalletCount = $2 WHERE InventoryID = $3
-                        `, [newColis, newPallets, invRes.rows[0].inventoryid]);
-
-                        // Log transaction
+                // Update Inventory and Transactions for qty changes
+                const qtyChanges = chunk.filter(p => p.qtyChanged);
+                for (const p of qtyChanges) {
+                    const inv = await client.query("SELECT InventoryID, QuantityOnHand FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = 'OWNED' LIMIT 1", [p.productId, targetWarehouseId]);
+                    if (inv.rows.length > 0) {
+                        const diff = (p.quantity || 0) - parseFloat(inv.rows[0].quantityonhand);
+                        await client.query("UPDATE Inventory SET QuantityOnHand = $1, ColisCount = $2, PalletCount = $3, UpdatedAt = CURRENT_TIMESTAMP WHERE InventoryID = $4", 
+                            [p.quantity || 0, p.nbColis || 0, p.nbPalette || 0, inv.rows[0].inventoryid]);
                         if (Math.abs(diff) > 0.001) {
-                            await client.query(`
-                                INSERT INTO InventoryTransactions 
-                                (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, Notes, CreatedBy, OwnershipType)
-                                VALUES ($1, $2, 'ADJUSTMENT', $3, 'CATALOGUE_SYNC', $4, $5, 'OWNED')
-                            `, [item.productId, targetWarehouseId, diff,
-                                `Sync catalogue: ${currentQty.toFixed(2)} → ${item.quantity.toFixed(2)}`, userId]);
-                        }
-                    } else {
-                        // No inventory record — create one
-                        const ppc = item.qteParColis > 0 ? item.qteParColis : 0;
-                        const cpp = item.qteColisParPalette > 0 ? item.qteColisParPalette : 0;
-                        const newColis = ppc > 0 ? parseFloat((item.quantity / ppc).toFixed(4)) : item.nbColis;
-                        const newPallets = cpp > 0 ? parseFloat((newColis / cpp).toFixed(4)) : item.nbPalette;
-
-                        await client.query(`
-                            INSERT INTO Inventory (ProductID, WarehouseID, OwnershipType, QuantityOnHand, PalletCount, ColisCount, FactoryID)
-                            VALUES ($1, $2, 'OWNED', $3::NUMERIC, $4::NUMERIC, $5::NUMERIC, NULL)
-                        `, [item.productId, targetWarehouseId, item.quantity, newPallets, newColis]);
-
-                        if (item.quantity > 0) {
-                            await client.query(`
-                                INSERT INTO InventoryTransactions 
-                                (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, Notes, CreatedBy, OwnershipType)
-                                VALUES ($1, $2, 'ADJUSTMENT', $3, 'CATALOGUE_SYNC', 'Init stock via sync catalogue', $4, 'OWNED')
-                            `, [item.productId, targetWarehouseId, item.quantity, userId]);
+                            await client.query("INSERT INTO InventoryTransactions (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, Notes, CreatedBy, OwnershipType) VALUES ($1, $2, 'ADJUSTMENT', $3, 'CATALOGUE_SYNC', 'Sync update', $4, 'OWNED')", 
+                                [p.productId, targetWarehouseId, diff, userId]);
                         }
                     }
                 }
-
-                results.updated++;
-                await client.query(`RELEASE SAVEPOINT upd_${item.productId}`);
-            } catch (err) {
-                await client.query(`ROLLBACK TO SAVEPOINT upd_${item.productId}`);
-                results.errors.push({ product: item.productName, error: err.message, action: 'UPDATE' });
-                console.error(`[CatalogueSync] Update error for "${item.productName}":`, err.message);
+                results.updated += chunk.length;
             }
         }
 
-        // ========================================
-        // C. SOFT-DELETE REMOVED PRODUCTS
-        // ========================================
-        for (const item of removedProducts) {
-            try {
-                await client.query(`SAVEPOINT rem_${item.productId}`);
-
-                // Soft-delete the product
-                await client.query(`
-                    UPDATE Products SET IsActive = FALSE, UpdatedAt = CURRENT_TIMESTAMP WHERE ProductID = $1
-                `, [item.productId]);
-
-                // Zero out inventory
-                const invRecords = await client.query(
-                    'SELECT InventoryID, QuantityOnHand FROM Inventory WHERE ProductID = $1',
-                    [item.productId]
-                );
-
-                for (const inv of invRecords.rows) {
-                    const currentQty = parseFloat(inv.quantityonhand) || 0;
-                    if (currentQty > 0) {
-                        await client.query(`
-                            UPDATE Inventory SET QuantityOnHand = 0, PalletCount = 0, ColisCount = 0, UpdatedAt = CURRENT_TIMESTAMP
-                            WHERE InventoryID = $1
-                        `, [inv.inventoryid]);
-
-                        await client.query(`
-                            INSERT INTO InventoryTransactions 
-                            (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, Notes, CreatedBy, OwnershipType)
-                            VALUES ($1, $2, 'ADJUSTMENT', $3, 'CATALOGUE_SYNC', 'Produit supprimé - Sync catalogue', $4, 'OWNED')
-                        `, [item.productId, targetWarehouseId, -currentQty, userId]);
-                    }
-                }
-
-                results.removed++;
-                await client.query(`RELEASE SAVEPOINT rem_${item.productId}`);
-            } catch (err) {
-                await client.query(`ROLLBACK TO SAVEPOINT rem_${item.productId}`);
-                results.errors.push({ product: item.productName, error: err.message, action: 'REMOVE' });
-                console.error(`[CatalogueSync] Remove error for "${item.productName}":`, err.message);
-            }
+        // 4. BATCH REMOVE
+        if (removedProducts.length > 0) {
+            const ids = removedProducts.map(p => p.productId);
+            await client.query("UPDATE Products SET IsActive = FALSE, UpdatedAt = CURRENT_TIMESTAMP WHERE ProductID = ANY($1)", [ids]);
+            await client.query("UPDATE Inventory SET QuantityOnHand = 0, ColisCount = 0, PalletCount = 0, UpdatedAt = CURRENT_TIMESTAMP WHERE ProductID = ANY($1)", [ids]);
+            results.removed = removedProducts.length;
         }
 
-        // ========================================
-        // D. COMMIT & CLEANUP
-        // ========================================
         await client.query('COMMIT');
+        try { await pool.query('REFRESH MATERIALIZED VIEW mv_Catalogue'); } catch (e) {}
+        if (fs.existsSync(sessionFile)) fs.unlinkSync(sessionFile);
 
-        // Refresh materialized view
-        try {
-            await pool.query('REFRESH MATERIALIZED VIEW mv_Catalogue');
-            console.log('[CatalogueSync] Refreshed mv_Catalogue');
-        } catch (e) {
-            console.warn('[CatalogueSync] Could not refresh mv_Catalogue:', e.message);
-        }
-
-        // Clean up session file
-        try { fs.unlinkSync(sessionFile); } catch (e) { }
-
-        console.log(`[CatalogueSync] Complete — Created: ${results.created}, Updated: ${results.updated}, Removed: ${results.removed}, Errors: ${results.errors.length}`);
-
-        res.json({
-            success: true,
-            message: `Synchronisation terminée avec succès.`,
-            data: {
-                created: results.created,
-                updated: results.updated,
-                removed: results.removed,
-                skipped: results.skipped,
-                errors: results.errors.slice(0, 50)
-            }
-        });
-
+        res.json({ success: true, message: 'Synchronisation réussie', data: results });
     } catch (error) {
         await client.query('ROLLBACK');
-        console.error('[CatalogueSync] Execution error:', error);
+        console.error('Sync Execute Error:', error);
         next(error);
     } finally {
         client.release();
