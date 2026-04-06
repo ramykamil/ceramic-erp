@@ -6,6 +6,7 @@ interface UseTableNavigationProps {
     rowCount: number;
     onAction?: (index: number) => void;
     selectionKey?: string; // Optional: unique identifier for selection persistence if needed
+    enabled?: boolean; // Whether keyboard navigation is currently active
 }
 
 /**
@@ -15,12 +16,12 @@ interface UseTableNavigationProps {
  * @param onAction - Callback triggered when Enter/Space is pressed on a selected row
  * @returns - selectedIndex, setSelectedIndex, handleKeyDown, selectedStyle
  */
-export function useTableNavigation({ rowCount, onAction }: UseTableNavigationProps) {
+export function useTableNavigation({ rowCount, onAction, enabled = true }: UseTableNavigationProps) {
     const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 
-    // Reset selected index if rowCount changes (e.g., search/filter)
+    // Reset selected index if rowCount changes (e.g., search/filter) or if disabled
     useEffect(() => {
-        if (rowCount === 0) {
+        if (!enabled || rowCount === 0) {
             setSelectedIndex(-1);
             return;
         }
@@ -47,7 +48,7 @@ export function useTableNavigation({ rowCount, onAction }: UseTableNavigationPro
     }, [selectedIndex]);
 
     const handleKeyDown = useCallback((e: KeyboardEvent | React.KeyboardEvent) => {
-        if (rowCount === 0) return;
+        if (!enabled || rowCount === 0) return;
 
         // Skip if user is actively typing in an input, textarea, or contenteditable
         const activeEl = document.activeElement;

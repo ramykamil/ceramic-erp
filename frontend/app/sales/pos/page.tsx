@@ -273,6 +273,12 @@ function POSContent() {
   const [isProductBrowserOpen, setIsProductBrowserOpen] = useState(false);
   const [browserSearch, setBrowserSearch] = useState('');
 
+  const [isManualProductOpen, setIsManualProductOpen] = useState(false);
+  const [manualProductName, setManualProductName] = useState('');
+  const [manualProductQty, setManualProductQty] = useState(1);
+  const [manualProductPrice, setManualProductPrice] = useState(0);
+  const [manualProductBrand, setManualProductBrand] = useState('');
+
   // Table Navigation for Product Browser
   const filteredBrowserProducts = useMemo(() => {
     return products.filter(p => 
@@ -290,22 +296,29 @@ function POSContent() {
     setSelectedIndex 
   } = useTableNavigation({
     rowCount: filteredBrowserProducts.length,
+    enabled: isProductBrowserOpen,
     onAction: (idx) => {
       const p = filteredBrowserProducts[idx];
       if (p) {
         addToCart(p);
-        // Optional: close browser on select if desired, but usually POS users want to add multiple
-        // setIsProductBrowserOpen(false); 
       }
     }
   });
 
-  // --- Effects ---
-  const [isManualProductOpen, setIsManualProductOpen] = useState(false);
-  const [manualProductName, setManualProductName] = useState('');
-  const [manualProductQty, setManualProductQty] = useState(1);
-  const [manualProductPrice, setManualProductPrice] = useState(0);
-  const [manualProductBrand, setManualProductBrand] = useState('');
+  // Table Navigation for Cart
+  const { 
+    selectedIndex: cartSelectedIndex, 
+    getRowClass: getCartRowClass, 
+    getRowProps: getCartRowProps, 
+    setSelectedIndex: setCartSelectedIndex 
+  } = useTableNavigation({
+    rowCount: cart.length,
+    enabled: !isProductBrowserOpen && !isManualProductOpen && !isCustomerModalOpen,
+    onAction: (idx) => {
+      const item = cart[idx];
+      console.log('Action on cart item:', item);
+    }
+  });
 
   const [userName, setUserName] = useState<string>('');
   const [userRole, setUserRole] = useState<string>('');
@@ -770,10 +783,15 @@ function POSContent() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-xs">
-                      {cart.map((item) => {
+                      {cart.map((item, idx) => {
                         const isTransport = item.productName.toUpperCase().includes('TRANSPORT');
                         return (
-                        <tr key={item.rowId} className={`group transition-colors pos-row-compact ${isTransport ? 'bg-slate-300 hover:bg-slate-400 shadow-[inset_0_2px_8px_rgba(0,0,0,0.1)] border-y border-slate-400/50' : 'hover:bg-slate-50'}`}>
+                        <tr 
+                          key={item.rowId} 
+                          {...getCartRowProps(idx)}
+                          className={getCartRowClass(idx, `group transition-colors pos-row-compact cursor-pointer ${isTransport ? 'bg-slate-300 hover:bg-slate-400 shadow-[inset_0_2px_8px_rgba(0,0,0,0.1)] border-y border-slate-400/50' : 'hover:bg-slate-50'}`)}
+                          onClick={() => setCartSelectedIndex(idx)}
+                        >
                           <td className="px-2 py-1.5 truncate text-slate-700">
                             <div className="font-bold text-xs">{item.productName}</div>
                             {(item.piecesPerCarton > 0 || item.cartonsPerPalette > 0) && (
