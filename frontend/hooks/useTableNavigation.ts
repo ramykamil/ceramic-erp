@@ -76,7 +76,7 @@ export function useTableNavigation({ rowCount, onAction }: UseTableNavigationPro
     // Helper to determine tailwind classes for the row
     const getRowClass = (index: number, baseClass: string = "hover:bg-slate-50 transition-colors") => {
         const isSelected = selectedIndex === index;
-        return `${baseClass} ${isSelected ? 'bg-red-50/70 ring-1 ring-inset ring-brand-primary/30 shadow-sm z-10' : ''}`;
+        return `${baseClass} ${isSelected ? '!bg-blue-50/80 ring-1 ring-inset ring-brand-primary/50 relative z-10' : ''}`;
     };
 
     // Props to apply to each row
