@@ -869,11 +869,11 @@ function POSContent() {
         </div>
 
         {/* Right Panel: Summary & Buttons */}
-        <div className={`w-full lg:w-80 flex-none bg-slate-800 text-white p-6 flex flex-col shadow-2xl z-20 ${activeMobileTab === 'PAYMENT' ? 'flex' : 'hidden lg:flex'}`}>
-          <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">Récapitulatif & Paiement</h2>
+        <div className={`w-full lg:w-80 flex-none bg-slate-800 text-white p-4 lg:p-5 flex flex-col shadow-2xl z-20 overflow-y-auto ${activeMobileTab === 'PAYMENT' ? 'flex' : 'hidden lg:flex'}`}>
+          <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Récapitulatif & Paiement</h2>
           
-          <div className="flex-1 space-y-4">
-            <div className="space-y-3 pb-6 border-b border-slate-700">
+          <div className="flex-1 space-y-3 min-h-0">
+            <div className="space-y-2 pb-4 border-b border-slate-700">
               <div className="flex justify-between text-slate-300 text-sm">
                 <span>Total Brut HT</span>
                 <span className="font-mono">{formatCurrency(totalHT)}</span>
@@ -892,14 +892,14 @@ function POSContent() {
               </div>
             </div>
 
-            <div className="py-8">
+            <div className="py-4">
               <div className="text-[10px] text-slate-500 uppercase tracking-tighter mb-1">Net à Payer (P.A.C)</div>
-              <div className="text-4xl font-black text-white font-mono leading-none tracking-tight">
+              <div className="text-3xl font-black text-white font-mono leading-none tracking-tight">
                 {formatCurrency(totalNet).replace('DZD', '')} <span className="text-xs font-normal text-slate-400">DA</span>
               </div>
             </div>
 
-            <div className="space-y-4 pt-4 border-t border-slate-700/50">
+            <div className="space-y-3 pt-3 border-t border-slate-700/50">
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[10px] text-slate-400 font-bold uppercase mb-1.5">Méthode</label>
@@ -914,25 +914,25 @@ function POSContent() {
                   <SmartNumberInput value={payment} onChange={val => setPayment(val)} className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-xl text-base font-bold font-mono text-right focus:border-brand-primary outline-none" />
                 </div>
               </div>
-              <div className={`p-4 rounded-xl flex justify-between items-center ${reste > 0 ? 'bg-red-950/30 border border-red-900/50' : 'bg-green-950/30 border border-green-900/50'}`}>
+              <div className={`p-3 rounded-xl flex justify-between items-center ${reste > 0 ? 'bg-red-950/30 border border-red-900/50' : 'bg-green-950/30 border border-green-900/50'}`}>
                 <span className="text-[11px] font-bold uppercase text-slate-400">Reste à payer</span>
                 <span className={`text-xl font-black font-mono ${reste > 0 ? 'text-red-400' : 'text-green-400'}`}>{formatCurrency(reste)}</span>
               </div>
             </div>
           </div>
 
-          <div className="flex-none pt-8 space-y-3">
+          <div className="flex-none pt-4 space-y-2">
             <div className="grid grid-cols-4 gap-2">
-              <button onClick={handlePrintBCMobile} disabled={cart.length === 0} className="py-3 bg-slate-700 hover:bg-slate-600 rounded-xl text-lg disabled:opacity-30" title="Bon de Chargement">🚚</button>
-              <button onClick={handlePrintBLMobile} disabled={cart.length === 0} className="py-3 bg-slate-700 hover:bg-slate-600 rounded-xl text-lg disabled:opacity-30" title="Bon de Livraison">📄</button>
-              <button onClick={handlePrintBSSMobile} disabled={cart.length === 0} className="py-3 bg-slate-700 hover:bg-slate-600 rounded-xl text-lg disabled:opacity-30" title="Bon Sans Solde">🚫</button>
-              <button onClick={handlePrintTicketMobile} disabled={cart.length === 0} className="py-3 bg-slate-700 hover:bg-slate-600 rounded-xl text-lg disabled:opacity-30" title="Ticket">🎫</button>
+              <button onClick={handlePrintBCMobile} disabled={cart.length === 0} className="py-2.5 bg-slate-700 hover:bg-slate-600 rounded-xl text-lg disabled:opacity-30" title="Bon de Chargement">🚚</button>
+              <button onClick={handlePrintBLMobile} disabled={cart.length === 0} className="py-2.5 bg-slate-700 hover:bg-slate-600 rounded-xl text-lg disabled:opacity-30" title="Bon de Livraison">📄</button>
+              <button onClick={handlePrintBSSMobile} disabled={cart.length === 0} className="py-2.5 bg-slate-700 hover:bg-slate-600 rounded-xl text-lg disabled:opacity-30" title="Bon Sans Solde">🚫</button>
+              <button onClick={handlePrintTicketMobile} disabled={cart.length === 0} className="py-2.5 bg-slate-700 hover:bg-slate-600 rounded-xl text-lg disabled:opacity-30" title="Ticket">🎫</button>
             </div>
             
             <button 
               onClick={handleValidateSale} 
               disabled={isSubmitting || cart.length === 0 || (isRetailMode ? !retailClientName.trim() : (!selectedCustomerId && !customerSearchQuery.trim()))}
-              className="w-full py-5 bg-green-600 hover:bg-green-500 text-white rounded-2xl font-black text-xl shadow-lg shadow-green-900/50 flex justify-center items-center gap-3 transition-all active:scale-95 disabled:opacity-40 disabled:grayscale"
+              className="w-full py-4 bg-green-600 hover:bg-green-500 text-white rounded-2xl font-black text-lg shadow-lg shadow-green-900/50 flex justify-center items-center gap-3 transition-all active:scale-95 disabled:opacity-40 disabled:grayscale"
             >
               {isSubmitting ? <><div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div> EN COURS</> : <>VALIDER LA VENTE</>}
             </button>
