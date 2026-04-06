@@ -341,6 +341,15 @@ export default function NewReturnPage() {
                                                     <label className="block text-[8px] font-black text-slate-400 uppercase text-center">Pcs</label>
                                                     <input type="number" value={item.quantity} onChange={(e) => updateFormItem(idx, 'quantity', Number(e.target.value))} className="w-full p-1 border border-blue-300 rounded text-center text-xs font-black text-blue-600" />
                                                 </div>
+                                                <div className="w-24">
+                                                    <label className="block text-[8px] font-black text-slate-400 uppercase text-center">Prix U.</label>
+                                                    <input 
+                                                        type="number" 
+                                                        value={item.unitPrice} 
+                                                        onChange={(e) => updateFormItem(idx, 'unitPrice', Number(e.target.value))} 
+                                                        className="w-full p-1 border border-slate-300 rounded text-center text-xs font-bold text-emerald-600" 
+                                                    />
+                                                </div>
                                             </div>
 
                                             <div className="w-24 text-right self-center">
