@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import api from '@/lib/api';
+import { useSortableTable } from '@/hooks/useSortableTable';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -171,6 +172,13 @@ export default function BrandsPage() {
   const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
 
+  const { sortedData: sortedBrands, handleSort, sortConfig } = useSortableTable(brands);
+
+  const getSortIcon = (key: string) => {
+    if (sortConfig.key !== key) return <span className="opacity-30 ml-1">↕</span>;
+    return sortConfig.direction === 'asc' ? <span className="ml-1 text-blue-600">▲</span> : <span className="ml-1 text-blue-600">▼</span>;
+  };
+
   useEffect(() => {
     fetchBrands();
   }, []);
@@ -324,16 +332,16 @@ export default function BrandsPage() {
               <table className="w-full text-sm text-left">
                 <thead className="text-xs text-slate-500 uppercase bg-slate-50 font-semibold border-b border-slate-100">
                   <tr>
-                    <th scope="col" className="px-6 py-4">ID</th>
-                    <th scope="col" className="px-6 py-4">Nom</th>
-                    <th scope="col" className="px-6 py-4 text-right">Ancien Crédit</th>
-                    <th scope="col" className="px-6 py-4 text-right">Solde Actuel</th>
+                    <th scope="col" className="px-6 py-4 cursor-pointer hover:bg-slate-100" onClick={() => handleSort('brandid')}>ID {getSortIcon('brandid')}</th>
+                    <th scope="col" className="px-6 py-4 cursor-pointer hover:bg-slate-100" onClick={() => handleSort('brandname')}>Nom {getSortIcon('brandname')}</th>
+                    <th scope="col" className="px-6 py-4 text-right cursor-pointer hover:bg-slate-100" onClick={() => handleSort('initialbalance')}>Ancien Crédit {getSortIcon('initialbalance')}</th>
+                    <th scope="col" className="px-6 py-4 text-right cursor-pointer hover:bg-slate-100" onClick={() => handleSort('currentbalance')}>Solde Actuel {getSortIcon('currentbalance')}</th>
                     <th scope="col" className="px-6 py-4 text-center">Statut</th>
                     <th scope="col" className="px-6 py-4 text-center">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {brands.map((brand) => (
+                  {sortedBrands.map((brand) => (
                     <tr key={brand.brandid} className={`hover:bg-slate-50 transition-colors duration-150 ${!brand.isactive ? 'bg-slate-50/50' : ''}`}>
                       <td className="px-6 py-4 font-mono text-slate-500 text-xs">{brand.brandid}</td>
                       <td className="px-6 py-4 font-medium text-slate-900">{brand.brandname}</td>

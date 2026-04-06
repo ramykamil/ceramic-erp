@@ -10,6 +10,7 @@ import { ReceiptTemplate, Order as ReceiptOrder } from '@/components/print/Recei
 import { StandardDocument, DocumentType, DocumentData } from '@/components/print/StandardDocument';
 import { ResizableHeader, useColumnWidths } from '@/components/ResizableSortableHeader';
 import { useTableNavigation } from '@/hooks/useTableNavigation';
+import { useSortableTable } from '@/hooks/useSortableTable';
 
 // --- Interfaces ---
 interface Product {
@@ -306,19 +307,26 @@ function POSContent() {
   });
 
   // Table Navigation for Cart
+  const { sortedData: sortedCart, handleSort: handleCartSort, sortConfig: cartSortConfig } = useSortableTable(cart);
+
   const { 
     selectedIndex: cartSelectedIndex, 
     getRowClass: getCartRowClass, 
     getRowProps: getCartRowProps, 
     setSelectedIndex: setCartSelectedIndex 
   } = useTableNavigation({
-    rowCount: cart.length,
+    rowCount: sortedCart.length,
     enabled: !isProductBrowserOpen && !isManualProductOpen && !isCustomerModalOpen,
     onAction: (idx) => {
-      const item = cart[idx];
+      const item = sortedCart[idx];
       console.log('Action on cart item:', item);
     }
   });
+
+  const getSortIcon = (config: any, key: string) => {
+    if (config.key !== key) return <span className="opacity-30 ml-1 text-[8px]">↕</span>;
+    return config.direction === 'asc' ? <span className="ml-1 text-blue-400">▲</span> : <span className="ml-1 text-blue-400">▼</span>;
+  };
 
   const [userName, setUserName] = useState<string>('');
   const [userRole, setUserRole] = useState<string>('');
@@ -769,21 +777,21 @@ function POSContent() {
                   <table className="border-separate border-spacing-0" style={{ minWidth: '680px', width: '100%' }}> 
                     <thead className="sticky top-0 bg-slate-800 text-white z-20">
                       <tr className="text-[10px] font-bold uppercase tracking-wider">
-                        <ResizableHeader columnKey="designation" width={cartWidths.designation} onResize={handleCartResize} className="px-2 py-2 text-left">Désignation</ResizableHeader>
-                        <ResizableHeader columnKey="marque" width={cartWidths.marque} onResize={handleCartResize} className="px-1.5 py-2 text-left">Marque</ResizableHeader>
-                        <ResizableHeader columnKey="stock" width={cartWidths.stock} onResize={handleCartResize} className="px-1.5 py-2 text-right">Stock</ResizableHeader>
-                        <ResizableHeader columnKey="palettes" width={cartWidths.palettes} onResize={handleCartResize} className="px-1.5 py-2 text-center bg-indigo-900/30">Pals</ResizableHeader>
-                        <ResizableHeader columnKey="cartons" width={cartWidths.cartons} onResize={handleCartResize} className="px-1.5 py-2 text-center bg-indigo-900/30">Ctns</ResizableHeader>
-                        <ResizableHeader columnKey="quantity" width={cartWidths.quantity} onResize={handleCartResize} className="px-2 py-2 text-center bg-red-900/30">Quantité</ResizableHeader>
+                        <ResizableHeader columnKey="designation" width={cartWidths.designation} onResize={handleCartResize} onClick={() => handleCartSort('productName')} className="px-2 py-2 text-left cursor-pointer hover:bg-slate-700">Désignation {getSortIcon(cartSortConfig, 'productName')}</ResizableHeader>
+                        <ResizableHeader columnKey="marque" width={cartWidths.marque} onResize={handleCartResize} onClick={() => handleCartSort('brandName')} className="px-1.5 py-2 text-left cursor-pointer hover:bg-slate-700">Marque {getSortIcon(cartSortConfig, 'brandName')}</ResizableHeader>
+                        <ResizableHeader columnKey="stock" width={cartWidths.stock} onResize={handleCartResize} onClick={() => handleCartSort('stockQty')} className="px-1.5 py-2 text-right cursor-pointer hover:bg-slate-700">Stock {getSortIcon(cartSortConfig, 'stockQty')}</ResizableHeader>
+                        <ResizableHeader columnKey="palettes" width={cartWidths.palettes} onResize={handleCartResize} onClick={() => handleCartSort('palettes')} className="px-1.5 py-2 text-center bg-indigo-900/30 cursor-pointer hover:bg-indigo-900/50">Pals {getSortIcon(cartSortConfig, 'palettes')}</ResizableHeader>
+                        <ResizableHeader columnKey="cartons" width={cartWidths.cartons} onResize={handleCartResize} onClick={() => handleCartSort('cartons')} className="px-1.5 py-2 text-center bg-indigo-900/30 cursor-pointer hover:bg-indigo-900/50">Ctns {getSortIcon(cartSortConfig, 'cartons')}</ResizableHeader>
+                        <ResizableHeader columnKey="quantity" width={cartWidths.quantity} onResize={handleCartResize} onClick={() => handleCartSort('quantity')} className="px-2 py-2 text-center bg-red-900/30 cursor-pointer hover:bg-red-900/50">Quantité {getSortIcon(cartSortConfig, 'quantity')}</ResizableHeader>
                         <ResizableHeader columnKey="unite" width={cartWidths.unite} onResize={handleCartResize} className="px-1.5 py-2 text-center">Unité</ResizableHeader>
-                        <ResizableHeader columnKey="prixunit" width={cartWidths.prixunit} onResize={handleCartResize} className="px-1.5 py-2 text-right">Prix Unit</ResizableHeader>
+                        <ResizableHeader columnKey="prixunit" width={cartWidths.prixunit} onResize={handleCartResize} onClick={() => handleCartSort('unitPrice')} className="px-1.5 py-2 text-right cursor-pointer hover:bg-slate-700">Prix Unit {getSortIcon(cartSortConfig, 'unitPrice')}</ResizableHeader>
                         <ResizableHeader columnKey="src" width={cartWidths.src} onResize={handleCartResize} className="px-1.5 py-2 text-center">Src</ResizableHeader>
-                        <ResizableHeader columnKey="totalligne" width={cartWidths.totalligne} onResize={handleCartResize} className="px-2 py-2 text-right">Total</ResizableHeader>
+                        <ResizableHeader columnKey="totalligne" width={cartWidths.totalligne} onResize={handleCartResize} onClick={() => handleCartSort('lineTotal')} className="px-2 py-2 text-right cursor-pointer hover:bg-slate-700">Total {getSortIcon(cartSortConfig, 'lineTotal')}</ResizableHeader>
                         <th className="w-10 px-1 py-2"></th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-xs">
-                      {cart.map((item, idx) => {
+                      {sortedCart.map((item, idx) => {
                         const isTransport = item.productName.toUpperCase().includes('TRANSPORT');
                         return (
                         <tr 

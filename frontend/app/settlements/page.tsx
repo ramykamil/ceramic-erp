@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import api from '@/lib/api';
+import { useSortableTable } from '@/hooks/useSortableTable';
 import Link from 'next/link';
 
 interface Factory {
@@ -25,6 +26,13 @@ export default function SettlementsPage() {
     const [settlements, setSettlements] = useState<Settlement[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isGenerating, setIsGenerating] = useState(false);
+
+    const { sortedData: sortedSettlements, handleSort, sortConfig } = useSortableTable(settlements);
+
+    const getSortIcon = (key: string) => {
+        if (sortConfig.key !== key) return <span className="opacity-30 ml-1 text-[10px]">↕</span>;
+        return sortConfig.direction === 'asc' ? <span className="ml-1 text-blue-600">▲</span> : <span className="ml-1 text-blue-600">▼</span>;
+    };
 
     // Form State
     const [selectedFactoryId, setSelectedFactoryId] = useState<number | ''>('');
@@ -199,18 +207,18 @@ export default function SettlementsPage() {
                             ) : (
                                 <div className="overflow-x-auto">
                                     <table className="w-full text-left">
-                                        <thead className="bg-slate-50 border-b border-slate-200">
+                                        <thead className="bg-slate-50 border-b border-slate-200 uppercase text-[10px] font-bold tracking-wider">
                                             <tr>
-                                                <th className="p-4 font-semibold text-slate-700">Date Création</th>
-                                                <th className="p-4 font-semibold text-slate-700">Usine</th>
-                                                <th className="p-4 font-semibold text-slate-700">Période</th>
-                                                <th className="p-4 font-semibold text-slate-700 text-right">Montant</th>
-                                                <th className="p-4 font-semibold text-slate-700 text-center">Statut</th>
-                                                <th className="p-4 font-semibold text-slate-700 text-right">Action</th>
+                                                <th className="p-4 cursor-pointer hover:bg-slate-100" onClick={() => handleSort('createdat')}>Date Création {getSortIcon('createdat')}</th>
+                                                <th className="p-4 cursor-pointer hover:bg-slate-100" onClick={() => handleSort('factoryname')}>Usine {getSortIcon('factoryname')}</th>
+                                                <th className="p-4 cursor-pointer hover:bg-slate-100" onClick={() => handleSort('startdate')}>Période {getSortIcon('startdate')}</th>
+                                                <th className="p-4 text-right cursor-pointer hover:bg-slate-100" onClick={() => handleSort('totalamount')}>Montant {getSortIcon('totalamount')}</th>
+                                                <th className="p-4 text-center cursor-pointer hover:bg-slate-100" onClick={() => handleSort('status')}>Statut {getSortIcon('status')}</th>
+                                                <th className="p-4 text-right">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-slate-100">
-                                            {settlements.map((settlement) => (
+                                            {sortedSettlements.map((settlement) => (
                                                 <tr key={settlement.settlementid} className="hover:bg-slate-50">
                                                     <td className="p-4 text-sm text-slate-600">
                                                         {new Date(settlement.createdat).toLocaleDateString()}

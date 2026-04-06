@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import api from '@/lib/api';
+import { useSortableTable } from '@/hooks/useSortableTable';
 import Link from 'next/link';
 
 interface Employee {
@@ -122,6 +123,14 @@ export default function EmployeesPage() {
         );
     });
 
+    // Sorting
+    const { sortedData: sortedEmployees, handleSort, sortConfig } = useSortableTable<Employee>(filteredEmployees);
+
+    const getSortIcon = (key: string) => {
+        if (sortConfig.key !== key) return <span className="opacity-30 ml-1">↕</span>;
+        return sortConfig.direction === 'asc' ? <span className="ml-1 text-blue-400">▲</span> : <span className="ml-1 text-blue-400">▼</span>;
+    };
+
     // Stats
     const totalSalary = employees.reduce((sum, emp) => sum + (emp.basicsalary || 0), 0);
     const departments = Array.from(new Set(employees.map(e => e.department).filter(Boolean)));
@@ -188,14 +197,14 @@ export default function EmployeesPage() {
                 <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex-1 flex flex-col min-h-0">
                     <div className="overflow-auto flex-1">
                         <table className="w-full text-sm">
-                            <thead className="bg-slate-700 text-white text-xs uppercase sticky top-0">
+                            <thead className="bg-slate-700 text-white text-xs uppercase sticky top-0 font-bold">
                                 <tr>
-                                    <th className="p-3 text-left">Code</th>
-                                    <th className="p-3 text-left">Nom Complet</th>
-                                    <th className="p-3 text-left">Poste</th>
-                                    <th className="p-3 text-left">Département</th>
-                                    <th className="p-3 text-left">Email</th>
-                                    <th className="p-3 text-right bg-green-800">Salaire</th>
+                                    <th className="p-3 text-left cursor-pointer hover:bg-slate-600" onClick={() => handleSort('employeecode')}>Code {getSortIcon('employeecode')}</th>
+                                    <th className="p-3 text-left cursor-pointer hover:bg-slate-600" onClick={() => handleSort('firstname')}>Nom Complet {getSortIcon('firstname')}</th>
+                                    <th className="p-3 text-left cursor-pointer hover:bg-slate-600" onClick={() => handleSort('position')}>Poste {getSortIcon('position')}</th>
+                                    <th className="p-3 text-left cursor-pointer hover:bg-slate-600" onClick={() => handleSort('department')}>Département {getSortIcon('department')}</th>
+                                    <th className="p-3 text-left cursor-pointer hover:bg-slate-600" onClick={() => handleSort('email')}>Email {getSortIcon('email')}</th>
+                                    <th className="p-3 text-right bg-green-800 cursor-pointer hover:bg-green-700" onClick={() => handleSort('basicsalary')}>Salaire {getSortIcon('basicsalary')}</th>
                                     <th className="p-3 text-center w-24">Actions</th>
                                 </tr>
                             </thead>
@@ -206,14 +215,14 @@ export default function EmployeesPage() {
                                             Chargement...
                                         </td>
                                     </tr>
-                                ) : filteredEmployees.length === 0 ? (
+                                ) : sortedEmployees.length === 0 ? (
                                     <tr>
                                         <td colSpan={7} className="p-8 text-center text-slate-400 italic">
                                             Aucun employé trouvé.
                                         </td>
                                     </tr>
                                 ) : (
-                                    filteredEmployees.map((emp, i) => (
+                                    sortedEmployees.map((emp, i) => (
                                         <tr key={emp.employeeid} className={`hover:bg-blue-50 transition ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}>
                                             <td className="p-3 font-mono text-slate-600">{emp.employeecode}</td>
                                             <td className="p-3 font-medium text-slate-800">

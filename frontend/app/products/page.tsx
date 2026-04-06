@@ -149,6 +149,18 @@ export default function ProductsPage() {
     valeur: 100,
   });
 
+  // History Tab Sorting Hooks
+  const { sortedData: sortedVentes, handleSort: handleSortVentes, sortConfig: sortVentes } = useSortableTable(historyData?.orders || []);
+  const { sortedData: sortedAchats, handleSort: handleSortAchats, sortConfig: sortAchats } = useSortableTable(purchaseHistoryData?.orders || []);
+  const { sortedData: sortedAjustements, handleSort: handleSortAjustements, sortConfig: sortAjustements } = useSortableTable(adjustmentHistoryData?.adjustments || []);
+  const { sortedData: sortedRetoursAchat, handleSort: handleSortRetoursAchat, sortConfig: sortRetoursAchat } = useSortableTable(returnHistoryData?.purchaseReturns || []);
+  const { sortedData: sortedRetoursVente, handleSort: handleSortRetoursVente, sortConfig: sortRetoursVente } = useSortableTable(returnHistoryData?.salesReturns || []);
+
+  const getModalSortIcon = (config: any, key: string) => {
+    if (config.key !== key) return <span className="opacity-30 ml-1">↕</span>;
+    return config.direction === 'asc' ? <span className="ml-1 text-blue-600">▲</span> : <span className="ml-1 text-blue-600">▼</span>;
+  };
+
   // Table Navigation
   const { selectedIndex, handleKeyDown, getRowClass, getRowProps, setSelectedIndex } = useTableNavigation({
     rowCount: products.length,
@@ -1352,21 +1364,21 @@ export default function ProductsPage() {
                         ) : (
                           <div className="overflow-x-auto">
                             <table className="w-full text-sm">
-                              <thead className="bg-slate-100 text-xs text-slate-500 uppercase sticky top-0">
+                              <thead className="bg-slate-100 text-[10px] text-slate-500 uppercase sticky top-0 font-bold">
                                 <tr>
-                                  <th className="p-3 text-center">N° Bon</th>
-                                  <th className="p-3 text-center">Date</th>
-                                  <th className="p-3 text-left">Client</th>
-                                  <th className="p-3 text-center">Utilisateur</th>
-                                  <th className="p-3 text-right bg-indigo-100">Palettes</th>
-                                  <th className="p-3 text-right bg-cyan-100">Cartons</th>
-                                  <th className="p-3 text-right bg-emerald-100">Qté</th>
-                                  <th className="p-3 text-right">Prix Unit.</th>
-                                  <th className="p-3 text-right">Montant</th>
+                                  <th className="p-3 text-center cursor-pointer hover:bg-slate-200" onClick={() => handleSortVentes('ordernumber as any')}>N° Bon {getModalSortIcon(sortVentes, 'ordernumber')}</th>
+                                  <th className="p-3 text-center cursor-pointer hover:bg-slate-200" onClick={() => handleSortVentes('orderdate' as any)}>Date {getModalSortIcon(sortVentes, 'orderdate')}</th>
+                                  <th className="p-3 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortVentes('customername' as any)}>Client {getModalSortIcon(sortVentes, 'customername')}</th>
+                                  <th className="p-3 text-center cursor-pointer hover:bg-slate-200" onClick={() => handleSortVentes('createdby' as any)}>Utilisateur {getModalSortIcon(sortVentes, 'createdby')}</th>
+                                  <th className="p-3 text-right bg-indigo-100/80 cursor-pointer hover:bg-indigo-200" onClick={() => handleSortVentes('pallets' as any)}>Palettes {getModalSortIcon(sortVentes, 'pallets')}</th>
+                                  <th className="p-3 text-right bg-cyan-100/80 cursor-pointer hover:bg-cyan-200" onClick={() => handleSortVentes('cartons' as any)}>Cartons {getModalSortIcon(sortVentes, 'cartons')}</th>
+                                  <th className="p-3 text-right bg-emerald-100/80 cursor-pointer hover:bg-emerald-200" onClick={() => handleSortVentes('qty' as any)}>Qté {getModalSortIcon(sortVentes, 'qty')}</th>
+                                  <th className="p-3 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortVentes('unitprice' as any)}>Prix Unit. {getModalSortIcon(sortVentes, 'unitprice')}</th>
+                                  <th className="p-3 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortVentes('linetotal' as any)}>Montant {getModalSortIcon(sortVentes, 'linetotal')}</th>
                                 </tr>
                               </thead>
                               <tbody className="divide-y divide-slate-100">
-                                {historyData.orders.map((o: any, idx: number) => (
+                                {sortedVentes.map((o: any, idx: number) => (
                                   <tr key={`${o.orderid}-${idx}`} className="hover:bg-slate-50">
                                     <td className="p-3 text-center text-blue-600 text-xs font-mono font-semibold">{o.ordernumber || '-'}</td>
                                     <td className="p-3 text-center text-slate-600 text-xs font-mono">{o.orderdate ? new Date(o.orderdate).toLocaleDateString('fr-DZ') : '-'}</td>
@@ -1429,21 +1441,21 @@ export default function ProductsPage() {
                         ) : (
                           <div className="overflow-x-auto">
                             <table className="w-full text-sm">
-                              <thead className="bg-orange-100 text-xs text-orange-700 uppercase sticky top-0">
+                              <thead className="bg-orange-100 text-[10px] text-orange-700 uppercase sticky top-0 font-bold">
                                 <tr>
-                                  <th className="p-3 text-center">N° Bon</th>
-                                  <th className="p-3 text-center">Date</th>
-                                  <th className="p-3 text-left">Fournisseur</th>
-                                  <th className="p-3 text-center">Utilisateur</th>
-                                  <th className="p-3 text-right bg-indigo-100">Palettes</th>
-                                  <th className="p-3 text-right bg-cyan-100">Cartons</th>
-                                  <th className="p-3 text-right bg-emerald-100">Qté</th>
-                                  <th className="p-3 text-right">Prix Unit.</th>
-                                  <th className="p-3 text-right">Montant</th>
+                                  <th className="p-3 text-center cursor-pointer hover:bg-orange-200" onClick={() => handleSortAchats('ponumber' as any)}>N° Bon {getModalSortIcon(sortAchats, 'ponumber')}</th>
+                                  <th className="p-3 text-center cursor-pointer hover:bg-orange-200" onClick={() => handleSortAchats('orderdate' as any)}>Date {getModalSortIcon(sortAchats, 'orderdate')}</th>
+                                  <th className="p-3 text-left cursor-pointer hover:bg-orange-200" onClick={() => handleSortAchats('suppliername' as any)}>Fournisseur {getModalSortIcon(sortAchats, 'suppliername')}</th>
+                                  <th className="p-3 text-center cursor-pointer hover:bg-orange-200" onClick={() => handleSortAchats('createdby' as any)}>Utilisateur {getModalSortIcon(sortAchats, 'createdby')}</th>
+                                  <th className="p-3 text-right bg-indigo-100/80 cursor-pointer hover:bg-indigo-200" onClick={() => handleSortAchats('pallets' as any)}>Palettes {getModalSortIcon(sortAchats, 'pallets')}</th>
+                                  <th className="p-3 text-right bg-cyan-100/80 cursor-pointer hover:bg-cyan-200" onClick={() => handleSortAchats('cartons' as any)}>Cartons {getModalSortIcon(sortAchats, 'cartons')}</th>
+                                  <th className="p-3 text-right bg-emerald-100/80 cursor-pointer hover:bg-emerald-200" onClick={() => handleSortAchats('qty' as any)}>Qté {getModalSortIcon(sortAchats, 'qty')}</th>
+                                  <th className="p-3 text-right cursor-pointer hover:bg-orange-200" onClick={() => handleSortAchats('unitprice' as any)}>Prix Unit. {getModalSortIcon(sortAchats, 'unitprice')}</th>
+                                  <th className="p-3 text-right cursor-pointer hover:bg-orange-200" onClick={() => handleSortAchats('linetotal' as any)}>Montant {getModalSortIcon(sortAchats, 'linetotal')}</th>
                                 </tr>
                               </thead>
                               <tbody className="divide-y divide-slate-100">
-                                {purchaseHistoryData.orders.map((o: any, idx: number) => (
+                                {sortedAchats.map((o: any, idx: number) => (
                                   <tr key={`${o.orderid}-${idx}`} className="hover:bg-orange-50/30">
                                     <td className="p-3 text-center text-orange-600 text-xs font-mono font-semibold">{o.ponumber || '-'}</td>
                                     <td className="p-3 text-center text-slate-600 text-xs font-mono">{o.orderdate ? new Date(o.orderdate).toLocaleDateString('fr-DZ') : '-'}</td>
@@ -1496,16 +1508,16 @@ export default function ProductsPage() {
                         ) : (
                           <div className="overflow-x-auto">
                             <table className="w-full text-sm">
-                              <thead className="bg-amber-100/50 text-xs text-amber-800 uppercase sticky top-0">
+                              <thead className="bg-amber-100/50 text-[10px] text-amber-800 uppercase sticky top-0 font-bold">
                                 <tr>
-                                  <th className="p-3 text-center">Date / Heure</th>
-                                  <th className="p-3 text-left">Utilisateur</th>
-                                  <th className="p-3 text-right">Quantité Modifiée</th>
+                                  <th className="p-3 text-center cursor-pointer hover:bg-amber-200" onClick={() => handleSortAjustements('createdat' as any)}>Date / Heure {getModalSortIcon(sortAjustements, 'createdat')}</th>
+                                  <th className="p-3 text-left cursor-pointer hover:bg-amber-200" onClick={() => handleSortAjustements('createdbyuser' as any)}>Utilisateur {getModalSortIcon(sortAjustements, 'createdbyuser')}</th>
+                                  <th className="p-3 text-right cursor-pointer hover:bg-amber-200" onClick={() => handleSortAjustements('quantity' as any)}>Quantité Modifiée {getModalSortIcon(sortAjustements, 'quantity')}</th>
                                   <th className="p-3 text-left">Notes</th>
                                 </tr>
                               </thead>
                               <tbody className="divide-y divide-slate-100">
-                                {adjustmentHistoryData.adjustments.map((adj: any) => {
+                                {sortedAjustements.map((adj: any) => {
                                   const qty = parseFloat(adj.quantity);
                                   return (
                                     <tr key={adj.transactionid} className="hover:bg-amber-50/20">
@@ -1582,20 +1594,20 @@ export default function ProductsPage() {
                           ) : (
                             <div className="overflow-x-auto">
                               <table className="w-full text-sm">
-                                <thead className="bg-orange-100 text-xs text-orange-700 uppercase sticky top-0">
+                                <thead className="bg-orange-100 text-[10px] text-orange-700 uppercase sticky top-0 font-bold">
                                   <tr>
-                                    <th className="p-3 text-center">N° Retour</th>
-                                    <th className="p-3 text-center">Date</th>
-                                    <th className="p-3 text-left">Fournisseur</th>
-                                    <th className="p-3 text-center">Utilisateur</th>
-                                    <th className="p-3 text-right">Qté</th>
-                                    <th className="p-3 text-right">Prix Unit.</th>
-                                    <th className="p-3 text-right">Montant</th>
+                                    <th className="p-3 text-center cursor-pointer hover:bg-orange-200" onClick={() => handleSortRetoursAchat('returnnumber' as any)}>N° Retour {getModalSortIcon(sortRetoursAchat, 'returnnumber')}</th>
+                                    <th className="p-3 text-center cursor-pointer hover:bg-orange-200" onClick={() => handleSortRetoursAchat('returndate' as any)}>Date {getModalSortIcon(sortRetoursAchat, 'returndate')}</th>
+                                    <th className="p-3 text-left cursor-pointer hover:bg-orange-200" onClick={() => handleSortRetoursAchat('suppliername' as any)}>Fournisseur {getModalSortIcon(sortRetoursAchat, 'suppliername')}</th>
+                                    <th className="p-3 text-center cursor-pointer hover:bg-orange-200" onClick={() => handleSortRetoursAchat('createdby' as any)}>Utilisateur {getModalSortIcon(sortRetoursAchat, 'createdby')}</th>
+                                    <th className="p-3 text-right cursor-pointer hover:bg-orange-200" onClick={() => handleSortRetoursAchat('qty' as any)}>Qté {getModalSortIcon(sortRetoursAchat, 'qty')}</th>
+                                    <th className="p-3 text-right cursor-pointer hover:bg-orange-200" onClick={() => handleSortRetoursAchat('unitprice' as any)}>Prix Unit. {getModalSortIcon(sortRetoursAchat, 'unitprice')}</th>
+                                    <th className="p-3 text-right cursor-pointer hover:bg-orange-200" onClick={() => handleSortRetoursAchat('linetotal' as any)}>Montant {getModalSortIcon(sortRetoursAchat, 'linetotal')}</th>
                                     <th className="p-3 text-left">Motif</th>
                                   </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
-                                  {returnHistoryData.purchaseReturns.map((r: any, idx: number) => (
+                                  {sortedRetoursAchat.map((r: any, idx: number) => (
                                     <tr key={`pr-${r.returnid}-${idx}`} className="hover:bg-orange-50/30">
                                       <td className="p-3 text-center text-orange-600 text-xs font-mono font-semibold">{r.returnnumber || '-'}</td>
                                       <td className="p-3 text-center text-slate-600 text-xs font-mono">{r.returndate ? new Date(r.returndate).toLocaleDateString('fr-DZ') : '-'}</td>
@@ -1626,20 +1638,20 @@ export default function ProductsPage() {
                           ) : (
                             <div className="overflow-x-auto">
                               <table className="w-full text-sm">
-                                <thead className="bg-rose-100 text-xs text-rose-700 uppercase sticky top-0">
+                                <thead className="bg-rose-100 text-[10px] text-rose-700 uppercase sticky top-0 font-bold">
                                   <tr>
-                                    <th className="p-3 text-center">N° Retour</th>
-                                    <th className="p-3 text-center">Date</th>
-                                    <th className="p-3 text-left">Client</th>
-                                    <th className="p-3 text-center">Utilisateur</th>
-                                    <th className="p-3 text-right">Qté</th>
-                                    <th className="p-3 text-right">Prix Unit.</th>
-                                    <th className="p-3 text-right">Montant</th>
+                                    <th className="p-3 text-center cursor-pointer hover:bg-rose-200" onClick={() => handleSortRetoursVente('returnnumber' as any)}>N° Retour {getModalSortIcon(sortRetoursVente, 'returnnumber')}</th>
+                                    <th className="p-3 text-center cursor-pointer hover:bg-rose-200" onClick={() => handleSortRetoursVente('returndate' as any)}>Date {getModalSortIcon(sortRetoursVente, 'returndate')}</th>
+                                    <th className="p-3 text-left cursor-pointer hover:bg-rose-200" onClick={() => handleSortRetoursVente('customername' as any)}>Client {getModalSortIcon(sortRetoursVente, 'customername')}</th>
+                                    <th className="p-3 text-center cursor-pointer hover:bg-rose-200" onClick={() => handleSortRetoursVente('createdby' as any)}>Utilisateur {getModalSortIcon(sortRetoursVente, 'createdby')}</th>
+                                    <th className="p-3 text-right cursor-pointer hover:bg-rose-200" onClick={() => handleSortRetoursVente('qty' as any)}>Qté {getModalSortIcon(sortRetoursVente, 'qty')}</th>
+                                    <th className="p-3 text-right cursor-pointer hover:bg-rose-200" onClick={() => handleSortRetoursVente('unitprice' as any)}>Prix Unit. {getModalSortIcon(sortRetoursVente, 'unitprice')}</th>
+                                    <th className="p-3 text-right cursor-pointer hover:bg-rose-200" onClick={() => handleSortRetoursVente('linetotal' as any)}>Montant {getModalSortIcon(sortRetoursVente, 'linetotal')}</th>
                                     <th className="p-3 text-left">Motif</th>
                                   </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
-                                  {returnHistoryData.salesReturns.map((r: any, idx: number) => (
+                                  {sortedRetoursVente.map((r: any, idx: number) => (
                                     <tr key={`sr-${r.returnid}-${idx}`} className="hover:bg-rose-50/30">
                                       <td className="p-3 text-center text-rose-600 text-xs font-mono font-semibold">{r.returnnumber || '-'}</td>
                                       <td className="p-3 text-center text-slate-600 text-xs font-mono">{r.returndate ? new Date(r.returndate).toLocaleDateString('fr-DZ') : '-'}</td>

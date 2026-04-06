@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import api from '@/lib/api';
+import { useSortableTable } from '@/hooks/useSortableTable';
 import Link from 'next/link';
 import { DateQuickFilter, DateRange, getDateRange } from '@/components/DateQuickFilter';
 import { UserFilter } from '@/components/UserFilter';
@@ -54,6 +55,17 @@ export default function ReportsPage() {
             console.log('Action on report transaction:', t);
         }
     });
+
+    // Sorting Hooks
+    const { sortedData: sortedSales, handleSort: handleSortSales, sortConfig: sortConfigSales } = useSortableTable(salesData?.transactions || []);
+    const { sortedData: sortedProducts, handleSort: handleSortProducts, sortConfig: sortConfigProducts } = useSortableTable(topProductsData);
+    const { sortedData: sortedBrands, handleSort: handleSortBrands, sortConfig: sortConfigBrands } = useSortableTable(topBrandsData);
+    const { sortedData: sortedClients, handleSort: handleSortClients, sortConfig: sortConfigClients } = useSortableTable(clientsData);
+
+    const getSortIcon = (config: any, key: string) => {
+        if (config.key !== key) return <span className="opacity-30 ml-1 text-[10px]">↕</span>;
+        return config.direction === 'asc' ? <span className="ml-1 text-blue-600">▲</span> : <span className="ml-1 text-blue-600">▼</span>;
+    };
 
     const loadData = async () => {
         setIsLoading(true);
@@ -199,20 +211,20 @@ export default function ReportsPage() {
                                 {activeTab === 'vente' && salesData && (
                                     <div className="overflow-x-auto">
                                         <table className="w-full text-sm">
-                                            <thead className="bg-slate-100 text-slate-600">
+                                            <thead className="bg-slate-100 text-slate-600 uppercase text-[10px] font-bold">
                                                 <tr>
-                                                    <th className="p-2 text-left font-medium">N°</th>
-                                                    <th className="p-2 text-left font-medium">Client</th>
-                                                    <th className="p-2 text-left font-medium">Date</th>
-                                                    <th className="p-2 text-left font-medium">Heure</th>
-                                                    <th className="p-2 text-right font-medium">Total</th>
-                                                    <th className="p-2 text-right font-medium">Reste</th>
+                                                    <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortSales('numero')}>N° {getSortIcon(sortConfigSales, 'numero')}</th>
+                                                    <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortSales('client')}>Client {getSortIcon(sortConfigSales, 'client')}</th>
+                                                    <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortSales('date')}>Date {getSortIcon(sortConfigSales, 'date')}</th>
+                                                    <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortSales('heure')}>Heure {getSortIcon(sortConfigSales, 'heure')}</th>
+                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortSales('total')}>Total {getSortIcon(sortConfigSales, 'total')}</th>
+                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortSales('reste')}>Reste {getSortIcon(sortConfigSales, 'reste')}</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-slate-100">
-                                                {salesData.transactions?.length === 0 ? (
+                                                {sortedSales.length === 0 ? (
                                                     <tr><td colSpan={6} className="p-4 text-center text-slate-400">Aucune vente pour cette période</td></tr>
-                                                ) : salesData.transactions?.map((t: any, i: number) => (
+                                                ) : sortedSales.map((t: any, i: number) => (
                                                     <tr key={i} {...getRowProps(i)} className={getRowClass(i, "hover:bg-slate-50 transition cursor-pointer")}>
                                                         <td className="p-2 font-mono text-brand-primary">{t.numero}</td>
                                                         <td className="p-2 font-medium">{t.client || 'Client Comptoir'}</td>
@@ -265,19 +277,19 @@ export default function ReportsPage() {
                                 {activeTab === 'marques' && (
                                     <div className="overflow-x-auto">
                                         <table className="w-full text-sm">
-                                            <thead className="bg-slate-100 text-slate-600">
+                                            <thead className="bg-slate-100 text-slate-600 uppercase text-[10px] font-bold">
                                                 <tr>
-                                                    <th className="p-2 text-left font-medium">Marque</th>
-                                                    <th className="p-2 text-right font-medium">Nb Produits</th>
-                                                    <th className="p-2 text-right font-medium">Qté Vendue</th>
-                                                    <th className="p-2 text-right font-medium">Nb Ventes</th>
-                                                    <th className="p-2 text-right font-medium">Total</th>
+                                                    <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortBrands('brand')}>Marque {getSortIcon(sortConfigBrands, 'brand')}</th>
+                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortBrands('nb_produits')}>Nb Produits {getSortIcon(sortConfigBrands, 'nb_produits')}</th>
+                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortBrands('qty_total')}>Qté Vendue {getSortIcon(sortConfigBrands, 'qty_total')}</th>
+                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortBrands('vente_count')}>Nb Ventes {getSortIcon(sortConfigBrands, 'vente_count')}</th>
+                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortBrands('total')}>Total {getSortIcon(sortConfigBrands, 'total')}</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-slate-100">
-                                                {topBrandsData.length === 0 ? (
+                                                {sortedBrands.length === 0 ? (
                                                     <tr><td colSpan={5} className="p-4 text-center text-slate-400">Aucune marque vendue pour cette période</td></tr>
-                                                ) : topBrandsData.map((b, i) => (
+                                                ) : sortedBrands.map((b, i) => (
                                                     <tr key={i} className="hover:bg-slate-50">
                                                         <td className="p-2 font-bold text-blue-600">{b.brand}</td>
                                                         <td className="p-2 text-right font-mono text-slate-500">{b.nb_produits}</td>
@@ -295,20 +307,20 @@ export default function ReportsPage() {
                                 {activeTab === 'produits' && (
                                     <div className="overflow-x-auto">
                                         <table className="w-full text-sm">
-                                            <thead className="bg-slate-100 text-slate-600">
+                                            <thead className="bg-slate-100 text-slate-600 uppercase text-[10px] font-bold">
                                                 <tr>
-                                                    <th className="p-2 text-left font-medium">Référence</th>
-                                                    <th className="p-2 text-left font-medium">Désignation</th>
-                                                    <th className="p-2 text-left font-medium">Marque</th>
-                                                    <th className="p-2 text-right font-medium">Qté Vendue</th>
-                                                    <th className="p-2 text-right font-medium">Nb Ventes</th>
-                                                    <th className="p-2 text-right font-medium">Total</th>
+                                                    <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortProducts('reference')}>Référence {getSortIcon(sortConfigProducts, 'reference')}</th>
+                                                    <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortProducts('designation')}>Désignation {getSortIcon(sortConfigProducts, 'designation')}</th>
+                                                    <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortProducts('brand')}>Marque {getSortIcon(sortConfigProducts, 'brand')}</th>
+                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortProducts('qty_total')}>Qté Vendue {getSortIcon(sortConfigProducts, 'qty_total')}</th>
+                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortProducts('vente_count')}>Nb Ventes {getSortIcon(sortConfigProducts, 'vente_count')}</th>
+                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortProducts('total')}>Total {getSortIcon(sortConfigProducts, 'total')}</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-slate-100">
-                                                {topProductsData.length === 0 ? (
+                                                {sortedProducts.length === 0 ? (
                                                     <tr><td colSpan={6} className="p-4 text-center text-slate-400">Aucun produit vendu pour cette période</td></tr>
-                                                ) : topProductsData.map((p, i) => (
+                                                ) : sortedProducts.map((p, i) => (
                                                     <tr key={i} className="hover:bg-slate-50">
                                                         <td className="p-2 font-mono text-blue-600">{p.reference}</td>
                                                         <td className="p-2 font-medium">{p.designation}</td>
@@ -329,20 +341,20 @@ export default function ReportsPage() {
                                 {activeTab === 'clients' && (
                                     <div className="overflow-x-auto">
                                         <table className="w-full text-sm">
-                                            <thead className="bg-slate-100 text-slate-600">
+                                            <thead className="bg-slate-100 text-slate-600 uppercase text-[10px] font-bold">
                                                 <tr>
-                                                    <th className="p-2 text-left font-medium">Client</th>
-                                                    <th className="p-2 text-left font-medium">Type</th>
-                                                    <th className="p-2 text-right font-medium">Commandes</th>
-                                                    <th className="p-2 text-right font-medium">Total Achats</th>
-                                                    <th className="p-2 text-right font-medium">Versements</th>
-                                                    <th className="p-2 text-right font-medium">Reste</th>
+                                                    <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortClients('nom')}>Client {getSortIcon(sortConfigClients, 'nom')}</th>
+                                                    <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortClients('type')}>Type {getSortIcon(sortConfigClients, 'type')}</th>
+                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortClients('nb_commandes')}>Commandes {getSortIcon(sortConfigClients, 'nb_commandes')}</th>
+                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortClients('total')}>Total Achats {getSortIcon(sortConfigClients, 'total')}</th>
+                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortClients('versement')}>Versements {getSortIcon(sortConfigClients, 'versement')}</th>
+                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortClients('reste')}>Reste {getSortIcon(sortConfigClients, 'reste')}</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-slate-100">
-                                                {clientsData.length === 0 ? (
+                                                {sortedClients.length === 0 ? (
                                                     <tr><td colSpan={6} className="p-4 text-center text-slate-400">Aucun client actif pour cette période</td></tr>
-                                                ) : clientsData.map((c, i) => (
+                                                ) : sortedClients.map((c, i) => (
                                                     <tr key={i} className="hover:bg-blue-50 cursor-pointer transition-colors" onClick={() => setSelectedClient(c)}>
                                                         <td className="p-2 font-medium">{c.nom}</td>
                                                         <td className="p-2">
