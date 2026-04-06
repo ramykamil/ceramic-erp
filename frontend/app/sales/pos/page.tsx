@@ -280,6 +280,8 @@ function POSContent() {
   const [manualProductQty, setManualProductQty] = useState(1);
   const [manualProductPrice, setManualProductPrice] = useState(0);
   const [manualProductBrand, setManualProductBrand] = useState('');
+  const [manualProductColis, setManualProductColis] = useState(0);
+  const [manualProductPalettes, setManualProductPalettes] = useState(0);
 
   // Table Navigation for Product Browser
   const filteredBrowserProducts = useMemo(() => {
@@ -609,10 +611,16 @@ function POSContent() {
     setCart([...cart, {
       rowId: crypto.randomUUID(), productId: manualProductId, productCode: 'MANUEL', productName: manualProductName,
       brandName: manualProductBrand || 'Manual', stockQty: 0, stockPalettes: 0, stockCartons: 0, piecesPerCarton: 0, cartonsPerPalette: 0,
-      sqmPerPiece: parseSqmPerPiece(manualProductName), palettes: 0, cartons: 0, quantity: manualProductQty, unitId: units[0].unitid,
+      sqmPerPiece: parseSqmPerPiece(manualProductName), palettes: manualProductPalettes, cartons: manualProductColis, quantity: manualProductQty, unitId: units[0].unitid,
       unitPrice: manualProductPrice, priceSource: 'MANUEL', lineTotal: manualProductQty * manualProductPrice
     }]);
     setIsManualProductOpen(false);
+    // Reset fields
+    setManualProductName('');
+    setManualProductQty(1);
+    setManualProductPrice(0);
+    setManualProductColis(0);
+    setManualProductPalettes(0);
   };
 
   const handleValidateSale = async () => {
@@ -1062,12 +1070,28 @@ function POSContent() {
               <div className="space-y-4">
                 <input type="text" placeholder="Désignation..." value={manualProductName} onChange={e => setManualProductName(e.target.value)} className="w-full p-4 bg-slate-50 border rounded-xl" />
                 <div className="grid grid-cols-2 gap-3">
-                  <input type="number" placeholder="Qté" value={manualProductQty} onChange={e => setManualProductQty(Number(e.target.value))} className="p-4 bg-slate-50 border rounded-xl" />
-                  <input type="number" placeholder="Prix" value={manualProductPrice} onChange={e => setManualProductPrice(Number(e.target.value))} className="p-4 bg-slate-50 border rounded-xl" />
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Qté</label>
+                    <input type="number" placeholder="Qté" value={manualProductQty} onChange={e => setManualProductQty(Number(e.target.value))} className="w-full p-4 bg-slate-50 border rounded-xl" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Prix</label>
+                    <input type="number" placeholder="Prix" value={manualProductPrice} onChange={e => setManualProductPrice(Number(e.target.value))} className="w-full p-4 bg-slate-50 border rounded-xl" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Colis</label>
+                    <input type="number" placeholder="Colis" value={manualProductColis} onChange={e => setManualProductColis(Number(e.target.value))} className="w-full p-4 bg-slate-50 border rounded-xl" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Palettes</label>
+                    <input type="number" placeholder="Palettes" value={manualProductPalettes} onChange={e => setManualProductPalettes(Number(e.target.value))} className="w-full p-4 bg-slate-50 border rounded-xl" />
+                  </div>
                 </div>
                 <div className="flex gap-3 pt-4">
                   <button onClick={() => setIsManualProductOpen(false)} className="flex-1 py-4 text-slate-500 font-bold">Annuler</button>
-                  <button onClick={handleAddManualProduct} className="flex-1 py-4 bg-amber-500 text-white rounded-xl font-bold">AJOUTER</button>
+                  <button onClick={handleAddManualProduct} className="flex-1 py-4 bg-amber-500 text-white rounded-xl font-bold uppercase tracking-wider">Ajouter</button>
                 </div>
               </div>
             </div>
