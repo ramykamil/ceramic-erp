@@ -221,17 +221,17 @@ function POSContent() {
 
   const [manualProductId, setManualProductId] = useState<number | null>(null);
 
-  const { widths: cartWidths, handleResize: handleCartResize } = useColumnWidths('pos-cart-v2', {
-    designation: 160,
-    marque: 80,
+  const { widths: cartWidths, handleResize: handleCartResize } = useColumnWidths('pos-cart-v3', {
+    designation: 130,
+    marque: 70,
     stock: 55,
-    palettes: 60,
-    cartons: 60,
+    palettes: 55,
+    cartons: 55,
     quantity: 70,
-    unite: 55,
-    prixunit: 80,
-    src: 55,
-    totalligne: 90,
+    unite: 65,
+    prixunit: 100,
+    src: 45,
+    totalligne: 95,
   });
 
   const [selectedCustomerId, setSelectedCustomerId] = useState<number | ''>('');
