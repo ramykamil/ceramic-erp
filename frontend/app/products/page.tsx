@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { TableVirtuoso } from 'react-virtuoso';
 import { ResizableHeader, useColumnWidths } from '@/components/ResizableSortableHeader';
 import { exportToExcel, formatCurrencyExport, formatQuantityExport } from '@/lib/exportToExcel';
+import CatalogueSyncModal from '@/components/CatalogueSyncModal';
 
 // Helper for formatting money
 const formatMoney = (amount: number) => new Intl.NumberFormat('fr-DZ', { style: 'currency', currency: 'DZD', minimumFractionDigits: 2 }).format(amount || 0);
@@ -88,6 +89,9 @@ export default function ProductsPage() {
     qtecolisparpalette: 0,
     warehouseid: 0, // NEW: warehouse for product creation
   });
+
+  // Catalogue Sync State
+  const [isSyncModalOpen, setIsSyncModalOpen] = useState(false);
 
   // Delete Confirm State
   const [deletingProductId, setDeletingProductId] = useState<number | null>(null);
@@ -537,6 +541,12 @@ export default function ProductsPage() {
               </h1>
             </div>
             <div className="flex gap-2">
+              <button
+                onClick={() => setIsSyncModalOpen(true)}
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-3 py-1.5 rounded text-xs font-medium shadow-sm flex items-center gap-2 transition"
+              >
+                📥 Sync Excel
+              </button>
               <button
                 onClick={handleExport}
                 disabled={isExporting}
@@ -1639,6 +1649,15 @@ export default function ProductsPage() {
             </div>
           </div>
         )}
+        {/* Catalogue Sync Modal */}
+        <CatalogueSyncModal
+          isOpen={isSyncModalOpen}
+          onClose={() => setIsSyncModalOpen(false)}
+          onComplete={() => {
+            loadProducts();
+            loadFilters();
+          }}
+        />
 
       </div>
     </div>

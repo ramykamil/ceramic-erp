@@ -411,6 +411,29 @@ class ApiClient {
     return response.blob();
   }
 
+  // --- Catalogue Sync (Smart Excel Import) ---
+
+  async analyzeCatalogueSync(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    const apiUrl = getApiBaseUrl();
+    const response = await fetch(`${apiUrl}/catalogue/sync/analyze`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${this.token}`,
+      },
+      body: formData,
+    });
+    return response.json();
+  }
+
+  async executeCatalogueSync(syncSessionId: string, warehouseId: number) {
+    return this.request('/catalogue/sync/execute', {
+      method: 'POST',
+      body: JSON.stringify({ syncSessionId, warehouseId }),
+    });
+  }
+
   // Auth
   async login(username: string, password: string) {
     return this.request('/auth/login', {

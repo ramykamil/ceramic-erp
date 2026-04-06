@@ -252,6 +252,11 @@ router.get('/accounting/supplier-versements', authenticateToken, requireRole(['A
 router.put('/accounting/transactions/:id', authenticateToken, requireRole(['ADMIN', 'MANAGER', 'SALES_WHOLESALE']), accountingController.updateCashTransaction);
 router.delete('/accounting/transactions/:id', authenticateToken, requireRole(['ADMIN', 'MANAGER', 'SALES_WHOLESALE']), accountingController.deleteCashTransaction);
 
+// --- Catalogue Sync (Excel Import) ---
+const catalogueSyncController = require('../controllers/catalogueSync.controller');
+router.post('/catalogue/sync/analyze', authenticateToken, requireRole('ADMIN', 'MANAGER'), upload.single('file'), catalogueSyncController.analyzeCatalogueSync);
+router.post('/catalogue/sync/execute', authenticateToken, requireRole('ADMIN', 'MANAGER'), catalogueSyncController.executeCatalogueSync);
+
 // --- Settings ---
 // --- Settings ---
 const settingsController = require('../controllers/settings.controller');
