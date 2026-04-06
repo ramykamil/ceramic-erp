@@ -49,6 +49,13 @@ export function useTableNavigation({ rowCount, onAction }: UseTableNavigationPro
     const handleKeyDown = useCallback((e: KeyboardEvent | React.KeyboardEvent) => {
         if (rowCount === 0) return;
 
+        // Skip if user is actively typing in an input, textarea, or contenteditable
+        const activeEl = document.activeElement;
+        const tagName = activeEl?.tagName.toLowerCase();
+        if (tagName === 'input' || tagName === 'textarea' || tagName === 'select' || (activeEl as HTMLElement)?.isContentEditable) {
+            return;
+        }
+
         switch (e.key) {
             case 'ArrowDown':
                 e.preventDefault();
@@ -73,10 +80,17 @@ export function useTableNavigation({ rowCount, onAction }: UseTableNavigationPro
         }
     }, [rowCount, selectedIndex, onAction]);
 
+    // Attach listener globally to window so user doesn't have to manually focus the wrapping div
+    useEffect(() => {
+        const globalListener = (e: KeyboardEvent) => handleKeyDown(e);
+        window.addEventListener('keydown', globalListener);
+        return () => window.removeEventListener('keydown', globalListener);
+    }, [handleKeyDown]);
+
     // Helper to determine tailwind classes for the row
     const getRowClass = (index: number, baseClass: string = "hover:bg-slate-50 transition-colors") => {
         const isSelected = selectedIndex === index;
-        return `${baseClass} ${isSelected ? '!bg-blue-50/80 ring-1 ring-inset ring-brand-primary/50 relative z-10' : ''}`;
+        return `${baseClass} ${isSelected ? '!bg-slate-300 font-bold shadow-[inset_0_2px_12px_rgba(0,0,0,0.15)] ring-2 ring-inset ring-slate-400 relative z-10' : ''}`;
     };
 
     // Props to apply to each row
