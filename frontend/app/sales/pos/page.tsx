@@ -741,8 +741,10 @@ function POSContent() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-xs">
-                      {cart.map((item) => (
-                        <tr key={item.rowId} className={`hover:bg-slate-50 group transition-colors pos-row-compact`}>
+                      {cart.map((item) => {
+                        const isTransport = item.productName.toUpperCase().includes('TRANSPORT');
+                        return (
+                        <tr key={item.rowId} className={`group transition-colors pos-row-compact ${isTransport ? 'bg-slate-200/90 hover:bg-slate-300' : 'hover:bg-slate-50'}`}>
                           <td className="px-2 py-1.5 truncate text-slate-700">
                             <div className="font-bold text-xs">{item.productName}</div>
                             {(item.piecesPerCarton > 0 || item.cartonsPerPalette > 0) && (
@@ -779,7 +781,8 @@ function POSContent() {
                             <button onClick={() => removeItem(item.rowId)} className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity text-lg">&times;</button>
                           </td>
                         </tr>
-                      ))}
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>
@@ -815,8 +818,10 @@ function POSContent() {
 
                 {/* Mobile Cards View */}
                 <div className="lg:hidden flex-1 overflow-auto p-2 space-y-3 custom-scrollbar bg-slate-50">
-                  {cart.map((item) => (
-                    <div key={item.rowId} className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 space-y-4">
+                  {cart.map((item) => {
+                    const isTransport = item.productName.toUpperCase().includes('TRANSPORT');
+                    return (
+                    <div key={item.rowId} className={`rounded-2xl shadow-sm border p-4 space-y-4 ${isTransport ? 'bg-slate-200/90 border-slate-400' : 'bg-white border-slate-200'}`}>
                       <div className="flex justify-between items-start">
                         <div className="flex-1 min-w-0">
                           <h4 className="font-black text-slate-800 leading-tight truncate">{item.productName}</h4>
@@ -870,7 +875,8 @@ function POSContent() {
                         </div>
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
                   {cart.length === 0 && (
                     <div className="py-20 text-center text-slate-300">
                       <div className="text-6xl mb-4">🛒</div>
