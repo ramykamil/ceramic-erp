@@ -784,6 +784,35 @@ function POSContent() {
                   </table>
                 </div>
 
+                {/* Cart Totals Strip */}
+                {cart.length > 0 && (
+                  <div className="hidden lg:flex flex-none bg-slate-800 text-white px-3 py-2 gap-4 items-center justify-end text-[11px] font-bold">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-slate-400 uppercase tracking-wider">Palettes:</span>
+                      <span className="text-indigo-300 font-mono text-sm">{cart.reduce((sum, i) => sum + (Number(i.palettes) || 0), 0).toFixed(1)}</span>
+                    </div>
+                    <div className="w-px h-4 bg-slate-600"></div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-slate-400 uppercase tracking-wider">Colis:</span>
+                      <span className="text-indigo-300 font-mono text-sm">{cart.reduce((sum, i) => sum + (Number(i.cartons) || 0), 0).toFixed(1)}</span>
+                    </div>
+                    <div className="w-px h-4 bg-slate-600"></div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-slate-400 uppercase tracking-wider">Qté:</span>
+                      <span className="text-red-300 font-mono text-sm">{cart.reduce((sum, i) => sum + (Number(i.quantity) || 0), 0).toFixed(2)}</span>
+                    </div>
+                    <div className="w-px h-4 bg-slate-600"></div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-slate-400 uppercase tracking-wider">Total:</span>
+                      <span className="text-green-300 font-mono text-sm">{formatCurrency(totalHT)}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 ml-2 bg-slate-700 px-2 py-1 rounded-lg">
+                      <span className="text-slate-400 uppercase tracking-wider">Lignes:</span>
+                      <span className="text-white font-mono">{cart.length}</span>
+                    </div>
+                  </div>
+                )}
+
                 {/* Mobile Cards View */}
                 <div className="lg:hidden flex-1 overflow-auto p-2 space-y-3 custom-scrollbar bg-slate-50">
                   {cart.map((item) => (
