@@ -309,6 +309,11 @@ async function createOrder(req, res, next) {
 
       for (const item of items) {
         const { productId, quantity, unitId, unitPrice: providedUnitPrice, discountPercent = 0, taxPercent = 0, palletCount: rawPalletCount = 0, colisCount: rawColisCount = 0, productName } = item;
+        
+        if (parseFloat(quantity) <= 0) {
+          throw new Error(`Le produit "${productName || productId}" a une quantité de 0 ou moins. Veuillez corriger la quantité.`);
+        }
+
         const palletCount = Number(rawPalletCount) || 0;
         const colisCount = Number(rawColisCount) || 0;
 
@@ -440,6 +445,11 @@ async function addOrderItem(req, res, next) {
 
     const { orderId } = req.params;
     const { productId, quantity, unitId, unitPrice: providedUnitPrice, discountPercent = 0, taxPercent = 0, palletCount: rawPalletCount = 0, colisCount: rawColisCount = 0, productName } = req.body;
+    
+    if (parseFloat(quantity) <= 0) {
+      throw new Error(`La quantité pour "${productName || 'ce produit'}" doit être supérieure à 0.`);
+    }
+
     const palletCount = Number(rawPalletCount) || 0;
     const colisCount = Number(rawColisCount) || 0;
 
@@ -746,14 +756,55 @@ async function finalizeOrder(req, res, next) {
       WHERE oi.OrderID = $1
     `, [orderId]);
 
+    // Restriction: Prevent validation if any item has quantity <= 0
+    for (const item of itemsResult.rows) {
+      if (parseFloat(item.quantity) <= 0) {
+        throw new Error(`Le produit "${item.productname}" a une quantité de 0 ou moins. Veuillez corriger la quantité avant de valider.`);
+      }
+    }
+
     // Get warehouse from order (default to 1 if not specified)
     const warehouseId = order.warehouseid || 1;
 
     // ==========================================
     // 1. STRICT STOCK VALIDATION BEFORE ANY DEDUCTION
     // ==========================================
-    // Removed strict stock validation to allow confirmation even if stock is 0 or negative.
-    // Inventory deduction will still happen below, potentially driving stock negative.
+    for (const item of itemsResult.rows) {
+      if (item.productcode === 'MANUAL') continue;
+
+      const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
+      const requiredQty = convertUnitToInventory(parseFloat(item.quantity), item.unitcode, item.primaryunitcode, sqmPerPiece, item.productname, parseFloat(item.qteparcolis) || 0);
+
+      const inventoryCheck = await client.query(
+        'SELECT QuantityOnHand, QuantityReserved FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\'',
+        [item.productid, warehouseId]
+      );
+
+      let available = 0;
+      if (inventoryCheck.rows.length > 0) {
+        available = parseFloat(inventoryCheck.rows[0].quantityonhand) - parseFloat(inventoryCheck.rows[0].quantityreserved);
+        
+        // Note: When we add an item to an order, we already reserve it in addOrderItem/createOrder.
+        // So the "available" stock already has this order's quantity reserved.
+        // Actually, during finalizeOrder, we are DEDUCTING the reserved amount and OnHand.
+        // So we should check if OnHand is enough.
+        // Wait, if it was already reserved, Available (OnHand - Reserved) will be 0 if we took the last ones.
+        // But we want to allow validation if we ALREADY reserved it.
+        // So the check should be: Can we fulfill this order?
+        // If we reserved 10 units for THIS order, and OnHand is 10, then OnHand - (Reserved - THIS_ORDER_QTY) should be >= THIS_ORDER_QTY.
+        // Simpler: Is QuantityOnHand >= RequiredQty? (Since Reserved includes THIS order and others).
+      }
+
+      if (available < 0) {
+        throw new Error(`Stock insuffisant pour "${item.productname}". Disponible: ${available.toFixed(2)}, Requis additionnel: ${requiredQty.toFixed(2)}`);
+      }
+      
+      // Traditional absolute check:
+      const totalAvailable = inventoryCheck.rows.length > 0 ? parseFloat(inventoryCheck.rows[0].quantityonhand) : 0;
+      if (totalAvailable < requiredQty) {
+         throw new Error(`Stock insuffisant pour "${item.productname}". En stock: ${totalAvailable.toFixed(2)}, Requis: ${requiredQty.toFixed(2)}`);
+      }
+    }
 
 
     // Deduct inventory for each item

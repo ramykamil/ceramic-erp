@@ -233,7 +233,7 @@ export default function NewReturnPage() {
                             <h2 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
                                 <span className="p-1.5 bg-blue-100 text-blue-600 rounded">👤</span> Client
                             </h2>
-                            
+
                             <div className="flex bg-slate-100 p-1 rounded-lg mb-4">
                                 <button onClick={() => setIsManualClient(false)} className={`flex-1 py-1.5 text-xs font-bold rounded-md transition ${!isManualClient ? 'bg-white shadow-sm' : 'text-slate-500'}`}>EXISTANT</button>
                                 <button onClick={() => setIsManualClient(true)} className={`flex-1 py-1.5 text-xs font-bold rounded-md transition ${isManualClient ? 'bg-white shadow-sm' : 'text-slate-500'}`}>MANUEL</button>
@@ -268,11 +268,11 @@ export default function NewReturnPage() {
                                 <textarea value={formReason} onChange={(e) => setFormReason(e.target.value)} className="w-full p-2 border border-slate-300 rounded-lg text-sm h-20" placeholder="Ex: Casse, Surplus, Erreur..."></textarea>
                             </div>
                         </div>
-                        
+
                         <div className="bg-blue-600 p-6 rounded-xl shadow-lg text-white">
                             <p className="text-blue-100 text-xs font-bold uppercase mb-1">Total à Rembourser</p>
                             <h2 className="text-3xl font-black">{formatCurrency(formItems.reduce((s, i) => s + i.lineTotal, 0))}</h2>
-                            <button 
+                            <button
                                 onClick={handleSubmit}
                                 disabled={isSubmitting}
                                 className="w-full mt-6 bg-white text-blue-600 font-bold py-3 rounded-lg hover:bg-blue-50 transition shadow-md disabled:opacity-50"
@@ -285,7 +285,7 @@ export default function NewReturnPage() {
                     {/* Right: Articles */}
                     <div className="md:col-span-2 space-y-6">
                         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                             <h2 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                            <h2 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
                                 <span className="p-1.5 bg-orange-100 text-orange-600 rounded">📦</span> Articles Retournés
                             </h2>
 
@@ -321,7 +321,7 @@ export default function NewReturnPage() {
                                     formItems.map((item, idx) => (
                                         <div key={idx} className="flex flex-col sm:flex-row gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200 relative group">
                                             <button onClick={() => removeFormItem(idx)} className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs font-bold shadow-md opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">×</button>
-                                            
+
                                             <div className="flex-1">
                                                 <p className="font-bold text-slate-800 text-sm">{item.productName}</p>
                                                 <p className="text-[10px] text-slate-400 font-mono">{item.productCode}</p>
