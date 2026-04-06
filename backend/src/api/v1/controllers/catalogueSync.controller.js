@@ -361,6 +361,7 @@ async function executeCatalogueSync(req, res, next) {
             const chunk = newProducts.slice(i, i + CREATE_BATCH_SIZE);
             for (const p of chunk) {
                 try {
+                    await client.query('SAVEPOINT product_creation');
                     const bID = p.brandName ? brandMap.get(p.brandName.toLowerCase().trim()) : null;
                     const uID = (p.productName.toUpperCase().match(/\(M²\)|M2/)) ? unitSQM : unitPCS;
                     
@@ -378,8 +379,12 @@ async function executeCatalogueSync(req, res, next) {
                         await client.query(`INSERT INTO InventoryTransactions (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, Notes, CreatedBy, OwnershipType)
                             VALUES ($1, $2, 'ADJUSTMENT', $3, 'CATALOGUE_SYNC', 'Initial sync', $4, 'OWNED')`, [pid, targetWarehouseId, p.quantity, userId]);
                     }
+                    await client.query('RELEASE SAVEPOINT product_creation');
                     results.created++;
-                } catch (e) { results.errors.push({ name: p.productName, error: e.message }); }
+                } catch (e) { 
+                    await client.query('ROLLBACK TO SAVEPOINT product_creation');
+                    results.errors.push({ name: p.productName, error: e.message }); 
+                }
             }
         }
 
