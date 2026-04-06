@@ -24,6 +24,7 @@ const TABS = [
 
 export default function ReportsPage() {
     const [activeTab, setActiveTab] = useState('vente');
+    const [searchQueryClients, setSearchQueryClients] = useState('');
     const containerRef = useRef<HTMLDivElement>(null);
 
     // Auto-focus the container on mount
@@ -36,7 +37,7 @@ export default function ReportsPage() {
         return d.toISOString().split('T')[0];
     });
     const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
     const [selectedClient, setSelectedClient] = useState<any>(null);
 
@@ -341,40 +342,64 @@ export default function ReportsPage() {
 
                                 {/* CLIENTS TAB */}
                                 {activeTab === 'clients' && (
-                                    <div className="overflow-x-auto">
-                                        <table className="w-full text-sm">
-                                            <thead className="bg-slate-100 text-slate-600 uppercase text-[10px] font-bold">
-                                                <tr>
-                                                    <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortClients('nom')}>Client {getSortIcon(sortConfigClients, 'nom')}</th>
-                                                    <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortClients('type')}>Type {getSortIcon(sortConfigClients, 'type')}</th>
-                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortClients('nb_commandes')}>Commandes {getSortIcon(sortConfigClients, 'nb_commandes')}</th>
-                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortClients('total')}>Total Achats {getSortIcon(sortConfigClients, 'total')}</th>
-                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortClients('versement')}>Versements {getSortIcon(sortConfigClients, 'versement')}</th>
-                                                    <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortClients('reste')}>Reste {getSortIcon(sortConfigClients, 'reste')}</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="divide-y divide-slate-100">
-                                                {sortedClients.length === 0 ? (
-                                                    <tr><td colSpan={6} className="p-4 text-center text-slate-400">Aucun client actif pour cette période</td></tr>
-                                                ) : sortedClients.map((c, i) => (
-                                                    <tr key={i} className="hover:bg-blue-50 cursor-pointer transition-colors" onClick={() => setSelectedClient(c)}>
-                                                        <td className="p-2 font-medium">{c.nom}</td>
-                                                        <td className="p-2">
-                                                            <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${c.type === 'WHOLESALE' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'
-                                                                }`}>
-                                                                {c.type === 'WHOLESALE' ? 'Gros' : 'Détail'}
-                                                            </span>
-                                                        </td>
-                                                        <td className="p-2 text-right font-mono">{c.nb_commandes}</td>
-                                                        <td className="p-2 text-right font-mono font-bold">{formatDZD(c.total)}</td>
-                                                        <td className="p-2 text-right font-mono text-green-600">{formatDZD(c.versement)}</td>
-                                                        <td className={`p-2 text-right font-mono font-bold ${parseFloat(c.reste) > 0 ? 'text-red-600' : 'text-green-600'}`}>
-                                                            {formatDZD(c.reste)}
-                                                        </td>
+                                    <div className="space-y-4">
+                                        <div className="flex justify-between items-center px-2">
+                                            <div className="relative w-full max-w-sm">
+                                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">🔍</span>
+                                                <input
+                                                    type="text"
+                                                    placeholder="Rechercher un client..."
+                                                    className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                                                    value={searchQueryClients}
+                                                    onChange={(e) => setSearchQueryClients(e.target.value)}
+                                                />
+                                            </div>
+                                            <div className="text-xs text-slate-500 font-medium bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
+                                                {sortedClients.filter(c => c.nom?.toLowerCase().includes(searchQueryClients.toLowerCase()) || c.id?.toString().includes(searchQueryClients)).length} clients trouvés
+                                            </div>
+                                        </div>
+
+                                        <div className="overflow-x-auto bg-white rounded-xl border border-slate-200 shadow-sm">
+                                            <table className="w-full text-sm">
+                                                <thead className="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold border-b border-slate-200">
+                                                    <tr>
+                                                        <th className="p-3 text-left cursor-pointer hover:bg-slate-100 transition-colors" onClick={() => handleSortClients('nom')}>Client {getSortIcon(sortConfigClients, 'nom')}</th>
+                                                        <th className="p-3 text-left cursor-pointer hover:bg-slate-100 transition-colors" onClick={() => handleSortClients('type')}>Type {getSortIcon(sortConfigClients, 'type')}</th>
+                                                        <th className="p-3 text-right cursor-pointer hover:bg-slate-100 transition-colors" onClick={() => handleSortClients('nb_commandes')}>Commandes {getSortIcon(sortConfigClients, 'nb_commandes')}</th>
+                                                        <th className="p-3 text-right cursor-pointer hover:bg-slate-100 transition-colors" onClick={() => handleSortClients('total')}>Total Achats {getSortIcon(sortConfigClients, 'total')}</th>
+                                                        <th className="p-3 text-right cursor-pointer hover:bg-slate-100 transition-colors" onClick={() => handleSortClients('versement')}>Versements {getSortIcon(sortConfigClients, 'versement')}</th>
+                                                        <th className="p-3 text-right cursor-pointer hover:bg-slate-100 transition-colors" onClick={() => handleSortClients('reste')}>Reste {getSortIcon(sortConfigClients, 'reste')}</th>
                                                     </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody className="divide-y divide-slate-100">
+                                                    {sortedClients.filter(c =>
+                                                        c.nom?.toLowerCase().includes(searchQueryClients.toLowerCase()) ||
+                                                        c.id?.toString().includes(searchQueryClients)
+                                                    ).length === 0 ? (
+                                                        <tr><td colSpan={6} className="p-8 text-center text-slate-400 italic">Aucun client ne correspond à votre recherche</td></tr>
+                                                    ) : sortedClients.filter(c =>
+                                                        c.nom?.toLowerCase().includes(searchQueryClients.toLowerCase()) ||
+                                                        c.id?.toString().includes(searchQueryClients)
+                                                    ).map((c, i) => (
+                                                        <tr key={i} className="hover:bg-blue-50/50 cursor-pointer transition-colors group" onClick={() => setSelectedClient(c)}>
+                                                            <td className="p-3 font-semibold text-slate-700 group-hover:text-blue-700">{c.nom}</td>
+                                                            <td className="p-3">
+                                                                <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${c.type === 'WHOLESALE' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'
+                                                                    }`}>
+                                                                    {c.type === 'WHOLESALE' ? 'Gros' : 'Détail'}
+                                                                </span>
+                                                            </td>
+                                                            <td className="p-3 text-right font-mono text-slate-600">{c.nb_commandes}</td>
+                                                            <td className="p-3 text-right font-mono font-bold text-slate-800">{formatDZD(c.total)}</td>
+                                                            <td className="p-3 text-right font-mono text-emerald-600">{formatDZD(c.versement)}</td>
+                                                            <td className={`p-3 text-right font-mono font-bold ${parseFloat(c.reste) > 0 ? 'text-red-600' : 'text-emerald-600'}`}>
+                                                                {formatDZD(c.reste)}
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 )}
                             </>

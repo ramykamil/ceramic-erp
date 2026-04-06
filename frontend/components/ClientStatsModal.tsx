@@ -143,15 +143,19 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
                                                             <th className="p-2 pl-4 text-left font-medium">Référence</th>
                                                             <th className="p-2 text-left font-medium">Désignation</th>
                                                             <th className="p-2 text-right font-medium">Qté Achetée</th>
+                                                            <th className="p-2 text-right font-medium">Colis</th>
+                                                            <th className="p-2 text-right font-medium">Palettes</th>
                                                             <th className="p-2 pr-4 text-right font-medium">Total (DA)</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody className="divide-y divide-slate-100">
-                                                        {topProducts.slice(0, 5).map((p, idx) => (
+                                                        {topProducts.slice(0, 7).map((p, idx) => (
                                                             <tr key={idx} className="hover:bg-slate-50 text-slate-700">
                                                                 <td className="p-2 pl-4 font-mono text-blue-600 text-xs">{p.reference}</td>
                                                                 <td className="p-2 font-medium">{p.designation}</td>
                                                                 <td className="p-2 text-right font-mono font-medium">{Math.round(p.qty_total)}</td>
+                                                                <td className="p-2 text-right font-mono text-orange-600">{Math.round(p.colis_total || 0)}</td>
+                                                                <td className="p-2 text-right font-mono text-indigo-600">{Math.round(p.pallets_total || 0)}</td>
                                                                 <td className="p-2 pr-4 text-right font-mono font-semibold">{formatDZD(p.total)}</td>
                                                             </tr>
                                                         ))}
