@@ -62,32 +62,50 @@ async function analyzeCatalogueSync(req, res, next) {
             return res.status(400).json({ success: false, message: 'Le fichier est vide ou ne contient pas de données.' });
         }
 
-        // 2. Detect column headers
-        const headers = rows[0].map(h => (h || '').toString().trim());
-        const findCol = (partial) => headers.findIndex(h => h.toLowerCase().includes(partial.toLowerCase()));
+        // 2. Detect column headers with more robustness
+        // Some headers might be split across two rows if formatted as such in Excel
+        let headerRow = rows[0].map(h => (h || '').toString().trim());
+        const secondRow = rows.length > 1 ? rows[1].map(h => (h || '').toString().trim()) : [];
+        
+        // Combine rows if the second row looks like header fragments (e.g., "is" under "QteParCol")
+        const headers = headerRow.map((h, idx) => {
+            const s = secondRow[idx] || '';
+            if (s && s.length < 5 && !s.match(/[0-9]/)) return (h + s).trim();
+            return h;
+        });
 
-        const colLibelle = findCol('Libellé') !== -1 ? findCol('Libellé') : findCol('Libell');
-        const colFamille = findCol('Famille');
-        const colPrixVente = findCol('Prix de vente');
-        const colPrixAchat = findCol("Prix d'achat") !== -1 ? findCol("Prix d'achat") : findCol('Prix d\'achat');
+        const findCol = (exactList, partial) => {
+            // Priority 1: Exact match
+            let idx = headers.findIndex(h => exactList.some(e => h.toLowerCase() === e.toLowerCase()));
+            if (idx !== -1) return idx;
+            // Priority 2: Case-insensitive partial match
+            return headers.findIndex(h => h.toLowerCase().includes(partial.toLowerCase()));
+        };
+
+        const colLibelle = findCol(['Libellé', 'Libelle'], 'Libell');
+        const colFamille = findCol(['Famille', 'Family'], 'Famil');
+        const colPrixVente = findCol(['Prix de vente', 'PVente', 'P.Vente'], 'Vente');
+        const colPrixAchat = findCol(["Prix d'achat", "Prix d'achat", "PAchat", "P.Achat"], 'Achat');
         const colQte = (() => {
-            // Find Qté column but NOT QteParColis or QteColisParPalette
-            return headers.findIndex(h => {
+            // Strict check for "Qté" to avoid matching "QteParColis"
+            const idx = headers.findIndex(h => {
                 const lower = h.toLowerCase().trim();
-                return (lower === 'qté' || lower === 'qte') && !lower.includes('par') && !lower.includes('colis');
+                return lower === 'qté' || lower === 'qte' || lower === 'quantité' || lower === 'quantite';
             });
+            if (idx !== -1) return idx;
+            return findCol(['Qté'], 'Qté');
         })();
-        const colQteParColis = findCol('QteParColis');
-        const colQteColisParPalette = findCol('QteColisParPalette');
-        const colNbPalette = findCol('NB PALETTE');
-        const colNbColis = findCol('NB COLIS');
-        const colCalibre = findCol('Calibre');
-        const colChoix = findCol('Choix');
+        const colQteParColis = findCol(['QteParColis', 'QteParCol', 'Qté par Colis'], 'ParCol');
+        const colQteColisParPalette = findCol(['QteColisParPalette', 'QteColisParPale', 'Colis/Palette'], 'ParPale');
+        const colNbPalette = findCol(['NB PALETTE', 'nbpalette'], 'PALETTE');
+        const colNbColis = findCol(['NB COLIS', 'nbcolis'], 'COLIS');
+        const colCalibre = findCol(['Calibre'], 'Calibre');
+        const colChoix = findCol(['Choix'], 'Choix');
 
         if (colLibelle === -1) {
             return res.status(400).json({
                 success: false,
-                message: 'Colonne "Libellé" introuvable dans le fichier. Colonnes détectées: ' + headers.join(', ')
+                message: 'Colonne "Libellé" introuvable. Colonnes détectées: ' + headers.join(', ')
             });
         }
 
