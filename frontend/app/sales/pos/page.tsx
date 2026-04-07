@@ -263,7 +263,8 @@ function POSContent() {
   const blRef = useRef<HTMLDivElement>(null);
   const bcRef = useRef<HTMLDivElement>(null);
   const bssRef = useRef<HTMLDivElement>(null);
-  const ticketRef = useRef<HTMLDivElement>(null);
+  const ticketRef = useRef<any>(null);
+  const isCreatingManual = useRef(false);
 
   const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
   const [newCustomerName, setNewCustomerName] = useState('');
@@ -432,8 +433,15 @@ function POSContent() {
   useEffect(() => {
     if (products.length === 0) return;
     const findManual = async () => {
-      const existing = products.find(p => p.productcode === 'MANUAL');
+      const existing = products.find(p => p.productcode?.toUpperCase() === 'MANUAL');
       if (existing) { setManualProductId(existing.productid); return; }
+      
+      // Defend against empty units list
+      if (units.length === 0) return;
+
+      if (isCreatingManual.current) return;
+      isCreatingManual.current = true;
+
       try {
         const res = await api.createProduct({
           productcode: 'MANUAL', productname: 'Produit Manuel',
@@ -441,7 +449,20 @@ function POSContent() {
           description: 'Entry Manual', baseprice: 0,
         });
         if (res.success) setManualProductId((res.data as any).productid);
-      } catch (e) { console.error(e); }
+      } catch (e: any) {
+        // If it already exists but was not found in the 'products' array, try a targeted search
+        if (e.message?.includes('déjà') || e.message?.includes('already exists')) {
+           try {
+             const searchRes = await api.getProducts({ search: 'MANUAL' });
+             const found = (searchRes.data as any[]).find((p: any) => p.productcode?.toUpperCase() === 'MANUAL');
+             if (found) setManualProductId(found.productid);
+           } catch (err) { console.error(err); }
+        } else {
+          console.error(e);
+        }
+      } finally {
+        isCreatingManual.current = false;
+      }
     };
     findManual();
   }, [products, units]);
@@ -617,22 +638,6 @@ function POSContent() {
       }
     }
 
-    if (!finalManualId) {
-      alert("Erreur: Le produit 'MANUEL' n'est pas prêt. Veuillez patienter ou actualiser la page.");
-      // Try to re-trigger initialization
-      if (products.length > 0) {
-        try {
-          const res = await api.createProduct({
-            productcode: 'MANUAL', productname: 'Produit Manuel',
-            primaryunitid: units.find(u => u.unitcode === 'PCS')?.unitid || units[0]?.unitid || 1,
-            description: 'Entry Manual', baseprice: 0,
-          });
-          if (res.success) setManualProductId((res.data as any).productid);
-        } catch (e) { console.error(e); }
-      }
-      return;
-    }
-
     // 2. Defend against empty units list
     if (units.length === 0) {
       alert("Erreur: Les unités ne sont pas chargées. Veuillez patienter.");
@@ -640,6 +645,40 @@ function POSContent() {
     }
 
     const defaultUnit = units.find(u => u.unitcode === 'PCS') || units[0];
+
+    if (!finalManualId) {
+      if (isCreatingManual.current) {
+         alert("Initialisation en cours... Veuillez réessayer dans un instant.");
+         return;
+      }
+      isCreatingManual.current = true;
+      try {
+        const res = await api.createProduct({
+          productcode: 'MANUAL', productname: 'Produit Manuel',
+          primaryunitid: units.find(u => u.unitcode === 'PCS')?.unitid || defaultUnit?.unitid || 1,
+          description: 'Entry Manual', baseprice: 0,
+        });
+        if (res.success) {
+          finalManualId = (res.data as any).productid;
+          setManualProductId(finalManualId);
+        }
+      } catch (e: any) {
+        if (e.message?.includes('déjà') || e.message?.includes('already exists')) {
+           try {
+             const searchRes = await api.getProducts({ search: 'MANUAL' });
+             const found = (searchRes.data as any[]).find((p: any) => p.productcode?.toUpperCase() === 'MANUAL');
+             if (found) {
+               finalManualId = found.productid;
+               setManualProductId(found.productid);
+             }
+           } catch (err) { console.error(err); }
+        } else {
+          console.error(e);
+        }
+      } finally {
+        isCreatingManual.current = false;
+      }
+    }
 
     // 3. Add to cart
     setCart([...cart, {
