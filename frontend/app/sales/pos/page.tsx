@@ -684,7 +684,7 @@ function POSContent() {
     setCart([...cart, {
       rowId: crypto.randomUUID(), 
       productId: finalManualId, 
-      productCode: 'MANUEL', 
+      productCode: 'MANUAL', 
       productName: manualProductName || 'Produit Manuel',
       brandName: manualProductBrand || 'Manual', 
       stockQty: 0, 
@@ -720,7 +720,15 @@ function POSContent() {
         customerId: Number(effectiveId), orderType: isRetailMode ? 'RETAIL' : 'WHOLESALE', warehouseId: 1, orderDate,
         notes: observation, retailClientName: isRetailMode ? retailClientName : customerSearchQuery, shippingAddress, clientPhone,
         paymentAmount: payment, paymentMethod, deliveryCost, discount, timber,
-        items: cart.map(i => ({ productId: i.productId, quantity: i.quantity, unitId: i.unitId, unitPrice: i.unitPrice, colisCount: i.cartons, palletCount: i.palettes, productName: i.productCode === 'MANUEL' ? i.productName : undefined }))
+        items: cart.map(i => ({ 
+          productId: i.productId, 
+          quantity: i.quantity, 
+          unitId: i.unitId, 
+          unitPrice: i.unitPrice, 
+          colisCount: i.cartons, 
+          palletCount: i.palettes, 
+          productName: (i.productCode?.toUpperCase() === 'MANUAL' || i.productCode?.toUpperCase() === 'MANUEL') ? i.productName : undefined 
+        }))
       };
       const res = editOrderId ? await api.updateOrder(Number(editOrderId), data) : await api.createOrder(data);
       if (res.success) { alert('Vente validée!'); router.push('/orders'); }

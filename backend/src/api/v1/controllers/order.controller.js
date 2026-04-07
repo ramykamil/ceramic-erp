@@ -1051,47 +1051,48 @@ const updateOrder = async (req, res) => {
       id
     ]);
 
-    // 5. Insert NEW items and Reserve Inventory
-    // Note: We always Reserve (Status is PENDING now). 
-    // User must click Confirm again to finalize/deduct stock.
-    for (const item of items) {
-      const lineTotal = Number(item.quantity) * Number(item.unitPrice);
+      // 5. Insert NEW items and Reserve Inventory (SKIPPING MANUAL PRODUCTS)
+      // Note: We always Reserve (Status is PENDING now). 
+      // User must click Confirm again to finalize/deduct stock.
+      for (const item of items) {
+        const lineTotal = Number(item.quantity) * Number(item.unitPrice);
 
-      // Get product's purchase price for cost tracking
-      const productRes = await client.query(
-        'SELECT PurchasePrice, BasePrice FROM Products WHERE ProductID = $1',
-        [item.productId]
-      );
-      const costPrice = parseFloat(productRes.rows[0]?.purchaseprice) || parseFloat(productRes.rows[0]?.baseprice) || 0;
+        // Get product details for cost and code check
+        const productRes = await client.query(
+          'SELECT PurchasePrice, BasePrice, ProductCode FROM Products WHERE ProductID = $1',
+          [item.productId]
+        );
+        const p = productRes.rows[0];
+        const costPrice = parseFloat(p?.purchaseprice) || parseFloat(p?.baseprice) || 0;
+        const pCode = p?.productcode || '';
 
-      // Insert Item with CostPrice
-      await client.query(`
-                INSERT INTO OrderItems (OrderID, ProductID, Quantity, UnitPrice, LineTotal, UnitID, PalletCount, ColisCount, CostPrice)
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-            `, [id, item.productId, item.quantity, item.unitPrice, lineTotal, item.unitId, Math.floor(Number(item.palettes) || 0), Math.floor(Number(item.cartons) || 0), costPrice]);
-
-      // Reserve Inventory
-      // Assuming Warehouse 1
-      // Check if inventory record exists
-      const invCheck = await client.query('SELECT InventoryID FROM Inventory WHERE ProductID = $1 AND WarehouseID = 1 AND OwnershipType = \'OWNED\'', [item.productId]);
-
-      if (invCheck.rows.length > 0) {
+        // Insert Item with CostPrice and LinkProductName
         await client.query(`
-            UPDATE Inventory 
-            SET QuantityReserved = QuantityReserved + $1,
-                UpdatedAt = CURRENT_TIMESTAMP
-            WHERE ProductID = $2 AND WarehouseID = 1 AND OwnershipType = 'OWNED'
-          `, [item.quantity, item.productId]);
-      } else {
-        // Create inventory record if missing (should exist if product exists, but safety check)
-        await client.query(`
-            INSERT INTO Inventory (ProductID, WarehouseID, OwnershipType, QuantityReserved, QuantityOnHand)
-            VALUES ($1, 1, 'OWNED', $2, 0)
-          `, [item.productId, item.quantity]);
+                INSERT INTO OrderItems (OrderID, ProductID, Quantity, UnitPrice, LineTotal, UnitID, PalletCount, ColisCount, CostPrice, LinkProductName)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+            `, [id, item.productId, item.quantity, item.unitPrice, lineTotal, item.unitId, Math.floor(Number(item.palettes) || 0), Math.floor(Number(item.cartons) || 0), costPrice, item.productName || null]);
+
+        // Reserve Inventory ONLY if NOT MANUAL
+        if (pCode !== 'MANUAL') {
+          // Assuming Warehouse 1
+          const invCheck = await client.query('SELECT InventoryID FROM Inventory WHERE ProductID = $1 AND WarehouseID = 1 AND OwnershipType = \'OWNED\'', [item.productId]);
+
+          if (invCheck.rows.length > 0) {
+            await client.query(`
+                UPDATE Inventory 
+                SET QuantityReserved = QuantityReserved + $1,
+                    UpdatedAt = CURRENT_TIMESTAMP
+                WHERE ProductID = $2 AND WarehouseID = 1 AND OwnershipType = 'OWNED'
+              `, [item.quantity, item.productId]);
+          } else {
+            // Create inventory record if missing (should exist if product exists, but safety check)
+            await client.query(`
+                INSERT INTO Inventory (ProductID, WarehouseID, OwnershipType, QuantityReserved, QuantityOnHand)
+                VALUES ($1, 1, 'OWNED', $2, 0)
+              `, [item.productId, item.quantity]);
+          }
+        }
       }
-
-      // We do NOT deduct QuantityOnHand here because status is PENDING.
-    }
 
     await client.query('COMMIT');
 
