@@ -64,6 +64,13 @@
     
     <button id="convertBtn" class="btn" disabled>Download Converted CSV</button>
     <button id="importBtn" class="btn" style="background: #059669;" disabled>🚀 Direct Import to App (Chunked)</button>
+    
+    <div id="refreshZone" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb;">
+        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem;">Data not showing in App? Try refreshing the view:</p>
+        <button id="refreshBtn" class="btn" style="background: #1d4ed8; margin-top: 0;">🔄 Force Refresh App Data</button>
+        <div id="refreshStatus" class="status" style="margin-top: 0.5rem;"></div>
+        <a id="appLink" href="https://ceramic-erp.vercel.app/" target="_blank" style="display: none; color: #3b82f6; text-decoration: none; font-size: 0.875rem; font-weight: 500; margin-top: 0.5rem;">➜ Go to ERP Dashboard</a>
+    </div>
 
     <div class="info">
         <strong>Expected Columns:</strong><br>
