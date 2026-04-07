@@ -425,6 +425,7 @@ async function importStock(req, res, next) {
                     const chunk = stockData.slice(i, i + BATCH_SIZE);
 
                     // Batch Product Upsert (Using CTE to handle Update/Insert safely)
+                    // This handles creating the products first if they don't exist
                     const productsUpsert = await client.query(`
                         WITH input_data AS (
                             SELECT * FROM UNNEST($1::text[], $2::int[], $3::numeric[], $4::numeric[], $5::int[], $6::text[], $7::text[], $8::numeric[], $9::numeric[])
@@ -466,21 +467,25 @@ async function importStock(req, res, next) {
 
                     const idMap = new Map(productsUpsert.rows.map(r => [r.productcode, r.productid]));
 
-                    // Batch Inventory Levels Sync
+                    // 4. Detailed Row-by-Row Inventory Sync with SAVEPOINT protection
+                    // This allows importing duplicate products exactly as they are found,
+                    // while protecting against transaction aborts for bad rows.
                     for (const item of chunk) {
                         const pID = idMap.get(item.productCode);
                         if (!pID) continue;
 
+                        const savepointName = `row_sp_${item.row}`;
+                        await client.query(`SAVEPOINT ${savepointName}`);
                         try {
-                            // Find existing inventory to calculate diff for audit log
+                            // Detect existing Qty for the log
                             const invCheck = await client.query(`
                                 SELECT QuantityOnHand FROM Inventory 
                                 WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = 'OWNED'
                             `, [pID, whID]);
-                            
                             const oldQty = invCheck.rows.length > 0 ? parseFloat(invCheck.rows[0].quantityonhand) : 0;
 
-                            // Update or Insert Inventory
+                            // Overwrite logic: If a product appears multiple times in the CSV, 
+                            // the later rows in the file will overwrite the earlier found ones.
                             await client.query(`
                                 INSERT INTO Inventory (ProductID, WarehouseID, OwnershipType, QuantityOnHand, PalletCount, ColisCount)
                                 VALUES ($1, $2, 'OWNED', $3, $4, $5)
@@ -492,17 +497,19 @@ async function importStock(req, res, next) {
                             `, [pID, whID, item.quantityOnHand, item.palletCount, item.colisCount]);
 
                             // Audit Transaction
-                            const diff = item.quantityOnHand - oldQty;
-                            if (diff !== 0) {
+                            if (item.quantityOnHand !== 0) {
                                 await client.query(`
                                     INSERT INTO InventoryTransactions (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, Notes, CreatedBy, OwnershipType)
-                                    VALUES ($1, $2, 'ADJUSTMENT', $3, 'IMPORT_CSV', 'Import Batch Update', $4, 'OWNED')
-                                `, [pID, whID, diff, userId]);
+                                    VALUES ($1, $2, 'ADJUSTMENT', $3, 'IMPORT_CSV', 'Import Row Data', $4, 'OWNED')
+                                `, [pID, whID, item.quantityOnHand - oldQty, userId]);
                             }
                             results.successful++;
+                            await client.query(`RELEASE SAVEPOINT ${savepointName}`);
                         } catch (err) {
+                            await client.query(`ROLLBACK TO SAVEPOINT ${savepointName}`);
                             results.failed++;
                             results.errors.push({ row: item.row, product: item.productCode, error: err.message });
+                            console.error(`[Import Row ${item.row} Failed]`, err.message);
                         }
                     }
                 }
@@ -518,7 +525,11 @@ async function importStock(req, res, next) {
                 }
 
                 // Clean up temp file
-                try { fs.unlinkSync(validateUploadPath(req.file.path)); } catch (e) { }
+                try {
+                    if (req.file && req.file.path) {
+                        fs.unlinkSync(validateUploadPath(req.file.path));
+                    }
+                } catch (e) { }
 
                 // Prepare minimal response to prevent memory issues
                 const successCount = results.successful;
