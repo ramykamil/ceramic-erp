@@ -55,14 +55,22 @@
     </div>
 
     <div id="status" class="status"></div>
-    <button id="convertBtn" class="btn" disabled>Convert & Download CSV</button>
+    <div id="progressContainer" style="display: none; margin-top: 1rem;">
+        <div style="height: 10px; background: #e5e7eb; border-radius: 5px; overflow: hidden;">
+            <div id="progressBar" style="width: 0%; height: 100%; background: #3b82f6; transition: width 0.3s;"></div>
+        </div>
+        <p id="progressText" style="font-size: 0.75rem; color: #6b7280; margin-top: 0.5rem;">0% imported</p>
+    </div>
+    
+    <button id="convertBtn" class="btn" disabled>Download Converted CSV</button>
+    <button id="importBtn" class="btn" style="background: #059669;" disabled>🚀 Direct Import to App (Chunked)</button>
 
     <div class="info">
         <strong>Expected Columns:</strong><br>
-        This tool looks for columns containing <code>Libell</code> (Name), <code>Qt</code> (Qty), and optionally <code>Reference</code>, <code>PALETTE</code>, <code>COLIS</code>.
+        Looks for <code>Reference</code>, <code>Libellé</code>, <code>Qté</code>, <code>PALETTE</code>, <code>COLIS</code>.
         <br><br>
-        <strong>Output Format:</strong><br>
-        Standard CSV ready for Ceramic ERP import.
+        <strong>High-Speed Import:</strong><br>
+        The "Direct Import" button automatically splits your file into 500-row chunks to prevent server timeouts.
     </div>
 </div>
 
@@ -71,10 +79,15 @@
     const dropZone = document.getElementById('dropZone');
     const status = document.getElementById('status');
     const convertBtn = document.getElementById('convertBtn');
+    const importBtn = document.getElementById('importBtn');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
     
     let selectedFile = null;
+    let processedData = null;
 
-    // Drag & Drop visual feedback
+    // Drag & Drop
     dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
     dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
     dropZone.addEventListener('drop', (e) => { 
@@ -87,31 +100,77 @@
         if (e.target.files.length) handleFile(e.target.files[0]);
     });
 
-    function handleFile(file) {
+    async function handleFile(file) {
         selectedFile = file;
-        status.textContent = `Selected: ${file.name}`;
+        status.textContent = `Reading ${file.name}...`;
         status.className = 'status';
-        convertBtn.disabled = false;
-    }
-
-    convertBtn.addEventListener('click', async () => {
-        if (!selectedFile) return;
-
+        
         try {
-            status.textContent = 'Processing...';
-            status.className = 'status';
-            
-            const data = await readFile(selectedFile);
-            const csvContent = processData(data);
-            downloadCSV(csvContent, `Converted_${selectedFile.name.split('.')[0]}.csv`);
-            
-            status.textContent = 'Success! Download started.';
+            const rawData = await readFile(file);
+            processedData = prepareRows(rawData);
+            status.textContent = `Ready: ${processedData.length} products found.`;
             status.className = 'status success';
+            convertBtn.disabled = false;
+            importBtn.disabled = false;
         } catch (err) {
-            console.error(err);
-            status.textContent = 'Error: ' + err.message;
+            status.textContent = err.message;
             status.className = 'status error';
         }
+    }
+
+    // Convert & Download
+    convertBtn.addEventListener('click', () => {
+        const headers = ["Reference", "Libelle", "Famille", "NB PALETTE", "NB COLIS", "Qte", "Prix d'achat", "Prix de vente", "QteParColis", "QteColisParPalette", "Source"];
+        const csvContent = headers.join(',') + '\n' + processedData.map(r => r.join(',')).join('\n');
+        downloadCSV(csvContent, `Converted_${selectedFile.name.split('.')[0]}.csv`);
+    });
+
+    // Direct Import (Chunked)
+    importBtn.addEventListener('click', async () => {
+        const token = prompt("Please enter your Auth Token (Copy from App Headers if needed) or leave blank if using cookies/session:");
+        
+        importBtn.disabled = true;
+        progressContainer.style.display = 'block';
+        status.textContent = 'Importing in chunks...';
+        
+        const chunkSize = 500;
+        const totalChunks = Math.ceil(processedData.length / chunkSize);
+        
+        for (let i = 0; i < totalChunks; i++) {
+            const start = i * chunkSize;
+            const chunk = processedData.slice(start, start + chunkSize);
+            const headers = ["Reference", "Libelle", "Famille", "NB PALETTE", "NB COLIS", "Qte", "Prix d'achat", "Prix de vente", "QteParColis", "QteColisParPalette", "Source"];
+            const csvContent = headers.join(',') + '\n' + chunk.map(r => r.join(',')).join('\n');
+            
+            const formData = new FormData();
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            formData.append('file', blob, 'chunk.csv');
+            formData.append('warehouseId', '969440b8-c301-4475-8ade-1456578051a8'); // Default or Dynamic
+
+            try {
+                const response = await fetch('https://ceramic-erp.onrender.com/api/v1/inventory/import', {
+                    method: 'POST',
+                    headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+                    body: formData
+                });
+                
+                if (!response.ok) throw new Error(`Chunk ${i+1} failed: ${response.statusText}`);
+                
+                const percent = Math.round(((i + 1) / totalChunks) * 100);
+                progressBar.style.width = `${percent}%`;
+                progressText.textContent = `Imported chunk ${i+1} of ${totalChunks} (${percent}%)`;
+                
+            } catch (err) {
+                status.textContent = `Failed at chunk ${i+1}: ${err.message}`;
+                status.className = 'status error';
+                importBtn.disabled = false;
+                return;
+            }
+        }
+        
+        status.textContent = '✅ All chunks imported successfully!';
+        status.className = 'status success';
+        importBtn.disabled = false;
     });
 
     function readFile(file) {
@@ -122,90 +181,53 @@
                 try {
                     const workbook = XLSX.read(data, { type: 'array', cellDates: true });
                     const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                    // raw: true ensures we get the underlying value (e.g. 1.215) instead of formatted string "1.22"
                     const jsonData = XLSX.utils.sheet_to_json(firstSheet, { defval: "", raw: true });
                     resolve(jsonData);
-                } catch (err) {
-                    reject(new Error("Failed to parse file. Is it a valid Excel/CSV?"));
-                }
+                } catch (err) { reject(new Error("Failed to parse file.")); }
             };
-            reader.onerror = () => reject(new Error("File read error"));
             reader.readAsArrayBuffer(file);
         });
     }
 
     function parseQuantity(val) {
         if (!val) return 0;
-        if (typeof val === 'number') return val; // Return raw number to keep precision (e.g. 1.215)
-        
-        const str = String(val);
-        // Clean French format: "1 234,56" -> "1234.56"
-        // Also remove non-numeric chars except dot and comma
-        const clean = str.replace(/[^0-9,.-]/g, '').replace(',', '.');
-        const num = parseFloat(clean);
-        return isNaN(num) ? 0 : num;
+        if (typeof val === 'number') return val;
+        return parseFloat(String(val).replace(/[^0-9,.-]/g, '').replace(',', '.')) || 0;
     }
 
-    function processData(jsonData) {
-        if (!jsonData || jsonData.length === 0) throw new Error("File is empty");
-
-        const headers = ["Reference", "Libelle", "Famille", "NB PALETTE", "NB COLIS", "Qte", "Prix d'achat", "Prix de vente", "QteParColis", "QteColisParPalette", "Source"];
-        const rows = [];
-
-        // Add Header
-        rows.push(headers.join(','));
-
-        jsonData.forEach(row => {
-            // Fuzzy match keys
+    function prepareRows(jsonData) {
+        return jsonData.map(row => {
             const keys = Object.keys(row);
-            const libelleKey = keys.find(k => k.toLowerCase().includes('libell') || k.toLowerCase().includes('name') || k.toLowerCase().includes('désignation'));
+            const libKey = keys.find(k => k.toLowerCase().includes('libell') || k.toLowerCase().includes('désign'));
+            if (!libKey || !row[libKey]) return null;
+
             const qtyKey = keys.find(k => k.toLowerCase().startsWith('qt') || k.toLowerCase().includes('stock'));
             const refKey = keys.find(k => k.toLowerCase().startsWith('ref') || k.toLowerCase().includes('code'));
-            const palletKey = keys.find(k => k.toLowerCase().includes('palette'));
-            const colisKey = keys.find(k => k.toLowerCase().includes('colis') && !k.toLowerCase().includes('par'));
-            const priceBuyKey = keys.find(k => k.toLowerCase().includes('ach') || k.toLowerCase().includes('buy'));
-            const priceSellKey = keys.find(k => k.toLowerCase().includes('ven') || k.toLowerCase().includes('sell'));
-            // New Keys
-            const familleKey = keys.find(k => k.toLowerCase().includes('famille') || k.toLowerCase().includes('brand') || k.toLowerCase().includes('marque'));
-            const qteParColisKey = keys.find(k => k.toLowerCase().includes('qteparcolis') || k.toLowerCase().includes('pcs'));
-            const qteColisParPaletteKey = keys.find(k => k.toLowerCase().includes('qtecolisparpalette') || k.toLowerCase().includes('box'));
+            const palKey = keys.find(k => k.toLowerCase().includes('palette'));
+            const colKey = keys.find(k => k.toLowerCase().includes('colis') && !k.toLowerCase().includes('par'));
+            const priceB = keys.find(k => k.toLowerCase().includes('ach'));
+            const priceS = keys.find(k => k.toLowerCase().includes('ven'));
+            const famKey = keys.find(k => k.toLowerCase().includes('famille'));
 
-
-            const name = libelleKey ? String(row[libelleKey]).trim() : "";
-            
-            if (name) {
-                 const newRow = [
-                    refKey ? `"${String(row[refKey]).replace(/"/g, '""')}"` : "",
-                    `"${name.replace(/"/g, '""')}"`,
-                    familleKey ? `"${String(row[familleKey]).replace(/"/g, '""')}"` : "",
-                    parseQuantity(palletKey ? row[palletKey] : 0),
-                    parseQuantity(colisKey ? row[colisKey] : 0),
-                    parseQuantity(qtyKey ? row[qtyKey] : 0),
-                    priceBuyKey ? `"${String(row[priceBuyKey]).replace(/"/g, '""')}"` : "0",
-                    priceSellKey ? `"${String(row[priceSellKey]).replace(/"/g, '""')}"` : "0",
-                    parseQuantity(qteParColisKey ? row[qteParColisKey] : 0),
-                    parseQuantity(qteColisParPaletteKey ? row[qteColisParPaletteKey] : 0),
-                    "EXCEL_CONVERTED"
-                ];
-                rows.push(newRow.join(','));
-            }
-        });
-
-        return rows.join('\n');
+            return [
+                refKey ? `"${String(row[refKey]).replace(/"/g, '""')}"` : "",
+                `"${String(row[libKey]).replace(/"/g, '""')}"`,
+                famKey ? `"${String(row[famKey]).replace(/"/g, '""')}"` : "",
+                parseQuantity(palKey ? row[palKey] : 0),
+                parseQuantity(colKey ? row[colKey] : 0),
+                parseQuantity(qtyKey ? row[qtyKey] : 0),
+                priceB ? `"${String(row[priceB]).replace(/"/g, '""')}"` : "0",
+                priceS ? `"${String(row[priceS]).replace(/"/g, '""')}"` : "0",
+                0,0, "EXCEL_CHUNKING"
+            ];
+        }).filter(r => r !== null);
     }
 
     function downloadCSV(content, fileName) {
         const blob = new Blob(["\uFEFF" + content], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement("a");
-        if (link.download !== undefined) {
-            const url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", fileName);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = fileName; a.click();
     }
 </script>
 
