@@ -326,6 +326,18 @@ async function executeCatalogueSync(req, res, next) {
     const { newProducts, updatedProducts, removedProducts } = sessionData;
     const results = { created: 0, updated: 0, removed: 0, skipped: 0, errors: [] };
 
+    // DEDUPLICATE LOCALLY: Ensure each product appears only once in the entire set
+    const dedupeMap = new Map();
+    [...newProducts, ...updatedProducts].forEach(p => {
+        const key = p.productName.trim().toLowerCase();
+        // If a product is repeated, the latest one wins (or we could merge)
+        // Here we just keep the canonical one to prevent DB "affect row twice" error
+        dedupeMap.set(key, p);
+    });
+    
+    // Convert back to a single list for clean processing
+    const uniqueProductsList = Array.from(dedupeMap.values());
+    
     const client = await pool.connect();
     try {
         await client.query('BEGIN');
@@ -361,12 +373,11 @@ async function executeCatalogueSync(req, res, next) {
         // Helper to determine Unit
         const getUnit = (name) => (name.toUpperCase().match(/\(M²\)|M2/)) ? unitSQM : unitPCS;
 
-        // 2 & 3. BATCH PROCESSING FOR ALL PRODUCTS (NEW + UPDATED)
-        const allProducts = [...newProducts, ...updatedProducts];
+        // 2 & 3. BATCH PROCESSING FOR ALL UNIQUE PRODUCTS
         const BATCH_SIZE = 100;
 
-        for (let i = 0; i < allProducts.length; i += BATCH_SIZE) {
-            const chunk = allProducts.slice(i, i + BATCH_SIZE);
+        for (let i = 0; i < uniqueProductsList.length; i += BATCH_SIZE) {
+            const chunk = uniqueProductsList.slice(i, i + BATCH_SIZE);
             
             // Perform batch upsert in one go
             const upsertRes = await client.query(`
