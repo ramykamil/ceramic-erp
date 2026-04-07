@@ -485,13 +485,6 @@ async function importStock(req, res, next) {
                         const savepointName = `row_sp_${item.row}`;
                         await client.query(`SAVEPOINT ${savepointName}`);
                         try {
-                            // Detect existing Qty for the log
-                            const invCheck = await client.query(`
-                                SELECT QuantityOnHand FROM Inventory 
-                                WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = 'OWNED'
-                            `, [pID, whID]);
-                            const oldQty = invCheck.rows.length > 0 ? parseFloat(invCheck.rows[0].quantityonhand) : 0;
-
                             // Overwrite logic: If a product appears multiple times in the CSV, 
                             // the later rows in the file will overwrite the earlier found ones.
                             await client.query(`
@@ -504,13 +497,6 @@ async function importStock(req, res, next) {
                                     UpdatedAt = CURRENT_TIMESTAMP
                             `, [pID, whID, item.quantityOnHand, item.palletCount, item.colisCount]);
 
-                            // Audit Transaction
-                            if (item.quantityOnHand !== 0) {
-                                await client.query(`
-                                    INSERT INTO InventoryTransactions (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, Notes, CreatedBy, OwnershipType)
-                                    VALUES ($1, $2, 'ADJUSTMENT', $3, 'IMPORT_CSV', 'Import Row Data', $4, 'OWNED')
-                                `, [pID, whID, item.quantityOnHand - oldQty, userId]);
-                            }
                             results.successful++;
                             await client.query(`RELEASE SAVEPOINT ${savepointName}`);
                         } catch (err) {
