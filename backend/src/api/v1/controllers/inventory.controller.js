@@ -397,111 +397,113 @@ async function importStock(req, res, next) {
             try {
                 await client.query('BEGIN');
                 const { userId } = req.user;
+                const BATCH_SIZE = 100;
                 const whID = targetWarehouseId;
 
+                // 1. Pre-fetch Units
                 const unitsRes = await client.query("SELECT UnitID, UnitCode FROM Units");
                 const unitPCS = unitsRes.rows.find(u => u.unitcode === 'PCS')?.unitid || 1;
                 const unitSQM = unitsRes.rows.find(u => u.unitcode === 'SQM')?.unitid || 3;
 
-                for (const item of stockData) {
-                    try {
-                        await client.query(`SAVEPOINT row_${item.row}`);
+                // 2. Batch Create Brands
+                const uniqueBrandNames = [...new Set(stockData.map(s => s.brandName).filter(Boolean))];
+                if (uniqueBrandNames.length > 0) {
+                    await client.query(`
+                        INSERT INTO Brands (BrandName, IsActive)
+                        SELECT unnest($1::text[]), TRUE
+                        ON CONFLICT (BrandName) DO NOTHING
+                    `, [uniqueBrandNames]);
+                }
 
-                        // 1. Handle Brand
-                        let brandID = null;
-                        if (item.brandName) {
-                            const bRes = await client.query("SELECT BrandID FROM Brands WHERE BrandName = $1", [item.brandName]);
-                            if (bRes.rows.length > 0) brandID = bRes.rows[0].brandid;
-                            else {
-                                const newB = await client.query("INSERT INTO Brands (BrandName, IsActive) VALUES ($1, TRUE) RETURNING BrandID", [item.brandName]);
-                                brandID = newB.rows[0].brandid;
-                            }
-                        }
+                const allBrandsRes = await client.query("SELECT BrandID, BrandName FROM Brands");
+                const brandMap = new Map(allBrandsRes.rows.map(b => [b.brandname.toLowerCase().trim(), b.brandid]));
 
-                        // 2. Detect Unit
-                        let targetUnitId = unitPCS;
-                        if (item.productCode.toUpperCase().includes('(M²)') || item.productCode.toUpperCase().includes('M2')) {
-                            targetUnitId = unitSQM;
-                        }
+                const getUnit = (code) => (code.toUpperCase().includes('(M²)') || code.toUpperCase().includes('M2')) ? unitSQM : unitPCS;
 
-                        // 3. Find or Create Product
-                        let pID;
-                        let isNewProduct = false;
-                        const pRes = await client.query("SELECT ProductID FROM Products WHERE ProductCode = $1", [item.productCode]);
+                // 3. Process in Batches
+                for (let i = 0; i < stockData.length; i += BATCH_SIZE) {
+                    const chunk = stockData.slice(i, i + BATCH_SIZE);
 
-                        if (pRes.rows.length > 0) {
-                            pID = pRes.rows[0].productid;
-                            // PROPERTIES: Update packing details and PRICES
-                            // Use COALESCE(NULLIF($X::NUMERIC, 0), Column) to keep existing non-zero prices if the import has 0 or empty for prices
-                            await client.query(
-                                "UPDATE Products SET BasePrice = COALESCE(NULLIF($1::NUMERIC, 0), BasePrice), PurchasePrice = COALESCE(NULLIF($2::NUMERIC, 0), PurchasePrice), QteParColis = $3, QteColisParPalette = $4, UpdatedAt = CURRENT_TIMESTAMP WHERE ProductID = $5",
-                                [item.basePrice, item.purchasePrice, item.piecesPerCarton, item.cartonsPerPalette, pID]
-                            );
-                            console.log(`[Import] Product exists, updated packing and prices: ${item.productCode}`);
-                        } else {
-                            isNewProduct = true;
-                            // Insert new product with all attributes
-                            const newP = await client.query(`
-                                INSERT INTO Products (ProductCode, ProductName, PrimaryUnitID, BasePrice, PurchasePrice, BrandID, Calibre, Choix, QteParColis, QteColisParPalette, IsActive)
-                                VALUES ($1, $2, $3, $4::NUMERIC, $5::NUMERIC, $6, $7, $8, $9::NUMERIC, $10::NUMERIC, TRUE)
-                                RETURNING ProductID
-                            `, [item.productCode, item.productName, targetUnitId, item.basePrice, item.purchasePrice, brandID, item.calibre, item.choix, item.piecesPerCarton, item.cartonsPerPalette]);
-                            pID = newP.rows[0].productid;
-                        }
+                    // Batch Product Upsert (Using CTE to handle Update/Insert safely)
+                    const productsUpsert = await client.query(`
+                        WITH input_data AS (
+                            SELECT * FROM UNNEST($1::text[], $2::int[], $3::numeric[], $4::numeric[], $5::int[], $6::text[], $7::text[], $8::numeric[], $9::numeric[])
+                            AS t(code, unit, base, purchase, brand, cal, choice, qpc, cpp)
+                        ),
+                        updated AS (
+                            UPDATE Products p SET
+                                BasePrice = CASE WHEN i.base > 0 THEN i.base ELSE p.BasePrice END,
+                                PurchasePrice = CASE WHEN i.purchase > 0 THEN i.purchase ELSE p.PurchasePrice END,
+                                BrandID = COALESCE(i.brand, p.BrandID),
+                                QteParColis = CASE WHEN i.qpc > 0 THEN i.qpc ELSE p.QteParColis END,
+                                QteColisParPalette = CASE WHEN i.cpp > 0 THEN i.cpp ELSE p.QteColisParPalette END,
+                                UpdatedAt = CURRENT_TIMESTAMP
+                            FROM input_data i
+                            WHERE p.ProductCode = i.code
+                            RETURNING p.ProductID, p.ProductCode
+                        ),
+                        inserted AS (
+                            INSERT INTO Products (ProductCode, ProductName, PrimaryUnitID, BasePrice, PurchasePrice, BrandID, Calibre, Choix, QteParColis, QteColisParPalette, IsActive)
+                            SELECT i.code, i.code, i.unit, i.base, i.purchase, i.brand, i.cal, i.choice, i.qpc, i.cpp, TRUE
+                            FROM input_data i
+                            WHERE NOT EXISTS (SELECT 1 FROM updated u WHERE u.ProductCode = i.code)
+                            RETURNING ProductID, ProductCode
+                        )
+                        SELECT ProductID, ProductCode FROM updated
+                        UNION ALL
+                        SELECT ProductID, ProductCode FROM inserted
+                    `, [
+                        chunk.map(p => p.productCode),
+                        chunk.map(p => getUnit(p.productCode)),
+                        chunk.map(p => p.basePrice || 0),
+                        chunk.map(p => p.purchasePrice || 0),
+                        chunk.map(p => p.brandName ? brandMap.get(p.brandName.toLowerCase().trim()) : null),
+                        chunk.map(p => p.calibre),
+                        chunk.map(p => p.choix),
+                        chunk.map(p => p.piecesPerCarton || 0),
+                        chunk.map(p => p.cartonsPerPalette || 0)
+                    ]);
 
-                        // 4. Link Unit (only for new products)
-                        if (isNewProduct) {
+                    const idMap = new Map(productsUpsert.rows.map(r => [r.productcode, r.productid]));
+
+                    // Batch Inventory Levels Sync
+                    for (const item of chunk) {
+                        const pID = idMap.get(item.productCode);
+                        if (!pID) continue;
+
+                        try {
+                            // Find existing inventory to calculate diff for audit log
+                            const invCheck = await client.query(`
+                                SELECT QuantityOnHand FROM Inventory 
+                                WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = 'OWNED'
+                            `, [pID, whID]);
+                            
+                            const oldQty = invCheck.rows.length > 0 ? parseFloat(invCheck.rows[0].quantityonhand) : 0;
+
+                            // Update or Insert Inventory
                             await client.query(`
-                                INSERT INTO ProductUnits (ProductID, UnitID, ConversionFactor, IsDefault)
-                                VALUES ($1, $2, 1.0, TRUE)
-                                ON CONFLICT (ProductID, UnitID) DO UPDATE SET IsDefault = TRUE
-                            `, [pID, targetUnitId]);
-                        }
-
-                        // 5. Update Inventory using NULL-safe check (ON CONFLICT doesn't work with NULL)
-                        const invRes = await client.query(`
-                            SELECT InventoryID, QuantityOnHand FROM Inventory 
-                            WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = 'OWNED' 
-                            AND FactoryID IS NULL LIMIT 1
-                        `, [pID, whID]);
-                        let currentQty = invRes.rows.length > 0 ? parseFloat(invRes.rows[0].quantityonhand) : 0;
-
-                        if (invRes.rows.length > 0) {
-                            // UPDATE existing inventory (replace values for import)
-                            await client.query(`
-                                UPDATE Inventory SET 
-                                    QuantityOnHand = $1::NUMERIC, 
-                                    PalletCount = $2::NUMERIC, 
-                                    ColisCount = $3::NUMERIC, 
+                                INSERT INTO Inventory (ProductID, WarehouseID, OwnershipType, QuantityOnHand, PalletCount, ColisCount)
+                                VALUES ($1, $2, 'OWNED', $3, $4, $5)
+                                ON CONFLICT (ProductID, WarehouseID, OwnershipType) DO UPDATE SET
+                                    QuantityOnHand = EXCLUDED.QuantityOnHand,
+                                    PalletCount = EXCLUDED.PalletCount,
+                                    ColisCount = EXCLUDED.ColisCount,
                                     UpdatedAt = CURRENT_TIMESTAMP
-                                WHERE InventoryID = $4
-                            `, [item.quantityOnHand, item.palletCount, item.colisCount, invRes.rows[0].inventoryid]);
-                        } else {
-                            // INSERT new inventory record
-                            await client.query(`
-                                INSERT INTO Inventory (ProductID, WarehouseID, OwnershipType, QuantityOnHand, PalletCount, ColisCount, FactoryID)
-                                VALUES ($1, $2, 'OWNED', $3::NUMERIC, $4::NUMERIC, $5::NUMERIC, NULL)
                             `, [pID, whID, item.quantityOnHand, item.palletCount, item.colisCount]);
+
+                            // Audit Transaction
+                            const diff = item.quantityOnHand - oldQty;
+                            if (diff !== 0) {
+                                await client.query(`
+                                    INSERT INTO InventoryTransactions (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, Notes, CreatedBy, OwnershipType)
+                                    VALUES ($1, $2, 'ADJUSTMENT', $3, 'IMPORT_CSV', 'Import Batch Update', $4, 'OWNED')
+                                `, [pID, whID, diff, userId]);
+                            }
+                            results.successful++;
+                        } catch (err) {
+                            results.failed++;
+                            results.errors.push({ row: item.row, product: item.productCode, error: err.message });
                         }
-
-                        // 6. Transaction
-                        const diff = item.quantityOnHand - currentQty;
-                        if (diff !== 0) {
-                            await client.query(`
-                                INSERT INTO InventoryTransactions 
-                                (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, Notes, CreatedBy, OwnershipType)
-                                VALUES ($1, $2, 'ADJUSTMENT', $3, 'IMPORT_CSV', 'Import Initial', $4, 'OWNED')
-                            `, [pID, whID, diff, userId]);
-                        }
-
-                        results.successful++;
-                        await client.query(`RELEASE SAVEPOINT row_${item.row}`);
-
-                    } catch (err) {
-                        await client.query(`ROLLBACK TO SAVEPOINT row_${item.row}`);
-                        results.failed++;
-                        results.errors.push({ row: item.row, product: item.productCode, error: err.message });
-                        console.error(`[Row ${item.row} Error] ${item.productCode}: ${err.message}`);
                     }
                 }
 
