@@ -420,9 +420,17 @@ async function importStock(req, res, next) {
 
                 const getUnit = (code) => (code.toUpperCase().includes('(M²)') || code.toUpperCase().includes('M2')) ? unitSQM : unitPCS;
 
-                // 3. Process in Batches
-                for (let i = 0; i < stockData.length; i += BATCH_SIZE) {
-                    const chunk = stockData.slice(i, i + BATCH_SIZE);
+                // 3. Deduplicate stockData to ensure each ProductCode is processed only once
+                // If a product appears multiple times, the later rows overwrite earlier ones.
+                const productMap = new Map();
+                for (const item of stockData) {
+                    productMap.set(item.productCode, item);
+                }
+                const uniqueStockData = Array.from(productMap.values());
+
+                // 4. Process in Batches
+                for (let i = 0; i < uniqueStockData.length; i += BATCH_SIZE) {
+                    const chunk = uniqueStockData.slice(i, i + BATCH_SIZE);
 
                     // Batch Product Upsert (Using CTE to handle Update/Insert safely)
                     // This handles creating the products first if they don't exist
