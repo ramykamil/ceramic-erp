@@ -934,9 +934,9 @@ const updateOrder = async (req, res) => {
       return res.status(403).json({ success: false, message: 'Vous ne pouvez modifier que vos propres commandes' });
     }
 
-    if (order.status !== 'PENDING' && order.status !== 'CONFIRMED' && order.status !== 'DELIVERED') {
+    if (order.status !== 'PENDING' && order.status !== 'CONFIRMED' && order.status !== 'DELIVERED' && order.status !== 'CANCELLED') {
       await client.query('ROLLBACK');
-      return res.status(400).json({ success: false, message: 'Seules les commandes en attente, confirmées ou livrées peuvent être modifiées' });
+      return res.status(400).json({ success: false, message: 'Seules les commandes en attente, confirmées, livrées ou annulées peuvent être modifiées' });
     }
 
     // 2. REVERT LOGIC (Inventory & Financials)
@@ -957,8 +957,8 @@ const updateOrder = async (req, res) => {
       const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
       const convertedQty = convertUnitToInventory(qty, item.unitcode, item.primaryunitcode, sqmPerPiece, item.productname);
 
-      if (order.status === 'PENDING') {
-        // PENDING: Simply un-reserve
+      if (order.status === 'PENDING' || order.status === 'CANCELLED') {
+        // PENDING/CANCELLED: Simply un-reserve
         await client.query(`
           UPDATE Inventory 
           SET QuantityReserved = GREATEST(0, QuantityReserved - $1)
