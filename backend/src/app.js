@@ -16,13 +16,12 @@ const app = express();
 // Enable gzip compression for all HTTP responses
 app.use(compression());
 
-// Middleware - CORS configured for LAN and Cloud access
-// Allow specific frontend URL in production, or fallback to '*'
+// Middleware - CORS configured to allow any origin (required for local tools/Excel converter)
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || '*',
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: false // Must be false if origin is '*'
+  credentials: false
 };
 app.use(cors(corsOptions));
 app.use(express.json());
