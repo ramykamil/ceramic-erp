@@ -28,13 +28,16 @@ function cleanNumber(val) {
     if (val == null || val === '') return 0;
     if (typeof val === 'number') return Math.max(0, val);
     let s = val.toString();
-    s = s.replace(/DA/gi, '').replace(/\s/g, '');
+    // Aggressively remove 'DA', spaces, and currency symbols
+    s = s.replace(/DA/gi, '').replace(/\s/g, '').replace(/[^0-9.,\-]/g, '');
+    
+    // Convert comma to dot if applicable
     if (s.includes(',') && s.includes('.')) {
         s = s.replace(/,/g, '');
     } else if (s.includes(',') && !s.includes('.')) {
         s = s.replace(/,/g, '.');
     }
-    s = s.replace(/[^0-9.\-]/g, '');
+    
     const result = parseFloat(s) || 0;
     return Math.max(0, result);
 }
@@ -367,17 +370,38 @@ async function executeCatalogueSync(req, res, next) {
                     
                     const resP = await client.query(`
                         INSERT INTO Products (ProductCode, ProductName, PrimaryUnitID, BasePrice, PurchasePrice, BrandID, Calibre, Choix, QteParColis, QteColisParPalette, IsActive)
-                        VALUES ($1, $1, $2, $3, $4, $5, $6, $7, $8, $9, TRUE) RETURNING ProductID
+                        VALUES ($1, $1, $2, $3, $4, $5, $6, $7, $8, $9, TRUE)
+                        ON CONFLICT (ProductCode) DO UPDATE SET
+                            ProductName = EXCLUDED.ProductName,
+                            BasePrice = CASE WHEN EXCLUDED.BasePrice > 0 THEN EXCLUDED.BasePrice ELSE Products.BasePrice END,
+                            PurchasePrice = CASE WHEN EXCLUDED.PurchasePrice > 0 THEN EXCLUDED.PurchasePrice ELSE Products.PurchasePrice END,
+                            BrandID = COALESCE(EXCLUDED.BrandID, Products.BrandID),
+                            Calibre = COALESCE(EXCLUDED.Calibre, Products.Calibre),
+                            Choix = COALESCE(EXCLUDED.Choix, Products.Choix),
+                            QteParColis = CASE WHEN EXCLUDED.QteParColis > 0 THEN EXCLUDED.QteParColis ELSE Products.QteParColis END,
+                            QteColisParPalette = CASE WHEN EXCLUDED.QteColisParPalette > 0 THEN EXCLUDED.QteColisParPalette ELSE Products.QteColisParPalette END,
+                            IsActive = TRUE,
+                            UpdatedAt = CURRENT_TIMESTAMP
+                        RETURNING ProductID
                     `, [p.productName, uID, p.basePrice || 0, p.purchasePrice || 0, bID, p.calibre, p.choix, p.qteParColis || 0, p.qteColisParPalette || 0]);
                     
                     const pid = resP.rows[0].productid;
-                    await client.query("INSERT INTO ProductUnits (ProductID, UnitID, ConversionFactor, IsDefault) VALUES ($1, $2, 1.0, TRUE)", [pid, uID]);
-                    await client.query("INSERT INTO Inventory (ProductID, WarehouseID, OwnershipType, QuantityOnHand, PalletCount, ColisCount) VALUES ($1, $2, 'OWNED', $3, $4, $5)", 
-                        [pid, targetWarehouseId, p.quantity || 0, p.nbPalette || 0, p.nbColis || 0]);
+                    await client.query("INSERT INTO ProductUnits (ProductID, UnitID, ConversionFactor, IsDefault) VALUES ($1, $2, 1.0, TRUE) ON CONFLICT DO NOTHING", [pid, uID]);
+                    
+                    // Update or Insert Inventory
+                    await client.query(`
+                        INSERT INTO Inventory (ProductID, WarehouseID, OwnershipType, QuantityOnHand, PalletCount, ColisCount)
+                        VALUES ($1, $2, 'OWNED', $3, $4, $5)
+                        ON CONFLICT (ProductID, WarehouseID, OwnershipType) DO UPDATE SET
+                            QuantityOnHand = EXCLUDED.QuantityOnHand,
+                            PalletCount = EXCLUDED.PalletCount,
+                            ColisCount = EXCLUDED.ColisCount,
+                            UpdatedAt = CURRENT_TIMESTAMP
+                    `, [pid, targetWarehouseId, p.quantity || 0, p.nbPalette || 0, p.nbColis || 0]);
                     
                     if ((p.quantity || 0) > 0) {
                         await client.query(`INSERT INTO InventoryTransactions (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, Notes, CreatedBy, OwnershipType)
-                            VALUES ($1, $2, 'ADJUSTMENT', $3, 'CATALOGUE_SYNC', 'Initial sync', $4, 'OWNED')`, [pid, targetWarehouseId, p.quantity, userId]);
+                            VALUES ($1, $2, 'ADJUSTMENT', $3, 'CATALOGUE_SYNC', 'Initial/Upsert sync', $4, 'OWNED')`, [pid, targetWarehouseId, p.quantity, userId]);
                     }
                     await client.query('RELEASE SAVEPOINT product_creation');
                     results.created++;
