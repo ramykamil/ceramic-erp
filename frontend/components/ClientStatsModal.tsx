@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { formatDate } from '@/lib/utils';
 import api from '@/lib/api';
+import { useSortableTable } from '@/hooks/useSortableTable';
 
 interface ClientStatsModalProps {
     client: any;
@@ -20,6 +21,16 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
     const [salesData, setSalesData] = useState<any>(null);
     const [topProducts, setTopProducts] = useState<any[]>([]);
     const [versements, setVersements] = useState<any[]>([]);
+
+    // Sorting Hooks
+    const { sortedData: sortedProducts, handleSort: handleSortProducts, sortConfig: sortConfigProducts } = useSortableTable(topProducts);
+    const { sortedData: sortedTransactions, handleSort: handleSortTransactions, sortConfig: sortConfigTransactions } = useSortableTable(salesData?.transactions || []);
+    const { sortedData: sortedVersements, handleSort: handleSortVersements, sortConfig: sortConfigVersements } = useSortableTable(versements);
+
+    const getSortIcon = (config: any, key: string) => {
+        if (config.key !== key) return <span className="opacity-30 ml-1 text-[10px]">↕</span>;
+        return config.direction === 'asc' ? <span className="ml-1 text-blue-600">▲</span> : <span className="ml-1 text-blue-600">▼</span>;
+    };
 
     useEffect(() => {
         if (!client) return;
@@ -140,16 +151,16 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
                                                 <table className="w-full text-sm">
                                                     <thead className="text-slate-500 bg-slate-50">
                                                         <tr>
-                                                            <th className="p-2 pl-4 text-left font-medium">Référence</th>
-                                                            <th className="p-2 text-left font-medium">Désignation</th>
-                                                            <th className="p-2 text-right font-medium">Qté Achetée</th>
-                                                            <th className="p-2 text-right font-medium">Colis</th>
-                                                            <th className="p-2 text-right font-medium">Palettes</th>
-                                                            <th className="p-2 pr-4 text-right font-medium">Total (DA)</th>
+                                                            <th className="p-2 pl-4 text-left font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortProducts('reference')}>Référence {getSortIcon(sortConfigProducts, 'reference')}</th>
+                                                            <th className="p-2 text-left font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortProducts('designation')}>Désignation {getSortIcon(sortConfigProducts, 'designation')}</th>
+                                                            <th className="p-2 text-right font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortProducts('qty_total')}>Qté Achetée {getSortIcon(sortConfigProducts, 'qty_total')}</th>
+                                                            <th className="p-2 text-right font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortProducts('colis_total')}>Colis {getSortIcon(sortConfigProducts, 'colis_total')}</th>
+                                                            <th className="p-2 text-right font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortProducts('pallets_total')}>Palettes {getSortIcon(sortConfigProducts, 'pallets_total')}</th>
+                                                            <th className="p-2 pr-4 text-right font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortProducts('total')}>Total (DA) {getSortIcon(sortConfigProducts, 'total')}</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody className="divide-y divide-slate-100">
-                                                        {topProducts.slice(0, 7).map((p, idx) => (
+                                                        {sortedProducts.map((p, idx) => (
                                                             <tr key={idx} className="hover:bg-slate-50 text-slate-700">
                                                                 <td className="p-2 pl-4 font-mono text-blue-600 text-xs">{p.reference}</td>
                                                                 <td className="p-2 font-medium">{p.designation}</td>
@@ -174,16 +185,16 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
                                             <table className="w-full text-sm">
                                                 <thead className="text-slate-500 bg-slate-50">
                                                     <tr>
-                                                        <th className="p-2 pl-4 text-left font-medium">N° Bon</th>
-                                                        <th className="p-2 text-left font-medium">Date</th>
-                                                        <th className="p-2 text-left font-medium">Heure</th>
-                                                        <th className="p-2 text-right font-medium">Montant Total</th>
+                                                        <th className="p-2 pl-4 text-left font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortTransactions('numero')}>N° Bon {getSortIcon(sortConfigTransactions, 'numero')}</th>
+                                                        <th className="p-2 text-left font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortTransactions('date')}>Date {getSortIcon(sortConfigTransactions, 'date')}</th>
+                                                        <th className="p-2 text-left font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortTransactions('heure')}>Heure {getSortIcon(sortConfigTransactions, 'heure')}</th>
+                                                        <th className="p-2 text-right font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortTransactions('total')}>Montant Total {getSortIcon(sortConfigTransactions, 'total')}</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody className="divide-y divide-slate-100">
-                                                    {!salesData?.transactions || salesData.transactions.length === 0 ? (
+                                                    {sortedTransactions.length === 0 ? (
                                                         <tr><td colSpan={4} className="p-6 text-center text-slate-400">Aucune commande trouvée</td></tr>
-                                                    ) : salesData.transactions.map((t: any, idx: number) => (
+                                                    ) : sortedTransactions.map((t: any, idx: number) => (
                                                         <tr key={idx} className="hover:bg-slate-50 text-slate-700">
                                                             <td className="p-2 pl-4 font-mono font-medium">{t.numero}</td>
                                                             <td className="p-2">{formatDate(t.date)}</td>
@@ -207,16 +218,16 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
                                         <table className="w-full text-sm">
                                             <thead className="text-slate-500 bg-slate-50">
                                                 <tr>
-                                                    <th className="p-2 pl-4 text-left font-medium">Date & Heure</th>
-                                                    <th className="p-2 text-left font-medium">Caisse</th>
-                                                    <th className="p-2 text-left font-medium">Note/Motif</th>
-                                                    <th className="p-2 pr-4 text-right font-medium">Montant</th>
+                                                    <th className="p-2 pl-4 text-left font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortVersements('createdat')}>Date & Heure {getSortIcon(sortConfigVersements, 'createdat')}</th>
+                                                    <th className="p-2 text-left font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortVersements('accountname')}>Caisse {getSortIcon(sortConfigVersements, 'accountname')}</th>
+                                                    <th className="p-2 text-left font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortVersements('motif')}>Note/Motif {getSortIcon(sortConfigVersements, 'motif')}</th>
+                                                    <th className="p-2 pr-4 text-right font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortVersements('amount')}>Montant {getSortIcon(sortConfigVersements, 'amount')}</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-slate-100">
-                                                {versements.length === 0 ? (
+                                                {sortedVersements.length === 0 ? (
                                                     <tr><td colSpan={4} className="p-6 text-center text-slate-400">Aucun versement trouvé pour cette période</td></tr>
-                                                ) : versements.map((v: any, idx: number) => (
+                                                ) : sortedVersements.map((v: any, idx: number) => (
                                                     <tr key={idx} className="hover:bg-green-50/50 text-slate-700">
                                                         <td className="p-2 pl-4">
                                                             <div>{formatDate(v.createdat)}</div>
