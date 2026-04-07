@@ -606,16 +606,65 @@ function POSContent() {
     } catch (e) { console.error(e); } finally { setIsCreatingCustomer(false); }
   };
 
-  const handleAddManualProduct = () => {
-    if (!manualProductId) return;
+  const handleAddManualProduct = async () => {
+    // 1. Defend against missing Manual Product ID
+    let finalManualId = manualProductId;
+    if (!finalManualId) {
+      const existing = products.find(p => p.productcode === 'MANUAL');
+      if (existing) {
+        finalManualId = existing.productid;
+        setManualProductId(existing.productid);
+      }
+    }
+
+    if (!finalManualId) {
+      alert("Erreur: Le produit 'MANUEL' n'est pas prêt. Veuillez patienter ou actualiser la page.");
+      // Try to re-trigger initialization
+      if (products.length > 0) {
+        try {
+          const res = await api.createProduct({
+            productcode: 'MANUAL', productname: 'Produit Manuel',
+            primaryunitid: units.find(u => u.unitcode === 'PCS')?.unitid || units[0]?.unitid || 1,
+            description: 'Entry Manual', baseprice: 0,
+          });
+          if (res.success) setManualProductId((res.data as any).productid);
+        } catch (e) { console.error(e); }
+      }
+      return;
+    }
+
+    // 2. Defend against empty units list
+    if (units.length === 0) {
+      alert("Erreur: Les unités ne sont pas chargées. Veuillez patienter.");
+      return;
+    }
+
+    const defaultUnit = units.find(u => u.unitcode === 'PCS') || units[0];
+
+    // 3. Add to cart
     setCart([...cart, {
-      rowId: crypto.randomUUID(), productId: manualProductId, productCode: 'MANUEL', productName: manualProductName,
-      brandName: manualProductBrand || 'Manual', stockQty: 0, stockPalettes: 0, stockCartons: 0, piecesPerCarton: 0, cartonsPerPalette: 0,
-      sqmPerPiece: parseSqmPerPiece(manualProductName), palettes: manualProductPalettes, cartons: manualProductColis, quantity: manualProductQty, unitId: units[0].unitid,
-      unitPrice: manualProductPrice, priceSource: 'MANUEL', lineTotal: manualProductQty * manualProductPrice
+      rowId: crypto.randomUUID(), 
+      productId: finalManualId, 
+      productCode: 'MANUEL', 
+      productName: manualProductName || 'Produit Manuel',
+      brandName: manualProductBrand || 'Manual', 
+      stockQty: 0, 
+      stockPalettes: 0, 
+      stockCartons: 0, 
+      piecesPerCarton: 0, 
+      cartonsPerPalette: 0,
+      sqmPerPiece: parseSqmPerPiece(manualProductName), 
+      palettes: Number(manualProductPalettes) || 0, 
+      cartons: Number(manualProductColis) || 0, 
+      quantity: Number(manualProductQty) || 1, 
+      unitId: defaultUnit.unitid,
+      unitPrice: Number(manualProductPrice) || 0, 
+      priceSource: 'MANUEL', 
+      lineTotal: (Number(manualProductQty) || 1) * (Number(manualProductPrice) || 0)
     }]);
+
+    // 4. Reset and close
     setIsManualProductOpen(false);
-    // Reset fields
     setManualProductName('');
     setManualProductQty(1);
     setManualProductPrice(0);
