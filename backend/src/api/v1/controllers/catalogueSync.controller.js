@@ -330,7 +330,7 @@ async function executeCatalogueSync(req, res, next) {
     try {
         await client.query('BEGIN');
 
-        // 1. BATCH BRANDS
+        // 1. CHUNK BRANDS
         const brandNames = [...new Set([
             ...newProducts.map(p => p.brandName),
             ...updatedProducts.map(p => p.brandName)
@@ -353,112 +353,78 @@ async function executeCatalogueSync(req, res, next) {
             }
         }
 
-        // Get Units
+        // Units
         const unitsRes = await client.query("SELECT UnitID, UnitCode FROM Units");
         const unitPCS = unitsRes.rows.find(u => u.unitcode === 'PCS')?.unitid || 1;
         const unitSQM = unitsRes.rows.find(u => u.unitcode === 'SQM')?.unitid || 3;
 
-        // 2. BATCH CREATE NEW PRODUCTS (Chunks of 50)
-        const CREATE_BATCH_SIZE = 50;
-        for (let i = 0; i < newProducts.length; i += CREATE_BATCH_SIZE) {
-            const chunk = newProducts.slice(i, i + CREATE_BATCH_SIZE);
-            for (const p of chunk) {
-                try {
-                    await client.query('SAVEPOINT product_creation');
-                    const bID = p.brandName ? brandMap.get(p.brandName.toLowerCase().trim()) : null;
-                    const uID = (p.productName.toUpperCase().match(/\(M²\)|M2/)) ? unitSQM : unitPCS;
-                    
-                    const resP = await client.query(`
-                        INSERT INTO Products (ProductCode, ProductName, PrimaryUnitID, BasePrice, PurchasePrice, BrandID, Calibre, Choix, QteParColis, QteColisParPalette, IsActive)
-                        VALUES ($1, $1, $2, $3, $4, $5, $6, $7, $8, $9, TRUE)
-                        ON CONFLICT (ProductCode) DO UPDATE SET
-                            ProductName = EXCLUDED.ProductName,
-                            BasePrice = CASE WHEN EXCLUDED.BasePrice > 0 THEN EXCLUDED.BasePrice ELSE Products.BasePrice END,
-                            PurchasePrice = CASE WHEN EXCLUDED.PurchasePrice > 0 THEN EXCLUDED.PurchasePrice ELSE Products.PurchasePrice END,
-                            BrandID = COALESCE(EXCLUDED.BrandID, Products.BrandID),
-                            Calibre = COALESCE(EXCLUDED.Calibre, Products.Calibre),
-                            Choix = COALESCE(EXCLUDED.Choix, Products.Choix),
-                            QteParColis = CASE WHEN EXCLUDED.QteParColis > 0 THEN EXCLUDED.QteParColis ELSE Products.QteParColis END,
-                            QteColisParPalette = CASE WHEN EXCLUDED.QteColisParPalette > 0 THEN EXCLUDED.QteColisParPalette ELSE Products.QteColisParPalette END,
-                            IsActive = TRUE,
-                            UpdatedAt = CURRENT_TIMESTAMP
-                        RETURNING ProductID
-                    `, [p.productName, uID, p.basePrice || 0, p.purchasePrice || 0, bID, p.calibre, p.choix, p.qteParColis || 0, p.qteColisParPalette || 0]);
-                    
-                    const pid = resP.rows[0].productid;
-                    await client.query("INSERT INTO ProductUnits (ProductID, UnitID, ConversionFactor, IsDefault) VALUES ($1, $2, 1.0, TRUE) ON CONFLICT DO NOTHING", [pid, uID]);
-                    
-                    // Update or Insert Inventory
-                    await client.query(`
-                        INSERT INTO Inventory (ProductID, WarehouseID, OwnershipType, QuantityOnHand, PalletCount, ColisCount)
-                        VALUES ($1, $2, 'OWNED', $3, $4, $5)
-                        ON CONFLICT (ProductID, WarehouseID, OwnershipType) DO UPDATE SET
-                            QuantityOnHand = EXCLUDED.QuantityOnHand,
-                            PalletCount = EXCLUDED.PalletCount,
-                            ColisCount = EXCLUDED.ColisCount,
-                            UpdatedAt = CURRENT_TIMESTAMP
-                    `, [pid, targetWarehouseId, p.quantity || 0, p.nbPalette || 0, p.nbColis || 0]);
-                    
-                    if ((p.quantity || 0) > 0) {
-                        await client.query(`INSERT INTO InventoryTransactions (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, Notes, CreatedBy, OwnershipType)
-                            VALUES ($1, $2, 'ADJUSTMENT', $3, 'CATALOGUE_SYNC', 'Initial/Upsert sync', $4, 'OWNED')`, [pid, targetWarehouseId, p.quantity, userId]);
-                    }
-                    await client.query('RELEASE SAVEPOINT product_creation');
-                    results.created++;
-                } catch (e) { 
-                    await client.query('ROLLBACK TO SAVEPOINT product_creation');
-                    results.errors.push({ name: p.productName, error: e.message }); 
-                }
-            }
+        // Helper to determine Unit
+        const getUnit = (name) => (name.toUpperCase().match(/\(M²\)|M2/)) ? unitSQM : unitPCS;
+
+        // 2 & 3. BATCH PROCESSING FOR ALL PRODUCTS (NEW + UPDATED)
+        const allProducts = [...newProducts, ...updatedProducts];
+        const BATCH_SIZE = 100;
+
+        for (let i = 0; i < allProducts.length; i += BATCH_SIZE) {
+            const chunk = allProducts.slice(i, i + BATCH_SIZE);
+            
+            // Perform batch upsert in one go
+            const upsertRes = await client.query(`
+                INSERT INTO Products (ProductCode, ProductName, PrimaryUnitID, BasePrice, PurchasePrice, BrandID, Calibre, Choix, QteParColis, QteColisParPalette, IsActive)
+                SELECT * FROM UNNEST($1::text[], $2::text[], $3::int[], $4::numeric[], $5::numeric[], $6::int[], $7::text[], $8::text[], $9::numeric[], $10::numeric[], $11::boolean[])
+                AS t(code, name, unit, base, purchase, brand, cal, choice, qpc, cpp, active)
+                ON CONFLICT (ProductCode) DO UPDATE SET
+                    ProductName = EXCLUDED.ProductName,
+                    BasePrice = CASE WHEN EXCLUDED.BasePrice > 0 THEN EXCLUDED.BasePrice ELSE Products.BasePrice END,
+                    PurchasePrice = CASE WHEN EXCLUDED.PurchasePrice > 0 THEN EXCLUDED.PurchasePrice ELSE Products.PurchasePrice END,
+                    BrandID = COALESCE(EXCLUDED.BrandID, Products.BrandID),
+                    Calibre = COALESCE(EXCLUDED.Calibre, Products.Calibre),
+                    Choix = COALESCE(EXCLUDED.Choix, Products.Choix),
+                    QteParColis = CASE WHEN EXCLUDED.QteParColis > 0 THEN EXCLUDED.QteParColis ELSE Products.QteParColis END,
+                    QteColisParPalette = CASE WHEN EXCLUDED.QteColisParPalette > 0 THEN EXCLUDED.QteColisParPalette ELSE Products.QteColisParPalette END,
+                    IsActive = TRUE,
+                    UpdatedAt = CURRENT_TIMESTAMP
+                RETURNING ProductID, ProductCode
+            `, [
+                chunk.map(p => p.productName), // code
+                chunk.map(p => p.productName), // name
+                chunk.map(p => getUnit(p.productName)),
+                chunk.map(p => p.basePrice || 0),
+                chunk.map(p => p.purchasePrice || 0),
+                chunk.map(p => p.brandName ? brandMap.get(p.brandName.toLowerCase().trim()) : null),
+                chunk.map(p => p.calibre),
+                chunk.map(p => p.choix),
+                chunk.map(p => p.qteParColis || 0),
+                chunk.map(p => p.qteColisParPalette || 0),
+                chunk.map(() => true)
+            ]);
+
+            const idMap = new Map();
+            upsertRes.rows.forEach(r => idMap.set(r.productcode, r.productid));
+
+            // Batch Inventory Sync for the same chunk
+            await client.query(`
+                INSERT INTO Inventory (ProductID, WarehouseID, OwnershipType, QuantityOnHand, PalletCount, ColisCount)
+                SELECT * FROM UNNEST($1::int[], $2::int[], $3::text[], $4::numeric[], $5::numeric[], $6::numeric[])
+                AS t(pid, wid, type, qty, pal, col)
+                ON CONFLICT (ProductID, WarehouseID, OwnershipType) DO UPDATE SET
+                    QuantityOnHand = EXCLUDED.QuantityOnHand,
+                    PalletCount = EXCLUDED.PalletCount,
+                    ColisCount = EXCLUDED.ColisCount,
+                    UpdatedAt = CURRENT_TIMESTAMP
+            `, [
+                chunk.map(p => idMap.get(p.productName)),
+                chunk.map(() => targetWarehouseId),
+                chunk.map(() => 'OWNED'),
+                chunk.map(p => p.quantity || 0),
+                chunk.map(p => p.nbPalette || 0),
+                chunk.map(p => p.nbColis || 0)
+            ]);
+
+            results.updated += chunk.length;
         }
 
-        // 3. BATCH UPDATE PRODUCTS (Using UNNEST for high performance)
-        const toUpdate = updatedProducts.filter(p => p.hasChanges);
-        if (toUpdate.length > 0) {
-            const BATCH_SIZE = 100;
-            for (let i = 0; i < toUpdate.length; i += BATCH_SIZE) {
-                const chunk = toUpdate.slice(i, i + BATCH_SIZE);
-                
-                // Update Product basic info
-                await client.query(`
-                    UPDATE Products AS p SET
-                        BasePrice = CASE WHEN u.base_price > 0 THEN u.base_price ELSE p.BasePrice END,
-                        PurchasePrice = CASE WHEN u.purchase_price > 0 THEN u.purchase_price ELSE p.PurchasePrice END,
-                        QteParColis = CASE WHEN u.qpc > 0 THEN u.qpc ELSE p.QteParColis END,
-                        QteColisParPalette = CASE WHEN u.cpp > 0 THEN u.cpp ELSE p.QteColisParPalette END,
-                        UpdatedAt = CURRENT_TIMESTAMP
-                    FROM (
-                        SELECT * FROM UNNEST($1::int[], $2::numeric[], $3::numeric[], $4::numeric[], $5::numeric[])
-                        AS t(id, base_price, purchase_price, qpc, cpp)
-                    ) AS u
-                    WHERE p.ProductID = u.id
-                `, [
-                    chunk.map(p => p.productId),
-                    chunk.map(p => p.basePrice || 0),
-                    chunk.map(p => p.purchasePrice || 0),
-                    chunk.map(p => p.qteParColis || 0),
-                    chunk.map(p => p.qteColisParPalette || 0)
-                ]);
-
-                // Update Inventory and Transactions for qty changes
-                const qtyChanges = chunk.filter(p => p.qtyChanged);
-                for (const p of qtyChanges) {
-                    const inv = await client.query("SELECT InventoryID, QuantityOnHand FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = 'OWNED' LIMIT 1", [p.productId, targetWarehouseId]);
-                    if (inv.rows.length > 0) {
-                        const diff = (p.quantity || 0) - parseFloat(inv.rows[0].quantityonhand);
-                        await client.query("UPDATE Inventory SET QuantityOnHand = $1, ColisCount = $2, PalletCount = $3, UpdatedAt = CURRENT_TIMESTAMP WHERE InventoryID = $4", 
-                            [p.quantity || 0, p.nbColis || 0, p.nbPalette || 0, inv.rows[0].inventoryid]);
-                        if (Math.abs(diff) > 0.001) {
-                            await client.query("INSERT INTO InventoryTransactions (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, Notes, CreatedBy, OwnershipType) VALUES ($1, $2, 'ADJUSTMENT', $3, 'CATALOGUE_SYNC', 'Sync update', $4, 'OWNED')", 
-                                [p.productId, targetWarehouseId, diff, userId]);
-                        }
-                    }
-                }
-                results.updated += chunk.length;
-            }
-        }
-
-        // 4. BATCH REMOVE
+        // 4. BATCH REMOVE (In-Active)
         if (removedProducts.length > 0) {
             const ids = removedProducts.map(p => p.productId);
             await client.query("UPDATE Products SET IsActive = FALSE, UpdatedAt = CURRENT_TIMESTAMP WHERE ProductID = ANY($1)", [ids]);
