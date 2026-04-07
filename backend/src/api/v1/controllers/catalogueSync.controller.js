@@ -397,25 +397,41 @@ async function executeCatalogueSync(req, res, next) {
         for (let i = 0; i < uniqueProductsList.length; i += BATCH_SIZE) {
             const chunk = uniqueProductsList.slice(i, i + BATCH_SIZE);
             
-            // Use the confirmed unique constraint name explicitly for the UPSERT
+            // Handle UPSERT via CTE (Common Table Expression) to bypass constraint name issues
+            // This is the most robust way to do conditional updates in Postgres without relying on constraint names
             const upsertRes = await client.query(`
-                INSERT INTO Products (ProductCode, ProductName, PrimaryUnitID, BasePrice, PurchasePrice, BrandID, Calibre, Choix, QteParColis, QteColisParPalette, IsActive)
-                SELECT * FROM UNNEST($1::text[], $2::text[], $3::int[], $4::numeric[], $5::numeric[], $6::int[], $7::text[], $8::text[], $9::numeric[], $10::numeric[], $11::boolean[])
-                AS t(code, name, unit, base, purchase, brand, cal, choice, qpc, cpp, active)
-                ON CONFLICT ON CONSTRAINT products_productcode_key DO UPDATE SET
-                    ProductName = EXCLUDED.ProductName,
-                    BasePrice = CASE WHEN EXCLUDED.BasePrice > 0 THEN EXCLUDED.BasePrice ELSE Products.BasePrice END,
-                    PurchasePrice = CASE WHEN EXCLUDED.PurchasePrice > 0 THEN EXCLUDED.PurchasePrice ELSE Products.PurchasePrice END,
-                    BrandID = COALESCE(EXCLUDED.BrandID, Products.BrandID),
-                    Calibre = COALESCE(EXCLUDED.Calibre, Products.Calibre),
-                    Choix = COALESCE(EXCLUDED.Choix, Products.Choix),
-                    QteParColis = CASE WHEN EXCLUDED.QteParColis > 0 THEN EXCLUDED.QteParColis ELSE Products.QteParColis END,
-                    QteColisParPalette = CASE WHEN EXCLUDED.QteColisParPalette > 0 THEN EXCLUDED.QteColisParPalette ELSE Products.QteColisParPalette END,
-                    IsActive = TRUE,
-                    UpdatedAt = CURRENT_TIMESTAMP
-                RETURNING ProductID, ProductCode
+                WITH input_data AS (
+                    SELECT * FROM UNNEST($1::text[], $2::text[], $3::int[], $4::numeric[], $5::numeric[], $6::int[], $7::text[], $8::text[], $9::numeric[], $10::numeric[])
+                    AS t(code, name, unit, base, purchase, brand, cal, choice, qpc, cpp)
+                ),
+                updated AS (
+                    UPDATE Products p SET
+                        ProductName = i.name,
+                        BasePrice = CASE WHEN i.base > 0 THEN i.base ELSE p.BasePrice END,
+                        PurchasePrice = CASE WHEN i.purchase > 0 THEN i.purchase ELSE p.PurchasePrice END,
+                        BrandID = COALESCE(i.brand, p.BrandID),
+                        Calibre = COALESCE(i.cal, p.Calibre),
+                        Choix = COALESCE(i.choice, p.Choix),
+                        QteParColis = CASE WHEN i.qpc > 0 THEN i.qpc ELSE p.QteParColis END,
+                        QteColisParPalette = CASE WHEN i.cpp > 0 THEN i.cpp ELSE p.QteColisParPalette END,
+                        IsActive = TRUE,
+                        UpdatedAt = CURRENT_TIMESTAMP
+                    FROM input_data i
+                    WHERE p.ProductCode = i.code
+                    RETURNING p.ProductID, p.ProductCode
+                ),
+                inserted AS (
+                    INSERT INTO Products (ProductCode, ProductName, PrimaryUnitID, BasePrice, PurchasePrice, BrandID, Calibre, Choix, QteParColis, QteColisParPalette, IsActive)
+                    SELECT i.code, i.name, i.unit, i.base, i.purchase, i.brand, i.cal, i.choice, i.qpc, i.cpp, TRUE
+                    FROM input_data i
+                    WHERE NOT EXISTS (SELECT 1 FROM updated u WHERE u.ProductCode = i.code)
+                    RETURNING ProductID, ProductCode
+                )
+                SELECT ProductID, ProductCode FROM updated
+                UNION ALL
+                SELECT ProductID, ProductCode FROM inserted
             `, [
-                chunk.map(p => p.productName), // code
+                chunk.map(p => p.productName), // code (using name as code as per previous pattern)
                 chunk.map(p => p.productName), // name
                 chunk.map(p => getUnit(p.productName)),
                 chunk.map(p => p.basePrice || 0),
@@ -424,8 +440,7 @@ async function executeCatalogueSync(req, res, next) {
                 chunk.map(p => p.calibre),
                 chunk.map(p => p.choix),
                 chunk.map(p => p.qteParColis || 0),
-                chunk.map(p => p.qteColisParPalette || 0),
-                chunk.map(() => true)
+                chunk.map(p => p.qteColisParPalette || 0)
             ]);
 
             const idMap = new Map();
