@@ -397,26 +397,42 @@ async function executeCatalogueSync(req, res, next) {
         for (let i = 0; i < uniqueProductsList.length; i += BATCH_SIZE) {
             const chunk = uniqueProductsList.slice(i, i + BATCH_SIZE);
             
-            // Perform batch upsert in one go
-            const upsertRes = await client.query(`
-                INSERT INTO Products (ProductCode, ProductName, PrimaryUnitID, BasePrice, PurchasePrice, BrandID, Calibre, Choix, QteParColis, QteColisParPalette, IsActive)
-                SELECT * FROM UNNEST($1::text[], $2::text[], $3::int[], $4::numeric[], $5::numeric[], $6::int[], $7::text[], $8::text[], $9::numeric[], $10::numeric[], $11::boolean[])
-                AS t(code, name, unit, base, purchase, brand, cal, choice, qpc, cpp, active)
-                ON CONFLICT (ProductCode) DO UPDATE SET
-                    ProductName = EXCLUDED.ProductName,
-                    BasePrice = CASE WHEN EXCLUDED.BasePrice > 0 THEN EXCLUDED.BasePrice ELSE Products.BasePrice END,
-                    PurchasePrice = CASE WHEN EXCLUDED.PurchasePrice > 0 THEN EXCLUDED.PurchasePrice ELSE Products.PurchasePrice END,
-                    BrandID = COALESCE(EXCLUDED.BrandID, Products.BrandID),
-                    Calibre = COALESCE(EXCLUDED.Calibre, Products.Calibre),
-                    Choix = COALESCE(EXCLUDED.Choix, Products.Choix),
-                    QteParColis = CASE WHEN EXCLUDED.QteParColis > 0 THEN EXCLUDED.QteParColis ELSE Products.QteParColis END,
-                    QteColisParPalette = CASE WHEN EXCLUDED.QteColisParPalette > 0 THEN EXCLUDED.QteColisParPalette ELSE Products.QteColisParPalette END,
+            // Handle UPSERT manually since ProductCode might not have a unique constraint
+            // First, update existing ones
+            await client.query(`
+                UPDATE Products SET
+                    BasePrice = CASE WHEN t.base > 0 THEN t.base ELSE Products.BasePrice END,
+                    PurchasePrice = CASE WHEN t.purchase > 0 THEN t.purchase ELSE Products.PurchasePrice END,
+                    BrandID = COALESCE(t.brand, Products.BrandID),
+                    Calibre = t.cal,
+                    Choix = t.choice,
+                    QteParColis = CASE WHEN t.qpc > 0 THEN t.qpc ELSE Products.QteParColis END,
+                    QteColisParPalette = CASE WHEN t.cpp > 0 THEN t.cpp ELSE Products.QteColisParPalette END,
                     IsActive = TRUE,
                     UpdatedAt = CURRENT_TIMESTAMP
-                RETURNING ProductID, ProductCode
+                FROM UNNEST($1::text[], $2::numeric[], $3::numeric[], $4::int[], $5::text[], $6::text[], $7::numeric[], $8::numeric[])
+                AS t(name, base, purchase, brand, cal, choice, qpc, cpp)
+                WHERE Products.ProductName = t.name
             `, [
-                chunk.map(p => p.productName), // code
-                chunk.map(p => p.productName), // name
+                chunk.map(p => p.productName),
+                chunk.map(p => p.basePrice || 0),
+                chunk.map(p => p.purchasePrice || 0),
+                chunk.map(p => p.brandName ? brandMap.get(p.brandName.toLowerCase().trim()) : null),
+                chunk.map(p => p.calibre),
+                chunk.map(p => p.choix),
+                chunk.map(p => p.qteParColis || 0),
+                chunk.map(p => p.qteColisParPalette || 0)
+            ]);
+
+            // Then, insert missing ones
+            await client.query(`
+                INSERT INTO Products (ProductCode, ProductName, PrimaryUnitID, BasePrice, PurchasePrice, BrandID, Calibre, Choix, QteParColis, QteColisParPalette, IsActive)
+                SELECT t.name, t.name, t.unit, t.base, t.purchase, t.brand, t.cal, t.choice, t.qpc, t.cpp, true
+                FROM UNNEST($1::text[], $2::int[], $3::numeric[], $4::numeric[], $5::int[], $6::text[], $7::text[], $8::numeric[], $9::numeric[])
+                AS t(name, unit, base, purchase, brand, cal, choice, qpc, cpp)
+                WHERE NOT EXISTS (SELECT 1 FROM Products WHERE ProductName = t.name)
+            `, [
+                chunk.map(p => p.productName),
                 chunk.map(p => getUnit(p.productName)),
                 chunk.map(p => p.basePrice || 0),
                 chunk.map(p => p.purchasePrice || 0),
@@ -424,12 +440,17 @@ async function executeCatalogueSync(req, res, next) {
                 chunk.map(p => p.calibre),
                 chunk.map(p => p.choix),
                 chunk.map(p => p.qteParColis || 0),
-                chunk.map(p => p.qteColisParPalette || 0),
-                chunk.map(() => true)
+                chunk.map(p => p.qteColisParPalette || 0)
             ]);
 
+            // For inventory sync, we need all IDs (including those we just updated/inserted)
+            const allIdsRes = await client.query(
+                "SELECT ProductID, ProductName FROM Products WHERE ProductName = ANY($1)",
+                [chunk.map(p => p.productName)]
+            );
+
             const idMap = new Map();
-            upsertRes.rows.forEach(r => idMap.set(r.productcode, r.productid));
+            allIdsRes.rows.forEach(r => idMap.set(r.productname, r.productid));
 
             // Batch Inventory Sync for the same chunk
             await client.query(`
@@ -449,6 +470,8 @@ async function executeCatalogueSync(req, res, next) {
                 chunk.map(p => p.nbPalette || 0),
                 chunk.map(p => p.nbColis || 0)
             ]);
+
+            results.updated += chunk.length;
 
             results.updated += chunk.length;
         }
