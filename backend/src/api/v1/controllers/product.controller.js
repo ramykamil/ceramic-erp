@@ -247,35 +247,58 @@ async function createProduct(req, res, next) {
   try {
     await client.query('BEGIN');
 
-    // 1. Create Product
-    const insertProductQuery = `
-      INSERT INTO Products (
-        ProductCode, ProductName, CategoryID, BrandID, 
-        PrimaryUnitID, Description, BasePrice, PurchasePrice, FactoryID, Size, 
-        Calibre, Choix, QteParColis, QteColisParPalette, IsActive
-      )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, TRUE) 
-      RETURNING *
-    `;
+    // 1. Check for existing product by code (including inactive ones)
+    const existingCheck = await client.query('SELECT * FROM Products WHERE ProductCode = $1', [productcode]);
+    let newProduct;
 
-    const result = await client.query(insertProductQuery, [
-      productcode,
-      productname,
-      categoryid || null,
-      brandid || null,
-      primaryunitid,
-      description,
-      baseprice,
-      purchaseprice || null,
-      factoryid || null,
-      finalSize,
-      calibre || null,
-      choix || null,
-      qteparcolis || 0,
-      qtecolisparpalette || 0
-    ]);
+    if (existingCheck.rows.length > 0) {
+      // REACTIVATE and UPDATE existing product instead of failing
+      const existingId = existingCheck.rows[0].productid;
+      const updateResult = await client.query(`
+        UPDATE Products 
+        SET IsActive = TRUE, 
+            ProductName = COALESCE($1, ProductName),
+            CategoryID = COALESCE($2, CategoryID),
+            BrandID = COALESCE($3, BrandID),
+            PrimaryUnitID = COALESCE($4, PrimaryUnitID),
+            BasePrice = COALESCE($5, BasePrice),
+            PurchasePrice = COALESCE($6, PurchasePrice),
+            Size = COALESCE($7, Size),
+            Description = COALESCE($8, Description)
+        WHERE ProductID = $9
+        RETURNING *
+      `, [productname, categoryid || null, brandid || null, primaryunitid || null, baseprice || 0, purchaseprice || null, finalSize, description, existingId]);
+      newProduct = updateResult.rows[0];
+    } else {
+      // NORMAL INSERT
+      const insertProductQuery = `
+        INSERT INTO Products (
+          ProductCode, ProductName, CategoryID, BrandID, 
+          PrimaryUnitID, Description, BasePrice, PurchasePrice, FactoryID, Size, 
+          Calibre, Choix, QteParColis, QteColisParPalette, IsActive
+        )
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, TRUE) 
+        RETURNING *
+      `;
 
-    const newProduct = result.rows[0];
+      const result = await client.query(insertProductQuery, [
+        productcode,
+        productname,
+        categoryid || null,
+        brandid || null,
+        primaryunitid,
+        description,
+        baseprice,
+        purchaseprice || null,
+        factoryid || null,
+        finalSize,
+        calibre || null,
+        choix || null,
+        qteparcolis || 0,
+        qtecolisparpalette || 0
+      ]);
+      newProduct = result.rows[0];
+    }
 
     // 2. AUTOMATICALLY Link Primary Unit in ProductUnits table
     if (newProduct.primaryunitid) {
