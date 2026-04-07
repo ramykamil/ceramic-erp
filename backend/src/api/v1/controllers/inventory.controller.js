@@ -397,7 +397,7 @@ async function importStock(req, res, next) {
             try {
                 await client.query('BEGIN');
                 const { userId } = req.user;
-                const BATCH_SIZE = 100;
+                const BATCH_SIZE = 500;
                 const whID = targetWarehouseId;
 
                 // 1. Pre-fetch Units
