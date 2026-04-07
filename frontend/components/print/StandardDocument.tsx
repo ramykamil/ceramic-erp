@@ -181,9 +181,28 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
     const oldBalance = safeNumber(data.oldBalance);
     const newBalance = oldBalance + reste;
 
-    // Calculate pallet/box totals
-    const totalPallets = data.items.reduce((sum, item) => sum + safeNumber(item.palletCount), 0);
-    const totalBoxes = data.items.reduce((sum, item) => sum + safeNumber(item.boxCount), 0);
+    // Calculate display values for each item (handling missing stored counts)
+    const calculateItemCounts = (item: PrintItem) => {
+        let displayBoxes = safeNumber(item.boxCount);
+        let displayPallets = safeNumber(item.palletCount);
+
+        // Fallback: If boxCount is zero, calculate from quantity and piecesPerCarton
+        if (displayBoxes === 0 && item.piecesPerCarton && item.piecesPerCarton > 0) {
+            displayBoxes = safeNumber(item.quantity) / item.piecesPerCarton;
+        }
+
+        // Fallback: If palletCount is zero, calculate from boxCount and cartonsPerPalette
+        if (displayPallets === 0 && item.cartonsPerPalette && item.cartonsPerPalette > 0) {
+            displayPallets = displayBoxes / item.cartonsPerPalette;
+        }
+
+        return { boxCount: displayBoxes, palletCount: displayPallets };
+    };
+
+    // Calculate pallet/box totals with calculated fallbacks
+    const itemCalculations = data.items.map(calculateItemCounts);
+    const totalPallets = itemCalculations.reduce((sum, counts) => sum + counts.palletCount, 0);
+    const totalBoxes = itemCalculations.reduce((sum, counts) => sum + counts.boxCount, 0);
     const totalQty = data.items.reduce((sum, item) => sum + safeNumber(item.quantity), 0);
 
     // Calculate total SQM and total PCS for inverse display
@@ -309,6 +328,7 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
                 <div style={{ marginBottom: '8px' }}>
                     {data.items.map((item, index) => {
                         const isTransport = item.productName.toUpperCase().includes('TRANSPORT');
+                        const counts = calculateItemCounts(item);
                         return (
                         <div key={index} style={{ 
                             borderBottom: '1px dotted #ccc', 
@@ -320,7 +340,7 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
                             <div style={{ fontSize: '8px', fontWeight: 'bold' }}>{item.productName}</div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '8px' }}>
                                 <span>
-                                    {item.palletCount ? `${parseFloat(Number(item.palletCount).toFixed(2))}P ` : ''}{item.boxCount ? `${parseFloat(Number(item.boxCount).toFixed(2))}C ` : ''}{Number(item.quantity || 0).toFixed(2)} {item.unitCode}
+                                    {counts.palletCount > 0 ? `${parseFloat(Number(counts.palletCount).toFixed(2))}P ` : ''}{counts.boxCount > 0 ? `${parseFloat(Number(counts.boxCount).toFixed(2))}C ` : ''}{Number(item.quantity || 0).toFixed(2)} {item.unitCode}
                                 </span>
                                 <span style={{ fontWeight: 'bold' }}>{formatCurrency(item.lineTotal)}</span>
                             </div>
@@ -738,6 +758,7 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
                 <tbody>
                     {data.items.map((item, index) => {
                         const isTransport = item.productName.toUpperCase().includes('TRANSPORT');
+                        const counts = calculateItemCounts(item);
                         return (
                         <tr key={index} style={{ 
                             backgroundColor: isTransport ? '#cbd5e1' : (index % 2 === 0 ? '#ffffff' : '#f9fafb'),
@@ -749,15 +770,15 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
                                 <div style={{ fontWeight: '500' }}>{item.productName}</div>
                                 {(item.piecesPerCarton || item.cartonsPerPalette) && (
                                     <div style={{ fontSize: '7px', color: '#6b7280', marginTop: '2px' }}>
-                                        {item.piecesPerCarton ? `${item.piecesPerCarton} pcs/ctn` : ''}
+                                        {item.piecesPerCarton ? `${parseFloat(Number(item.piecesPerCarton).toFixed(3))} pcs/ctn` : ''}
                                         {item.piecesPerCarton && item.cartonsPerPalette ? ' • ' : ''}
                                         {item.cartonsPerPalette ? `${item.cartonsPerPalette} ctn/pal` : ''}
                                     </div>
                                 )}
                             </td>
                             <td style={{ ...cellStyle, fontSize: '8px', color: '#6b7280' }}>{item.brandName ?? '-'}</td>
-                            <td style={{ ...cellStyle, textAlign: 'center', fontWeight: 'bold', color: '#7c3aed' }}>{item.palletCount != null ? parseFloat(Number(item.palletCount).toFixed(2)) : '-'}</td>
-                            <td style={{ ...cellStyle, textAlign: 'center', fontWeight: 'bold', color: '#0891b2' }}>{item.boxCount != null ? parseFloat(Number(item.boxCount).toFixed(2)) : '-'}</td>
+                            <td style={{ ...cellStyle, textAlign: 'center', fontWeight: 'bold', color: '#7c3aed' }}>{counts.palletCount > 0 ? parseFloat(Number(counts.palletCount).toFixed(2)) : '-'}</td>
+                            <td style={{ ...cellStyle, textAlign: 'center', fontWeight: 'bold', color: '#0891b2' }}>{counts.boxCount > 0 ? parseFloat(Number(counts.boxCount).toFixed(2)) : '-'}</td>
                             <td style={{ ...cellStyle, textAlign: 'center', fontWeight: 'bold', fontSize: '11px', backgroundColor: '#dbeafe' }}>{Number(item.quantity || 0).toFixed(2)}</td>
                             <td style={{ ...cellStyle, textAlign: 'center', fontSize: '8px' }}>{item.unitCode}</td>
                             {showPrices && <td style={{ ...cellStyle, textAlign: 'right', fontFamily: 'monospace' }}>{formatCurrency(item.unitPrice)}</td>}

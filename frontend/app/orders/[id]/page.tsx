@@ -221,12 +221,12 @@ export default function OrderDetailsPage() {
             clientPhone: (order as any).customerphone || '',
             createdBy: order.salespersonname || '',
             items: order.items.map(item => {
-                // Derive packaging ratios from stored counts
                 const qty = Number(item.quantity) || 0;
-                const cartons = Number(item.coliscount) || 0;
-                const pallets = Number(item.palletcount) || 0;
-                const piecesPerCarton = cartons > 0 && qty > 0 ? qty / cartons : undefined;
-                const cartonsPerPalette = pallets > 0 && cartons > 0 ? cartons / pallets : undefined;
+                
+                // Use specifications from backend (joined from products table)
+                // Field names from backend are QteParColis and QteColisParPalette (from getOrderById)
+                const piecesPerCarton = Number((item as any).qteparcolis) || undefined;
+                const cartonsPerPalette = Number((item as any).qtecolisparpalette) || undefined;
 
                 return {
                     productCode: item.productcode,
@@ -235,8 +235,8 @@ export default function OrderDetailsPage() {
                     unitCode: item.unitcode,
                     unitPrice: item.unitprice || 0,
                     lineTotal: item.linetotal || 0,
-                    palletCount: pallets,
-                    boxCount: cartons,
+                    palletCount: Number(item.palletcount) || 0,
+                    boxCount: Number(item.coliscount) || 0,
                     piecesPerCarton,
                     cartonsPerPalette,
                 };

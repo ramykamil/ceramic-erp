@@ -68,19 +68,19 @@ export default function OrderPrintPage() {
             clientPhone: (order as any).customerphone || '',
             createdBy: (order as any).salespersonname || (order as any).createdby || '',
             items: order.items.map(item => {
-                // Use static packaging data from product definition
+                // Use static packaging data from product definition (backend joins from Products table)
                 const qty = Number(item.quantity) || 0;
                 const cartons = Number(item.coliscount) || 0;
                 const pallets = Number(item.palletcount) || 0;
 
-                // Fallback to calculation ONLY if static data is missing (backward compatibility)
-                const piecesPerCarton = Number((item as any).qteparcolis) || (cartons > 0 && qty > 0 ? qty / cartons : undefined);
-                const cartonsPerPalette = Number((item as any).qtecolisparpalette) || (pallets > 0 && cartons > 0 ? cartons / pallets : undefined);
+                // Field names from backend are QteParColis and QteColisParPalette (from getOrderById)
+                const piecesPerCarton = Number((item as any).qteparcolis) || undefined;
+                const cartonsPerPalette = Number((item as any).qtecolisparpalette) || undefined;
 
                 return {
                     productCode: item.productcode,
                     productName: item.productname,
-                    brandName: (item as any).brandname,
+                    brandName: (item as any).brandname || (item as any).BrandName, // Handle alternate casing
                     quantity: qty,
                     unitCode: item.unitcode,
                     unitPrice: item.unitprice || 0,
