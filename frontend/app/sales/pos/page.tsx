@@ -796,12 +796,12 @@ function POSContent() {
               />
               <div className="absolute left-3.5 top-3.5 text-slate-400">🔍</div>
               {searchQuery.length > 2 && filteredProducts.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white border shadow-2xl rounded-2xl z-[60] overflow-hidden ring-8 ring-black/5 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="absolute top-full left-0 mt-1 min-w-full lg:min-w-[500px] xl:min-w-[600px] bg-white border shadow-2xl rounded-2xl z-[60] max-h-[60vh] overflow-y-auto ring-8 ring-black/5 animate-in fade-in slide-in-from-top-2 duration-200 custom-scrollbar">
                   {filteredProducts.map(p => (
                     <div key={p.productid} onClick={() => addToCart(p)} className="p-3 hover:bg-red-50 cursor-pointer flex items-center justify-between border-b last:border-0 border-slate-100">
                       <div className="flex-1 min-w-0 pr-4">
-                        <div className="font-black text-slate-800 truncate">{p.productname}</div>
-                        <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest truncate">{p.famille || p.brandname} • {p.productcode}</div>
+                        <div className="font-black text-slate-800 break-words whitespace-normal leading-tight mb-0.5">{p.productname}</div>
+                        <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest break-words whitespace-normal">{p.famille || p.brandname} • {p.productcode}</div>
                       </div>
                       <div className="text-right flex-none">
                         <div className="text-base font-black text-brand-primary">{formatCurrency(p.prixvente || p.baseprice)}</div>
