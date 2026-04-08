@@ -14,6 +14,47 @@ const parseDimensions = (str) => {
 };
 
 /**
+ * Helper: Convert a quantity in a specific unit to the stock unit (SQM or PCS)
+ */
+const convertToStockUnit = (quantity, unitCode, productInfo) => {
+    const qty = parseFloat(quantity) || 0;
+    const uCode = (unitCode || '').toUpperCase();
+    const primaryUnitCode = (productInfo.PrimaryUnitCode || productInfo.primaryunitcode || '').toUpperCase();
+    const sqmPerPiece = parseDimensions(productInfo.Size || productInfo.size || productInfo.ProductName || productInfo.productname);
+    const piecesPerBox = parseFloat(productInfo.QteParColis || productInfo.qteparcolis) || 0;
+    const boxesPerPallet = parseFloat(productInfo.QteColisParPalette || productInfo.qtecolisparpalette) || 0;
+    const isFicheProduct = (productInfo.ProductName || productInfo.productname || '').toLowerCase().startsWith('fiche');
+
+    const isTileProduct = !isFicheProduct && sqmPerPiece > 0;
+    const isReceivingInSQM = ['SQM', 'M2', 'M²'].includes(uCode);
+    const isReceivingInPCS = ['PCS', 'PIECE', 'PIÈCE'].includes(uCode);
+
+    if (isTileProduct) {
+        if (isReceivingInSQM) return qty;
+        if (isReceivingInPCS) return qty * sqmPerPiece;
+        if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(uCode)) {
+            const pcs = piecesPerBox > 0 ? qty * piecesPerBox : qty;
+            return pcs * sqmPerPiece;
+        }
+        if (['PALLET', 'PALETTE', 'PAL'].includes(uCode)) {
+            const boxes = boxesPerPallet > 0 ? qty * boxesPerPallet : qty;
+            const pcs = piecesPerBox > 0 ? boxes * piecesPerBox : boxes;
+            return pcs * sqmPerPiece;
+        }
+        return qty;
+    } else {
+        if (isReceivingInPCS || uCode === primaryUnitCode) return qty;
+        if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(uCode) && piecesPerBox > 0) {
+            return qty * piecesPerBox;
+        }
+        if (['PALLET', 'PALETTE', 'PAL'].includes(uCode) && boxesPerPallet > 0 && piecesPerBox > 0) {
+            return qty * boxesPerPallet * piecesPerBox;
+        }
+        return qty;
+    }
+};
+
+/**
  * Get all Purchase Orders
  */
 async function getPurchaseOrders(req, res, next) {
@@ -302,7 +343,7 @@ async function createPurchaseOrder(req, res, next) {
             ]);
 
             // 5b. Unit Conversion for Inventory
-            const productInfo = await client.query(
+            const productInfoRes = await client.query(
                 `SELECT p.ProductName, p.Size, p.PrimaryUnitID, u.UnitCode, pu.UnitCode as PrimaryUnitCode,
                         p.QteParColis, p.QteColisParPalette
                  FROM Products p
@@ -313,42 +354,11 @@ async function createPurchaseOrder(req, res, next) {
             );
 
             let finalQtyToAdd = qtyReceived;
+            let productInfo = {};
 
-            if (productInfo.rows.length > 0) {
-                const pInfo = productInfo.rows[0];
-                const unitCode = (pInfo.unitcode || '').toUpperCase();
-                const primaryUnitCode = (pInfo.primaryunitcode || '').toUpperCase();
-                const sqmPerPiece = parseDimensions(pInfo.size || pInfo.productname);
-                const piecesPerBox = parseFloat(pInfo.qteparcolis) || 0;
-                const boxesPerPallet = parseFloat(pInfo.qtecolisparpalette) || 0;
-                const isFicheProduct = (pInfo.productname || '').toLowerCase().startsWith('fiche');
-
-                const isTileProduct = !isFicheProduct && sqmPerPiece > 0;
-                const isReceivingInSQM = ['SQM', 'M2', 'M²'].includes(unitCode);
-                const isReceivingInPCS = ['PCS', 'PIECE', 'PIÈCE'].includes(unitCode);
-
-                if (isTileProduct) {
-                    if (isReceivingInSQM) {
-                        finalQtyToAdd = qtyReceived;
-                    } else if (isReceivingInPCS) {
-                        finalQtyToAdd = qtyReceived * sqmPerPiece;
-                    } else if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(unitCode)) {
-                        const pcs = piecesPerBox > 0 ? qtyReceived * piecesPerBox : qtyReceived;
-                        finalQtyToAdd = pcs * sqmPerPiece;
-                    } else if (['PALLET', 'PALETTE', 'PAL'].includes(unitCode)) {
-                        const boxes = boxesPerPallet > 0 ? qtyReceived * boxesPerPallet : qtyReceived;
-                        const pcs = piecesPerBox > 0 ? boxes * piecesPerBox : boxes;
-                        finalQtyToAdd = pcs * sqmPerPiece;
-                    }
-                } else {
-                    if (isReceivingInPCS || unitCode === primaryUnitCode) {
-                        finalQtyToAdd = qtyReceived;
-                    } else if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(unitCode) && piecesPerBox > 0) {
-                        finalQtyToAdd = qtyReceived * piecesPerBox;
-                    } else if (['PALLET', 'PALETTE', 'PAL'].includes(unitCode) && boxesPerPallet > 0 && piecesPerBox > 0) {
-                        finalQtyToAdd = qtyReceived * boxesPerPallet * piecesPerBox;
-                    }
-                }
+            if (productInfoRes.rows.length > 0) {
+                productInfo = productInfoRes.rows[0];
+                finalQtyToAdd = convertToStockUnit(qtyReceived, productInfo.unitcode, productInfo);
             }
 
             // 5c. Update Inventory
@@ -377,8 +387,8 @@ async function createPurchaseOrder(req, res, next) {
             }
 
             // 5d. Recalculate Pallet/Colis counts
-            const ppc = parseFloat(productInfo.rows[0]?.qteparcolis) || 0;
-            const cpp = parseFloat(productInfo.rows[0]?.qtecolisparpalette) || 0;
+            const ppc = parseFloat(productInfo.qteparcolis) || 0;
+            const cpp = parseFloat(productInfo.qtecolisparpalette) || 0;
             const newColis = ppc > 0 ? parseFloat((newTotalQty / ppc).toFixed(4)) : 0;
             const newPallets = cpp > 0 ? parseFloat((newColis / cpp).toFixed(4)) : 0;
             await client.query(`
@@ -824,7 +834,8 @@ async function updatePurchaseOrder(req, res, next) {
 
             // Fetch old items for comparison
             const oldItemsRes = await client.query(`
-                SELECT poi.*, u.UnitCode, p.ProductName, p.Size, pu.UnitCode as PrimaryUnitCode
+                SELECT poi.*, u.UnitCode, p.ProductName, p.Size, pu.UnitCode as PrimaryUnitCode,
+                       p.QteParColis, p.QteColisParPalette
                 FROM PurchaseOrderItems poi
                 LEFT JOIN Units u ON poi.UnitID = u.UnitID
                 JOIN Products p ON poi.ProductID = p.ProductID
@@ -836,94 +847,95 @@ async function updatePurchaseOrder(req, res, next) {
             const oldItemsMap = new Map(oldItemsRes.rows.map(i => [String(i.poitemid), i]));
             const processedIds = new Set();
 
+            // Fetch ALL goods receipts for this PO to find if we have one to link transactions to
+            const grRes = await client.query('SELECT ReceiptID FROM GoodsReceipts WHERE PurchaseOrderID = $1 LIMIT 1', [id]);
+            const receiptID = grRes.rows[0]?.receiptid || 0;
+
             for (const item of items) {
                 const lineTotal = parseFloat(item.quantity) * parseFloat(item.unitPrice);
                 subTotal += lineTotal;
 
                 // Get Product Info for Unit Conversion of NEW/UPDATED Item
-                const productInfo = await client.query(
-                    `SELECT p.ProductName, p.Size, u.UnitCode as PrimaryUnitCode 
+                const productInfoRes = await client.query(
+                    `SELECT p.ProductName, p.Size, p.PrimaryUnitID, pu.UnitCode as PrimaryUnitCode,
+                            p.QteParColis, p.QteColisParPalette, u.UnitCode
                      FROM Products p 
-                     LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID 
+                     LEFT JOIN Units pu ON p.PrimaryUnitID = pu.UnitID 
+                     LEFT JOIN Units u ON u.UnitID = $2
                      WHERE p.ProductID = $1`,
-                    [item.productId]
+                    [item.productId, item.unitId]
                 );
-                const pInfo = productInfo.rows[0];
-                const sqmPerPiece = parseDimensions(pInfo?.size || pInfo?.productname);
-                const primaryUnitCode = (pInfo?.primaryunitcode || '').toUpperCase();
-                const isFicheProduct = (pInfo?.productname || '').toLowerCase().startsWith('fiche');
+                const pInfo = productInfoRes.rows[0];
+                const quantityInStockUnit = convertToStockUnit(item.quantity, pInfo?.unitcode, pInfo || {});
 
-                const unitRes = await client.query('SELECT UnitCode FROM Units WHERE UnitID = $1', [item.unitId]);
-                const unitCode = (unitRes.rows[0]?.unitcode || 'PCS').toUpperCase();
-
-                let quantityInStockUnit = parseFloat(item.quantity);
-                if (unitCode === 'PCS' && ['SQM', 'M2', 'M²'].includes(primaryUnitCode) && !isFicheProduct && sqmPerPiece > 0) {
-                    quantityInStockUnit = quantityInStockUnit * sqmPerPiece;
-                }
-
-                const itemPoolId = String(item.poItemId || ''); // Ensure String for comparison
+                const itemPoolId = String(item.poItemId || '');
 
                 if (itemPoolId && oldItemsMap.has(itemPoolId)) {
                     // --- UPDATE EXISTING ITEM ---
                     const oldItem = oldItemsMap.get(itemPoolId);
                     processedIds.add(itemPoolId);
 
-                    // Calculate Old Stock Qty (what was previously added)
-                    let oldQuantityInStockUnit = parseFloat(oldItem.quantity);
-                    const oldSqmPerPiece = parseDimensions(oldItem.size || oldItem.productname);
-                    const oldPrimaryUnitCode = (oldItem.primaryunitcode || '').toUpperCase();
-                    const oldIsFicheProduct = (oldItem.productname || '').toLowerCase().startsWith('fiche');
-                    const oldUnitCode = (oldItem.unitcode || 'PCS').toUpperCase();
-
-                    if (oldUnitCode === 'PCS' && ['SQM', 'M2', 'M²'].includes(oldPrimaryUnitCode) && !oldIsFicheProduct && oldSqmPerPiece > 0) {
-                        oldQuantityInStockUnit = oldQuantityInStockUnit * oldSqmPerPiece;
-                    }
-
-                    // Strict Revert and Add logic handles Warehouse changes implicitly if we did it separately,
-                    // but here we do a 'Diff' logic. 
-                    // ISSUE: If Warehouse Changed, 'Diff' doesn't work across warehouses.
+                    // Calculate Old Stock Qty
+                    const oldQuantityInStockUnit = convertToStockUnit(oldItem.quantity, oldItem.unitcode, oldItem);
 
                     if (String(oldWarehouseId) !== String(targetWarehouseId)) {
                         // Warehouse Changed!
                         // Remove OLD from OLD Warehouse
                         await client.query(`
                             UPDATE Inventory 
-                            SET QuantityOnHand = QuantityOnHand - $1
-                            WHERE ProductID = $2 AND WarehouseID = $3
+                            SET QuantityOnHand = QuantityOnHand - $1, UpdatedAt = CURRENT_TIMESTAMP
+                            WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
                         `, [oldQuantityInStockUnit, oldItem.productid, oldWarehouseId]);
 
                         // Add NEW to NEW Warehouse
                         await client.query(`
                             UPDATE Inventory 
-                            SET QuantityOnHand = QuantityOnHand + $1
-                            WHERE ProductID = $2 AND WarehouseID = $3
+                            SET QuantityOnHand = QuantityOnHand + $1, UpdatedAt = CURRENT_TIMESTAMP
+                            WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
                         `, [quantityInStockUnit, item.productId, targetWarehouseId]);
-                    } else {
-                        // Same Warehouse - Calculate Diff
-                        // Note: ProductID might have changed too!
-                        if (String(oldItem.productid) !== String(item.productId)) {
-                            // Product Changed! Revert Old, Add New
-                            await client.query(`
-                                UPDATE Inventory 
-                                SET QuantityOnHand = QuantityOnHand - $1
-                                WHERE ProductID = $2 AND WarehouseID = $3
-                            `, [oldQuantityInStockUnit, oldItem.productid, targetWarehouseId]);
+                        
+                        // Record Movement Transaction
+                        await client.query(`
+                            INSERT INTO InventoryTransactions (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, ReferenceID, OwnershipType, FactoryID, CreatedBy)
+                            VALUES ($1, $2, 'OUT', $3, 'PURCHASE_UPDATE', $4, 'OWNED', NULL, $5),
+                                   ($1, $6, 'IN', $3, 'PURCHASE_UPDATE', $4, 'OWNED', NULL, $5)
+                        `, [item.productId, oldWarehouseId, oldQuantityInStockUnit, id, userId, targetWarehouseId]);
 
+                    } else if (String(oldItem.productid) !== String(item.productId)) {
+                        // Product Changed! Revert Old, Add New
+                        await client.query(`
+                            UPDATE Inventory 
+                            SET QuantityOnHand = QuantityOnHand - $1, UpdatedAt = CURRENT_TIMESTAMP
+                            WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
+                        `, [oldQuantityInStockUnit, oldItem.productid, targetWarehouseId]);
+
+                        await client.query(`
+                            UPDATE Inventory 
+                            SET QuantityOnHand = QuantityOnHand + $1, UpdatedAt = CURRENT_TIMESTAMP
+                            WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
+                        `, [quantityInStockUnit, item.productId, targetWarehouseId]);
+
+                        // Transactions
+                        await client.query(`
+                            INSERT INTO InventoryTransactions (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, ReferenceID, OwnershipType, FactoryID, CreatedBy)
+                            VALUES ($1, $2, 'OUT', $3, 'PURCHASE_UPDATE', $4, 'OWNED', NULL, $5),
+                                   ($6, $2, 'IN', $7, 'PURCHASE_UPDATE', $4, 'OWNED', NULL, $5)
+                        `, [oldItem.productid, targetWarehouseId, oldQuantityInStockUnit, id, userId, item.productId, quantityInStockUnit]);
+                    } else {
+                        // Same Product, Same Warehouse -> Diff
+                        const stockDiff = quantityInStockUnit - oldQuantityInStockUnit;
+                        if (stockDiff !== 0) {
                             await client.query(`
                                 UPDATE Inventory 
-                                SET QuantityOnHand = QuantityOnHand + $1
-                                WHERE ProductID = $2 AND WarehouseID = $3
-                            `, [quantityInStockUnit, item.productId, targetWarehouseId]);
-                        } else {
-                            // Same Product, Same Warehouse -> Diff works
-                            const stockDiff = quantityInStockUnit - oldQuantityInStockUnit;
-                            if (stockDiff !== 0) {
-                                await client.query(`
-                                    UPDATE Inventory 
-                                    SET QuantityOnHand = QuantityOnHand + $1
-                                    WHERE ProductID = $2 AND WarehouseID = $3
-                                `, [stockDiff, item.productId, targetWarehouseId]);
-                            }
+                                SET QuantityOnHand = QuantityOnHand + $1, UpdatedAt = CURRENT_TIMESTAMP
+                                WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
+                            `, [stockDiff, item.productId, targetWarehouseId]);
+
+                            // Transaction
+                            await client.query(`
+                                INSERT INTO InventoryTransactions (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, ReferenceID, OwnershipType, FactoryID, CreatedBy)
+                                VALUES ($1, $2, $3, $4, 'PURCHASE_UPDATE', $5, 'OWNED', NULL, $6)
+                            `, [item.productId, targetWarehouseId, stockDiff > 0 ? 'IN' : 'OUT', Math.abs(stockDiff), id, userId]);
                         }
                     }
 
@@ -937,7 +949,7 @@ async function updatePurchaseOrder(req, res, next) {
 
                 } else {
                     // --- INSERT NEW ITEM ---
-                    const insertRes = await client.query(`
+                    await client.query(`
                         INSERT INTO PurchaseOrderItems (PurchaseOrderID, ProductID, Quantity, ReceivedQuantity, UnitID, UnitPrice, LineTotal)
                         VALUES ($1, $2, $3, $3, $4, $5, $6)
                         RETURNING POItemID
@@ -946,44 +958,82 @@ async function updatePurchaseOrder(req, res, next) {
                     // Add to Inventory
                     await client.query(`
                         UPDATE Inventory 
-                        SET QuantityOnHand = QuantityOnHand + $1
-                        WHERE ProductID = $2 AND WarehouseID = $3
+                        SET QuantityOnHand = QuantityOnHand + $1, UpdatedAt = CURRENT_TIMESTAMP
+                        WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
                     `, [quantityInStockUnit, item.productId, targetWarehouseId]);
+
+                    // Transaction
+                    await client.query(`
+                        INSERT INTO InventoryTransactions (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, ReferenceID, OwnershipType, FactoryID, CreatedBy)
+                        VALUES ($1, $2, 'IN', $3, 'PURCHASE_UPDATE', $4, 'OWNED', NULL, $5)
+                    `, [item.productId, targetWarehouseId, quantityInStockUnit, id, userId]);
+                }
+
+                // RECALCULATE Pallet/Colis for this product
+                const ppc = parseFloat(pInfo?.qteparcolis) || 0;
+                const cpp = parseFloat(pInfo?.qtecolisparpalette) || 0;
+                
+                const invRow = await client.query('SELECT QuantityOnHand FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\' AND FactoryID IS NULL', [item.productId, targetWarehouseId]);
+                if (invRow.rows.length > 0) {
+                    const currentQty = parseFloat(invRow.rows[0].quantityonhand || 0);
+                    const newColis = ppc > 0 ? parseFloat((currentQty / ppc).toFixed(4)) : 0;
+                    const newPallets = cpp > 0 ? parseFloat((newColis / cpp).toFixed(4)) : 0;
+                    await client.query(`
+                        UPDATE Inventory SET ColisCount = $1, PalletCount = $2
+                        WHERE ProductID = $3 AND WarehouseID = $4 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
+                    `, [newColis, newPallets, item.productId, targetWarehouseId]);
+                }
+                
+                // If old warehouse was different, recalculate there too if product was the same
+                if (String(oldWarehouseId) !== String(targetWarehouseId)) {
+                     const oldInvRow = await client.query('SELECT QuantityOnHand FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\' AND FactoryID IS NULL', [item.productId, oldWarehouseId]);
+                     if (oldInvRow.rows.length > 0) {
+                        const oldQty = parseFloat(oldInvRow.rows[0].quantityonhand || 0);
+                        const oldColis = ppc > 0 ? parseFloat((oldQty / ppc).toFixed(4)) : 0;
+                        const oldPallets = cpp > 0 ? parseFloat((oldColis / cpp).toFixed(4)) : 0;
+                        await client.query(`
+                            UPDATE Inventory SET ColisCount = $1, PalletCount = $2
+                            WHERE ProductID = $3 AND WarehouseID = $4 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
+                        `, [oldColis, oldPallets, item.productId, oldWarehouseId]);
+                     }
                 }
             }
 
             // --- HANDLE DELETIONS ---
             for (const [oldId, oldItem] of oldItemsMap) {
                 if (!processedIds.has(oldId)) {
-                    try {
-                        // Revert Stock
-                        let oldQuantityInStockUnit = parseFloat(oldItem.quantity);
-                        const oldSqmPerPiece = parseDimensions(oldItem.size || oldItem.productname);
-                        const oldPrimaryUnitCode = (oldItem.primaryunitcode || '').toUpperCase();
-                        const oldIsFicheProduct = (oldItem.productname || '').toLowerCase().startsWith('fiche');
-                        const oldUnitCode = (oldItem.unitcode || 'PCS').toUpperCase();
+                    // Revert Stock
+                    const oldQuantityInStockUnit = convertToStockUnit(oldItem.quantity, oldItem.unitcode, oldItem);
 
-                        if (oldUnitCode === 'PCS' && ['SQM', 'M2', 'M²'].includes(oldPrimaryUnitCode) && !oldIsFicheProduct && oldSqmPerPiece > 0) {
-                            oldQuantityInStockUnit = oldQuantityInStockUnit * oldSqmPerPiece;
-                        }
+                    // Remove from Inventory (Old Warehouse)
+                    await client.query(`
+                        UPDATE Inventory 
+                        SET QuantityOnHand = QuantityOnHand - $1, UpdatedAt = CURRENT_TIMESTAMP
+                        WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
+                    `, [oldQuantityInStockUnit, oldItem.productid, oldWarehouseId]);
 
-                        // Remove from Inventory (Old Warehouse)
+                    // Recalculate counts for deleted item
+                    const ppc_del = parseFloat(oldItem.qteparcolis) || 0;
+                    const cpp_del = parseFloat(oldItem.qtecolisparpalette) || 0;
+                    const delInvRow = await client.query('SELECT QuantityOnHand FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\' AND FactoryID IS NULL', [oldItem.productid, oldWarehouseId]);
+                    if (delInvRow.rows.length > 0) {
+                        const delCurrentQty = parseFloat(delInvRow.rows[0].quantityonhand || 0);
+                        const delColis = ppc_del > 0 ? parseFloat((delCurrentQty / ppc_del).toFixed(4)) : 0;
+                        const delPallets = cpp_del > 0 ? parseFloat((delColis / cpp_del).toFixed(4)) : 0;
                         await client.query(`
-                            UPDATE Inventory 
-                            SET QuantityOnHand = QuantityOnHand - $1
-                            WHERE ProductID = $2 AND WarehouseID = $3
-                        `, [oldQuantityInStockUnit, oldItem.productid, oldWarehouseId]);
-
-                        // Attempt Delete
-                        await client.query('DELETE FROM PurchaseOrderItems WHERE POItemID = $1', [oldId]);
-
-                    } catch (err) {
-                        // Constraint Error likely
-                        if (err.code === '23503') { // Foreign key violation
-                            throw new Error(`Impossible de supprimer l'article "${oldItem.productname}" car il a déjà été réceptionné (lié à un Bon de Réception). Mettez la quantité à 0 si vous souhaitez l'annuler.`);
-                        }
-                        throw err;
+                            UPDATE Inventory SET ColisCount = $1, PalletCount = $2
+                            WHERE ProductID = $3 AND WarehouseID = $4 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
+                        `, [delColis, delPallets, oldItem.productid, oldWarehouseId]);
                     }
+
+                    // Transaction
+                    await client.query(`
+                        INSERT INTO InventoryTransactions (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, ReferenceID, OwnershipType, FactoryID, CreatedBy)
+                        VALUES ($1, $2, 'OUT', $3, 'PURCHASE_UPDATE', $4, 'OWNED', NULL, $5)
+                    `, [oldItem.productid, oldWarehouseId, oldQuantityInStockUnit, id, userId]);
+
+                    // Attempt Delete
+                    await client.query('DELETE FROM PurchaseOrderItems WHERE POItemID = $1', [oldId]);
                 }
             }
         }
@@ -992,10 +1042,8 @@ async function updatePurchaseOrder(req, res, next) {
         await client.query('UPDATE PurchaseOrders SET SubTotal = $1, TotalAmount = $1 WHERE PurchaseOrderID = $2', [subTotal, id]);
 
         // 5. Record Payment (Legacy Logic preserved)
-
         const paymentAmount = parseFloat(payment) || 0;
         if (paymentAmount > 0) {
-            // Get supplier name for accounting
             let supplierName = 'Fournisseur';
             const isBrand = existingBrandId && !existingFactoryId;
             const supplierQuery = isBrand
@@ -1017,12 +1065,19 @@ async function updatePurchaseOrder(req, res, next) {
         }
 
         await client.query('COMMIT');
+
+        // NEW: Refresh View
+        try {
+            await pool.query('REFRESH MATERIALIZED VIEW mv_Catalogue');
+        } catch (refreshError) {
+            console.log('Note: mv_Catalogue refresh skipped:', refreshError.message);
+        }
+
         res.json({ success: true, message: 'Bon de commande mis à jour avec succès', data: { purchaseOrderID: id, paymentRecorded: paymentAmount } });
 
     } catch (error) {
         await client.query('ROLLBACK');
         console.error('Error updating purchase order:', error);
-        // Pass error to express error handler to ensure JSON response
         res.status(500).json({ success: false, message: error.message });
     } finally {
         client.release();
@@ -1093,7 +1148,8 @@ async function deletePurchaseOrder(req, res, next) {
         } else if (poStatus === 'RECEIVED' || poStatus === 'PARTIAL') {
             // PO was received directly without Goods Receipts. Revert inventory from PO items.
             const itemsRes = await client.query(`
-                SELECT poi.Quantity, poi.ProductID, po.WarehouseID, p.ProductName, p.Size, u.UnitCode as PrimaryUnitCode, pu.UnitCode as ItemUnitCode
+                SELECT poi.Quantity, poi.ProductID, po.WarehouseID, p.ProductName, p.Size, u.UnitCode as PrimaryUnitCode, pu.UnitCode as ItemUnitCode,
+                       p.QteParColis, p.QteColisParPalette
                 FROM PurchaseOrderItems poi
                 JOIN PurchaseOrders po ON poi.PurchaseOrderID = po.PurchaseOrderID
                 JOIN Products p ON poi.ProductID = p.ProductID
@@ -1102,25 +1158,15 @@ async function deletePurchaseOrder(req, res, next) {
                 WHERE poi.PurchaseOrderID = $1
             `, [id]);
 
-            const parseDimensions = (str) => {
-                if (!str) return 0;
-                const match = str.match(/(\d{2,3})\s*[xX*\/]\s*(\d{2,3})/);
-                if (match) {
-                    return (parseInt(match[1]) * parseInt(match[2])) / 10000;
-                }
-                return 0;
-            };
-
             for (const item of itemsRes.rows) {
-                let quantityToRevert = parseFloat(item.quantity);
-                const sqmPerPiece = parseDimensions(item.size || item.productname);
-                const primaryUnitCode = (item.primaryunitcode || '').toUpperCase();
-                const isFicheProduct = (item.productname || '').toLowerCase().startsWith('fiche');
-                const unitCode = (item.itemunitcode || 'PCS').toUpperCase();
-
-                if (unitCode === 'PCS' && ['SQM', 'M2', 'M²'].includes(primaryUnitCode) && !isFicheProduct && sqmPerPiece > 0) {
-                    quantityToRevert = quantityToRevert * sqmPerPiece;
-                }
+                const pInfo_del = {
+                    ProductName: item.productname,
+                    Size: item.size,
+                    PrimaryUnitCode: item.primaryunitcode,
+                    QteParColis: item.qteparcolis,
+                    QteColisParPalette: item.qtecolisparpalette
+                };
+                const quantityToRevert = convertToStockUnit(item.quantity, item.itemunitcode, pInfo_del);
 
                 await client.query(`
                     UPDATE Inventory
@@ -1131,6 +1177,21 @@ async function deletePurchaseOrder(req, res, next) {
                       AND OwnershipType = 'OWNED'
                       AND FactoryID IS NULL
                 `, [quantityToRevert, item.productid, item.warehouseid]);
+
+                // Recalculate Pallet/Colis counts after reversion
+                const ppc = parseFloat(item.qteparcolis) || 0;
+                const cpp = parseFloat(item.qtecolisparpalette) || 0;
+                
+                const invRow = await client.query('SELECT QuantityOnHand FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\' AND FactoryID IS NULL', [item.productid, item.warehouseid]);
+                if (invRow.rows.length > 0) {
+                    const currentQty = parseFloat(invRow.rows[0].quantityonhand || 0);
+                    const newColis = ppc > 0 ? parseFloat((currentQty / ppc).toFixed(4)) : 0;
+                    const newPallets = cpp > 0 ? parseFloat((newColis / cpp).toFixed(4)) : 0;
+                    await client.query(`
+                        UPDATE Inventory SET ColisCount = $1, PalletCount = $2
+                        WHERE ProductID = $3 AND WarehouseID = $4 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
+                    `, [newColis, newPallets, item.productid, item.warehouseid]);
+                }
             }
         }
 
