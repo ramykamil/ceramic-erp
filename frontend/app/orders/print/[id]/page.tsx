@@ -64,8 +64,8 @@ export default function OrderPrintPage() {
             number: order.ordernumber,
             date: order.orderdate,
             clientName: (order as any).retailclientname || order.customername,
-            clientAddress: (order as any).customeraddress || '',
-            clientPhone: (order as any).customerphone || '',
+            clientAddress: (order as any).clientaddress || '',
+            clientPhone: (order as any).clientphone || '',
             createdBy: (order as any).salespersonname || (order as any).createdby || '',
             items: order.items.map(item => {
                 // Use static packaging data from product definition (backend joins from Products table)
