@@ -108,15 +108,15 @@ function OrdersListContent() {
 
   // Resizable columns
   const { widths, handleResize } = useColumnWidths('orders-table', {
-    ordernumber: 130,
-    customername: 180,
-    orderdate: 100,
-    totalamount: 120,
-    versement: 110,
-    benefice: 110,
-    status: 100,
-    salespersonname: 100,
-    ordertype: 80,
+    ordernumber: 180,
+    customername: 200,
+    orderdate: 120,
+    totalamount: 140,
+    versement: 130,
+    benefice: 130,
+    status: 120,
+    salespersonname: 120,
+    ordertype: 100,
   });
 
   // Debounce search query for server-side search
@@ -280,7 +280,7 @@ function OrdersListContent() {
       ref={containerRef}
       className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800 outline-none"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1600px] mx-auto">
 
         {/* Main Section Tabs */}
         <div className="mb-6 flex border-b border-slate-300">
@@ -525,7 +525,7 @@ function OrdersListContent() {
             {/* Totals Footer - hidden for retail users */}
             {!isLoading && filteredRecords.length > 0 && userRole === 'ADMIN' && (
               <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-slate-300 shadow-lg z-40 px-4 py-3">
-                <div className="max-w-7xl mx-auto">
+                <div className="max-w-[1600px] mx-auto">
                   {/* Filtered Totals Row */}
                   <div className="flex flex-wrap items-center justify-center gap-3 mb-2">
                     <span className="text-xs text-slate-500 font-medium uppercase">Sélection:</span>
