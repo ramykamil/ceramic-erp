@@ -867,43 +867,49 @@ function POSContent() {
                         <tr 
                           key={item.rowId} 
                           {...getCartRowProps(idx)}
-                          className={getCartRowClass(idx, `group transition-colors pos-row-compact cursor-pointer ${isTransport ? 'bg-slate-200 hover:bg-slate-300 border-b border-slate-300' : 'hover:bg-slate-50'}`)}
+                          className={getCartRowClass(idx, `group transition-all duration-200 pos-row-compact cursor-pointer ${isTransport ? 'bg-slate-100 hover:bg-slate-200 border-b border-slate-300' : 'hover:bg-slate-50 border-b border-slate-100'}`)}
                           onClick={() => setCartSelectedIndex(idx)}
                         >
-                          <td className="px-2 py-1.5 truncate text-slate-700">
-                            <div className="font-bold text-xs">{item.productName}</div>
+                          <td className="px-2 py-1.5 text-slate-700 min-w-0 flex-none overflow-hidden" style={{ width: cartWidths.designation }}>
+                            <div className="font-bold text-xs truncate w-full" title={item.productName}>{item.productName}</div>
                             {(item.piecesPerCarton > 0 || item.cartonsPerPalette > 0) && (
-                              <div className="text-[9px] text-slate-400 font-medium tracking-tight">
+                              <div className="text-[9px] text-slate-400 font-medium tracking-tight truncate w-full">
                                 {Number(item.piecesPerCarton) > 0 && `${Number(item.piecesPerCarton).toFixed(2)} / Colis`}
                                 {Number(item.cartonsPerPalette) > 0 && ` • ${Number(item.cartonsPerPalette).toFixed(0)} Colis / Pal`}
                               </div>
                             )}
                           </td>
-                          <td className="px-1.5 py-1.5 truncate text-slate-500 text-[10px] uppercase">{item.brandName}</td>
-                          <td className="px-1.5 py-1.5 text-right font-mono text-[10px] text-slate-400">{parseFloat(item.stockQty.toString()).toLocaleString()}</td>
-                          <td className="px-1.5 py-1.5 text-center">
-                            <SmartNumberInput value={item.palettes} onChange={val => updateItem(item.rowId, 'palettes', val)} className="w-full text-center p-1 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-xs" />
+                          <td className="px-1.5 py-1.5 text-slate-500 text-[10px] uppercase flex-none overflow-hidden" style={{ width: cartWidths.marque }}>
+                            <div className="truncate w-full">{item.brandName}</div>
                           </td>
-                          <td className="px-1.5 py-1.5 text-center">
-                            <SmartNumberInput value={item.cartons} onChange={val => updateItem(item.rowId, 'cartons', val)} className="w-full text-center p-1 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-xs" />
+                          <td className="px-1.5 py-1.5 text-right font-mono text-[10px] text-slate-400 flex-none overflow-hidden" style={{ width: cartWidths.stock }}>
+                            {parseFloat(item.stockQty.toString()).toLocaleString()}
                           </td>
-                          <td className="px-2 py-1.5 text-center">
-                            <SmartNumberInput value={item.quantity} onChange={val => updateItem(item.rowId, 'quantity', val)} className="w-full text-center p-1 border-2 border-red-200 rounded font-bold text-red-700 bg-red-50 text-sm" />
+                          <td className="px-1.5 py-1.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.palettes }}>
+                            <SmartNumberInput value={item.palettes} onChange={val => updateItem(item.rowId, 'palettes', val)} className="w-full text-center p-1 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-xs shadow-inner" />
                           </td>
-                          <td className="px-1.5 py-1.5 text-center">
-                            <select value={item.unitId} onChange={e => updateItem(item.rowId, 'unitId', Number(e.target.value))} className="w-full p-0.5 border border-slate-200 rounded text-[10px] bg-white">
+                          <td className="px-1.5 py-1.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.cartons }}>
+                            <SmartNumberInput value={item.cartons} onChange={val => updateItem(item.rowId, 'cartons', val)} className="w-full text-center p-1 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-xs shadow-inner" />
+                          </td>
+                          <td className="px-2 py-1.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.quantity }}>
+                            <SmartNumberInput value={item.quantity} onChange={val => updateItem(item.rowId, 'quantity', val)} className="w-full text-center p-1 border-2 border-red-200 rounded font-bold text-red-700 bg-red-50 text-sm shadow-sm" />
+                          </td>
+                          <td className="px-1.5 py-1.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.unite }}>
+                            <select value={item.unitId} onChange={e => updateItem(item.rowId, 'unitId', Number(e.target.value))} className="w-full p-0.5 border border-slate-200 rounded text-[10px] bg-white hover:border-slate-400 transition-colors">
                               {units.filter(u => u.unitcode !== 'BOX').map(u => <option key={u.unitid} value={u.unitid}>{u.unitcode}</option>)}
                             </select>
                           </td>
-                          <td className="px-1.5 py-1.5 text-right">
-                            <SmartNumberInput value={item.unitPrice} onChange={val => updateItem(item.rowId, 'unitPrice', val)} className={`w-full text-right p-1 border rounded font-mono text-xs ${item.purchasePrice && item.unitPrice < item.purchasePrice ? 'border-red-500 text-red-600 bg-red-50' : 'border-slate-200'}`} />
+                          <td className="px-1.5 py-1.5 text-right flex-none overflow-hidden" style={{ width: cartWidths.prixunit }}>
+                            <SmartNumberInput value={item.unitPrice} onChange={val => updateItem(item.rowId, 'unitPrice', val)} className={`w-full text-right p-1 border rounded font-mono text-xs shadow-inner ${item.purchasePrice && item.unitPrice < item.purchasePrice ? 'border-red-500 text-red-600 bg-red-50' : 'border-slate-200'}`} />
                           </td>
-                          <td className="px-1.5 py-1.5 text-center">
+                          <td className="px-1.5 py-1.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.src }}>
                             <span className={`text-[9px] px-1 py-0.5 rounded-full font-bold ${getPriceSourceBadge(item.priceSource)}`}>{item.priceSource}</span>
                           </td>
-                          <td className="px-2 py-1.5 text-right font-bold text-slate-800 text-xs">{formatCurrency(item.lineTotal)}</td>
-                          <td className="px-1 py-1.5 text-center">
-                            <button onClick={() => removeItem(item.rowId)} className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity text-lg">&times;</button>
+                          <td className="px-2 py-1.5 text-right font-bold text-slate-800 text-xs flex-none overflow-hidden" style={{ width: cartWidths.totalligne }}>
+                            {formatCurrency(item.lineTotal)}
+                          </td>
+                          <td className="px-1 py-1.5 text-center w-10 flex-none overflow-hidden">
+                            <button onClick={() => removeItem(item.rowId)} className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-700 transition-all text-xl">&times;</button>
                           </td>
                         </tr>
                         );
