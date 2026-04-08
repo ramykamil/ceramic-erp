@@ -44,7 +44,7 @@ interface StockAdjustmentData {
 const formatQuantity = (qty: number | null | undefined): string => {
   const numericQty = Number(qty);
   if (isNaN(numericQty)) return '0';
-  return numericQty.toLocaleString('fr-DZ');
+  return Math.max(0, numericQty).toLocaleString('fr-DZ');
 };
 
 // --- Stock Adjustment Modal Component (Enhanced with Pal/Ctn/Qty) ---

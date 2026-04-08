@@ -85,8 +85,12 @@ async function getInventoryLevels(req, res, next) {
                 InventoryID, ProductID, WarehouseID, 
                 ProductCode, ProductName, BrandName, 
                 WarehouseName, OwnershipType, FactoryName, 
-                QuantityOnHand, QuantityReserved, QuantityAvailable, 
-                ReorderLevel, PalletCount, ColisCount 
+                GREATEST(0, QuantityOnHand) as quantityonhand, 
+                QuantityReserved, 
+                GREATEST(0, QuantityAvailable) as quantityavailable, 
+                ReorderLevel, 
+                GREATEST(0, PalletCount) as palletcount, 
+                GREATEST(0, ColisCount) as coliscount 
             FROM vw_CurrentInventory 
             WHERE ${whereClause}
             ORDER BY ${orderBy}

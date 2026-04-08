@@ -14,8 +14,8 @@ import { StandardDateInput } from '@/components/DateQuickFilter';
 
 // Helper for formatting money
 const formatMoney = (amount: number) => new Intl.NumberFormat('fr-DZ', { style: 'currency', currency: 'DZD', minimumFractionDigits: 2 }).format(amount || 0);
-const formatQty = (amount: number) => new Intl.NumberFormat('fr-DZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount || 0);
-const formatQCQty = (amount: number) => new Intl.NumberFormat('fr-DZ', { minimumFractionDigits: 3, maximumFractionDigits: 3 }).format(amount || 0);
+const formatQty = (amount: number) => new Intl.NumberFormat('fr-DZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.max(0, amount || 0));
+const formatQCQty = (amount: number) => new Intl.NumberFormat('fr-DZ', { minimumFractionDigits: 3, maximumFractionDigits: 3 }).format(Math.max(0, amount || 0));
 
 interface Product {
   productid: number;

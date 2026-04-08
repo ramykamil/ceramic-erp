@@ -24,13 +24,13 @@ async function getProducts(req, res, next) {
         mvc.Calibre as calibre, mvc.Choix as choix, mvc.QteParColis as qteparcolis, 
         mvc.QteColisParPalette as qtecolisparpalette, mvc.Size as size,
         mvc.DerivedPiecesPerColis as derivedpiecespercolis, mvc.DerivedColisPerPalette as derivedcolisperpalette,
-        mvc.TotalQty as cached_totalqty,
+        GREATEST(0, mvc.TotalQty) as cached_totalqty,
         COUNT(*) OVER() as TotalCount,
-        SUM(COALESCE(mvc.TotalQty, 0)) OVER() as filtered_totalqty,
-        SUM(COALESCE(mvc.NbColis, 0)) OVER() as filtered_totalcolis,
-        SUM(COALESCE(mvc.NbPalette, 0)) OVER() as filtered_totalpalette,
-        SUM(COALESCE(mvc.TotalQty, 0) * COALESCE(mvc.PrixAchat, 0)) OVER() as filtered_valeurachat,
-        SUM(COALESCE(mvc.TotalQty, 0) * COALESCE(mvc.PrixVente, 0)) OVER() as filtered_valeurvente
+        SUM(GREATEST(0, COALESCE(mvc.TotalQty, 0))) OVER() as filtered_totalqty,
+        SUM(GREATEST(0, COALESCE(mvc.NbColis, 0))) OVER() as filtered_totalcolis,
+        SUM(GREATEST(0, COALESCE(mvc.NbPalette, 0))) OVER() as filtered_totalpalette,
+        SUM(GREATEST(0, COALESCE(mvc.TotalQty, 0)) * COALESCE(mvc.PrixAchat, 0)) OVER() as filtered_valeurachat,
+        SUM(GREATEST(0, COALESCE(mvc.TotalQty, 0)) * COALESCE(mvc.PrixVente, 0)) OVER() as filtered_valeurvente
       FROM mv_Catalogue mvc
       WHERE 1=1
     `;
@@ -151,9 +151,9 @@ async function getProducts(req, res, next) {
         const unitInfo = unitMap[p.productid];
         return {
           ...p,
-          totalqty: live ? parseFloat(live.realtotalqty) : 0,
-          nbpalette: live ? parseFloat(live.realnbpalette) : 0,
-          nbcolis: live ? parseFloat(live.realnbcolis) : 0,
+          totalqty: live ? Math.max(0, parseFloat(live.realtotalqty)) : 0,
+          nbpalette: live ? Math.max(0, parseFloat(live.realnbpalette)) : 0,
+          nbcolis: live ? Math.max(0, parseFloat(live.realnbcolis)) : 0,
           primaryunitid: unitInfo?.primaryunitid || null,
           primaryunitcode: unitInfo?.primaryunitcode || null,
         };
@@ -210,11 +210,11 @@ async function getProductStats(req, res, next) {
   try {
     const query = `
       SELECT 
-        SUM(TotalQty) as totalqty,
-        SUM(NbPalette) as totalpallets,
-        SUM(NbColis) as totalcolis,
-        SUM(TotalQty * PrixAchat) as totalpurchasevalue,
-        SUM(TotalQty * PrixVente) as totalsalevalue,
+        SUM(GREATEST(0, TotalQty)) as totalqty,
+        SUM(GREATEST(0, NbPalette)) as totalpallets,
+        SUM(GREATEST(0, NbColis)) as totalcolis,
+        SUM(GREATEST(0, TotalQty) * PrixAchat) as totalpurchasevalue,
+        SUM(GREATEST(0, TotalQty) * PrixVente) as totalsalevalue,
         COUNT(*) as totalproducts
       FROM mv_Catalogue
     `;
