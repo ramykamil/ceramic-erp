@@ -1030,13 +1030,13 @@ function POSContent() {
         </div>
 
         {/* BOTTOM SECTION: Summary & Checkout Dashboard (Full Width Bottom) */}
-        <div className={`flex-none bg-slate-800 text-white p-4 pb-24 border-t border-slate-700 ${activeMobileTab === 'PAYMENT' ? 'block' : 'hidden lg:block'}`}>
+        <div className={`flex-none bg-[#0c111d] text-white p-4 pb-24 border-t-2 border-brand-primary ${activeMobileTab === 'PAYMENT' ? 'block' : 'hidden lg:block'}`}>
           <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
             
             {/* 1. Totals Breakdown */}
-            <div className="space-y-1 lg:border-r border-slate-700/50 pr-4">
-              <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Récapitulatif Financier</h3>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-slate-300">
+            <div className="space-y-1 lg:border-r border-slate-700/30 pr-4">
+              <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 border-b border-slate-700/50 pb-1">Récapitulatif Financier</h3>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-slate-200">
                 <span>Total Brut HT</span>
                 <span className="font-mono text-right">{formatCurrency(totalHT)}</span>
                 <span>Frais de Livraison</span>
@@ -1058,14 +1058,14 @@ function POSContent() {
                )}
                <div className="flex items-center justify-between mb-2">
                   <div>
-                    <div className="text-[9px] text-slate-500 uppercase font-black tracking-widest leading-none">Net à Payer (P.A.C)</div>
+                    <div className="text-[9px] text-slate-400 uppercase font-bold tracking-widest leading-none">Net à Payer (P.A.C)</div>
                     <div className="text-3xl font-black text-white font-mono leading-none pt-1">
-                      {formatCurrency(totalNet).replace('DZD', '')} <span className="text-[10px] font-normal text-slate-400">DA</span>
+                      {formatCurrency(totalNet).replace('DZD', '')} <span className="text-[10px] font-normal text-slate-300">DA</span>
                     </div>
                   </div>
                   <div className="text-right">
-                    <label className="block text-[9px] text-slate-400 font-black uppercase mb-1">Versement</label>
-                    <SmartNumberInput value={payment} onChange={val => setPayment(val)} className="w-32 bg-slate-900 border border-slate-700 text-white p-2 rounded-xl text-lg font-black font-mono text-right focus:border-brand-primary outline-none" />
+                    <label className="block text-[9px] text-slate-300 font-bold uppercase mb-1">Versement</label>
+                    <SmartNumberInput value={payment} onChange={val => setPayment(val)} className="w-32 bg-slate-950 border border-slate-700 text-white p-2 rounded-xl text-lg font-black font-mono text-right focus:border-brand-primary outline-none shadow-inner" />
                   </div>
                </div>
                

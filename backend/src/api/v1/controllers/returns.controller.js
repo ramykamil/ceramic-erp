@@ -182,7 +182,7 @@ const getReturnById = async (req, res) => {
 const createReturn = async (req, res) => {
     const client = await pool.connect();
     try {
-        const { customerId, clientName, clientPhone, clientAddress, orderId, reason, notes, items } = req.body;
+        const { customerId, clientName, clientPhone, clientAddress, orderId, reason, notes, items, returnDate } = req.body;
 
         // Validate: either customerId or clientName required
         if (!customerId && !clientName) {
@@ -215,9 +215,9 @@ const createReturn = async (req, res) => {
         // Insert return header (with either customer ID or manual client info)
         const returnResult = await client.query(`
       INSERT INTO Returns (ReturnNumber, OrderID, CustomerID, ClientName, ClientPhone, ClientAddress, Reason, TotalAmount, Notes, Status, CreatedBy, ReturnDate)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'PENDING', $10, CURRENT_DATE)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'PENDING', $10, COALESCE($11, CURRENT_DATE))
       RETURNING ReturnID, ReturnNumber
-    `, [returnNumber, orderId || null, customerId || null, clientName || null, clientPhone || null, clientAddress || null, reason, totalAmount, notes, req.user?.userId]);
+    `, [returnNumber, orderId || null, customerId || null, clientName || null, clientPhone || null, clientAddress || null, reason, totalAmount, notes, req.user?.userId, returnDate || null]);
 
         const returnId = returnResult.rows[0].returnid;
 

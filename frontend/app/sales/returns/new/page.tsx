@@ -65,6 +65,7 @@ export default function NewReturnPage() {
     const [manualClientName, setManualClientName] = useState('');
     const [manualClientPhone, setManualClientPhone] = useState('');
     const [manualClientAddress, setManualClientAddress] = useState('');
+    const [formDate, setFormDate] = useState(new Date().toISOString().split('T')[0]);
     const [formReason, setFormReason] = useState('');
     const [formNotes, setFormNotes] = useState('');
     const [formItems, setFormItems] = useState<ReturnFormItem[]>([]);
@@ -181,6 +182,7 @@ export default function NewReturnPage() {
         setIsSubmitting(true);
         try {
             const returnData: any = {
+                returnDate: formDate,
                 reason: formReason,
                 notes: formNotes,
                 items: formItems.map(item => ({
@@ -262,6 +264,16 @@ export default function NewReturnPage() {
                                     <input type="text" value={manualClientPhone} onChange={(e) => setManualClientPhone(e.target.value)} placeholder="Téléphone" className="w-full p-2 border border-slate-300 rounded-lg text-sm" />
                                 </div>
                             )}
+
+                            <div className="mt-4">
+                                <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Date du retour</label>
+                                <input
+                                    type="date"
+                                    value={formDate}
+                                    onChange={(e) => setFormDate(e.target.value)}
+                                    className="w-full p-2 border border-slate-300 rounded-lg text-sm font-bold text-blue-600"
+                                />
+                            </div>
 
                             <div className="mt-6">
                                 <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Raison du retour</label>
