@@ -1057,9 +1057,13 @@ const updateOrder = async (req, res) => {
       for (const item of items) {
         const lineTotal = Number(item.quantity) * Number(item.unitPrice);
 
-        // Get product details for cost and code check
+        // Get product details for cost, code check, and UNIT CONVERSION
         const productRes = await client.query(
-          'SELECT PurchasePrice, BasePrice, ProductCode FROM Products WHERE ProductID = $1',
+          `SELECT p.PurchasePrice, p.BasePrice, p.ProductCode, p.ProductName, p.Size, p.PrimaryUnitID, p.QteParColis, 
+                  u.UnitCode as PrimaryUnitCode 
+           FROM Products p 
+           LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID 
+           WHERE p.ProductID = $1`,
           [item.productId]
         );
         const p = productRes.rows[0];
@@ -1067,14 +1071,43 @@ const updateOrder = async (req, res) => {
         const pCode = p?.productcode || '';
 
         // Insert Item with CostPrice and LinkProductName
+        // Use palletCount and colisCount from frontend, no Math.floor
         await client.query(`
                 INSERT INTO OrderItems (OrderID, ProductID, Quantity, UnitPrice, LineTotal, UnitID, PalletCount, ColisCount, CostPrice, LinkProductName)
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-            `, [id, item.productId, item.quantity, item.unitPrice, lineTotal, item.unitId, Math.floor(Number(item.palettes) || 0), Math.floor(Number(item.cartons) || 0), costPrice, item.productName || null]);
+            `, [
+                id, 
+                item.productId, 
+                item.quantity, 
+                item.unitPrice, 
+                lineTotal, 
+                item.unitId, 
+                parseFloat(item.palletCount) || 0, 
+                parseFloat(item.colisCount) || 0, 
+                costPrice, 
+                item.productName || null
+            ]);
 
         // Reserve Inventory ONLY if NOT MANUAL
-        if (pCode !== 'MANUAL') {
-          // Assuming Warehouse 1
+        if (pCode !== 'MANUAL' && p) {
+          // Fetch Unit Code for the current item unit
+          const unitRes = await client.query('SELECT UnitCode FROM Units WHERE UnitID = $1', [item.unitId]);
+          const unitCode = unitRes.rows.length > 0 ? unitRes.rows[0].unitcode : 'PCS';
+
+          const sqmPerPiece = parseSqmPerPiece(p.size || p.productname);
+          let qtyToReserve = parseFloat(item.quantity) || 0;
+
+          // Universal UNIT CONVERSION LOGIC
+          qtyToReserve = convertUnitToInventory(
+            qtyToReserve, 
+            unitCode, 
+            p.primaryunitcode, 
+            sqmPerPiece, 
+            p.productname, 
+            parseFloat(p.qteparcolis) || 0
+          );
+
+          // Assuming Warehouse 1 (standard for POS)
           const invCheck = await client.query('SELECT InventoryID FROM Inventory WHERE ProductID = $1 AND WarehouseID = 1 AND OwnershipType = \'OWNED\'', [item.productId]);
 
           if (invCheck.rows.length > 0) {
@@ -1083,13 +1116,13 @@ const updateOrder = async (req, res) => {
                 SET QuantityReserved = QuantityReserved + $1,
                     UpdatedAt = CURRENT_TIMESTAMP
                 WHERE ProductID = $2 AND WarehouseID = 1 AND OwnershipType = 'OWNED'
-              `, [item.quantity, item.productId]);
+              `, [qtyToReserve, item.productId]);
           } else {
-            // Create inventory record if missing (should exist if product exists, but safety check)
+            // Create inventory record if missing (safety check)
             await client.query(`
                 INSERT INTO Inventory (ProductID, WarehouseID, OwnershipType, QuantityReserved, QuantityOnHand)
                 VALUES ($1, 1, 'OWNED', $2, 0)
-              `, [item.productId, item.quantity]);
+              `, [item.productId, qtyToReserve]);
           }
         }
       }
