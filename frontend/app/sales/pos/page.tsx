@@ -843,17 +843,17 @@ function POSContent() {
                   <table className="border-separate border-spacing-0" style={{ minWidth: '680px', width: '100%' }}> 
                     <thead className="sticky top-0 bg-slate-800 text-white z-20">
                       <tr className="text-[9px] font-black uppercase tracking-wider">
-                        <ResizableHeader columnKey="designation" width={cartWidths.designation} onResize={handleCartResize} onClick={() => handleCartSort('productName')} className="px-2 py-1 text-left cursor-pointer hover:bg-slate-700">Désignation {getSortIcon(cartSortConfig, 'productName')}</ResizableHeader>
-                        <ResizableHeader columnKey="marque" width={cartWidths.marque} onResize={handleCartResize} onClick={() => handleCartSort('brandName')} className="px-1.5 py-1 text-left cursor-pointer hover:bg-slate-700">Marque {getSortIcon(cartSortConfig, 'brandName')}</ResizableHeader>
-                        <ResizableHeader columnKey="stock" width={cartWidths.stock} onResize={handleCartResize} onClick={() => handleCartSort('stockQty')} className="px-1.5 py-1 text-right cursor-pointer hover:bg-slate-700">Stock {getSortIcon(cartSortConfig, 'stockQty')}</ResizableHeader>
-                        <ResizableHeader columnKey="palettes" width={cartWidths.palettes} onResize={handleCartResize} onClick={() => handleCartSort('palettes')} className="px-1.5 py-1 text-center bg-indigo-900/30 cursor-pointer hover:bg-indigo-900/50">Pals {getSortIcon(cartSortConfig, 'palettes')}</ResizableHeader>
-                        <ResizableHeader columnKey="cartons" width={cartWidths.cartons} onResize={handleCartResize} onClick={() => handleCartSort('cartons')} className="px-1.5 py-1 text-center bg-indigo-900/30 cursor-pointer hover:bg-indigo-900/50">Ctns {getSortIcon(cartSortConfig, 'cartons')}</ResizableHeader>
-                        <ResizableHeader columnKey="quantity" width={cartWidths.quantity} onResize={handleCartResize} onClick={() => handleCartSort('quantity')} className="px-2 py-1 text-center bg-red-900/30 cursor-pointer hover:bg-red-900/50">Quantité {getSortIcon(cartSortConfig, 'quantity')}</ResizableHeader>
-                        <ResizableHeader columnKey="unite" width={cartWidths.unite} onResize={handleCartResize} className="px-1.5 py-1 text-center">Unité</ResizableHeader>
-                        <ResizableHeader columnKey="prixunit" width={cartWidths.prixunit} onResize={handleCartResize} onClick={() => handleCartSort('unitPrice')} className="px-1.5 py-1 text-right cursor-pointer hover:bg-slate-700">Prix Unit {getSortIcon(cartSortConfig, 'unitPrice')}</ResizableHeader>
-                        <ResizableHeader columnKey="src" width={cartWidths.src} onResize={handleCartResize} className="px-1.5 py-1 text-center">Src</ResizableHeader>
-                        <ResizableHeader columnKey="totalligne" width={cartWidths.totalligne} onResize={handleCartResize} onClick={() => handleCartSort('lineTotal')} className="px-2 py-1 text-right cursor-pointer hover:bg-slate-700">Total {getSortIcon(cartSortConfig, 'lineTotal')}</ResizableHeader>
-                        <th className="w-10 px-1 py-1"></th>
+                        <ResizableHeader columnKey="designation" width={cartWidths.designation} onResize={handleCartResize} onClick={() => handleCartSort('productName')} className="px-2 py-0.5 text-left cursor-pointer hover:bg-slate-700">Désignation {getSortIcon(cartSortConfig, 'productName')}</ResizableHeader>
+                        <ResizableHeader columnKey="marque" width={cartWidths.marque} onResize={handleCartResize} onClick={() => handleCartSort('brandName')} className="px-1.5 py-0.5 text-left cursor-pointer hover:bg-slate-700">Marque {getSortIcon(cartSortConfig, 'brandName')}</ResizableHeader>
+                        <ResizableHeader columnKey="stock" width={cartWidths.stock} onResize={handleCartResize} onClick={() => handleCartSort('stockQty')} className="px-1.5 py-0.5 text-right cursor-pointer hover:bg-slate-700">Stock {getSortIcon(cartSortConfig, 'stockQty')}</ResizableHeader>
+                        <ResizableHeader columnKey="palettes" width={cartWidths.palettes} onResize={handleCartResize} onClick={() => handleCartSort('palettes')} className="px-1.5 py-0.5 text-center bg-indigo-900/30 cursor-pointer hover:bg-indigo-900/50">Pals {getSortIcon(cartSortConfig, 'palettes')}</ResizableHeader>
+                        <ResizableHeader columnKey="cartons" width={cartWidths.cartons} onResize={handleCartResize} onClick={() => handleCartSort('cartons')} className="px-1.5 py-0.5 text-center bg-indigo-900/30 cursor-pointer hover:bg-indigo-900/50">Ctns {getSortIcon(cartSortConfig, 'cartons')}</ResizableHeader>
+                        <ResizableHeader columnKey="quantity" width={cartWidths.quantity} onResize={handleCartResize} onClick={() => handleCartSort('quantity')} className="px-2 py-0.5 text-center bg-red-900/30 cursor-pointer hover:bg-red-900/50">Quantité {getSortIcon(cartSortConfig, 'quantity')}</ResizableHeader>
+                        <ResizableHeader columnKey="unite" width={cartWidths.unite} onResize={handleCartResize} className="px-1.5 py-0.5 text-center">Unité</ResizableHeader>
+                        <ResizableHeader columnKey="prixunit" width={cartWidths.prixunit} onResize={handleCartResize} onClick={() => handleCartSort('unitPrice')} className="px-1.5 py-0.5 text-right cursor-pointer hover:bg-slate-700">Prix Unit {getSortIcon(cartSortConfig, 'unitPrice')}</ResizableHeader>
+                        <ResizableHeader columnKey="src" width={cartWidths.src} onResize={handleCartResize} className="px-1.5 py-0.5 text-center">Src</ResizableHeader>
+                        <ResizableHeader columnKey="totalligne" width={cartWidths.totalligne} onResize={handleCartResize} onClick={() => handleCartSort('lineTotal')} className="px-2 py-0.5 text-right cursor-pointer hover:bg-slate-700">Total {getSortIcon(cartSortConfig, 'lineTotal')}</ResizableHeader>
+                        <th className="w-10 px-1 py-0.5"></th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-xs">
@@ -866,45 +866,45 @@ function POSContent() {
                           className={getCartRowClass(idx, `group transition-all duration-200 pos-row-compact cursor-pointer ${isTransport ? 'bg-amber-100/80 hover:bg-amber-200/90 border-b-2 border-amber-300 text-amber-900 shadow-[inset_0_1px_2px_rgba(0,0,0,0.05)]' : 'hover:bg-slate-50 border-b border-slate-100'}`)}
                           onClick={() => setCartSelectedIndex(idx)}
                         >
-                          <td className="px-2 py-1 text-slate-700 min-w-0 flex-none overflow-hidden" style={{ width: cartWidths.designation }}>
-                            <div className="font-bold text-xs truncate w-full" title={item.productName}>{item.productName}</div>
+                          <td className="px-2 py-0.5 text-slate-700 min-w-0 flex-none overflow-hidden" style={{ width: cartWidths.designation }}>
+                            <div className="font-bold text-[11px] truncate w-full leading-tight" title={item.productName}>{item.productName}</div>
                             {(item.piecesPerCarton > 0 || item.cartonsPerPalette > 0) && (
-                              <div className="text-[9px] text-slate-400 font-medium tracking-tight truncate w-full">
+                              <div className="text-[8px] text-slate-400 font-medium tracking-tight truncate w-full leading-none">
                                 {Number(item.piecesPerCarton) > 0 && `${Number(item.piecesPerCarton).toFixed(2)} / Colis`}
                                 {Number(item.cartonsPerPalette) > 0 && ` • ${Number(item.cartonsPerPalette).toFixed(0)} Colis / Pal`}
                               </div>
                             )}
                           </td>
-                          <td className="px-1.5 py-1.5 text-slate-500 text-[10px] uppercase flex-none overflow-hidden" style={{ width: cartWidths.marque }}>
+                          <td className="px-1.5 py-0.5 text-slate-500 text-[9px] uppercase flex-none overflow-hidden" style={{ width: cartWidths.marque }}>
                             <div className="truncate w-full">{item.brandName}</div>
                           </td>
-                          <td className="px-1.5 py-1.5 text-right font-mono text-[10px] text-slate-400 flex-none overflow-hidden" style={{ width: cartWidths.stock }}>
+                          <td className="px-1.5 py-0.5 text-right font-mono text-[9px] text-slate-400 flex-none overflow-hidden" style={{ width: cartWidths.stock }}>
                             {parseFloat(item.stockQty.toString()).toLocaleString()}
                           </td>
-                          <td className="px-1.5 py-1.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.palettes }}>
-                            <SmartNumberInput value={item.palettes} onChange={val => updateItem(item.rowId, 'palettes', val)} className="w-full text-center p-1 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-xs shadow-inner" />
+                          <td className="px-1.5 py-0.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.palettes }}>
+                            <SmartNumberInput value={item.palettes} onChange={val => updateItem(item.rowId, 'palettes', val)} className="w-full text-center p-0.5 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-xs shadow-inner" />
                           </td>
-                          <td className="px-1.5 py-1.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.cartons }}>
-                            <SmartNumberInput value={item.cartons} onChange={val => updateItem(item.rowId, 'cartons', val)} className="w-full text-center p-1 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-xs shadow-inner" />
+                          <td className="px-1.5 py-0.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.cartons }}>
+                            <SmartNumberInput value={item.cartons} onChange={val => updateItem(item.rowId, 'cartons', val)} className="w-full text-center p-0.5 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-xs shadow-inner" />
                           </td>
-                          <td className="px-2 py-1.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.quantity }}>
-                            <SmartNumberInput value={item.quantity} onChange={val => updateItem(item.rowId, 'quantity', val)} className="w-full text-center p-1 border-2 border-red-200 rounded font-bold text-red-700 bg-red-50 text-sm shadow-sm" />
+                          <td className="px-2 py-0.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.quantity }}>
+                            <SmartNumberInput value={item.quantity} onChange={val => updateItem(item.rowId, 'quantity', val)} className="w-full text-center p-0.5 border-2 border-red-200 rounded font-bold text-red-700 bg-red-50 text-xs shadow-sm" />
                           </td>
-                          <td className="px-1.5 py-1.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.unite }}>
+                          <td className="px-1.5 py-0.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.unite }}>
                             <select value={item.unitId} onChange={e => updateItem(item.rowId, 'unitId', Number(e.target.value))} className="w-full p-0.5 border border-slate-200 rounded text-[10px] bg-white hover:border-slate-400 transition-colors">
                               {units.filter(u => u.unitcode !== 'BOX').map(u => <option key={u.unitid} value={u.unitid}>{u.unitcode}</option>)}
                             </select>
                           </td>
-                          <td className="px-1.5 py-1.5 text-right flex-none overflow-hidden" style={{ width: cartWidths.prixunit }}>
-                            <SmartNumberInput value={item.unitPrice} onChange={val => updateItem(item.rowId, 'unitPrice', val)} className={`w-full text-right p-1 border rounded font-mono text-xs shadow-inner ${item.purchasePrice && item.unitPrice < item.purchasePrice ? 'border-red-500 text-red-600 bg-red-50' : 'border-slate-200'}`} />
+                          <td className="px-1.5 py-0.5 text-right flex-none overflow-hidden" style={{ width: cartWidths.prixunit }}>
+                            <SmartNumberInput value={item.unitPrice} onChange={val => updateItem(item.rowId, 'unitPrice', val)} className={`w-full text-right p-0.5 border rounded font-mono text-xs shadow-inner ${item.purchasePrice && item.unitPrice < item.purchasePrice ? 'border-red-500 text-red-600 bg-red-50' : 'border-slate-200'}`} />
                           </td>
-                          <td className="px-1.5 py-1.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.src }}>
-                            <span className={`text-[9px] px-1 py-0.5 rounded-full font-bold ${getPriceSourceBadge(item.priceSource)}`}>{item.priceSource}</span>
+                          <td className="px-1.5 py-0.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.src }}>
+                            <span className={`text-[8px] px-1 py-0.5 rounded-full font-bold ${getPriceSourceBadge(item.priceSource)}`}>{item.priceSource}</span>
                           </td>
-                          <td className="px-2 py-1.5 text-right font-bold text-slate-800 text-xs flex-none overflow-hidden" style={{ width: cartWidths.totalligne }}>
+                          <td className="px-2 py-0.5 text-right font-bold text-slate-800 text-[11px] flex-none overflow-hidden" style={{ width: cartWidths.totalligne }}>
                             {formatCurrency(item.lineTotal)}
                           </td>
-                          <td className="px-1 py-1.5 text-center w-10 flex-none overflow-hidden">
+                          <td className="px-1 py-0.5 text-center w-10 flex-none overflow-hidden">
                             <button onClick={() => removeItem(item.rowId)} className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-700 transition-all text-xl">&times;</button>
                           </td>
                         </tr>
