@@ -351,7 +351,7 @@ export default function ReturnDetailsPage() {
                 <div style={{ display: 'none' }}>
                     <StandardDocument
                         ref={printRef}
-                        type="DELIVERY_NOTE" // We use Delivery Note template for Return Note
+                        type="RETURN_SLIP" 
                         data={printData}
                     />
                 </div>

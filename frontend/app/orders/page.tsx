@@ -497,7 +497,12 @@ function OrdersListContent() {
                               </>
                             ) : (
                               <>
-                                <Link href={`/sales/returns/${record.id}`} className="text-orange-600 hover:underline text-xs font-bold mr-3">Détails</Link>
+                                <div className="flex gap-1 mr-3 border-r border-slate-200 pr-3">
+                                  <a href={`/sales/returns/print/${record.id}`} target="_blank" className="p-1.5 rounded hover:bg-orange-50 text-orange-600" title="Imprimer Bon de Retour">
+                                    <span className="text-xs font-bold">📄</span>
+                                  </a>
+                                </div>
+                                <Link href={`/sales/returns/${record.id}`} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded" title="Détails">👁</Link>
                                 <button onClick={() => handleDelete(record.id, 'RETURN')} className="p-1.5 text-red-600 hover:bg-red-50 rounded" title="Supprimer Retour">×</button>
                               </>
                             )}
