@@ -13,6 +13,14 @@ const parseSqmPerPiece = (str) => {
   return 0;
 };
 
+/**
+ * Helper to identify service items (Transport, Fiche) that don't track physical stock
+ */
+const isServiceItem = (name) => {
+  const n = (name || '').toLowerCase();
+  return n.includes('transport') || n.includes('fiche');
+};
+
 const convertUnitToInventory = (qty, cartUnitCode, primaryUnitCode, sqmPerPiece, productName, qteParColis = 0) => {
   let finalQty = parseFloat(qty) || 0;
   const isFicheProduct = (productName || '').toLowerCase().startsWith('fiche');
@@ -347,7 +355,7 @@ async function createOrder(req, res, next) {
         // ═══════════════════════════════════════════════════════════
         // STOCK CHECK — MUST happen BEFORE insert, inside transaction
         // ═══════════════════════════════════════════════════════════
-        if (product && product.productcode !== 'MANUAL') {
+        if (product && product.productcode !== 'MANUAL' && !isServiceItem(product.productname || productName)) {
           const unitRes = await client.query('SELECT UnitCode FROM Units WHERE UnitID = $1', [unitId]);
           const unitCode = unitRes.rows.length > 0 ? unitRes.rows[0].unitcode : 'PCS';
 
@@ -504,7 +512,7 @@ async function addOrderItem(req, res, next) {
     // ═══════════════════════════════════════════════════════════
     // STOCK CHECK — MUST happen BEFORE insert, inside transaction
     // ═══════════════════════════════════════════════════════════
-    if (product && product.productcode !== 'MANUAL') {
+    if (product && product.productcode !== 'MANUAL' && !isServiceItem(product.productname || productName)) {
       // Fetch Unit Code for the item
       const unitRes = await client.query('SELECT UnitCode FROM Units WHERE UnitID = $1', [unitId]);
       const unitCode = unitRes.rows.length > 0 ? unitRes.rows[0].unitcode : 'PCS';
@@ -762,7 +770,7 @@ async function finalizeOrder(req, res, next) {
         throw new Error(`Le produit "${item.productname}" a une quantité non valide (${item.quantity}). Veuillez corriger avant de valider.`);
       }
 
-      if (item.productcode === 'MANUAL') continue;
+      if (item.productcode === 'MANUAL' || isServiceItem(item.productname)) continue;
 
       const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
       const requiredQty = convertUnitToInventory(qtyNum, item.unitcode, item.primaryunitcode, sqmPerPiece, item.productname, parseFloat(item.qteparcolis) || 0);
@@ -835,6 +843,12 @@ async function finalizeOrder(req, res, next) {
     // Deduct inventory for each item
     for (const item of itemsResult.rows) {
       let qtyToDeduct = parseFloat(item.quantity) || 0;
+      
+      // Skip inventory deduction for service items (Transport/Fiche)
+      if (isServiceItem(item.productname)) {
+        console.log(`[Inventory] Skipping deduction for service item: ${item.productname}`);
+        continue;
+      }
 
       // Universal UNIT CONVERSION LOGIC
       const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
@@ -987,6 +1001,7 @@ const updateOrder = async (req, res) => {
     `, [id]);
 
     for (const item of oldItemsRes.rows) {
+      if (isServiceItem(item.productname)) continue;
       const qty = parseFloat(item.quantity);
       const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
       const convertedQty = convertUnitToInventory(qty, item.unitcode, item.primaryunitcode, sqmPerPiece, item.productname);
@@ -1125,8 +1140,8 @@ const updateOrder = async (req, res) => {
                 item.productName || null
             ]);
 
-        // Reserve Inventory ONLY if NOT MANUAL
-        if (pCode !== 'MANUAL' && p) {
+        // Reserve Inventory ONLY if NOT MANUAL and NOT a Service Item
+        if (pCode !== 'MANUAL' && p && !isServiceItem(p.productname || item.productName)) {
           // Fetch Unit Code for the current item unit
           const unitRes = await client.query('SELECT UnitCode FROM Units WHERE UnitID = $1', [item.unitId]);
           const unitCode = unitRes.rows.length > 0 ? unitRes.rows[0].unitcode : 'PCS';
@@ -1282,6 +1297,7 @@ async function deleteOrder(req, res, next) {
 
     // Release Reserved Stock
     for (const item of itemsRes.rows) {
+      if (isServiceItem(item.productname)) continue;
       const qty = parseFloat(item.quantity) || 0;
       const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
       const qtyToRelease = convertUnitToInventory(qty, item.unitcode, item.primaryunitcode, sqmPerPiece, item.productname);
