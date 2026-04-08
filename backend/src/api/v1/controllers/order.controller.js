@@ -55,6 +55,77 @@ const convertUnitToInventory = (qty, cartUnitCode, primaryUnitCode, sqmPerPiece,
   return finalQty;
 };
 // ===================================
+// ===== INVENTORY VALIDATION HELPER =====
+/**
+ * Internal helper to check if an order's items have sufficient stock.
+ * Used during order creation (optional) and confirmation (mandatory).
+ */
+const checkOrderStock = async (client, orderId, warehouseId) => {
+  // Fetch items and their corresponding product specifications
+  const itemsResult = await client.query(`
+    SELECT 
+      oi.ProductID as productid, 
+      oi.Quantity as quantity, 
+      u.UnitCode as unitcode,
+      p.ProductName as productname, 
+      p.ProductCode as productcode, 
+      p.Size as size, 
+      p.PrimaryUnitID as primaryunitid, 
+      p.QteParColis as qteparcolis,
+      pu_p.UnitCode as primaryunitcode
+    FROM OrderItems oi
+    LEFT JOIN Units u ON oi.UnitID = u.UnitID
+    JOIN Products p ON oi.ProductID = p.ProductID
+    LEFT JOIN Units pu_p ON p.PrimaryUnitID = pu_p.UnitID
+    WHERE oi.OrderID = $1
+  `, [orderId]);
+
+  if (itemsResult.rows.length === 0) {
+    throw new Error('La commande ne contient aucun produit.');
+  }
+
+  const effectiveWarehouseId = warehouseId || 1;
+
+  for (const item of itemsResult.rows) {
+    const qtyNum = parseFloat(item.quantity) || 0;
+    
+    // Basic quantity check
+    if (qtyNum <= 0) {
+      throw new Error(`Le produit "${item.productname}" a une quantité non valide (${item.quantity}). Veuillez corriger avant de valider.`);
+    }
+
+    // Skip physical stock check for MANUAL items and SERVICE items (Transport, Fiche)
+    if (item.productcode === 'MANUAL' || isServiceItem(item.productname)) {
+      continue;
+    }
+
+    const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
+    const requiredQty = convertUnitToInventory(
+      qtyNum, 
+      item.unitcode, 
+      item.primaryunitcode, 
+      sqmPerPiece, 
+      item.productname, 
+      parseFloat(item.qteparcolis) || 0
+    );
+
+    // Query inventory record (OWNED stock only)
+    const inventoryCheck = await client.query(`
+      SELECT QuantityOnHand, QuantityReserved 
+      FROM Inventory 
+      WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = 'OWNED'
+    `, [item.productid, effectiveWarehouseId]);
+
+    const onHand = inventoryCheck.rows.length > 0 ? parseFloat(inventoryCheck.rows[0].quantityonhand) : 0;
+    
+    // Enforcement: Total on hand must meet the required order quantity
+    if (onHand < requiredQty) {
+       throw new Error(`Stock insuffisant pour "${item.productname}". En stock: ${onHand.toFixed(2)}, Requis: ${requiredQty.toFixed(2)} (Entrepôt: ${effectiveWarehouseId})`);
+    }
+  }
+  return true;
+};
+// ===================================
 
 /**
  * Get all orders with pagination and filtering
@@ -637,10 +708,8 @@ async function addOrderItem(req, res, next) {
   }
 }
 
-/**
- * Update order status
- */
 async function updateOrderStatus(req, res, next) {
+  const client = await pool.connect();
   try {
     const { id } = req.params;
     const { status } = req.body;
@@ -654,21 +723,48 @@ async function updateOrderStatus(req, res, next) {
       });
     }
 
-    const query = `
+    await client.query('BEGIN');
+
+    // Fetch current status and warehouse info to track transition
+    const currentOrderResult = await client.query(
+      'SELECT Status, WarehouseID FROM Orders WHERE OrderID = $1',
+      [id]
+    );
+
+    if (currentOrderResult.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({
+        success: false,
+        message: 'Order not found'
+      });
+    }
+
+    const oldStatus = currentOrderResult.rows[0].status;
+    const warehouseId = currentOrderResult.rows[0].warehouseid;
+
+    // Enforcement: If moving from PENDING to a validated status (CONFIRMED), check stock availability
+    if (status === 'CONFIRMED' && oldStatus === 'PENDING') {
+      try {
+        await checkOrderStock(client, id, warehouseId);
+      } catch (stockErr) {
+        await client.query('ROLLBACK');
+        return res.status(400).json({
+          success: false,
+          message: stockErr.message
+        });
+      }
+    }
+
+    const updateQuery = `
       UPDATE Orders
       SET Status = $1, UpdatedAt = CURRENT_TIMESTAMP
       WHERE OrderID = $2
       RETURNING *
     `;
 
-    const result = await pool.query(query, [status, id]);
+    const result = await client.query(updateQuery, [status, id]);
 
-    if (result.rows.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: 'Order not found'
-      });
-    }
+    await client.query('COMMIT');
 
     res.json({
       success: true,
@@ -676,7 +772,10 @@ async function updateOrderStatus(req, res, next) {
       data: result.rows[0]
     });
   } catch (error) {
+    await client.query('ROLLBACK');
     next(error);
+  } finally {
+    client.release();
   }
 }
 
@@ -736,56 +835,14 @@ async function finalizeOrder(req, res, next) {
     }
 
     // 2. PRE-VALIDATION: Get items and check stock BEFORE any accounting entries
-    const itemsResult = await client.query(`
-      SELECT 
-        oi.ProductID as productid, 
-        oi.Quantity as quantity, 
-        oi.PalletCount as palletcount, 
-        oi.ColisCount as coliscount, 
-        u.UnitCode as unitcode,
-        p.ProductName as productname, 
-        p.ProductCode as productcode, 
-        p.Size as size, 
-        p.PrimaryUnitID as primaryunitid, 
-        p.QteParColis as qteparcolis,
-        pu_p.UnitCode as primaryunitcode
-      FROM OrderItems oi
-      LEFT JOIN Units u ON oi.UnitID = u.UnitID
-      JOIN Products p ON oi.ProductID = p.ProductID
-      LEFT JOIN Units pu_p ON p.PrimaryUnitID = pu_p.UnitID
-      WHERE oi.OrderID = $1
-    `, [orderId]);
-
-    if (itemsResult.rows.length === 0) {
-      throw new Error('La commande ne contient aucun produit.');
-    }
-
-    // Get warehouse from order (default to 1 if not specified)
-    const warehouseId = order.warehouseid || 1;
-
-    // Restriction: Prevent validation if any item has quantity <= 0 or insufficient stock
-    for (const item of itemsResult.rows) {
-      const qtyNum = parseFloat(item.quantity) || 0;
-      if (qtyNum <= 0) {
-        throw new Error(`Le produit "${item.productname}" a une quantité non valide (${item.quantity}). Veuillez corriger avant de valider.`);
-      }
-
-      if (item.productcode === 'MANUAL' || isServiceItem(item.productname)) continue;
-
-      const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
-      const requiredQty = convertUnitToInventory(qtyNum, item.unitcode, item.primaryunitcode, sqmPerPiece, item.productname, parseFloat(item.qteparcolis) || 0);
-
-      const inventoryCheck = await client.query(
-        'SELECT QuantityOnHand, QuantityReserved FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\'',
-        [item.productid, warehouseId]
-      );
-
-      const onHand = inventoryCheck.rows.length > 0 ? parseFloat(inventoryCheck.rows[0].quantityonhand) : 0;
-      
-      // Strict absolute check: Total available in inventory must be enough for this order
-      if (onHand < requiredQty) {
-         throw new Error(`Stock insuffisant pour "${item.productname}". En stock: ${onHand.toFixed(2)}, Requis: ${requiredQty.toFixed(2)} (Entrepôt: ${warehouseId})`);
-      }
+    try {
+      await checkOrderStock(client, orderId, order.warehouseid || 1);
+    } catch (stockErr) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({
+        success: false,
+        message: stockErr.message
+      });
     }
 
     // 3. Validation passed, proceed with accounting
