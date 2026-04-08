@@ -1027,7 +1027,7 @@ function POSContent() {
                       </div>
                       <button 
                         onClick={() => setActiveMobileTab('PAYMENT')}
-                        className="bg-brand-primary px-6 py-2 rounded-xl font-black text-xs uppercase tracking-wider shadow-lg shadow-black/20 active:scale-95 transition-transform"
+                        className="btn-glassy px-6 py-2 rounded-xl font-black text-xs uppercase tracking-wider active:scale-95 transition-transform"
                       >
                         Paiement →
                       </button>
@@ -1104,9 +1104,9 @@ function POSContent() {
               <button 
                 onClick={handleValidateSale} 
                 disabled={isSubmitting || cart.length === 0 || (isRetailMode ? !retailClientName.trim() : (!selectedCustomerId && !customerSearchQuery.trim()))}
-                className="w-full py-2.5 bg-green-600 hover:bg-green-500 text-white rounded-xl font-black text-lg shadow-lg flex justify-center items-center gap-3 transition-all active:scale-95 disabled:opacity-40"
+                className="w-full py-2.5 btn-glassy rounded-xl font-black text-lg shadow-lg flex justify-center items-center gap-3 transition-all active:scale-95 disabled:opacity-40"
               >
-                {isSubmitting ? <><div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>...</> : <><span className="text-xl px-2 py-0.5 bg-green-700 rounded-md">F1</span> VALIDER</>}
+                {isSubmitting ? <><div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>...</> : <><span className="text-xl px-2 py-0.5 bg-sky-900/30 rounded-md">F1</span> VALIDER</>}
               </button>
             </div>
           </div>
@@ -1126,8 +1126,8 @@ function POSContent() {
                 </select>
                 <input type="tel" placeholder="Téléphone..." value={newCustomerPhone} onChange={e => setNewCustomerPhone(e.target.value)} className="w-full p-4 bg-slate-50 border rounded-xl" />
                 <div className="flex gap-3 pt-4">
-                  <button onClick={() => setIsCustomerModalOpen(false)} className="flex-1 py-4 text-slate-500 font-bold">Annuler</button>
-                  <button onClick={handleCreateCustomer} disabled={isCreatingCustomer} className="flex-1 py-4 bg-brand-primary text-white rounded-xl font-bold">CRÉER</button>
+                  <button onClick={() => setIsCustomerModalOpen(false)} className="flex-1 py-4 text-slate-500 font-bold hover:text-slate-700 transition-colors">Annuler</button>
+                  <button onClick={handleCreateCustomer} disabled={isCreatingCustomer} className="flex-1 py-4 btn-glassy rounded-xl font-bold">CRÉER</button>
                 </div>
               </div>
             </div>

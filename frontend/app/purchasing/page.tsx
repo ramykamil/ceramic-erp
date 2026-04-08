@@ -407,7 +407,7 @@ export default function PurchaseOrdersListPage() {
             {/* Nouveau Bon Button */}
             <Link
               href="/purchasing/new"
-              className="bg-brand-primary text-white px-4 py-2.5 rounded-lg font-medium text-sm transition hover:bg-brand-primary-dark shadow-sm flex items-center gap-2"
+              className="btn-glassy px-4 py-2.5 rounded-lg font-bold text-sm flex items-center gap-2"
             >
               <span className="text-lg leading-none">+</span> Nouveau Bon
             </Link>
@@ -423,7 +423,7 @@ export default function PurchaseOrdersListPage() {
             {/* Nouveau Retour Button */}
             <Link
               href="/purchasing/returns/new"
-              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition shadow-sm flex items-center gap-2"
+              className="bg-orange-600/90 backdrop-blur-md text-white px-4 py-2.5 rounded-lg text-sm font-bold transition shadow-sm flex items-center gap-2 border border-white/10"
             >
               ↩️ Nouveau Retour
             </Link>
@@ -447,7 +447,7 @@ export default function PurchaseOrdersListPage() {
             <button
               onClick={() => setActiveTab('commandes')}
               className={`px-4 py-2.5 text-sm font-medium rounded-t-lg border-b-2 transition-colors ${activeTab === 'commandes'
-                ? 'border-brand-primary text-brand-primary bg-red-50/30'
+                ? 'border-brand-primary text-brand-primary bg-sky-50/50'
                 : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50'
                 }`}
             >

@@ -57,7 +57,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-red-900 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-sky-900 to-slate-900 p-4">
       {/* Motif subtil en arrière-plan */}
       <div className="absolute inset-0 opacity-5" style={{
         backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
@@ -91,7 +91,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition bg-white placeholder:text-gray-400 text-gray-800"
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-primary focus:border-brand-primary transition bg-white placeholder:text-gray-400 text-gray-800"
                 placeholder="Entrez votre identifiant"
               />
             </div>
@@ -106,7 +106,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition bg-white placeholder:text-gray-400 text-gray-800"
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-primary focus:border-brand-primary transition bg-white placeholder:text-gray-400 text-gray-800"
                 placeholder="••••••••"
               />
             </div>
@@ -123,7 +123,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-red-600 text-white hover:bg-red-700 font-semibold rounded-lg px-4 py-3 transition duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full btn-glassy font-bold rounded-lg px-4 py-4 transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>
@@ -148,9 +148,9 @@ export default function LoginPage() {
             <p className="font-medium text-gray-600 mb-1">Allaoua Ceram - Système de Gestion</p>
             <p className="mb-2">© 2025 Développé par <span className="font-medium text-gray-600">Ramy Kamil Mecheri</span>. Tous droits réservés.</p>
             <p>
-              <a href="mailto:ramy.mecherim2@gmail.com" className="hover:text-red-600 transition">ramy.mecherim2@gmail.com</a>
+              <a href="mailto:ramy.mecherim2@gmail.com" className="hover:text-brand-primary transition">ramy.mecherim2@gmail.com</a>
               {' | '}
-              <a href="tel:+213664975983" className="hover:text-red-600 transition">+213 664 97 59 83</a>
+              <a href="tel:+213664975983" className="hover:text-brand-primary transition">+213 664 97 59 83</a>
             </p>
           </div>
         </div>

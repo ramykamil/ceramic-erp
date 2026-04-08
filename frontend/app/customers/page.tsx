@@ -171,7 +171,7 @@ export default function CustomersListPage() {
           {/* Stats Card */}
           {stats && (
             <div className="bg-white p-3 px-5 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
-              <div className="p-2 bg-red-100 rounded-lg text-red-600">
+              <div className="p-2 bg-sky-100 rounded-lg text-brand-primary">
                 <span className="text-2xl">💰</span>
               </div>
               <div>
@@ -187,7 +187,7 @@ export default function CustomersListPage() {
             {/* Nouveau Client Button */}
             <Link
               href="/customers/new"
-              className="bg-brand-primary hover:bg-brand-primary-dark text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2"
+              className="btn-glassy px-4 py-2.5 rounded-lg font-bold text-sm flex items-center gap-2"
             >
               <span className="text-lg leading-none">+</span> Nouveau Client
             </Link>

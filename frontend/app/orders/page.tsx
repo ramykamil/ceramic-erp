@@ -337,10 +337,10 @@ function OrdersListContent() {
                 >
                   📄
                 </button>
-                <Link href="/sales/pos" className="bg-brand-primary text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-brand-primary-dark flex items-center gap-2 shadow-sm transition-colors">
+                <Link href="/sales/pos" className="btn-glassy px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2">
                   + Nouvelle Vente
                 </Link>
-                <Link href="/sales/returns/new" className="bg-orange-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-orange-700 flex items-center gap-2 shadow-sm transition-colors">
+                <Link href="/sales/returns/new" className="bg-orange-600/90 backdrop-blur-md text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-orange-700 flex items-center gap-2 shadow-sm transition-all border border-white/10">
                   ↩ Nouveau Retour
                 </Link>
                 <Link href="/" className="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm hover:bg-slate-50">Retour</Link>

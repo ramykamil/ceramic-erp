@@ -10,13 +10,13 @@
    ============================================ */
 
 :root {
-  /* Brand Colors */
-  --brand-primary: #DC2626;
-  --brand-primary-dark: #B91C1C;
-  --brand-primary-light: #FEE2E2;
+  /* Brand Colors - Blue Theme */
+  --brand-primary: #0284C7;
+  --brand-primary-dark: #0369A1;
+  --brand-primary-light: #E0F2FE;
   --brand-secondary: #1F2937;
   --brand-secondary-light: #374151;
-  --brand-accent: #991B1B;
+  --brand-accent: #075985;
 
   /* UI Colors */
   --bg-primary: #F8FAFC;
@@ -101,8 +101,26 @@ body::after {
 
 .btn-brand-primary:hover {
   background-color: var(--brand-primary-dark);
-  box-shadow: 0 4px 6px rgba(220, 38, 38, 0.3);
+  box-shadow: 0 4px 6px rgba(2, 132, 199, 0.3);
   transform: translateY(-1px);
+}
+
+/* Glassy Blue Utility */
+.btn-glassy {
+  background: rgba(2, 132, 199, 0.85) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 15px rgba(2, 132, 199, 0.2) !important;
+}
+
+.btn-glassy:hover {
+  background: rgba(2, 132, 199, 1) !important;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(2, 132, 199, 0.4) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
 }
 
 .btn-brand-secondary {
@@ -129,7 +147,7 @@ body::after {
 
 .brand-card:hover {
   border-color: var(--brand-primary);
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
 }
 
 /* Brand Header Gradient */
@@ -149,7 +167,7 @@ body::after {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-radius: 0.75rem !important;
-  border: 1px solid rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(2, 132, 199, 0.1);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1) !important;
 }
 

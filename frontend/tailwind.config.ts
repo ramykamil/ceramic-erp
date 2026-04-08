@@ -12,19 +12,19 @@ const config: Config = {
       // Allaoua Ceram Brand Colors
       colors: {
         brand: {
-          primary: '#DC2626',       // Red
-          'primary-dark': '#B91C1C',
-          'primary-light': '#FEE2E2',
+          primary: '#0284C7',       // Sky Blue 600
+          'primary-dark': '#0369A1', // Sky Blue 700
+          'primary-light': '#E0F2FE', // Sky Blue 100
           secondary: '#1F2937',      // Dark Gray/Black
           'secondary-light': '#374151',
-          accent: '#991B1B',        // Darker Red
+          accent: '#075985',        // Darker Sky Blue
         },
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-        // Brand gradient
-        "brand-gradient": "linear-gradient(135deg, #DC2626 0%, #991B1B 100%)",
+        // Brand gradient - Glassy Blue
+        "brand-gradient": "linear-gradient(135deg, #0284C7 0%, #0369A1 100%)",
         "brand-gradient-dark": "linear-gradient(135deg, #1F2937 0%, #374151 100%)",
       },
       animation: {
@@ -41,10 +41,10 @@ const config: Config = {
           },
         },
       },
-      // Brand box shadows
+      // Brand box shadows - Blue
       boxShadow: {
-        'brand': '0 4px 14px 0 rgba(220, 38, 38, 0.25)',
-        'brand-lg': '0 10px 25px -3px rgba(220, 38, 38, 0.3)',
+        'brand': '0 4px 14px 0 rgba(2, 132, 199, 0.25)',
+        'brand-lg': '0 10px 25px -3px rgba(2, 132, 199, 0.3)',
       },
     },
   },

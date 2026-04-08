@@ -281,10 +281,10 @@ export default function DashboardHomePage() {
               </div>
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
-                  Bonjour, <span className="text-red-600">{userName}</span> 👋
+                  Bonjour, <span className="text-brand-primary font-black">{userName}</span> 👋
                 </h1>
                 <p className="text-gray-500 mt-1 text-sm">
-                  Connecté en tant que : <span className="font-medium bg-gray-100 px-2 py-0.5 rounded text-gray-700">{userRole || 'Invité'}</span>
+                  Connecté en tant que : <span className="font-medium bg-slate-100 px-2 py-0.5 rounded text-slate-700 border border-slate-200">{userRole || 'Invité'}</span>
                 </p>
               </div>
             </div>
@@ -297,7 +297,7 @@ export default function DashboardHomePage() {
               </div>
               <button
                 onClick={handleLogout}
-                className="bg-red-600 text-white hover:bg-red-700 px-4 py-2.5 rounded-lg font-medium text-sm transition flex items-center gap-2 shadow-sm hover:shadow-md"
+                className="btn-glassy px-4 py-2.5 rounded-lg font-bold text-sm flex items-center gap-2"
               >
                 <span>Déconnexion</span>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4"><path fillRule="evenodd" d="M3 4.25A2.25 2.25 0 015.25 2h5.5A2.25 2.25 0 0113 4.25v2a.75.75 0 01-1.5 0v-2a.75.75 0 00-.75-.75h-5.5a.75.75 0 00-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 00.75-.75v-2a.75.75 0 011.5 0v2A2.25 2.25 0 0110.75 18h-5.5A2.25 2.25 0 013 15.75V4.25z" clipRule="evenodd" /><path fillRule="evenodd" d="M19 10a.75.75 0 00-.75-.75H8.704l1.048-.943a.75.75 0 10-1.004-1.114l-2.5 2.25a.75.75 0 000 1.114l2.5 2.25a.75.75 0 101.004-1.114l-1.048-.943h9.546A.75.75 0 0019 10z" clipRule="evenodd" /></svg>
@@ -356,7 +356,7 @@ export default function DashboardHomePage() {
 
             return (
               <section key={index} className="space-y-4">
-                <h2 className="text-lg font-bold text-gray-700 pl-3 border-l-4 border-red-600">
+                <h2 className="text-lg font-bold text-gray-700 pl-3 border-l-4 border-brand-primary">
                   {section.title}
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
