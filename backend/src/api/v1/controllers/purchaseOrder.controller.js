@@ -196,7 +196,33 @@ async function createPurchaseOrder(req, res, next) {
     try {
         await client.query('BEGIN');
 
-            // --- Step 2: Insert PO Items ---
+        // --- Step 1: Create PO Header ---
+        const deliveryCost = parseFloat(req.body.deliveryCost) || 0;
+        const finalNotes = notes || '';
+        const finalFactoryId = (supplierType === 'FACTORY') ? supplierId : (factoryId || null);
+        const finalBrandId = (supplierType === 'BRAND') ? supplierId : null;
+
+        // Generate PO number
+        const poNumberResult = await client.query(
+            "SELECT 'PO-' || TO_CHAR(CURRENT_DATE, 'YYYY') || '-' || LPAD(NEXTVAL('po_seq')::TEXT, 6, '0') as po_number"
+        );
+        const poNumber = poNumberResult.rows[0].po_number;
+
+        const poHeaderQuery = `
+            INSERT INTO PurchaseOrders (
+                PONumber, FactoryID, BrandID, WarehouseID, OrderDate, 
+                ExpectedDeliveryDate, OwnershipType, Notes, CreatedBy, Status
+            )
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'PENDING')
+            RETURNING PurchaseOrderID as purchaseorderid;
+        `;
+        const poHeaderResult = await client.query(poHeaderQuery, [
+            poNumber, finalFactoryId, finalBrandId, warehouseId, orderDate,
+            expectedDeliveryDate || null, ownershipType, finalNotes, userId
+        ]);
+        const newPurchaseOrderID = poHeaderResult.rows[0].purchaseorderid;
+
+        // --- Step 2: Insert PO Items ---
         let subTotal = 0;
         const itemInsertQuery = `
             INSERT INTO PurchaseOrderItems (
