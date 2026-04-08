@@ -225,7 +225,7 @@ function POSContent() {
   const [manualProductId, setManualProductId] = useState<number | null>(null);
 
   const { widths: cartWidths, handleResize: handleCartResize } = useColumnWidths('pos-cart-v3', {
-    designation: 130,
+    designation: 300,
     marque: 70,
     stock: 55,
     palettes: 55,
@@ -463,19 +463,33 @@ function POSContent() {
 
   useEffect(() => {
     const load = async () => {
-      if (editOrderId && products.length > 0 && customers.length > 0 && loadedEditId !== Number(editOrderId)) {
+      if (editOrderId && products.length > 0 && customers.length > 0 && units.length > 0 && loadedEditId !== Number(editOrderId)) {
         try {
           const res = await api.getOrder(Number(editOrderId));
           if (res.success && res.data) {
             const order = res.data as any;
             const items: OrderItem[] = order.items.map((item: any) => {
-              const p = products.find(x => x.productid === item.productid);
+              const p = products.find(x => Number(x.productid) === Number(item.productid));
               const { piecesPerCarton, sqmPerPiece } = normalizePackaging(item.productname, p?.derivedpiecespercolis || 0, parseSqmPerPiece(item.productname));
+              const currentUnit = units.find(u => u.unitid === item.unitid)?.unitcode || 'PCS';
+
+              let palettes = Number(item.palletcount) || 0;
+              let cartons = Number(item.coliscount) || 0;
+
+              // SELF-HEALING: If counts are zero in DB but we have packaging data, recalculate them
+              if (palettes === 0 && cartons === 0 && (piecesPerCarton > 0 || (p?.derivedcolisperpalette || 0) > 0)) {
+                let pieces = Number(item.quantity);
+                if (currentUnit === 'SQM' && sqmPerPiece > 0) pieces = Number(item.quantity) / sqmPerPiece;
+                else if ((currentUnit === 'CARTON' || currentUnit === 'CRT') && piecesPerCarton > 0) pieces = Number(item.quantity) * piecesPerCarton;
+                cartons = Number((piecesPerCarton > 0 ? pieces / piecesPerCarton : pieces).toFixed(2));
+                palettes = Number(((p?.derivedcolisperpalette || 0) > 0 ? cartons / (p?.derivedcolisperpalette || 0) : 0).toFixed(2));
+              }
+
               return {
-                rowId: crypto.randomUUID(), productId: item.productid, productCode: item.productcode, productName: item.productname,
+                rowId: crypto.randomUUID(), productId: Number(item.productid), productCode: item.productcode, productName: item.productname,
                 brandName: p?.famille || p?.brandname || '', stockQty: p?.totalqty || 0, stockPalettes: p?.nbpalette || 0, stockCartons: p?.nbcolis || 0,
                 piecesPerCarton, cartonsPerPalette: p?.derivedcolisperpalette || 0, sqmPerPiece,
-                palettes: Number(item.palletcount), cartons: Number(item.coliscount), quantity: Number(item.quantity),
+                palettes, cartons, quantity: Number(item.quantity),
                 unitId: item.unitid, unitPrice: Number(item.unitprice), lineTotal: Number(item.linetotal),
                 purchasePrice: Number(p?.prixachat) || 0
               };
@@ -499,7 +513,7 @@ function POSContent() {
       }
     };
     load();
-  }, [editOrderId, products, customers, loadedEditId]);
+  }, [editOrderId, products, customers, units, loadedEditId]);
 
   useEffect(() => {
     if (selectedCustomerId) {
@@ -853,7 +867,7 @@ function POSContent() {
                         <tr 
                           key={item.rowId} 
                           {...getCartRowProps(idx)}
-                          className={getCartRowClass(idx, `group transition-colors pos-row-compact cursor-pointer ${isTransport ? 'bg-slate-300 hover:bg-slate-400 shadow-[inset_0_2px_8px_rgba(0,0,0,0.1)] border-y border-slate-400/50' : 'hover:bg-slate-50'}`)}
+                          className={getCartRowClass(idx, `group transition-colors pos-row-compact cursor-pointer ${isTransport ? 'bg-slate-200 hover:bg-slate-300 border-b border-slate-300' : 'hover:bg-slate-50'}`)}
                           onClick={() => setCartSelectedIndex(idx)}
                         >
                           <td className="px-2 py-1.5 truncate text-slate-700">

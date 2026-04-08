@@ -1071,7 +1071,10 @@ const updateOrder = async (req, res) => {
         const pCode = p?.productcode || '';
 
         // Insert Item with CostPrice and LinkProductName
-        // Use palletCount and colisCount from frontend, no Math.floor
+        // Use palletCount/palettes and colisCount/cartons with fallbacks
+        const palletCount = parseFloat(item.palletCount || item.palettes) || 0;
+        const colisCount = parseFloat(item.colisCount || item.cartons) || 0;
+
         await client.query(`
                 INSERT INTO OrderItems (OrderID, ProductID, Quantity, UnitPrice, LineTotal, UnitID, PalletCount, ColisCount, CostPrice, LinkProductName)
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
@@ -1082,8 +1085,8 @@ const updateOrder = async (req, res) => {
                 item.unitPrice, 
                 lineTotal, 
                 item.unitId, 
-                parseFloat(item.palletCount) || 0, 
-                parseFloat(item.colisCount) || 0, 
+                palletCount, 
+                colisCount, 
                 costPrice, 
                 item.productName || null
             ]);
