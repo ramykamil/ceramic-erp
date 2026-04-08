@@ -547,6 +547,10 @@ function OrdersListContent() {
                         {formatCurrencyDZD(filteredRecords.reduce((sum, r) => sum + (parseFloat(String(r.benefice)) || 0), 0))}
                       </span>
                     </div>
+                    <div className="flex items-center gap-1 px-3 py-1.5 bg-orange-600 text-white rounded-lg shadow-sm">
+                      <span className="text-xs font-medium">Retours</span>
+                      <span className="font-bold text-sm ml-1">{filteredRecords.filter(r => r.recordType === 'RETURN').length}</span>
+                    </div>
                     <div className="flex items-center gap-1 px-3 py-1.5 bg-slate-700 text-white rounded-lg shadow-sm">
                       <span className="text-xs font-medium">Éléments</span>
                       <span className="font-bold text-sm ml-1">{filteredRecords.length}</span>
@@ -567,6 +571,10 @@ function OrdersListContent() {
                       <span className="font-bold text-sm ml-1">
                         {formatCurrencyDZD(records.reduce((sum, r) => sum + (parseFloat(String(r.paymentAmount)) || 0), 0))}
                       </span>
+                    </div>
+                    <div className="flex items-center gap-1 px-3 py-1 bg-orange-100 text-orange-800 rounded-lg border border-orange-200">
+                      <span className="text-xs font-medium">Total Retours</span>
+                      <span className="font-bold text-sm ml-1">{records.filter(r => r.recordType === 'RETURN').length}</span>
                     </div>
                     <div className="flex items-center gap-1 px-3 py-1 bg-slate-100 text-slate-700 rounded-lg border border-slate-200">
                       <span className="text-xs font-medium">Vol. Transactions</span>
