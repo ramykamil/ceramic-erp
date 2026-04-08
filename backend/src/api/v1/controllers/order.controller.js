@@ -123,7 +123,77 @@ const checkOrderStock = async (client, orderId, warehouseId) => {
        throw new Error(`Stock insuffisant pour "${item.productname}". En stock: ${onHand.toFixed(2)}, Requis: ${requiredQty.toFixed(2)} (Entrepôt: ${effectiveWarehouseId})`);
     }
   }
-  return true;
+  return itemsResult;
+};
+
+/**
+ * Internal helper to deduct inventory items from a specific warehouse.
+ * Handles unit conversion and skips service items.
+ */
+const deductOrderInventory = async (client, items, warehouseId, orderId, orderNumber, userId) => {
+  const effectiveWarehouseId = warehouseId || 1;
+  const effectiveUserId = userId || 1;
+  
+  for (const item of items) {
+    let qtyToDeduct = parseFloat(item.quantity) || 0;
+    
+    // Skip inventory deduction for service items (Transport/Fiche)
+    if (isServiceItem(item.productname)) {
+      console.log(`[Inventory] Skipping deduction for service item: ${item.productname}`);
+      continue;
+    }
+
+    // Universal UNIT CONVERSION LOGIC (matches checkOrderStock)
+    const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
+    const convertedQty = convertUnitToInventory(
+      qtyToDeduct, 
+      item.unitcode, 
+      item.primaryunitcode, 
+      sqmPerPiece, 
+      item.productname, 
+      parseFloat(item.qteparcolis) || 0
+    );
+
+    if (convertedQty !== qtyToDeduct) {
+      console.log(`[Inventory] Converting ${qtyToDeduct} ${item.unitcode} for deduction to ${convertedQty.toFixed(4)}`);
+      qtyToDeduct = convertedQty;
+    }
+
+    // 1. Update inventory quantities with safety
+    const deductResult = await client.query(`
+      UPDATE Inventory 
+      SET 
+        QuantityOnHand = GREATEST(0, QuantityOnHand - $1),
+        QuantityReserved = GREATEST(0, QuantityReserved - $1),
+        UpdatedAt = CURRENT_TIMESTAMP
+      WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED'
+      RETURNING QuantityOnHand
+    `, [qtyToDeduct, item.productid, effectiveWarehouseId]);
+
+    // 2. Recalculate PalletCount and ColisCount from new total QuantityOnHand
+    if (deductResult.rows.length > 0) {
+      const newQty = parseFloat(deductResult.rows[0].quantityonhand) || 0;
+      const productPkg = await client.query('SELECT QteParColis, QteColisParPalette FROM Products WHERE ProductID = $1', [item.productid]);
+      if (productPkg.rows.length > 0) {
+        const ppc = parseFloat(productPkg.rows[0].qteparcolis) || 0;
+        const cpp = parseFloat(productPkg.rows[0].qtecolisparpalette) || 0;
+        const newColis = ppc > 0 ? parseFloat((newQty / ppc).toFixed(4)) : 0;
+        const newPallets = cpp > 0 ? parseFloat((newColis / cpp).toFixed(4)) : 0;
+        await client.query(`
+          UPDATE Inventory 
+          SET ColisCount = $1, PalletCount = $2 
+          WHERE ProductID = $3 AND WarehouseID = $4 AND OwnershipType = 'OWNED'
+        `, [newColis, newPallets, item.productid, effectiveWarehouseId]);
+      }
+    }
+
+    // 3. Record inventory transaction for audit trail
+    await client.query(`
+      INSERT INTO InventoryTransactions 
+      (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, ReferenceID, Notes, CreatedBy, CreatedAt)
+      VALUES ($1, $2, 'OUT', $3, 'ORDER', $4, $5, $6, CURRENT_TIMESTAMP)
+    `, [item.productid, effectiveWarehouseId, qtyToDeduct, orderId, `Vente ${orderNumber}`, effectiveUserId]);
+  }
 };
 // ===================================
 
@@ -727,7 +797,7 @@ async function updateOrderStatus(req, res, next) {
 
     // Fetch current status and warehouse info to track transition
     const currentOrderResult = await client.query(
-      'SELECT Status, WarehouseID FROM Orders WHERE OrderID = $1',
+      'SELECT OrderNumber, Status, WarehouseID FROM Orders WHERE OrderID = $1',
       [id]
     );
 
@@ -739,13 +809,18 @@ async function updateOrderStatus(req, res, next) {
       });
     }
 
-    const oldStatus = currentOrderResult.rows[0].status;
-    const warehouseId = currentOrderResult.rows[0].warehouseid;
+    const orderRecord = currentOrderResult.rows[0];
+    const oldStatus = orderRecord.status;
+    const warehouseId = orderRecord.warehouseid;
+    const orderNumber = orderRecord.ordernumber;
 
     // Enforcement: If moving from PENDING to a validated status (CONFIRMED), check stock availability
     if (status === 'CONFIRMED' && oldStatus === 'PENDING') {
       try {
-        await checkOrderStock(client, id, warehouseId);
+        const itemsResult = await checkOrderStock(client, id, warehouseId);
+        // Deduct inventory as well to avoid stock drift
+        // Passes audit info: orderId, orderNumber, userId
+        await deductOrderInventory(client, itemsResult.rows, warehouseId, id, orderNumber, req.user?.userId);
       } catch (stockErr) {
         await client.query('ROLLBACK');
         return res.status(400).json({
@@ -835,8 +910,9 @@ async function finalizeOrder(req, res, next) {
     }
 
     // 2. PRE-VALIDATION: Get items and check stock BEFORE any accounting entries
+    let itemsResult;
     try {
-      await checkOrderStock(client, orderId, order.warehouseid || 1);
+      itemsResult = await checkOrderStock(client, orderId, order.warehouseid || 1);
     } catch (stockErr) {
       await client.query('ROLLBACK');
       return res.status(400).json({
@@ -894,64 +970,7 @@ async function finalizeOrder(req, res, next) {
     `, ['CONFIRMED', orderId]);
 
     // ===== INVENTORY DEDUCTION =====
-    // Use the same itemsResult gathered above for deduction
-
-
-    // Deduct inventory for each item
-    for (const item of itemsResult.rows) {
-      let qtyToDeduct = parseFloat(item.quantity) || 0;
-      
-      // Skip inventory deduction for service items (Transport/Fiche)
-      if (isServiceItem(item.productname)) {
-        console.log(`[Inventory] Skipping deduction for service item: ${item.productname}`);
-        continue;
-      }
-
-      // Universal UNIT CONVERSION LOGIC
-      const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
-      const convertedQty = convertUnitToInventory(qtyToDeduct, item.unitcode, item.primaryunitcode, sqmPerPiece, item.productname, parseFloat(item.qteparcolis) || 0);
-
-      if (convertedQty !== qtyToDeduct) {
-        console.log(`[Inventory] Converting ${qtyToDeduct} ${item.unitcode} of ${item.productname} to ${convertedQty.toFixed(4)} ${item.primaryunitcode || 'PCS'}`);
-        qtyToDeduct = convertedQty;
-      }
-
-      // Update inventory quantities
-      // Reduce BOTH QuantityOnHand and QuantityReserved since the order is now confirmed/sold
-      // NOTE: QuantityReserved was increased when item was added (addOrderItem).
-      // So now we decrease it, and also decrease OnHand.
-      const deductResult = await client.query(`
-        UPDATE Inventory 
-        SET QuantityOnHand = GREATEST(0, QuantityOnHand - $1),
-            QuantityReserved = GREATEST(0, QuantityReserved - $1),
-            UpdatedAt = CURRENT_TIMESTAMP
-        WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED'
-        RETURNING QuantityOnHand
-      `, [qtyToDeduct, item.productid, warehouseId]);
-
-      // Recalculate PalletCount and ColisCount from new total QuantityOnHand
-      if (deductResult.rows.length > 0) {
-        const newQty = parseFloat(deductResult.rows[0].quantityonhand) || 0;
-        const productPkg = await client.query('SELECT QteParColis, QteColisParPalette FROM Products WHERE ProductID = $1', [item.productid]);
-        if (productPkg.rows.length > 0) {
-          const ppc = parseFloat(productPkg.rows[0].qteparcolis) || 0;
-          const cpp = parseFloat(productPkg.rows[0].qtecolisparpalette) || 0;
-          const newColis = ppc > 0 ? parseFloat((newQty / ppc).toFixed(4)) : 0;
-          const newPallets = cpp > 0 ? parseFloat((newColis / cpp).toFixed(4)) : 0;
-          await client.query(
-            'UPDATE Inventory SET ColisCount = $1, PalletCount = $2 WHERE ProductID = $3 AND WarehouseID = $4 AND OwnershipType = \'OWNED\'',
-            [newColis, newPallets, item.productid, warehouseId]
-          );
-        }
-      }
-
-      // Record inventory transaction for audit trail
-      await client.query(`
-        INSERT INTO InventoryTransactions 
-        (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, ReferenceID, Notes, CreatedBy, CreatedAt)
-        VALUES ($1, $2, 'OUT', $3, 'ORDER', $4, $5, $6, CURRENT_TIMESTAMP)
-      `, [item.productid, warehouseId, qtyToDeduct, orderId, `Vente ${order.ordernumber}`, req.user?.userId || 1]);
-    }
+    await deductOrderInventory(client, itemsResult.rows, order.warehouseid, orderId, order.ordernumber, req.user?.userId);
 
     // Audit Log for Sale
     try {
