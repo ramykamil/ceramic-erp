@@ -124,10 +124,14 @@ async function getOrders(req, res, next) {
     // Data query
     let dataQuery = `
       SELECT 
-        o.*,
-        c.CustomerName,
-        c.CustomerCode,
-        u.Username as SalesPersonName,
+        o.OrderID as orderid, o.OrderNumber as ordernumber, o.OrderDate as orderdate, o.Status as status,
+        o.TotalAmount as totalamount, o.SubTotal as subtotal, o.TaxAmount as taxamount, 
+        o.PaymentAmount as paymentamount, o.PaymentMethod as paymentmethod,
+        o.OrderType as ordertype, o.Notes as notes, o.CustomerID as customerid,
+        o.RetailClientName as retailclientname, o.WarehouseID as warehouseid,
+        c.CustomerName as customername,
+        c.CustomerCode as customercode,
+        u.Username as salespersonname,
         o.SalesPersonID as salespersonid,
         COALESCE((
           SELECT SUM(
@@ -138,7 +142,7 @@ async function getOrders(req, res, next) {
           )
           FROM OrderItems oi
           WHERE oi.OrderID = o.OrderID
-        ), 0) as benefice
+        ), 0) as profit
       ${baseQuery}
       ORDER BY o.CreatedAt DESC, o.OrderID DESC, o.OrderDate DESC LIMIT $${paramIndex++} OFFSET $${paramIndex++}
     `;
@@ -172,13 +176,19 @@ async function getOrderById(req, res, next) {
 
     const orderQuery = `
       SELECT 
-        o.*,
-        c.CustomerName,
-        c.CustomerCode,
-        c.CustomerType,
-        c.CurrentBalance,
-        w.WarehouseName,
-        u.Username as SalesPersonName
+        o.OrderID as orderid, o.OrderNumber as ordernumber, o.OrderDate as orderdate, o.Status as status,
+        o.TotalAmount as totalamount, o.SubTotal as subtotal, o.TaxAmount as taxamount, 
+        o.DeliveryCost as deliverycost, o.Discount as discount, o.Timber as timber,
+        o.PaymentAmount as paymentamount, o.PaymentMethod as paymentmethod,
+        o.Notes as notes, o.CustomerID as customerid, o.WarehouseID as warehouseid,
+        o.RetailClientName as retailclientname, o.ShippingAddress as shippingaddress,
+        o.ClientPhone as clientphone, o.SalesPersonID as salespersonid,
+        c.CustomerName as customername,
+        c.CustomerCode as customercode,
+        c.CustomerType as customertype,
+        c.CurrentBalance as currentbalance,
+        w.WarehouseName as warehousename,
+        u.Username as salespersonname
       FROM Orders o
       LEFT JOIN Customers c ON o.CustomerID = c.CustomerID
       LEFT JOIN Warehouses w ON o.WarehouseID = w.WarehouseID
@@ -188,14 +198,21 @@ async function getOrderById(req, res, next) {
 
     const itemsQuery = `
       SELECT 
-        oi.*,
-        p.ProductCode,
-        COALESCE(oi.LinkProductName, p.ProductName) as ProductName,
-        p.QteParColis,
-        p.QteColisParPalette,
-        u.UnitCode,
-        u.UnitName,
-        b.BrandName
+        oi.OrderItemID as orderitemid, oi.OrderID as orderid, oi.ProductID as productid,
+        oi.Quantity as quantity, oi.UnitID as unitid, oi.UnitPrice as unitprice,
+        oi.DiscountPercent as discountpercent, oi.DiscountAmount as discountamount,
+        oi.TaxPercent as taxpercent, oi.TaxAmount as taxamount,
+        oi.LineTotal as linetotal, oi.PriceSource as pricesource,
+        oi.PalletCount as palletcount, oi.ColisCount as coliscount,
+        oi.CostPrice as costprice,
+        p.ProductCode as productcode,
+        COALESCE(oi.LinkProductName, p.ProductName) as productname,
+        p.QteParColis as qteparcolis,
+        p.QteColisParPalette as qtecolisparpalette,
+        p.Size as size,
+        u.UnitCode as unitcode,
+        u.UnitName as unitname,
+        b.BrandName as brandname
       FROM OrderItems oi
       JOIN Products p ON oi.ProductID = p.ProductID
       JOIN Units u ON oi.UnitID = u.UnitID
@@ -411,7 +428,12 @@ async function createOrder(req, res, next) {
           TotalAmount = (SELECT SUM(LineTotal) FROM OrderItems WHERE OrderID = $1),
           UpdatedAt = CURRENT_TIMESTAMP
         WHERE OrderID = $1
-        RETURNING *
+        RETURNING 
+          OrderID as orderid, OrderNumber as ordernumber, OrderDate as orderdate, Status as status,
+          TotalAmount as totalamount, SubTotal as subtotal, TaxAmount as taxamount, 
+          PaymentAmount as paymentamount, PaymentMethod as paymentmethod,
+          OrderType as ordertype, Notes as notes, CustomerID as customerid,
+          RetailClientName as retailclientname, WarehouseID as warehouseid
       `;
       const finalUpdatedOrder = await client.query(updateOrderQuery, [orderId]);
       orderResult.rows[0] = finalUpdatedOrder.rows[0];
@@ -570,7 +592,7 @@ async function addOrderItem(req, res, next) {
     ]);
 
     // Update order totals
-    const updateOrderQuery = `
+    const updatedOrder = await client.query(`
       UPDATE Orders
       SET 
         SubTotal = (SELECT SUM(LineTotal - TaxAmount) FROM OrderItems WHERE OrderID = $1),
@@ -578,10 +600,13 @@ async function addOrderItem(req, res, next) {
         TotalAmount = (SELECT SUM(LineTotal) FROM OrderItems WHERE OrderID = $1),
         UpdatedAt = CURRENT_TIMESTAMP
       WHERE OrderID = $1
-      RETURNING *
-    `;
-
-    const updatedOrder = await client.query(updateOrderQuery, [orderId]);
+      RETURNING 
+        OrderID as orderid, OrderNumber as ordernumber, OrderDate as orderdate, Status as status,
+        TotalAmount as totalamount, SubTotal as subtotal, TaxAmount as taxamount, 
+        PaymentAmount as paymentamount, PaymentMethod as paymentmethod,
+        OrderType as ordertype, Notes as notes, CustomerID as customerid,
+        RetailClientName as retailclientname, WarehouseID as warehouseid
+    `, [orderId]);
 
     await client.query('COMMIT');
 
@@ -789,10 +814,17 @@ async function finalizeOrder(req, res, next) {
     }
 
     // Update order status to CONFIRMED
-    await client.query(
-      "UPDATE Orders SET Status = 'CONFIRMED', UpdatedAt = CURRENT_TIMESTAMP WHERE OrderID = $1",
-      [orderId]
-    );
+    const result = await pool.query(`
+      UPDATE Orders 
+      SET Status = $1, UpdatedAt = CURRENT_TIMESTAMP 
+      WHERE OrderID = $2 
+      RETURNING 
+        OrderID as orderid, OrderNumber as ordernumber, OrderDate as orderdate, Status as status,
+        TotalAmount as totalamount, SubTotal as subtotal, TaxAmount as taxamount, 
+        PaymentAmount as paymentamount, PaymentMethod as paymentmethod,
+        OrderType as ordertype, Notes as notes, CustomerID as customerid,
+        RetailClientName as retailclientname, WarehouseID as warehouseid
+    `, ['CONFIRMED', orderId]);
 
     // ===== INVENTORY DEDUCTION =====
     // Use the same itemsResult gathered above for deduction
