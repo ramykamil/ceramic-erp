@@ -1,6 +1,19 @@
 import React from 'react';
 import { formatDate } from '@/lib/utils';
 
+const printStyles = `
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+`;
+
 // Types
 export type DocumentType = 'DELIVERY_NOTE' | 'LOADING_SLIP' | 'PURCHASE_ORDER' | 'NO_BALANCE_SLIP' | 'RETURN_SLIP' | 'FACTURE' | 'TICKET' | 'BON_VERSEMENT';
 
@@ -246,7 +259,16 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
     // Detect if we have mixed units (makes raw totalQty meaningless)
     const hasMixedUnits = (hasSqmItems && hasPcsItems) || (hasFicheItems && (hasSqmItems || hasPcsItems));
 
-    // Styles - Ticket uses smaller dimensions (80mm width for thermal printers)
+    // Dynamic scaling based on item count to ensure single-page print
+    const itemCount = data.items.length;
+    const isLargeOrder = itemCount > 12;
+    const isVeryLargeOrder = itemCount > 18; // Slightly more aggressive
+    
+    // Base sizing
+    const baseFontSize = isVeryLargeOrder ? '7.5px' : (isLargeOrder ? '8.5px' : '10px');
+    const basePadding = isLargeOrder ? '3px 5px' : '5px 6px';
+    const baseTitleSize = isLargeOrder ? '22px' : '28px';
+
     const pageStyle: React.CSSProperties = isTicket ? {
         padding: '5mm 3mm',
         backgroundColor: 'white',
@@ -259,11 +281,11 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
         boxSizing: 'border-box',
         position: 'relative',
     } : {
-        padding: '15mm 12mm',
+        padding: isLargeOrder ? '8mm 10mm' : '15mm 12mm',
         backgroundColor: 'white',
         color: 'black',
         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-        fontSize: '10px',
+        fontSize: baseFontSize,
         width: '210mm',
         minHeight: '297mm',
         margin: '0 auto',
@@ -284,7 +306,7 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
 
     const cellStyle: React.CSSProperties = {
         border: '1px solid #374151',
-        padding: '5px 6px',
+        padding: basePadding,
     };
 
     const headerCellStyle: React.CSSProperties = {
@@ -610,6 +632,7 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
 
     return (
         <div ref={ref} style={pageStyle}>
+            <style dangerouslySetInnerHTML={{ __html: printStyles }} />
 
             {/* --- HEADER --- */}
             <div style={headerStyle}>
@@ -618,7 +641,7 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
                     <div style={{
                         color: '#b91c1c',
                         fontWeight: '800',
-                        fontSize: '28px',
+                        fontSize: baseTitleSize,
                         letterSpacing: '-1.5px',
                         lineHeight: '1.1',
                         fontFamily: "'Arial Black', 'Helvetica Neue', sans-serif"
@@ -786,10 +809,10 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
                         </tr>
                         );
                     })}
-                    {/* Empty rows to fill space */}
-                    {data.items.length < 10 && Array.from({ length: Math.min(10 - data.items.length, 5) }).map((_, i) => (
+                    {/* Empty rows - only if few items, and no more than 10 total */}
+                    {data.items.length < 10 && Array.from({ length: Math.max(0, Math.min(10 - data.items.length, 5)) }).map((_, i) => (
                         <tr key={`empty-${i}`}>
-                            <td style={{ ...cellStyle, height: '18px' }}>&nbsp;</td>
+                            <td style={{ ...cellStyle, height: isLargeOrder ? '12px' : '18px' }}>&nbsp;</td>
                             <td style={cellStyle}>&nbsp;</td>
                             <td style={cellStyle}>&nbsp;</td>
                             <td style={cellStyle}>&nbsp;</td>
@@ -870,16 +893,16 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
                     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                         {/* Amount in words */}
                         <div style={{
-                            border: '2px solid #374151',
-                            padding: '10px',
-                            minHeight: '50px',
+                            border: '1px solid #374151',
+                            padding: '6px 10px',
+                            minHeight: isLargeOrder ? '30px' : '45px',
                             borderRadius: '4px',
                             backgroundColor: '#fffbeb'
                         }}>
-                            <p style={{ fontWeight: 'bold', fontSize: '9px', marginBottom: '5px', color: '#92400e' }}>
+                            <p style={{ fontWeight: 'bold', fontSize: '8px', marginBottom: '3px', color: '#92400e' }}>
                                 ✍️ Arrêté la présente facture à la somme de :
                             </p>
-                            <p style={{ fontStyle: 'italic', color: '#1f2937', fontSize: '9px', fontWeight: 500 }}>
+                            <p style={{ fontStyle: 'italic', color: '#1f2937', fontSize: isLargeOrder ? '8px' : '9px', fontWeight: 500 }}>
                                 {numberToFrenchWords(totalNet)}
                             </p>
                         </div>
@@ -902,12 +925,12 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
                         )}
 
                         {/* Signature Boxes */}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '10px' }}>
-                            <div style={{ border: '2px solid #374151', padding: '8px', height: '70px', textAlign: 'center', borderRadius: '4px' }}>
-                                <p style={{ fontWeight: 'bold', fontSize: '9px', marginBottom: '5px' }}>CACHE & SIGNATURE</p>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '8px' }}>
+                            <div style={{ border: '1px solid #374151', padding: '6px', height: isLargeOrder ? '50px' : '70px', textAlign: 'center', borderRadius: '4px' }}>
+                                <p style={{ fontWeight: 'bold', fontSize: '9px', marginBottom: '3px' }}>CACHE & SIGNATURE</p>
                             </div>
-                            <div style={{ border: '2px solid #374151', padding: '8px', height: '70px', textAlign: 'center', borderRadius: '4px' }}>
-                                <p style={{ fontWeight: 'bold', fontSize: '9px', marginBottom: '5px' }}>CLIENT</p>
+                            <div style={{ border: '1px solid #374151', padding: '6px', height: isLargeOrder ? '50px' : '70px', textAlign: 'center', borderRadius: '4px' }}>
+                                <p style={{ fontWeight: 'bold', fontSize: '9px', marginBottom: '3px' }}>CLIENT</p>
                             </div>
                         </div>
                     </div>
