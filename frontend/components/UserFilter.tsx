@@ -14,12 +14,19 @@ interface Employee {
 
 export interface UserFilterProps {
     onUserChange: (userId: number | null) => void;
+    value?: number | null;
     className?: string;
     label?: string;
     excludeSystemUsers?: boolean;
 }
 
-export function UserFilter({ onUserChange, className = '', label = 'Vendeur', excludeSystemUsers = false }: UserFilterProps) {
+export function UserFilter({ 
+    onUserChange, 
+    value,
+    className = '', 
+    label = 'Vendeur', 
+    excludeSystemUsers = false 
+}: UserFilterProps) {
     const [users, setUsers] = useState<Employee[]>([]);
     const [selectedUserId, setSelectedUserId] = useState<number | ''>('');
     const [isAdmin, setIsAdmin] = useState(false);
@@ -27,7 +34,6 @@ export function UserFilter({ onUserChange, className = '', label = 'Vendeur', ex
 
     useEffect(() => {
         // Check if current user can filter by user
-        // ADMIN, MANAGER, and SALES_WHOLESALE can see all orders
         const role = localStorage.getItem('user_role');
         const canFilterByUser = role === 'ADMIN' || role === 'MANAGER' || role === 'SALES_WHOLESALE';
         setIsAdmin(canFilterByUser);
@@ -38,6 +44,13 @@ export function UserFilter({ onUserChange, className = '', label = 'Vendeur', ex
             setLoading(false);
         }
     }, []);
+
+    // Sync with parent value
+    useEffect(() => {
+        if (value !== undefined) {
+            setSelectedUserId(value === null ? '' : value);
+        }
+    }, [value]);
 
     const loadUsers = async () => {
         try {

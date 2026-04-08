@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { formatDate as formatDisplayDate } from '@/lib/utils';
 
 export type DateFilterPreset =
@@ -19,6 +19,7 @@ export interface DateRange {
 
 export interface DateQuickFilterProps {
     onFilterChange: (range: DateRange, preset: DateFilterPreset) => void;
+    value?: DateRange;
     defaultPreset?: DateFilterPreset;
     showCustom?: boolean;
     className?: string;
@@ -129,6 +130,7 @@ const presetLabels: Record<DateFilterPreset, string> = {
 
 export function DateQuickFilter({
     onFilterChange,
+    value,
     defaultPreset = 'ALL',
     showCustom = false,
     className = ''
@@ -136,6 +138,31 @@ export function DateQuickFilter({
     const [activePreset, setActivePreset] = useState<DateFilterPreset>(defaultPreset);
     const [customStart, setCustomStart] = useState('');
     const [customEnd, setCustomEnd] = useState('');
+
+    // Sync active preset when value changes from parent
+    useEffect(() => {
+        if (!value) return;
+
+        // Try to find a matching preset
+        const presets: DateFilterPreset[] = [
+            'TODAY', 'YESTERDAY', 'THIS_WEEK', 'THIS_MONTH', 'LAST_6_MONTHS', 'THIS_YEAR', 'ALL'
+        ];
+        
+        for (const p of presets) {
+            const range = getDateRange(p);
+            if (range.startDate === value.startDate && range.endDate === value.endDate) {
+                setActivePreset(p);
+                return;
+            }
+        }
+        
+        // If no match and we have values, it's a custom range
+        if (value.startDate && value.endDate) {
+            setActivePreset('ALL'); 
+            setCustomStart(value.startDate);
+            setCustomEnd(value.endDate);
+        }
+    }, [value]);
 
     const handlePresetClick = (preset: DateFilterPreset) => {
         setActivePreset(preset);

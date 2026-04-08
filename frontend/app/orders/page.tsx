@@ -69,11 +69,16 @@ function OrdersListContent() {
   useEffect(() => {
     const filter = searchParams.get('filter');
     if (filter === 'RETURN' || filter === 'ORDER') {
-      setRecordTypeFilter(filter as any);
-      setActiveTab('ALL');
-      setDateRange(getDateRange('TODAY'));
-      // Clear the URL param so it doesn't fight with manual dropdown changes
-      router.replace('/orders');
+      const currentView = recordTypeFilter;
+      if (currentView !== filter) {
+        setRecordTypeFilter(filter as any);
+        setActiveTab('ALL');
+        setDateRange(getDateRange('TODAY'));
+      }
+      // Only replace if we have a filter param to clean up
+      if (searchParams.has('filter')) {
+        router.replace('/orders');
+      }
     }
   }, [searchParams, router, setRecordTypeFilter, setActiveTab, setDateRange]);
 
@@ -349,12 +354,14 @@ function OrdersListContent() {
                   <p className="text-xs text-slate-500 mb-2 font-medium">📅 Filtrer par date:</p>
                   <DateQuickFilter
                     onFilterChange={handleDateFilterChange}
+                    value={dateRange}
                     defaultPreset="TODAY"
                     showCustom={true}
                   />
                 </div>
                 <UserFilter
                   onUserChange={setSelectedUserId}
+                  value={selectedUserId}
                   label="Vendeur"
                 />
                 {/* View Type Filter */}
