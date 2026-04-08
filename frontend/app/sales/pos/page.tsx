@@ -719,104 +719,114 @@ function POSContent() {
       </div>
 
         <div className={`p-2 bg-white border-b shadow-sm ${activeMobileTab === 'CLIENT' ? 'block' : 'hidden lg:block'}`}>
-          <div className="flex flex-col lg:flex-row gap-4 items-end">
-            {/* 1. Client Info */}
-            <div className="flex-none w-full lg:w-[480px] space-y-2">
-              <div className="flex justify-between items-center mb-1">
-                <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-brand-primary"></span> Infos Client
-                </h3>
-                <StandardDateInput value={orderDate} onChange={val => setOrderDate(val)} />
-              </div>
-              
-              {isRetailMode ? (
-                <div className="flex gap-3">
-                  <input type="text" value={retailClientName} onChange={e => setRetailClientName(e.target.value)} placeholder="Nom client passage..." className="flex-1 p-2.5 border rounded-xl text-sm shadow-sm focus:ring-2 focus:ring-brand-primary/20 transition-all" />
-                  <input type="text" value={clientPhone} onChange={e => setClientPhone(e.target.value)} placeholder="Tél (Optionnel)..." className="w-48 p-2.5 border rounded-xl text-sm shadow-sm font-mono focus:ring-2 focus:ring-brand-primary/20 transition-all" />
+          <div className="flex flex-col gap-3">
+            {/* ROW 1: Client & Logistics */}
+            <div className="flex flex-col lg:flex-row gap-6 items-end">
+              {/* 1. Client Info */}
+              <div className="flex-none w-full lg:w-[450px] space-y-1.5">
+                <div className="flex justify-between items-center mb-0.5">
+                  <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5 font-bold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-brand-primary"></span> Infos Client
+                  </h3>
+                  <StandardDateInput value={orderDate} onChange={val => setOrderDate(val)} />
                 </div>
-              ) : (
-                <div className="relative">
-                  {selectedCustomerId && selectedCustomer ? (
-                    <div className="p-2 border border-green-200 bg-green-50 rounded-xl flex items-center justify-between shadow-sm">
-                      <div className="min-w-0 pr-2">
-                        <div className="text-xs font-bold text-green-800 truncate">{selectedCustomer.customername}</div>
-                        <div className="flex gap-4 items-center">
-                          <div className="text-[10px] text-green-600 font-bold uppercase tracking-tight">Solde: {formatCurrency(clientBalance)}</div>
-                          {selectedCustomer.phone && <div className="text-[10px] text-indigo-700 font-bold uppercase tracking-tight bg-indigo-100/80 px-2 py-0.5 rounded-lg border border-indigo-200">📞 {selectedCustomer.phone}</div>}
-                        </div>
-                      </div>
-                      <button onClick={() => setSelectedCustomerId('')} className="text-red-500 text-xl font-bold px-2">&times;</button>
-                    </div>
-                  ) : (
-                    <div className="flex gap-2">
-                      <input type="text" value={customerSearchQuery} onChange={e => setCustomerSearchQuery(e.target.value)} placeholder="Rechercher client..." className="flex-1 p-2 border rounded-xl text-sm shadow-sm" />
-                      <button onClick={() => setIsCustomerModalOpen(true)} className="p-2 bg-slate-100 border rounded-xl" title="Nouveau Client">+</button>
-                    </div>
-                  )}
-                  {customerSearchQuery.length > 1 && filteredCustomers.length > 0 && (
-                    <div className="absolute top-full inset-x-0 mt-1 bg-white border shadow-2xl rounded-xl z-50 max-h-48 overflow-y-auto ring-4 ring-black/5">
-                      {filteredCustomers.map(c => (
-                        <div key={c.customerid} onClick={() => { setSelectedCustomerId(c.customerid); setCustomerSearchQuery(''); }} className="p-3 hover:bg-slate-50 cursor-pointer border-b last:border-0 transition-colors flex justify-between items-center">
-                          <div>
-                             <div className="text-sm font-bold text-slate-800">{c.customername}</div>
-                             <div className="text-[10px] text-slate-500 font-bold tracking-wider uppercase">Solde: {formatCurrency(c.currentbalance)}</div>
+                
+                {isRetailMode ? (
+                  <div className="flex gap-2">
+                    <input type="text" value={retailClientName} onChange={e => setRetailClientName(e.target.value)} placeholder="Nom client passage..." className="flex-1 p-2 border rounded-xl text-sm shadow-sm focus:ring-2 focus:ring-brand-primary/20 transition-all" />
+                    <input type="text" value={clientPhone} onChange={e => setClientPhone(e.target.value)} placeholder="Tél (Optionnel)..." className="w-40 p-2 border rounded-xl text-sm shadow-sm font-mono focus:ring-2 focus:ring-brand-primary/20 transition-all" />
+                  </div>
+                ) : (
+                  <div className="relative">
+                    {selectedCustomerId && selectedCustomer ? (
+                      <div className="p-1.5 border border-green-200 bg-green-50 rounded-xl flex items-center justify-between shadow-sm">
+                        <div className="min-w-0 pr-2">
+                          <div className="text-xs font-bold text-green-800 truncate">{selectedCustomer.customername}</div>
+                          <div className="flex gap-3 items-center">
+                            <div className="text-[10px] text-green-600 font-bold uppercase tracking-tight">Solde: {formatCurrency(clientBalance)}</div>
+                            {selectedCustomer.phone && <div className="text-[10px] text-indigo-700 font-bold uppercase tracking-tight bg-indigo-100/80 px-2 py-0.5 rounded-lg border border-indigo-200">📞 {selectedCustomer.phone}</div>}
                           </div>
-                          {c.phone && <div className="text-[10px] font-mono text-indigo-600 font-bold">{c.phone}</div>}
                         </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* 2. Logistics & Notes */}
-            <div className="hidden xl:flex flex-none w-[420px] gap-4">
-               <div className="flex-1 space-y-2">
-                  <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Livraison</h3>
-                  <input type="text" value={shippingAddress} onChange={e => setShippingAddress(e.target.value)} placeholder="Adresse..." className="w-full p-2 border rounded-xl text-sm shadow-sm" />
-               </div>
-               <div className="flex-1 space-y-2">
-                  <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Véhicule</h3>
-                  <select value={vehicleId} onChange={e => setVehicleId(e.target.value)} className="w-full p-2 border rounded-xl text-xs bg-white shadow-sm appearance-none">
-                    <option value="">Sélectionner</option>
-                    {vehicles.map(v => <option key={v.vehicleid} value={v.vehicleid}>{v.vehiclenumber}</option>)}
-                  </select>
-               </div>
-            </div>
-
-            {/* 3. Search & Scanner Dock (The Main Action) */}
-            <div className="flex-1 relative pb-0.5">
-               <input 
-                type="text" 
-                value={searchQuery} 
-                onChange={e => setSearchQuery(e.target.value)} 
-                placeholder="🔍 Scanner ou rechercher un produit..." 
-                className="w-full p-2 pl-10 border-2 border-slate-200 rounded-2xl bg-slate-50 shadow-[inner_0_2px_4px_rgba(0,0,0,0.02)] focus:border-brand-primary/40 focus:bg-white transition-all font-bold text-base"
-              />
-              <div className="absolute left-3.5 top-3.5 text-slate-400">🔍</div>
-              {searchQuery.length > 2 && filteredProducts.length > 0 && (
-                <div className="absolute top-full left-0 mt-1 min-w-full lg:min-w-[500px] xl:min-w-[600px] bg-white border shadow-2xl rounded-2xl z-[60] max-h-[60vh] overflow-y-auto ring-8 ring-black/5 animate-in fade-in slide-in-from-top-2 duration-200 custom-scrollbar">
-                  {filteredProducts.map(p => (
-                    <div key={p.productid} onClick={() => addToCart(p)} className="p-3 hover:bg-red-50 cursor-pointer flex items-center justify-between border-b last:border-0 border-slate-100">
-                      <div className="flex-1 min-w-0 pr-4">
-                        <div className="font-black text-slate-800 break-words whitespace-normal leading-tight mb-0.5">{p.productname}</div>
-                        <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest break-words whitespace-normal">{p.famille || p.brandname} • {p.productcode}</div>
+                        <button onClick={() => setSelectedCustomerId('')} className="text-red-500 text-xl font-bold px-2">&times;</button>
                       </div>
-                      <div className="text-right flex-none">
-                        <div className="text-base font-black text-brand-primary">{formatCurrency(p.prixvente || p.baseprice)}</div>
-                        <div className="text-[10px] text-slate-400 font-bold">Stock: {p.totalqty}</div>
+                    ) : (
+                      <div className="flex gap-2">
+                        <input type="text" value={customerSearchQuery} onChange={e => setCustomerSearchQuery(e.target.value)} placeholder="Rechercher client..." className="flex-1 p-2 border rounded-xl text-sm shadow-sm" />
+                        <button onClick={() => setIsCustomerModalOpen(true)} className="p-2 bg-slate-100 border rounded-xl" title="Nouveau Client">+</button>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+                    )}
+                    {customerSearchQuery.length > 1 && filteredCustomers.length > 0 && (
+                      <div className="absolute top-full inset-x-0 mt-1 bg-white border shadow-2xl rounded-xl z-50 max-h-48 overflow-y-auto ring-4 ring-black/5">
+                        {filteredCustomers.map(c => (
+                          <div key={c.customerid} onClick={() => { setSelectedCustomerId(c.customerid); setCustomerSearchQuery(''); }} className="p-3 hover:bg-slate-50 cursor-pointer border-b last:border-0 transition-colors flex justify-between items-center">
+                            <div>
+                               <div className="text-sm font-bold text-slate-800">{c.customername}</div>
+                               <div className="text-[10px] text-slate-500 font-bold tracking-wider uppercase">Solde: {formatCurrency(c.currentbalance)}</div>
+                            </div>
+                            {c.phone && <div className="text-[10px] font-mono text-indigo-600 font-bold">{c.phone}</div>}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* 2. Logistics & Notes */}
+              <div className="hidden xl:flex flex-1 gap-3">
+                 <div className="flex-1 space-y-1">
+                    <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Livraison</h3>
+                    <input type="text" value={shippingAddress} onChange={e => setShippingAddress(e.target.value)} placeholder="Adresse..." className="w-full p-2 border rounded-xl text-sm shadow-sm" />
+                 </div>
+                 <div className="w-48 space-y-1">
+                    <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Véhicule</h3>
+                    <select value={vehicleId} onChange={e => setVehicleId(e.target.value)} className="w-full p-2 border rounded-xl text-xs bg-white shadow-sm appearance-none">
+                      <option value="">Sélectionner</option>
+                      {vehicles.map(v => <option key={v.vehicleid} value={v.vehicleid}>{v.vehiclenumber}</option>)}
+                    </select>
+                 </div>
+                 <div className="flex-1 space-y-1">
+                    <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Observations</h3>
+                    <input type="text" value={observation} onChange={e => setObservation(e.target.value)} placeholder="Notes..." className="w-full p-2 border rounded-xl text-sm shadow-sm" />
+                 </div>
+              </div>
             </div>
 
-            {/* 4. Tools */}
-            <div className="flex-none flex gap-2">
-              <button onClick={() => setIsProductBrowserOpen(true)} className="px-4 py-3 bg-white border border-slate-200 text-slate-600 rounded-2xl font-black text-xs shadow-sm hover:bg-slate-50 flex items-center justify-center gap-2 transition-transform active:scale-95">📋 CATALOGUE</button>
-              <button onClick={() => setIsManualProductOpen(true)} className="px-4 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl font-black text-xs shadow-lg shadow-amber-900/20 flex items-center justify-center gap-2 transition-transform active:scale-95">✏️ MANUEL</button>
+            {/* ROW 2: Product Search (Full Width) & Tools */}
+            <div className="flex flex-col lg:flex-row gap-3 items-center">
+              {/* 3. Search & Scanner Dock (NOW FLEX-1 IN NEW ROW) */}
+              <div className="flex-1 relative">
+                 <input 
+                  type="text" 
+                  value={searchQuery} 
+                  onChange={e => setSearchQuery(e.target.value)} 
+                  placeholder="🔍 Scanner ou rechercher un produit..." 
+                  className="w-full p-2 pl-10 border-2 border-slate-200 rounded-2xl bg-slate-50 shadow-[inner_0_2px_4px_rgba(0,0,0,0.02)] focus:border-brand-primary/40 focus:bg-white transition-all font-bold text-base"
+                />
+                <div className="absolute left-3.5 top-2.5 text-slate-400">🔍</div>
+                {searchQuery.length > 2 && filteredProducts.length > 0 && (
+                  <div className="absolute top-full left-0 mt-1 min-w-full lg:min-w-[500px] xl:min-w-[600px] bg-white border shadow-2xl rounded-2xl z-[60] max-h-[60vh] overflow-y-auto ring-8 ring-black/5 animate-in fade-in slide-in-from-top-2 duration-200 custom-scrollbar">
+                    {filteredProducts.map(p => (
+                      <div key={p.productid} onClick={() => addToCart(p)} className="p-3 hover:bg-red-50 cursor-pointer flex items-center justify-between border-b last:border-0 border-slate-100">
+                        <div className="flex-1 min-w-0 pr-4">
+                          <div className="font-black text-slate-800 break-words whitespace-normal leading-tight mb-0.5">{p.productname}</div>
+                          <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest break-words whitespace-normal">{p.famille || p.brandname} • {p.productcode}</div>
+                        </div>
+                        <div className="text-right flex-none">
+                          <div className="text-base font-black text-brand-primary">{formatCurrency(p.prixvente || p.baseprice)}</div>
+                          <div className="text-[10px] text-slate-400 font-bold">Stock: {p.totalqty}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* 4. Tools */}
+              <div className="flex-none flex gap-2">
+                <button onClick={() => setIsProductBrowserOpen(true)} className="px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-2xl font-black text-xs shadow-sm hover:bg-slate-50 flex items-center justify-center gap-2 transition-transform active:scale-95">📋 CATALOGUE</button>
+                <button onClick={() => setIsManualProductOpen(true)} className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl font-black text-xs shadow-lg shadow-amber-900/20 flex items-center justify-center gap-2 transition-transform active:scale-95">✏️ MANUEL</button>
+              </div>
             </div>
           </div>
         </div>
