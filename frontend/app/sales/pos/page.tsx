@@ -707,7 +707,7 @@ function POSContent() {
   return (
     <div className="flex flex-col bg-slate-50 overflow-hidden text-slate-800 min-h-screen">
       {/* Header */}
-      <div className="flex-none p-2 border-b bg-white flex justify-between items-center shadow-sm z-10">
+      <div className="flex-none p-1 px-3 border-b bg-white flex justify-between items-center shadow-sm z-10">
         <div className="flex items-center gap-4">
           <h1 className="text-lg font-bold text-slate-800">Point de Vente</h1>
           <div className="hidden lg:flex items-center gap-2 text-xs text-slate-500">
@@ -718,8 +718,8 @@ function POSContent() {
         <Link href="/" className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition-colors">← Tableau de Bord</Link>
       </div>
 
-        <div className={`p-2 bg-white border-b shadow-sm ${activeMobileTab === 'CLIENT' ? 'block' : 'hidden lg:block'}`}>
-          <div className="flex flex-col gap-3">
+        <div className={`p-1 px-3 bg-white border-b shadow-sm ${activeMobileTab === 'CLIENT' ? 'block' : 'hidden lg:block'}`}>
+          <div className="flex flex-col gap-1.5">
             {/* ROW 1: Client & Logistics */}
             <div className="flex flex-col lg:flex-row gap-6 items-end">
               {/* 1. Client Info */}
@@ -733,13 +733,13 @@ function POSContent() {
                 
                 {isRetailMode ? (
                   <div className="flex gap-2">
-                    <input type="text" value={retailClientName} onChange={e => setRetailClientName(e.target.value)} placeholder="Nom client passage..." className="flex-1 p-2 border rounded-xl text-sm shadow-sm focus:ring-2 focus:ring-brand-primary/20 transition-all" />
-                    <input type="text" value={clientPhone} onChange={e => setClientPhone(e.target.value)} placeholder="Tél (Optionnel)..." className="w-40 p-2 border rounded-xl text-sm shadow-sm font-mono focus:ring-2 focus:ring-brand-primary/20 transition-all" />
+                    <input type="text" value={retailClientName} onChange={e => setRetailClientName(e.target.value)} placeholder="Nom client passage..." className="flex-1 p-1.5 border rounded-xl text-sm shadow-sm focus:ring-2 focus:ring-brand-primary/20 transition-all" />
+                    <input type="text" value={clientPhone} onChange={e => setClientPhone(e.target.value)} placeholder="Tél (Optionnel)..." className="w-40 p-1.5 border rounded-xl text-sm shadow-sm font-mono focus:ring-2 focus:ring-brand-primary/20 transition-all" />
                   </div>
                 ) : (
                   <div className="relative">
                     {selectedCustomerId && selectedCustomer ? (
-                      <div className="p-1.5 border border-green-200 bg-green-50 rounded-xl flex items-center justify-between shadow-sm">
+                      <div className="p-1 border border-green-200 bg-green-50 rounded-xl flex items-center justify-between shadow-sm">
                         <div className="min-w-0 pr-2">
                           <div className="text-xs font-bold text-green-800 truncate">{selectedCustomer.customername}</div>
                           <div className="flex gap-3 items-center">
@@ -751,8 +751,8 @@ function POSContent() {
                       </div>
                     ) : (
                       <div className="flex gap-2">
-                        <input type="text" value={customerSearchQuery} onChange={e => setCustomerSearchQuery(e.target.value)} placeholder="Rechercher client..." className="flex-1 p-2 border rounded-xl text-sm shadow-sm" />
-                        <button onClick={() => setIsCustomerModalOpen(true)} className="p-2 bg-slate-100 border rounded-xl" title="Nouveau Client">+</button>
+                        <input type="text" value={customerSearchQuery} onChange={e => setCustomerSearchQuery(e.target.value)} placeholder="Rechercher client..." className="flex-1 p-1.5 border rounded-xl text-sm shadow-sm" />
+                        <button onClick={() => setIsCustomerModalOpen(true)} className="p-1.5 bg-slate-100 border rounded-xl" title="Nouveau Client">+</button>
                       </div>
                     )}
                     {customerSearchQuery.length > 1 && filteredCustomers.length > 0 && (
@@ -773,21 +773,21 @@ function POSContent() {
               </div>
 
               {/* 2. Logistics & Notes */}
-              <div className="hidden xl:flex flex-1 gap-3">
+              <div className="hidden xl:flex flex-1 gap-1.5">
                  <div className="flex-1 space-y-1">
                     <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Livraison</h3>
-                    <input type="text" value={shippingAddress} onChange={e => setShippingAddress(e.target.value)} placeholder="Adresse..." className="w-full p-2 border rounded-xl text-sm shadow-sm" />
+                    <input type="text" value={shippingAddress} onChange={e => setShippingAddress(e.target.value)} placeholder="Adresse..." className="w-full p-1.5 border rounded-xl text-sm shadow-sm" />
                  </div>
                  <div className="w-48 space-y-1">
                     <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Véhicule</h3>
-                    <select value={vehicleId} onChange={e => setVehicleId(e.target.value)} className="w-full p-2 border rounded-xl text-xs bg-white shadow-sm appearance-none">
+                    <select value={vehicleId} onChange={e => setVehicleId(e.target.value)} className="w-full p-1.5 border rounded-xl text-xs bg-white shadow-sm appearance-none">
                       <option value="">Sélectionner</option>
                       {vehicles.map(v => <option key={v.vehicleid} value={v.vehicleid}>{v.vehiclenumber}</option>)}
                     </select>
                  </div>
                  <div className="flex-1 space-y-1">
                     <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Observations</h3>
-                    <input type="text" value={observation} onChange={e => setObservation(e.target.value)} placeholder="Notes..." className="w-full p-2 border rounded-xl text-sm shadow-sm" />
+                    <input type="text" value={observation} onChange={e => setObservation(e.target.value)} placeholder="Notes..." className="w-full p-1.5 border rounded-xl text-sm shadow-sm" />
                  </div>
               </div>
             </div>
@@ -801,7 +801,7 @@ function POSContent() {
                   value={searchQuery} 
                   onChange={e => setSearchQuery(e.target.value)} 
                   placeholder="🔍 Scanner ou rechercher un produit..." 
-                  className="w-full p-2 pl-10 border-2 border-slate-200 rounded-2xl bg-slate-50 shadow-[inner_0_2px_4px_rgba(0,0,0,0.02)] focus:border-brand-primary/40 focus:bg-white transition-all font-bold text-base"
+                  className="w-full p-1.5 pl-10 border-2 border-slate-200 rounded-2xl bg-slate-50 shadow-[inner_0_2px_4px_rgba(0,0,0,0.02)] focus:border-brand-primary/40 focus:bg-white transition-all font-bold text-sm"
                 />
                 <div className="absolute left-3.5 top-2.5 text-slate-400">🔍</div>
                 {searchQuery.length > 2 && filteredProducts.length > 0 && (
@@ -824,8 +824,8 @@ function POSContent() {
 
               {/* 4. Tools */}
               <div className="flex-none flex gap-2">
-                <button onClick={() => setIsProductBrowserOpen(true)} className="px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-2xl font-black text-xs shadow-sm hover:bg-slate-50 flex items-center justify-center gap-2 transition-transform active:scale-95">📋 CATALOGUE</button>
-                <button onClick={() => setIsManualProductOpen(true)} className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl font-black text-xs shadow-lg shadow-amber-900/20 flex items-center justify-center gap-2 transition-transform active:scale-95">✏️ MANUEL</button>
+                <button onClick={() => setIsProductBrowserOpen(true)} className="px-3 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-2xl font-black text-xs shadow-sm hover:bg-slate-50 flex items-center justify-center gap-2 transition-transform active:scale-95">📋 CATALOGUE</button>
+                <button onClick={() => setIsManualProductOpen(true)} className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl font-black text-xs shadow-lg shadow-amber-900/20 flex items-center justify-center gap-2 transition-transform active:scale-95">✏️ MANUEL</button>
               </div>
             </div>
           </div>
@@ -835,7 +835,7 @@ function POSContent() {
         <div className={`flex-1 flex flex-col min-w-0 bg-slate-100 relative overflow-hidden ${activeMobileTab === 'CART' ? 'flex' : 'hidden lg:flex'}`}>
 
           {/* Table Container - This is the dynamic scaling part */}
-    <div className="flex-1 p-4 overflow-hidden flex flex-col">
+    <div className="flex-1 p-1 overflow-hidden flex flex-col">
       <div className="flex-1 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
         <div className="flex-1 flex flex-col min-h-0" style={{ scrollbarGutter: 'stable' }}>
                 {/* Desktop Table View */}
@@ -1040,8 +1040,8 @@ function POSContent() {
         </div>
 
         {/* BOTTOM SECTION: Summary & Checkout Dashboard (Full Width Bottom) */}
-        <div className={`flex-none bg-[#0c111d] text-white p-2 pb-20 border-t-2 border-brand-primary ${activeMobileTab === 'PAYMENT' ? 'block' : 'hidden lg:block'}`}>
-          <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className={`flex-none bg-[#0c111d] text-white p-1 px-3 pb-20 border-t-2 border-brand-primary ${activeMobileTab === 'PAYMENT' ? 'block' : 'hidden lg:block'}`}>
+          <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-3">
             
             {/* 1. Totals Breakdown */}
             <div className="space-y-1 lg:border-r border-slate-700/30 pr-4">
@@ -1061,21 +1061,21 @@ function POSContent() {
             {/* 2. Payment Details */}
             <div className="flex flex-col justify-center px-4 lg:border-r border-slate-700/50 scale-95 origin-center">
                {selectedCustomerId && (
-                 <div className="mb-1 p-2 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center justify-between animate-in fade-in slide-in-from-top-1 duration-300">
+                 <div className="mb-0.5 p-1 px-2 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center justify-between animate-in fade-in slide-in-from-top-1 duration-300">
                     <span className="text-[9px] font-black text-red-400 uppercase tracking-widest leading-none">Solde:</span>
-                    <span className={`text-lg font-black font-mono ${clientBalance > 0 ? 'text-red-400' : 'text-green-400'}`}>{formatCurrency(clientBalance)}</span>
+                    <span className={`text-base font-black font-mono ${clientBalance > 0 ? 'text-red-400' : 'text-green-400'}`}>{formatCurrency(clientBalance)}</span>
                  </div>
                )}
                 <div className="flex items-center justify-between mb-2">
                   <div>
                     <div className="text-[9px] text-slate-400 uppercase font-bold tracking-widest leading-none">Net à Payer (P.A.C)</div>
-                    <div className="text-2xl font-black text-white font-mono leading-none pt-1">
+                    <div className="text-xl font-black text-white font-mono leading-none pt-1">
                       {formatCurrency(totalNet).replace('DZD', '')} <span className="text-[10px] font-normal text-slate-300">DA</span>
                     </div>
                   </div>
                   <div className="text-right">
                     <label className="block text-[9px] text-slate-300 font-bold uppercase mb-1">Versement</label>
-                    <SmartNumberInput value={payment} onChange={val => setPayment(val)} className="w-32 bg-slate-950 border border-slate-700 text-white p-2 rounded-xl text-lg font-black font-mono text-right focus:border-brand-primary outline-none shadow-inner" />
+                    <SmartNumberInput value={payment} onChange={val => setPayment(val)} className="w-32 bg-slate-950 border border-slate-700 text-white p-1.5 rounded-xl text-lg font-black font-mono text-right focus:border-brand-primary outline-none shadow-inner" />
                   </div>
                </div>
                
@@ -1095,18 +1095,18 @@ function POSContent() {
             {/* 3. Global Actions */}
             <div className="flex flex-col gap-2 justify-center pl-4">
               <div className="grid grid-cols-4 gap-1.5">
-                <button onClick={handlePrintBCMobile} disabled={cart.length === 0} className="py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-base disabled:opacity-30" title="Bon de Chargement">🚚</button>
-                <button onClick={handlePrintBLMobile} disabled={cart.length === 0} className="py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-base disabled:opacity-30" title="Bon de Livraison">📄</button>
-                <button onClick={handlePrintBSSMobile} disabled={cart.length === 0} className="py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-base disabled:opacity-30" title="Bon Sans Solde">🚫</button>
-                <button onClick={handlePrintTicketMobile} disabled={cart.length === 0} className="py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-base disabled:opacity-30" title="Ticket">🎫</button>
+                <button onClick={handlePrintBCMobile} disabled={cart.length === 0} className="py-1.5 bg-slate-700 hover:bg-slate-600 rounded-xl text-sm disabled:opacity-30" title="Bon de Chargement">🚚</button>
+                <button onClick={handlePrintBLMobile} disabled={cart.length === 0} className="py-1.5 bg-slate-700 hover:bg-slate-600 rounded-xl text-sm disabled:opacity-30" title="Bon de Livraison">📄</button>
+                <button onClick={handlePrintBSSMobile} disabled={cart.length === 0} className="py-1.5 bg-slate-700 hover:bg-slate-600 rounded-xl text-sm disabled:opacity-30" title="Bon Sans Solde">🚫</button>
+                <button onClick={handlePrintTicketMobile} disabled={cart.length === 0} className="py-1.5 bg-slate-700 hover:bg-slate-600 rounded-xl text-sm disabled:opacity-30" title="Ticket">🎫</button>
               </div>
               
               <button 
                 onClick={handleValidateSale} 
                 disabled={isSubmitting || cart.length === 0 || (isRetailMode ? !retailClientName.trim() : (!selectedCustomerId && !customerSearchQuery.trim()))}
-                className="w-full py-2.5 btn-glassy rounded-xl font-black text-lg shadow-lg flex justify-center items-center gap-3 transition-all active:scale-95 disabled:opacity-40"
+                className="w-full py-2 btn-glassy rounded-xl font-black text-base shadow-lg flex justify-center items-center gap-3 transition-all active:scale-95 disabled:opacity-40"
               >
-                {isSubmitting ? <><div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>...</> : <><span className="text-xl px-2 py-0.5 bg-sky-900/30 rounded-md">F1</span> VALIDER</>}
+                {isSubmitting ? <><div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>...</> : <><span className="text-base px-2 py-0.5 bg-sky-900/30 rounded-md">F1</span> VALIDER</>}
               </button>
             </div>
           </div>
