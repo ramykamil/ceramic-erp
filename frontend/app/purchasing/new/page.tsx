@@ -581,7 +581,7 @@ export default function CreatePurchaseOrderPage() {
 
       const response = await api.createPurchaseOrder(payload);
       if (response.success) {
-        alert('Bon de commande créé avec succès!');
+        alert('Bon de commande créé et reçu avec succès! Stock mis à jour.');
         router.push('/purchasing');
       } else {
         throw new Error(response.message || 'Erreur lors de la création');

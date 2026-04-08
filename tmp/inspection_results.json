@@ -1,0 +1,122 @@
+{
+  "stock06-04F.xlsx": {
+    "headers": [
+      "Famille",
+      "Reference",
+      "Libellé",
+      "NB PALETTE",
+      "NB COLIS",
+      "Qté",
+      "Prix d'achat",
+      "Prix de vente",
+      "Calibre",
+      "Choix",
+      "Actions",
+      "QteParColis",
+      "QteColisParPalette",
+      "VALEUR_ACHAT"
+    ],
+    "sample": [
+      [
+        "CERAM DECOR",
+        "CERAM DECOR ",
+        "3D STONE CREMA 30/90",
+        0,
+        0,
+        0,
+        1050,
+        1149.9999,
+        null,
+        null,
+        null,
+        1.32,
+        42,
+        0
+      ],
+      [
+        "CERAM DECOR",
+        "CERAM DECOR ",
+        "3D STONE GRIS 30/90",
+        0,
+        0,
+        0,
+        1050,
+        1149.9999,
+        null,
+        null,
+        null,
+        1.32,
+        42,
+        0
+      ],
+      [
+        "CERAM DECOR",
+        "CERAM DECOR ",
+        "3D STONE LIGHT 30/90",
+        0,
+        0,
+        0,
+        1050,
+        1149.9999,
+        null,
+        null,
+        null,
+        1.32,
+        42,
+        0
+      ]
+    ]
+  },
+  "catalogue_produits_2026-04-08.xlsx": {
+    "headers": [
+      "Référence",
+      "Libellé",
+      "Famille",
+      "Palettes",
+      "Colis",
+      "Qté",
+      "Prix Achat",
+      "Prix Vente",
+      "Calibre",
+      "Choix"
+    ],
+    "sample": [
+      [
+        "CERAM DECOR",
+        "3D STONE CREMA 30/90",
+        "CERAM DECOR",
+        0,
+        0,
+        0,
+        1050,
+        1150,
+        "",
+        ""
+      ],
+      [
+        "3D STONE GRIS 30/90",
+        "3D STONE GRIS 30/90",
+        "CERAM DECOR",
+        0,
+        0,
+        0,
+        1050,
+        1150,
+        "",
+        "1er Choix"
+      ],
+      [
+        "3D STONE LIGHT 30/90",
+        "3D STONE LIGHT 30/90",
+        "CERAM DECOR",
+        0,
+        0,
+        0,
+        1050,
+        1150,
+        "",
+        ""
+      ]
+    ]
+  }
+}

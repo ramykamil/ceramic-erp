@@ -2,6 +2,18 @@ const pool = require('../../../config/database');
 const accountingService = require('../services/accounting.service');
 
 /**
+ * Helper: Parse dimensions (e.g. "60x60") => m2
+ */
+const parseDimensions = (str) => {
+    if (!str) return 0;
+    const match = str.match(/(\d{2,3})[xX*\/](\d{2,3})/);
+    if (match) {
+        return (parseInt(match[1]) * parseInt(match[2])) / 10000;
+    }
+    return 0;
+};
+
+/**
  * Get all Purchase Orders
  */
 async function getPurchaseOrders(req, res, next) {
@@ -184,51 +196,17 @@ async function createPurchaseOrder(req, res, next) {
     try {
         await client.query('BEGIN');
 
-        // --- Step 1: Create PO Header ---
-        // Generate PO Number (logic can be customized)
-        const poNumberResult = await client.query(
-            "SELECT 'PO-' || TO_CHAR(CURRENT_DATE, 'YYYY') || '-' || LPAD(NEXTVAL('po_seq')::TEXT, 6, '0') as po_number"
-            // Note: This requires a 'po_seq' sequence. Let's add it to the schema.
-        );
-        const poNumber = poNumberResult.rows[0].po_number;
-
-        // Determine IDs
-        let finalFactoryId = null;
-        let finalBrandId = null;
-
-        if (supplierType === 'BRAND') {
-            finalBrandId = resolvedFactoryId; // resolvedFactoryId holds the ID from above logic
-        } else {
-            finalFactoryId = resolvedFactoryId;
-        }
-
-        // Store supplier type in notes if using brand (Optional now with proper column, but kept for legacy)
-        const finalNotes = (notes || '');
-        const deliveryCost = parseFloat(req.body.deliveryCost) || 0;
-
-        const poHeaderQuery = `
-            INSERT INTO PurchaseOrders (
-                PONumber, FactoryID, BrandID, WarehouseID, OrderDate, ExpectedDeliveryDate,
-                OwnershipType, Notes, CreatedBy, Status, DeliveryCost
-            )
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'PENDING', $10)
-            RETURNING PurchaseOrderID;
-        `;
-        const poHeaderResult = await client.query(poHeaderQuery, [
-            poNumber, finalFactoryId, finalBrandId, warehouseId, orderDate, expectedDeliveryDate || null,
-            ownershipType, finalNotes, userId, deliveryCost
-        ]);
-
-        const newPurchaseOrderID = poHeaderResult.rows[0].purchaseorderid;
-
-        // --- Step 2: Insert PO Items ---
+            // --- Step 2: Insert PO Items ---
         let subTotal = 0;
         const itemInsertQuery = `
             INSERT INTO PurchaseOrderItems (
-                PurchaseOrderID, ProductID, Quantity, UnitID, UnitPrice, LineTotal
+                PurchaseOrderID, ProductID, Quantity, UnitID, UnitPrice, LineTotal, ReceivedQuantity
             )
-            VALUES ($1, $2, $3, $4, $5, $6);
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            RETURNING POItemID;
         `;
+
+        const poItems = [];
 
         for (const item of items) {
             if (!item.productId || item.quantity == null || item.unitId == null || item.unitPrice == null) {
@@ -240,29 +218,157 @@ async function createPurchaseOrder(req, res, next) {
             }
             subTotal += lineTotal;
 
-            await client.query(itemInsertQuery, [
+            const poItemResult = await client.query(itemInsertQuery, [
                 newPurchaseOrderID,
                 item.productId,
                 item.quantity,
                 item.unitId,
                 item.unitPrice,
-                lineTotal
+                lineTotal,
+                item.quantity // Auto-received quantity equals ordered quantity
             ]);
 
-            // NOTE: Inventory is NOT updated here - it will be updated when goods are RECEIVED
-            // via the goodsReceipt.controller.js. This prevents double-counting.
+            poItems.push({
+                ...item,
+                poItemId: poItemResult.rows[0].poitemid
+            });
         }
 
-        // --- Step 3: Update PO Header with Totals ---
+        // --- Step 3: Update PO Header with Totals & Status ---
         const totalAmount = subTotal + deliveryCost;
-        const updatePoTotalQuery = `
+        const updatePoHeaderQuery = `
             UPDATE PurchaseOrders
-            SET SubTotal = $1, TotalAmount = $2
+            SET SubTotal = $1, TotalAmount = $2, Status = 'RECEIVED'
             WHERE PurchaseOrderID = $3;
         `;
-        await client.query(updatePoTotalQuery, [subTotal, totalAmount, newPurchaseOrderID]);
+        await client.query(updatePoHeaderQuery, [subTotal, totalAmount, newPurchaseOrderID]);
 
-        // --- Step 4: Record Payment if provided (using accounting service) ---
+        // --- Step 4: Create Automatic Goods Receipt (GR) for audit trail ---
+        const grNumberResult = await client.query(
+            "SELECT 'GR-' || TO_CHAR(CURRENT_DATE, 'YYYY') || '-' || LPAD(NEXTVAL('gr_seq')::TEXT, 6, '0') as gr_number"
+        );
+        const receiptNumber = grNumberResult.rows[0].gr_number;
+
+        const grHeaderQuery = `
+            INSERT INTO GoodsReceipts
+            (ReceiptNumber, PurchaseOrderID, FactoryID, WarehouseID, ReceiptDate, OwnershipType, Notes, ReceivedBy, Status)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'RECEIVED')
+            RETURNING ReceiptID;
+        `;
+        const grHeaderResult = await client.query(grHeaderQuery, [
+            receiptNumber, newPurchaseOrderID, finalFactoryId, warehouseId, orderDate,
+            ownershipType, finalNotes || 'Auto-reçu à la création', userId
+        ]);
+        const newReceiptID = grHeaderResult.rows[0].receiptid;
+
+        // --- Step 5: Update Inventory for each item ---
+        for (const item of poItems) {
+            const qtyReceived = parseFloat(item.quantity) || 0;
+
+            // 5a. Insert into GoodsReceiptItems
+            const grItemQuery = `
+                INSERT INTO GoodsReceiptItems
+                (ReceiptID, POItemID, ProductID, QuantityReceived, UnitID)
+                VALUES ($1, $2, $3, $4, $5);
+            `;
+            await client.query(grItemQuery, [
+                newReceiptID, item.poItemId, item.productId, qtyReceived, item.unitId
+            ]);
+
+            // 5b. Unit Conversion for Inventory
+            const productInfo = await client.query(
+                `SELECT p.ProductName, p.Size, p.PrimaryUnitID, u.UnitCode, pu.UnitCode as PrimaryUnitCode,
+                        p.QteParColis, p.QteColisParPalette
+                 FROM Products p
+                 LEFT JOIN Units u ON u.UnitId = $2
+                 LEFT JOIN Units pu ON p.PrimaryUnitID = pu.UnitID
+                 WHERE p.ProductID = $1`,
+                [item.productId, item.unitId]
+            );
+
+            let finalQtyToAdd = qtyReceived;
+
+            if (productInfo.rows.length > 0) {
+                const pInfo = productInfo.rows[0];
+                const unitCode = (pInfo.unitcode || '').toUpperCase();
+                const primaryUnitCode = (pInfo.primaryunitcode || '').toUpperCase();
+                const sqmPerPiece = parseDimensions(pInfo.size || pInfo.productname);
+                const piecesPerBox = parseFloat(pInfo.qteparcolis) || 0;
+                const boxesPerPallet = parseFloat(pInfo.qtecolisparpalette) || 0;
+                const isFicheProduct = (pInfo.productname || '').toLowerCase().startsWith('fiche');
+
+                const isTileProduct = !isFicheProduct && sqmPerPiece > 0;
+                const isReceivingInSQM = ['SQM', 'M2', 'M²'].includes(unitCode);
+                const isReceivingInPCS = ['PCS', 'PIECE', 'PIÈCE'].includes(unitCode);
+
+                if (isTileProduct) {
+                    if (isReceivingInSQM) {
+                        finalQtyToAdd = qtyReceived;
+                    } else if (isReceivingInPCS) {
+                        finalQtyToAdd = qtyReceived * sqmPerPiece;
+                    } else if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(unitCode)) {
+                        const pcs = piecesPerBox > 0 ? qtyReceived * piecesPerBox : qtyReceived;
+                        finalQtyToAdd = pcs * sqmPerPiece;
+                    } else if (['PALLET', 'PALETTE', 'PAL'].includes(unitCode)) {
+                        const boxes = boxesPerPallet > 0 ? qtyReceived * boxesPerPallet : qtyReceived;
+                        const pcs = piecesPerBox > 0 ? boxes * piecesPerBox : boxes;
+                        finalQtyToAdd = pcs * sqmPerPiece;
+                    }
+                } else {
+                    if (isReceivingInPCS || unitCode === primaryUnitCode) {
+                        finalQtyToAdd = qtyReceived;
+                    } else if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(unitCode) && piecesPerBox > 0) {
+                        finalQtyToAdd = qtyReceived * piecesPerBox;
+                    } else if (['PALLET', 'PALETTE', 'PAL'].includes(unitCode) && boxesPerPallet > 0 && piecesPerBox > 0) {
+                        finalQtyToAdd = qtyReceived * boxesPerPallet * piecesPerBox;
+                    }
+                }
+            }
+
+            // 5c. Update Inventory
+            const invCheck = await client.query(`
+                SELECT InventoryID, QuantityOnHand FROM Inventory 
+                WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = 'OWNED' 
+                AND FactoryID IS NULL
+                LIMIT 1
+            `, [item.productId, warehouseId]);
+
+            let newTotalQty = finalQtyToAdd;
+
+            if (invCheck.rows.length > 0) {
+                newTotalQty = parseFloat(invCheck.rows[0].quantityonhand || 0) + finalQtyToAdd;
+                await client.query(`
+                    UPDATE Inventory SET 
+                        QuantityOnHand = $1,
+                        UpdatedAt = CURRENT_TIMESTAMP
+                    WHERE InventoryID = $2
+                `, [newTotalQty, invCheck.rows[0].inventoryid]);
+            } else {
+                await client.query(`
+                    INSERT INTO Inventory (ProductID, WarehouseID, OwnershipType, FactoryID, QuantityOnHand, PalletCount, ColisCount)
+                    VALUES ($1, $2, 'OWNED', NULL, $3, 0, 0)
+                `, [item.productId, warehouseId, finalQtyToAdd]);
+            }
+
+            // 5d. Recalculate Pallet/Colis counts
+            const ppc = parseFloat(productInfo.rows[0]?.qteparcolis) || 0;
+            const cpp = parseFloat(productInfo.rows[0]?.qtecolisparpalette) || 0;
+            const newColis = ppc > 0 ? parseFloat((newTotalQty / ppc).toFixed(4)) : 0;
+            const newPallets = cpp > 0 ? parseFloat((newColis / cpp).toFixed(4)) : 0;
+            await client.query(`
+                UPDATE Inventory SET ColisCount = $1, PalletCount = $2
+                WHERE ProductID = $3 AND WarehouseID = $4 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
+            `, [newColis, newPallets, item.productId, warehouseId]);
+
+            // 5e. Record Inventory Transaction
+            await client.query(`
+                INSERT INTO InventoryTransactions
+                (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, ReferenceID, OwnershipType, FactoryID, CreatedBy)
+                VALUES ($1, $2, 'IN', $3, 'GOODS_RECEIPT', $4, 'OWNED', NULL, $5);
+            `, [item.productId, warehouseId, finalQtyToAdd, newReceiptID, userId]);
+        }
+
+        // --- Step 6: Record Payment if provided ---
         const payment = parseFloat(req.body.payment) || 0;
         const paymentMethod = req.body.paymentMethod || 'ESPECE';
 
@@ -297,8 +403,15 @@ async function createPurchaseOrder(req, res, next) {
 
         res.status(201).json({
             success: true,
-            message: 'Bon de commande créé avec succès',
-            data: { purchaseOrderId: newPurchaseOrderID, poNumber: poNumber, totalAmount: subTotal, paymentRecorded: payment }
+            message: 'Bon de commande créé et reçu avec succès. Stock mis à jour.',
+            data: { 
+                purchaseOrderId: newPurchaseOrderID, 
+                poNumber: poNumber, 
+                totalAmount: subTotal, 
+                paymentRecorded: payment,
+                receiptId: newReceiptID,
+                receiptNumber: receiptNumber
+            }
         });
 
     } catch (error) {
@@ -653,14 +766,6 @@ async function updatePurchaseOrder(req, res, next) {
         `, [resolvedFactoryId, warehouseId, orderDate, expectedDeliveryDate || null, ownershipType, notes, id]);
 
         // Helper: Parse Dimensions
-        const parseDimensions = (str) => {
-            if (!str) return 0;
-            const match = str.match(/(\d{2,3})\s*[xX*\/]\s*(\d{2,3})/);
-            if (match) {
-                return (parseInt(match[1]) * parseInt(match[2])) / 10000;
-            }
-            return 0;
-        };
 
         // 3. Update Items
         let subTotal = 0;
