@@ -705,7 +705,7 @@ function POSContent() {
   };
 
   return (
-    <div className="flex flex-col bg-slate-50 overflow-hidden text-slate-800" style={{ zoom: 0.88, height: '113.6vh' }}>
+    <div className="flex flex-col bg-slate-50 overflow-hidden text-slate-800 min-h-screen">
       {/* Header */}
       <div className="flex-none p-3 border-b bg-white flex justify-between items-center shadow-sm z-10">
         <div className="flex items-center gap-4">
@@ -718,7 +718,7 @@ function POSContent() {
         <Link href="/" className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition-colors">← Tableau de Bord</Link>
       </div>
 
-        <div className={`p-4 bg-white border-b shadow-sm ${activeMobileTab === 'CLIENT' || activeMobileTab === 'CART' ? 'block' : 'hidden lg:block'}`}>
+        <div className={`p-4 bg-white border-b shadow-sm ${activeMobileTab === 'CLIENT' ? 'block' : 'hidden lg:block'}`}>
           <div className="flex flex-col lg:flex-row gap-8 items-end">
             {/* 1. Client Info */}
             <div className="flex-none w-full lg:w-[480px] space-y-2">
@@ -934,7 +934,7 @@ function POSContent() {
                 )}
 
                 {/* Mobile Cards View */}
-                <div className="lg:hidden flex-1 overflow-auto p-2 space-y-3 custom-scrollbar bg-slate-50">
+                <div className="lg:hidden flex-1 overflow-auto p-2 pb-44 space-y-3 custom-scrollbar bg-slate-50">
                   {cart.map((item) => {
                     const isTransport = item.productName.toUpperCase().includes('TRANSPORT');
                     return (
@@ -997,7 +997,30 @@ function POSContent() {
                   {cart.length === 0 && (
                     <div className="py-20 text-center text-slate-300">
                       <div className="text-6xl mb-4">🛒</div>
-                      <p className="font-bold uppercase tracking-widest">Le panier est vide</p>
+                      <p className="font-bold uppercase tracking-widest leading-normal">Le panier est vide</p>
+                    </div>
+                  )}
+                  
+                  {/* Mobile Quick Summary Bar (Sticky above Nav) */}
+                  {cart.length > 0 && activeMobileTab !== 'PAYMENT' && (
+                    <div className="lg:hidden fixed bottom-20 left-0 right-0 bg-slate-800 text-white p-3 flex justify-between items-center z-40 animate-in slide-in-from-bottom duration-300">
+                      <div className="flex gap-4 items-center">
+                        <div className="flex flex-col">
+                          <span className="text-[10px] text-slate-400 font-black uppercase">Total</span>
+                          <span className="text-lg font-black font-mono">{formatCurrency(totalNet)}</span>
+                        </div>
+                        <div className="h-6 w-px bg-slate-700"></div>
+                        <div className="flex flex-col">
+                          <span className="text-[10px] text-slate-400 font-black uppercase">Items</span>
+                          <span className="text-lg font-black font-mono">{cart.length}</span>
+                        </div>
+                      </div>
+                      <button 
+                        onClick={() => setActiveMobileTab('PAYMENT')}
+                        className="bg-brand-primary px-6 py-2 rounded-xl font-black text-xs uppercase tracking-wider shadow-lg shadow-black/20 active:scale-95 transition-transform"
+                      >
+                        Paiement →
+                      </button>
                     </div>
                   )}
                 </div>
@@ -1007,8 +1030,8 @@ function POSContent() {
         </div>
 
         {/* BOTTOM SECTION: Summary & Checkout Dashboard (Full Width Bottom) */}
-        <div className="flex-none bg-slate-800 text-white p-2 border-t border-slate-700 block lg:block">
-          <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className={`flex-none bg-slate-800 text-white p-4 pb-24 border-t border-slate-700 ${activeMobileTab === 'PAYMENT' ? 'block' : 'hidden lg:block'}`}>
+          <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
             
             {/* 1. Totals Breakdown */}
             <div className="space-y-1 lg:border-r border-slate-700/50 pr-4">
@@ -1197,7 +1220,7 @@ function POSContent() {
         <StandardDocument ref={ticketRef} type="TICKET" data={getPrintData()} />
       </div>
       {/* Mobile Navigation Bar */}
-      <div className="lg:hidden flex-none bg-white border-t p-2 flex justify-around items-center h-20 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-50">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t p-2 flex justify-around items-center h-20 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.1)] z-50">
         <button 
           onClick={() => setActiveMobileTab('CLIENT')}
           className={`flex flex-col items-center gap-1 transition-all ${activeMobileTab === 'CLIENT' ? 'text-brand-primary' : 'text-slate-400'}`}
