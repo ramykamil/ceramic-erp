@@ -707,9 +707,9 @@ function POSContent() {
   return (
     <div className="flex flex-col bg-slate-50 overflow-hidden text-slate-800 min-h-screen">
       {/* Header */}
-      <div className="flex-none p-3 border-b bg-white flex justify-between items-center shadow-sm z-10">
+      <div className="flex-none p-2 border-b bg-white flex justify-between items-center shadow-sm z-10">
         <div className="flex items-center gap-4">
-          <h1 className="text-xl font-bold text-slate-800">Point de Vente</h1>
+          <h1 className="text-lg font-bold text-slate-800">Point de Vente</h1>
           <div className="hidden lg:flex items-center gap-2 text-xs text-slate-500">
             <span className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100 uppercase tracking-wider font-bold">F1</span> Valider
             <span className="bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-200 uppercase tracking-wider font-bold ml-2">ESC</span> Retour
@@ -718,8 +718,8 @@ function POSContent() {
         <Link href="/" className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition-colors">← Tableau de Bord</Link>
       </div>
 
-        <div className={`p-4 bg-white border-b shadow-sm ${activeMobileTab === 'CLIENT' ? 'block' : 'hidden lg:block'}`}>
-          <div className="flex flex-col lg:flex-row gap-8 items-end">
+        <div className={`p-2 bg-white border-b shadow-sm ${activeMobileTab === 'CLIENT' ? 'block' : 'hidden lg:block'}`}>
+          <div className="flex flex-col lg:flex-row gap-4 items-end">
             {/* 1. Client Info */}
             <div className="flex-none w-full lg:w-[480px] space-y-2">
               <div className="flex justify-between items-center mb-1">
@@ -792,7 +792,7 @@ function POSContent() {
                 value={searchQuery} 
                 onChange={e => setSearchQuery(e.target.value)} 
                 placeholder="🔍 Scanner ou rechercher un produit..." 
-                className="w-full p-3 pl-10 border-2 border-slate-200 rounded-2xl bg-slate-50 shadow-[inner_0_2px_4px_rgba(0,0,0,0.02)] focus:border-brand-primary/40 focus:bg-white transition-all font-bold text-lg"
+                className="w-full p-2 pl-10 border-2 border-slate-200 rounded-2xl bg-slate-50 shadow-[inner_0_2px_4px_rgba(0,0,0,0.02)] focus:border-brand-primary/40 focus:bg-white transition-all font-bold text-base"
               />
               <div className="absolute left-3.5 top-3.5 text-slate-400">🔍</div>
               {searchQuery.length > 2 && filteredProducts.length > 0 && (
@@ -832,18 +832,18 @@ function POSContent() {
                 <div className="hidden lg:block overflow-auto flex-1 custom-scrollbar">
                   <table className="border-separate border-spacing-0" style={{ minWidth: '680px', width: '100%' }}> 
                     <thead className="sticky top-0 bg-slate-800 text-white z-20">
-                      <tr className="text-[10px] font-bold uppercase tracking-wider">
-                        <ResizableHeader columnKey="designation" width={cartWidths.designation} onResize={handleCartResize} onClick={() => handleCartSort('productName')} className="px-2 py-2 text-left cursor-pointer hover:bg-slate-700">Désignation {getSortIcon(cartSortConfig, 'productName')}</ResizableHeader>
-                        <ResizableHeader columnKey="marque" width={cartWidths.marque} onResize={handleCartResize} onClick={() => handleCartSort('brandName')} className="px-1.5 py-2 text-left cursor-pointer hover:bg-slate-700">Marque {getSortIcon(cartSortConfig, 'brandName')}</ResizableHeader>
-                        <ResizableHeader columnKey="stock" width={cartWidths.stock} onResize={handleCartResize} onClick={() => handleCartSort('stockQty')} className="px-1.5 py-2 text-right cursor-pointer hover:bg-slate-700">Stock {getSortIcon(cartSortConfig, 'stockQty')}</ResizableHeader>
-                        <ResizableHeader columnKey="palettes" width={cartWidths.palettes} onResize={handleCartResize} onClick={() => handleCartSort('palettes')} className="px-1.5 py-2 text-center bg-indigo-900/30 cursor-pointer hover:bg-indigo-900/50">Pals {getSortIcon(cartSortConfig, 'palettes')}</ResizableHeader>
-                        <ResizableHeader columnKey="cartons" width={cartWidths.cartons} onResize={handleCartResize} onClick={() => handleCartSort('cartons')} className="px-1.5 py-2 text-center bg-indigo-900/30 cursor-pointer hover:bg-indigo-900/50">Ctns {getSortIcon(cartSortConfig, 'cartons')}</ResizableHeader>
-                        <ResizableHeader columnKey="quantity" width={cartWidths.quantity} onResize={handleCartResize} onClick={() => handleCartSort('quantity')} className="px-2 py-2 text-center bg-red-900/30 cursor-pointer hover:bg-red-900/50">Quantité {getSortIcon(cartSortConfig, 'quantity')}</ResizableHeader>
-                        <ResizableHeader columnKey="unite" width={cartWidths.unite} onResize={handleCartResize} className="px-1.5 py-2 text-center">Unité</ResizableHeader>
-                        <ResizableHeader columnKey="prixunit" width={cartWidths.prixunit} onResize={handleCartResize} onClick={() => handleCartSort('unitPrice')} className="px-1.5 py-2 text-right cursor-pointer hover:bg-slate-700">Prix Unit {getSortIcon(cartSortConfig, 'unitPrice')}</ResizableHeader>
-                        <ResizableHeader columnKey="src" width={cartWidths.src} onResize={handleCartResize} className="px-1.5 py-2 text-center">Src</ResizableHeader>
-                        <ResizableHeader columnKey="totalligne" width={cartWidths.totalligne} onResize={handleCartResize} onClick={() => handleCartSort('lineTotal')} className="px-2 py-2 text-right cursor-pointer hover:bg-slate-700">Total {getSortIcon(cartSortConfig, 'lineTotal')}</ResizableHeader>
-                        <th className="w-10 px-1 py-2"></th>
+                      <tr className="text-[9px] font-black uppercase tracking-wider">
+                        <ResizableHeader columnKey="designation" width={cartWidths.designation} onResize={handleCartResize} onClick={() => handleCartSort('productName')} className="px-2 py-1 text-left cursor-pointer hover:bg-slate-700">Désignation {getSortIcon(cartSortConfig, 'productName')}</ResizableHeader>
+                        <ResizableHeader columnKey="marque" width={cartWidths.marque} onResize={handleCartResize} onClick={() => handleCartSort('brandName')} className="px-1.5 py-1 text-left cursor-pointer hover:bg-slate-700">Marque {getSortIcon(cartSortConfig, 'brandName')}</ResizableHeader>
+                        <ResizableHeader columnKey="stock" width={cartWidths.stock} onResize={handleCartResize} onClick={() => handleCartSort('stockQty')} className="px-1.5 py-1 text-right cursor-pointer hover:bg-slate-700">Stock {getSortIcon(cartSortConfig, 'stockQty')}</ResizableHeader>
+                        <ResizableHeader columnKey="palettes" width={cartWidths.palettes} onResize={handleCartResize} onClick={() => handleCartSort('palettes')} className="px-1.5 py-1 text-center bg-indigo-900/30 cursor-pointer hover:bg-indigo-900/50">Pals {getSortIcon(cartSortConfig, 'palettes')}</ResizableHeader>
+                        <ResizableHeader columnKey="cartons" width={cartWidths.cartons} onResize={handleCartResize} onClick={() => handleCartSort('cartons')} className="px-1.5 py-1 text-center bg-indigo-900/30 cursor-pointer hover:bg-indigo-900/50">Ctns {getSortIcon(cartSortConfig, 'cartons')}</ResizableHeader>
+                        <ResizableHeader columnKey="quantity" width={cartWidths.quantity} onResize={handleCartResize} onClick={() => handleCartSort('quantity')} className="px-2 py-1 text-center bg-red-900/30 cursor-pointer hover:bg-red-900/50">Quantité {getSortIcon(cartSortConfig, 'quantity')}</ResizableHeader>
+                        <ResizableHeader columnKey="unite" width={cartWidths.unite} onResize={handleCartResize} className="px-1.5 py-1 text-center">Unité</ResizableHeader>
+                        <ResizableHeader columnKey="prixunit" width={cartWidths.prixunit} onResize={handleCartResize} onClick={() => handleCartSort('unitPrice')} className="px-1.5 py-1 text-right cursor-pointer hover:bg-slate-700">Prix Unit {getSortIcon(cartSortConfig, 'unitPrice')}</ResizableHeader>
+                        <ResizableHeader columnKey="src" width={cartWidths.src} onResize={handleCartResize} className="px-1.5 py-1 text-center">Src</ResizableHeader>
+                        <ResizableHeader columnKey="totalligne" width={cartWidths.totalligne} onResize={handleCartResize} onClick={() => handleCartSort('lineTotal')} className="px-2 py-1 text-right cursor-pointer hover:bg-slate-700">Total {getSortIcon(cartSortConfig, 'lineTotal')}</ResizableHeader>
+                        <th className="w-10 px-1 py-1"></th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-xs">
@@ -852,11 +852,11 @@ function POSContent() {
                         return (
                         <tr 
                           key={item.rowId} 
-                          {...getCartRowProps(idx)}
+                           {...getCartRowProps(idx)}
                           className={getCartRowClass(idx, `group transition-all duration-200 pos-row-compact cursor-pointer ${isTransport ? 'bg-amber-100/80 hover:bg-amber-200/90 border-b-2 border-amber-300 text-amber-900 shadow-[inset_0_1px_2px_rgba(0,0,0,0.05)]' : 'hover:bg-slate-50 border-b border-slate-100'}`)}
                           onClick={() => setCartSelectedIndex(idx)}
                         >
-                          <td className="px-2 py-1.5 text-slate-700 min-w-0 flex-none overflow-hidden" style={{ width: cartWidths.designation }}>
+                          <td className="px-2 py-1 text-slate-700 min-w-0 flex-none overflow-hidden" style={{ width: cartWidths.designation }}>
                             <div className="font-bold text-xs truncate w-full" title={item.productName}>{item.productName}</div>
                             {(item.piecesPerCarton > 0 || item.cartonsPerPalette > 0) && (
                               <div className="text-[9px] text-slate-400 font-medium tracking-tight truncate w-full">
@@ -1030,7 +1030,7 @@ function POSContent() {
         </div>
 
         {/* BOTTOM SECTION: Summary & Checkout Dashboard (Full Width Bottom) */}
-        <div className={`flex-none bg-[#0c111d] text-white p-4 pb-24 border-t-2 border-brand-primary ${activeMobileTab === 'PAYMENT' ? 'block' : 'hidden lg:block'}`}>
+        <div className={`flex-none bg-[#0c111d] text-white p-2 pb-20 border-t-2 border-brand-primary ${activeMobileTab === 'PAYMENT' ? 'block' : 'hidden lg:block'}`}>
           <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
             
             {/* 1. Totals Breakdown */}
@@ -1056,10 +1056,10 @@ function POSContent() {
                     <span className={`text-lg font-black font-mono ${clientBalance > 0 ? 'text-red-400' : 'text-green-400'}`}>{formatCurrency(clientBalance)}</span>
                  </div>
                )}
-               <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center justify-between mb-2">
                   <div>
                     <div className="text-[9px] text-slate-400 uppercase font-bold tracking-widest leading-none">Net à Payer (P.A.C)</div>
-                    <div className="text-3xl font-black text-white font-mono leading-none pt-1">
+                    <div className="text-2xl font-black text-white font-mono leading-none pt-1">
                       {formatCurrency(totalNet).replace('DZD', '')} <span className="text-[10px] font-normal text-slate-300">DA</span>
                     </div>
                   </div>
