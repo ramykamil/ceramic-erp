@@ -843,7 +843,7 @@ function POSContent() {
                         <tr 
                           key={item.rowId} 
                           {...getCartRowProps(idx)}
-                          className={getCartRowClass(idx, `group transition-all duration-200 pos-row-compact cursor-pointer ${isTransport ? 'bg-slate-100 hover:bg-slate-200 border-b border-slate-300' : 'hover:bg-slate-50 border-b border-slate-100'}`)}
+                          className={getCartRowClass(idx, `group transition-all duration-200 pos-row-compact cursor-pointer ${isTransport ? 'bg-amber-100/80 hover:bg-amber-200/90 border-b-2 border-amber-300 text-amber-900 shadow-[inset_0_1px_2px_rgba(0,0,0,0.05)]' : 'hover:bg-slate-50 border-b border-slate-100'}`)}
                           onClick={() => setCartSelectedIndex(idx)}
                         >
                           <td className="px-2 py-1.5 text-slate-700 min-w-0 flex-none overflow-hidden" style={{ width: cartWidths.designation }}>
@@ -928,7 +928,7 @@ function POSContent() {
                   {cart.map((item) => {
                     const isTransport = item.productName.toUpperCase().includes('TRANSPORT');
                     return (
-                    <div key={item.rowId} className={`rounded-2xl border p-4 space-y-4 ${isTransport ? 'bg-slate-300 border-2 border-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.1)]' : 'bg-white border-slate-200 shadow-sm'}`}>
+                    <div key={item.rowId} className={`rounded-2xl border p-4 space-y-4 ${isTransport ? 'bg-amber-50 border-2 border-amber-300 shadow-lg shadow-amber-900/5' : 'bg-white border-slate-200 shadow-sm'}`}>
                       <div className="flex justify-between items-start">
                         <div className="flex-1 min-w-0">
                           <h4 className="font-black text-slate-800 leading-tight truncate">{item.productName}</h4>
@@ -1017,6 +1017,12 @@ function POSContent() {
 
             {/* 2. Payment Details */}
             <div className="flex flex-col justify-center px-4 lg:border-r border-slate-700/50">
+               {selectedCustomerId && (
+                 <div className="mb-2 p-3 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center justify-between animate-in fade-in slide-in-from-top-1 duration-300">
+                    <span className="text-[10px] font-black text-red-400 uppercase tracking-widest leading-none">Solde Actuel Client :</span>
+                    <span className={`text-xl font-black font-mono ${clientBalance > 0 ? 'text-red-400' : 'text-green-400'}`}>{formatCurrency(clientBalance)}</span>
+                 </div>
+               )}
                <div className="flex items-center justify-between mb-4">
                   <div>
                     <div className="text-[10px] text-slate-500 uppercase font-black tracking-widest leading-none">Net à Payer (P.A.C)</div>
