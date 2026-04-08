@@ -284,7 +284,8 @@ function POSContent() {
   const [manualProductColis, setManualProductColis] = useState(0);
   const [manualProductPalettes, setManualProductPalettes] = useState(0);
 
-  // Table Navigation for Product Browser
+  const selectedCustomer = useMemo(() => customers.find(c => c.customerid === selectedCustomerId), [selectedCustomerId, customers]);
+
   const filteredBrowserProducts = useMemo(() => {
     return products.filter(p => 
       !browserSearch || 
@@ -519,8 +520,12 @@ function POSContent() {
     if (selectedCustomerId) {
       const c = customers.find(c => c.customerid === selectedCustomerId);
       setClientBalance(c?.currentbalance || 0);
-    } else setClientBalance(0);
-  }, [selectedCustomerId, customers]);
+      setClientPhone(c?.phone || '');
+    } else {
+      setClientBalance(0);
+      if (!isRetailMode) setClientPhone('');
+    }
+  }, [selectedCustomerId, customers, isRetailMode]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -727,16 +732,19 @@ function POSContent() {
               
               {isRetailMode ? (
                 <div className="flex gap-2">
-                  <input type="text" value={retailClientName} onChange={e => setRetailClientName(e.target.value)} placeholder="Nom client passage..." className="flex-1 p-2 border rounded-xl text-sm shadow-sm" />
-                  <div className="w-24 p-2 bg-slate-50 border rounded-xl text-[10px] font-bold text-slate-500 uppercase flex items-center justify-center">Détail</div>
+                  <input type="text" value={retailClientName} onChange={e => setRetailClientName(e.target.value)} placeholder="Nom client..." className="flex-1 p-2 border rounded-xl text-sm shadow-sm" />
+                  <input type="text" value={clientPhone} onChange={e => setClientPhone(e.target.value)} placeholder="Tél..." className="w-32 p-2 border rounded-xl text-sm shadow-sm font-mono" />
                 </div>
               ) : (
                 <div className="relative">
-                  {selectedCustomerId ? (
+                  {selectedCustomerId && selectedCustomer ? (
                     <div className="p-2 border border-green-200 bg-green-50 rounded-xl flex items-center justify-between shadow-sm">
                       <div className="min-w-0 pr-2">
-                        <div className="text-xs font-bold text-green-800 truncate">{customers.find(c => c.customerid === selectedCustomerId)?.customername}</div>
-                        <div className="text-[9px] text-green-600 font-bold uppercase tracking-tight">Solde: {formatCurrency(clientBalance)}</div>
+                        <div className="text-xs font-bold text-green-800 truncate">{selectedCustomer.customername}</div>
+                        <div className="flex gap-2 items-center">
+                          <div className="text-[9px] text-green-600 font-bold uppercase tracking-tight">Solde: {formatCurrency(clientBalance)}</div>
+                          {selectedCustomer.phone && <div className="text-[9px] text-indigo-600 font-bold uppercase tracking-tight bg-indigo-50 px-1 rounded">📞 {selectedCustomer.phone}</div>}
+                        </div>
                       </div>
                       <button onClick={() => setSelectedCustomerId('')} className="text-red-500 text-xl font-bold px-2">&times;</button>
                     </div>
@@ -749,9 +757,12 @@ function POSContent() {
                   {customerSearchQuery.length > 1 && filteredCustomers.length > 0 && (
                     <div className="absolute top-full inset-x-0 mt-1 bg-white border shadow-2xl rounded-xl z-50 max-h-48 overflow-y-auto ring-4 ring-black/5">
                       {filteredCustomers.map(c => (
-                        <div key={c.customerid} onClick={() => { setSelectedCustomerId(c.customerid); setCustomerSearchQuery(''); }} className="p-3 hover:bg-red-50 cursor-pointer border-b last:border-0 transition-colors">
-                          <div className="text-sm font-bold text-slate-800">{c.customername}</div>
-                          <div className="text-[10px] text-slate-500 font-bold tracking-wider uppercase">Solde: {formatCurrency(c.currentbalance)}</div>
+                        <div key={c.customerid} onClick={() => { setSelectedCustomerId(c.customerid); setCustomerSearchQuery(''); }} className="p-3 hover:bg-slate-50 cursor-pointer border-b last:border-0 transition-colors flex justify-between items-center">
+                          <div>
+                             <div className="text-sm font-bold text-slate-800">{c.customername}</div>
+                             <div className="text-[10px] text-slate-500 font-bold tracking-wider uppercase">Solde: {formatCurrency(c.currentbalance)}</div>
+                          </div>
+                          {c.phone && <div className="text-[10px] font-mono text-indigo-600 font-bold">{c.phone}</div>}
                         </div>
                       ))}
                     </div>
