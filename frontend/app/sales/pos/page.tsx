@@ -718,11 +718,10 @@ function POSContent() {
         <Link href="/" className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition-colors">← Tableau de Bord</Link>
       </div>
 
-        {/* TOP SECTION: Client & Search Dock (Full Width) */}
-        <div className={`p-3 bg-white border-b shadow-sm ${activeMobileTab === 'CLIENT' || activeMobileTab === 'CART' ? 'block' : 'hidden lg:block'}`}>
-          <div className="flex flex-col lg:flex-row gap-4 items-end">
+        <div className={`p-4 bg-white border-b shadow-sm ${activeMobileTab === 'CLIENT' || activeMobileTab === 'CART' ? 'block' : 'hidden lg:block'}`}>
+          <div className="flex flex-col lg:flex-row gap-8 items-end">
             {/* 1. Client Info */}
-            <div className="flex-none w-full lg:w-72 space-y-2">
+            <div className="flex-none w-full lg:w-[480px] space-y-2">
               <div className="flex justify-between items-center mb-1">
                 <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-brand-primary"></span> Infos Client
@@ -731,9 +730,9 @@ function POSContent() {
               </div>
               
               {isRetailMode ? (
-                <div className="flex gap-2">
-                  <input type="text" value={retailClientName} onChange={e => setRetailClientName(e.target.value)} placeholder="Nom client..." className="flex-1 p-2 border rounded-xl text-sm shadow-sm" />
-                  <input type="text" value={clientPhone} onChange={e => setClientPhone(e.target.value)} placeholder="Tél..." className="w-32 p-2 border rounded-xl text-sm shadow-sm font-mono" />
+                <div className="flex gap-3">
+                  <input type="text" value={retailClientName} onChange={e => setRetailClientName(e.target.value)} placeholder="Nom client passage..." className="flex-1 p-2.5 border rounded-xl text-sm shadow-sm focus:ring-2 focus:ring-brand-primary/20 transition-all" />
+                  <input type="text" value={clientPhone} onChange={e => setClientPhone(e.target.value)} placeholder="Tél (Optionnel)..." className="w-48 p-2.5 border rounded-xl text-sm shadow-sm font-mono focus:ring-2 focus:ring-brand-primary/20 transition-all" />
                 </div>
               ) : (
                 <div className="relative">
@@ -741,9 +740,9 @@ function POSContent() {
                     <div className="p-2 border border-green-200 bg-green-50 rounded-xl flex items-center justify-between shadow-sm">
                       <div className="min-w-0 pr-2">
                         <div className="text-xs font-bold text-green-800 truncate">{selectedCustomer.customername}</div>
-                        <div className="flex gap-2 items-center">
-                          <div className="text-[9px] text-green-600 font-bold uppercase tracking-tight">Solde: {formatCurrency(clientBalance)}</div>
-                          {selectedCustomer.phone && <div className="text-[9px] text-indigo-600 font-bold uppercase tracking-tight bg-indigo-50 px-1 rounded">📞 {selectedCustomer.phone}</div>}
+                        <div className="flex gap-4 items-center">
+                          <div className="text-[10px] text-green-600 font-bold uppercase tracking-tight">Solde: {formatCurrency(clientBalance)}</div>
+                          {selectedCustomer.phone && <div className="text-[10px] text-indigo-700 font-bold uppercase tracking-tight bg-indigo-100/80 px-2 py-0.5 rounded-lg border border-indigo-200">📞 {selectedCustomer.phone}</div>}
                         </div>
                       </div>
                       <button onClick={() => setSelectedCustomerId('')} className="text-red-500 text-xl font-bold px-2">&times;</button>
@@ -772,7 +771,7 @@ function POSContent() {
             </div>
 
             {/* 2. Logistics & Notes */}
-            <div className="hidden xl:flex flex-none w-80 gap-3">
+            <div className="hidden xl:flex flex-none w-[420px] gap-4">
                <div className="flex-1 space-y-2">
                   <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Livraison</h3>
                   <input type="text" value={shippingAddress} onChange={e => setShippingAddress(e.target.value)} placeholder="Adresse..." className="w-full p-2 border rounded-xl text-sm shadow-sm" />

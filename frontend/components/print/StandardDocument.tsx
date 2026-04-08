@@ -749,9 +749,9 @@ export const StandardDocument = React.forwardRef<HTMLDivElement, DocumentProps>(
                     </div>
                 )}
                 {data.clientPhone && (
-                    <div style={{ display: 'flex', alignItems: 'baseline' }}>
+                    <div style={{ display: 'flex', alignItems: 'baseline', marginTop: '4px' }}>
                         <span style={{ fontWeight: 'bold', width: '70px', fontSize: '9px', color: '#4b5563' }}>TEL:</span>
-                        <span style={{ fontSize: '10px', fontWeight: 'bold' }}>{data.clientPhone}</span>
+                        <span style={{ fontSize: '12px', fontWeight: 'bold', color: '#111827' }}>{data.clientPhone}</span>
                     </div>
                 )}
             </div>
