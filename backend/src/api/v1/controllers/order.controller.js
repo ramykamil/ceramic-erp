@@ -841,6 +841,13 @@ async function updateOrderStatus(req, res, next) {
 
     await client.query('COMMIT');
 
+    // Refresh materialized view to update stock in catalogue/POS/purchasing
+    try {
+      await pool.query('REFRESH MATERIALIZED VIEW mv_Catalogue');
+    } catch (refreshError) {
+      console.log('Note: mv_Catalogue refresh skipped:', refreshError.message);
+    }
+
     res.json({
       success: true,
       message: 'Order status updated successfully',
