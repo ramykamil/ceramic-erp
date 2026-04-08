@@ -815,9 +815,9 @@ function POSContent() {
         <div className={`flex-1 flex flex-col min-w-0 bg-slate-100 relative overflow-hidden ${activeMobileTab === 'CART' ? 'flex' : 'hidden lg:flex'}`}>
 
           {/* Table Container - This is the dynamic scaling part */}
-          <div className="flex-1 p-4 overflow-hidden flex flex-col">
-            <div className={`flex-1 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col ${cart.length > 10 ? 'pos-zero-scroll-container' : ''}`}>
-              <div className="flex-1 flex flex-col min-h-0">
+    <div className="flex-1 p-4 overflow-hidden flex flex-col">
+      <div className="flex-1 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+        <div className="flex-1 flex flex-col min-h-0" style={{ scrollbarGutter: 'stable' }}>
                 {/* Desktop Table View */}
                 <div className="hidden lg:block overflow-auto flex-1 custom-scrollbar">
                   <table className="border-separate border-spacing-0" style={{ minWidth: '680px', width: '100%' }}> 
@@ -997,11 +997,11 @@ function POSContent() {
         </div>
 
         {/* BOTTOM SECTION: Summary & Checkout Dashboard (Full Width Bottom) */}
-        <div className={`flex-none bg-slate-800 text-white p-4 border-t border-slate-700 ${activeMobileTab === 'PAYMENT' ? 'block' : 'hidden lg:block'}`}>
-          <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="flex-none bg-slate-800 text-white p-2 border-t border-slate-700 block lg:block">
+          <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-4">
             
             {/* 1. Totals Breakdown */}
-            <div className="space-y-2 pr-4 lg:border-r border-slate-700/50">
+            <div className="space-y-1 lg:border-r border-slate-700/50 pr-4">
               <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Récapitulatif Financier</h3>
               <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-slate-300">
                 <span>Total Brut HT</span>
@@ -1016,54 +1016,54 @@ function POSContent() {
             </div>
 
             {/* 2. Payment Details */}
-            <div className="flex flex-col justify-center px-4 lg:border-r border-slate-700/50">
+            <div className="flex flex-col justify-center px-4 lg:border-r border-slate-700/50 scale-95 origin-center">
                {selectedCustomerId && (
-                 <div className="mb-2 p-3 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center justify-between animate-in fade-in slide-in-from-top-1 duration-300">
-                    <span className="text-[10px] font-black text-red-400 uppercase tracking-widest leading-none">Solde Actuel Client :</span>
-                    <span className={`text-xl font-black font-mono ${clientBalance > 0 ? 'text-red-400' : 'text-green-400'}`}>{formatCurrency(clientBalance)}</span>
+                 <div className="mb-1 p-2 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center justify-between animate-in fade-in slide-in-from-top-1 duration-300">
+                    <span className="text-[9px] font-black text-red-400 uppercase tracking-widest leading-none">Solde:</span>
+                    <span className={`text-lg font-black font-mono ${clientBalance > 0 ? 'text-red-400' : 'text-green-400'}`}>{formatCurrency(clientBalance)}</span>
                  </div>
                )}
-               <div className="flex items-center justify-between mb-4">
+               <div className="flex items-center justify-between mb-2">
                   <div>
-                    <div className="text-[10px] text-slate-500 uppercase font-black tracking-widest leading-none">Net à Payer (P.A.C)</div>
-                    <div className="text-4xl font-black text-white font-mono leading-none pt-1">
-                      {formatCurrency(totalNet).replace('DZD', '')} <span className="text-xs font-normal text-slate-400">DA</span>
+                    <div className="text-[9px] text-slate-500 uppercase font-black tracking-widest leading-none">Net à Payer (P.A.C)</div>
+                    <div className="text-3xl font-black text-white font-mono leading-none pt-1">
+                      {formatCurrency(totalNet).replace('DZD', '')} <span className="text-[10px] font-normal text-slate-400">DA</span>
                     </div>
                   </div>
                   <div className="text-right">
-                    <label className="block text-[10px] text-slate-400 font-black uppercase mb-1">Versement</label>
-                    <SmartNumberInput value={payment} onChange={val => setPayment(val)} className="w-40 bg-slate-900 border border-slate-700 text-white p-3 rounded-2xl text-xl font-black font-mono text-right focus:border-brand-primary outline-none" />
+                    <label className="block text-[9px] text-slate-400 font-black uppercase mb-1">Versement</label>
+                    <SmartNumberInput value={payment} onChange={val => setPayment(val)} className="w-32 bg-slate-900 border border-slate-700 text-white p-2 rounded-xl text-lg font-black font-mono text-right focus:border-brand-primary outline-none" />
                   </div>
                </div>
                
-               <div className="flex gap-4 items-center h-14">
-                  <div className="flex-1 flex gap-2">
-                    <button onClick={() => setPaymentMethod('ESPECE')} className={`flex-1 py-2 rounded-xl text-[10px] font-black uppercase border transition-all ${paymentMethod === 'ESPECE' ? 'bg-white text-slate-900 border-white' : 'bg-slate-900 text-slate-400 border-slate-700'}`}>ESPECE</button>
-                    <button onClick={() => setPaymentMethod('VIREMENT')} className={`flex-1 py-2 rounded-xl text-[10px] font-black uppercase border transition-all ${paymentMethod === 'VIREMENT' ? 'bg-white text-slate-900 border-white' : 'bg-slate-900 text-slate-400 border-slate-700'}`}>VIREMENT</button>
-                    <button onClick={() => setPaymentMethod('CHEQUE')} className={`flex-1 py-2 rounded-xl text-[10px] font-black uppercase border transition-all ${paymentMethod === 'CHEQUE' ? 'bg-white text-slate-900 border-white' : 'bg-slate-900 text-slate-400 border-slate-700'}`}>CHEQUE</button>
+               <div className="flex gap-2 items-center h-10">
+                  <div className="flex-1 flex gap-1">
+                    <button onClick={() => setPaymentMethod('ESPECE')} className={`flex-1 py-1.5 rounded-lg text-[9px] font-black uppercase border transition-all ${paymentMethod === 'ESPECE' ? 'bg-white text-slate-900 border-white' : 'bg-slate-900 text-slate-400 border-slate-700'}`}>ESPECE</button>
+                    <button onClick={() => setPaymentMethod('VIREMENT')} className={`flex-1 py-1.5 rounded-lg text-[9px] font-black uppercase border transition-all ${paymentMethod === 'VIREMENT' ? 'bg-white text-slate-900 border-white' : 'bg-slate-900 text-slate-400 border-slate-700'}`}>VIREMENT</button>
+                    <button onClick={() => setPaymentMethod('CHEQUE')} className={`flex-1 py-1.5 rounded-lg text-[9px] font-black uppercase border transition-all ${paymentMethod === 'CHEQUE' ? 'bg-white text-slate-900 border-white' : 'bg-slate-900 text-slate-400 border-slate-700'}`}>CHEQUE</button>
                   </div>
-                  <div className={`flex-none px-4 h-full rounded-2xl flex flex-col justify-center text-right ${reste > 0 ? 'bg-red-500/10 border border-red-500/20' : 'bg-green-500/10 border border-green-500/20'}`}>
-                    <span className="text-[9px] font-black uppercase text-slate-500 leading-none">Reste</span>
-                    <span className={`text-xl font-black font-mono ${reste > 0 ? 'text-red-400' : 'text-green-400'}`}>{formatCurrency(reste)}</span>
+                  <div className={`flex-none px-3 h-full rounded-xl flex flex-col justify-center text-right ${reste > 0 ? 'bg-red-500/10 border border-red-500/20' : 'bg-green-500/10 border border-green-500/20'}`}>
+                    <span className="text-[8px] font-black uppercase text-slate-500 leading-none">Reste</span>
+                    <span className={`text-base font-black font-mono ${reste > 0 ? 'text-red-400' : 'text-green-400'}`}>{formatCurrency(reste)}</span>
                   </div>
                </div>
             </div>
 
             {/* 3. Global Actions */}
-            <div className="flex flex-col gap-3 justify-center pl-4">
-              <div className="grid grid-cols-4 gap-2">
-                <button onClick={handlePrintBCMobile} disabled={cart.length === 0} className="py-2.5 bg-slate-700 hover:bg-slate-600 rounded-xl text-lg disabled:opacity-30" title="Bon de Chargement">🚚</button>
-                <button onClick={handlePrintBLMobile} disabled={cart.length === 0} className="py-2.5 bg-slate-700 hover:bg-slate-600 rounded-xl text-lg disabled:opacity-30" title="Bon de Livraison">📄</button>
-                <button onClick={handlePrintBSSMobile} disabled={cart.length === 0} className="py-2.5 bg-slate-700 hover:bg-slate-600 rounded-xl text-lg disabled:opacity-30" title="Bon Sans Solde">🚫</button>
-                <button onClick={handlePrintTicketMobile} disabled={cart.length === 0} className="py-2.5 bg-slate-700 hover:bg-slate-600 rounded-xl text-lg disabled:opacity-30" title="Ticket">🎫</button>
+            <div className="flex flex-col gap-2 justify-center pl-4">
+              <div className="grid grid-cols-4 gap-1.5">
+                <button onClick={handlePrintBCMobile} disabled={cart.length === 0} className="py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-base disabled:opacity-30" title="Bon de Chargement">🚚</button>
+                <button onClick={handlePrintBLMobile} disabled={cart.length === 0} className="py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-base disabled:opacity-30" title="Bon de Livraison">📄</button>
+                <button onClick={handlePrintBSSMobile} disabled={cart.length === 0} className="py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-base disabled:opacity-30" title="Bon Sans Solde">🚫</button>
+                <button onClick={handlePrintTicketMobile} disabled={cart.length === 0} className="py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-base disabled:opacity-30" title="Ticket">🎫</button>
               </div>
               
               <button 
                 onClick={handleValidateSale} 
                 disabled={isSubmitting || cart.length === 0 || (isRetailMode ? !retailClientName.trim() : (!selectedCustomerId && !customerSearchQuery.trim()))}
-                className="w-full py-4 bg-green-600 hover:bg-green-500 text-white rounded-2xl font-black text-xl shadow-xl shadow-green-900/50 flex justify-center items-center gap-4 transition-all active:scale-95 disabled:opacity-40"
+                className="w-full py-2.5 bg-green-600 hover:bg-green-500 text-white rounded-xl font-black text-lg shadow-lg flex justify-center items-center gap-3 transition-all active:scale-95 disabled:opacity-40"
               >
-                {isSubmitting ? <><div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div> EN COURS...</> : <><span className="text-2xl px-2 py-1 bg-green-700 rounded-lg">F1</span> VALIDER LA VENTE</>}
+                {isSubmitting ? <><div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>...</> : <><span className="text-xl px-2 py-0.5 bg-green-700 rounded-md">F1</span> VALIDER</>}
               </button>
             </div>
           </div>
