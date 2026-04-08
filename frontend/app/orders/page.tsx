@@ -108,15 +108,15 @@ function OrdersListContent() {
 
   // Resizable columns
   const { widths, handleResize } = useColumnWidths('orders-table', {
-    ordernumber: 180,
-    customername: 200,
-    orderdate: 120,
+    ordernumber: 220,
+    customername: 220,
+    orderdate: 100,
     totalamount: 140,
     versement: 130,
-    benefice: 130,
-    status: 120,
-    salespersonname: 120,
-    ordertype: 100,
+    benefice: 120,
+    status: 100,
+    salespersonname: 110,
+    ordertype: 80,
   });
 
   // Debounce search query for server-side search
@@ -438,10 +438,10 @@ function OrdersListContent() {
                 <p className="p-10 text-center text-slate-400">Aucun enregistrement trouvé.</p>
               ) : (
                 <div className="overflow-x-auto">
-                  <table className="w-full text-sm text-left" style={{ tableLayout: 'fixed' }}>
+                  <table className="w-full text-[11px] text-left" style={{ tableLayout: 'fixed' }}>
                     <thead className="bg-slate-50 text-slate-500 uppercase text-xs font-semibold border-b border-slate-100">
                       <tr>
-                        <th style={{ width: 80 }} className="px-4 py-3 text-center">Type</th>
+                        <th style={{ width: 80 }} className="px-2 py-2 text-center">Type</th>
                         <ResizableSortableHeader label="Référence" sortKey="number" currentDirection={getSortDirection('number' as keyof UnifiedRow)} onSort={(k) => handleSort(k as keyof UnifiedRow)} width={widths.ordernumber} onResize={handleResize} />
                         <ResizableSortableHeader label="Client" sortKey="customerName" currentDirection={getSortDirection('customerName' as keyof UnifiedRow)} onSort={(k) => handleSort(k as keyof UnifiedRow)} width={widths.customername} onResize={handleResize} />
                         <ResizableSortableHeader label="Date" sortKey="date" currentDirection={getSortDirection('date' as keyof UnifiedRow)} onSort={(k) => handleSort(k as keyof UnifiedRow)} width={widths.orderdate} onResize={handleResize} />
@@ -450,7 +450,7 @@ function OrdersListContent() {
                         {userRole === 'ADMIN' && <ResizableSortableHeader label="Bénéfice" sortKey="benefice" currentDirection={getSortDirection('benefice' as keyof UnifiedRow)} onSort={(k) => handleSort(k as keyof UnifiedRow)} width={widths.benefice} onResize={handleResize} align="right" />}
                         <ResizableSortableHeader label="Statut" sortKey="status" currentDirection={getSortDirection('status' as keyof UnifiedRow)} onSort={(k) => handleSort(k as keyof UnifiedRow)} width={widths.status} onResize={handleResize} align="center" />
                         <ResizableSortableHeader label="Agent" sortKey="salesPerson" currentDirection={getSortDirection('salesPerson' as keyof UnifiedRow)} onSort={(k) => handleSort(k as keyof UnifiedRow)} width={widths.salespersonname} onResize={handleResize} />
-                        <th className="px-4 py-3 text-center" style={{ width: 280 }}>Actions</th>
+                        <th className="px-2 py-2 text-center" style={{ width: 280 }}>Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
@@ -460,35 +460,35 @@ function OrdersListContent() {
                           {...getRowProps(idx)}
                           className={getRowClass(idx, "hover:bg-slate-50 transition cursor-pointer")}
                         >
-                          <td className="px-4 py-3 text-center">
+                          <td className="px-2 py-2 text-center">
                             <span className={`text-[10px] px-1.5 py-0.5 rounded font-black ${record.recordType === 'ORDER' ? 'bg-red-100 text-brand-primary' : 'bg-orange-100 text-orange-700'}`}>
                               {record.recordType === 'ORDER' ? 'VENTE' : 'RETOUR'}
                             </span>
                           </td>
-                          <td className="px-4 py-3 font-mono font-medium truncate" style={{ width: widths.ordernumber }}>{record.number}</td>
-                          <td className="px-4 py-3 truncate" style={{ width: widths.customername }}>{record.retailClientName || record.customerName || 'Passager'}</td>
-                          <td className="px-4 py-3 text-slate-500" style={{ width: widths.orderdate }}>{formatDate(record.date)}</td>
-                          <td className={`px-4 py-3 text-right font-bold ${record.totalAmount < 0 ? 'text-orange-600' : ''}`} style={{ width: widths.totalamount }}>
+                          <td className="px-2 py-2 font-mono font-medium whitespace-nowrap" style={{ width: widths.ordernumber }}>{record.number}</td>
+                          <td className="px-2 py-2 truncate" style={{ width: widths.customername }}>{record.retailClientName || record.customerName || 'Passager'}</td>
+                          <td className="px-2 py-2 text-slate-500" style={{ width: widths.orderdate }}>{formatDate(record.date)}</td>
+                          <td className={`px-2 py-2 text-right font-bold ${record.totalAmount < 0 ? 'text-orange-600' : ''}`} style={{ width: widths.totalamount }}>
                             {formatCurrencyDZD(parseFloat(String(record.totalAmount)) || 0)}
                           </td>
-                          <td className="px-4 py-3 text-right text-green-600 font-medium" style={{ width: widths.versement }}>{formatCurrencyDZD(parseFloat(String(record.paymentAmount)) || 0)}</td>
+                          <td className="px-2 py-2 text-right text-green-600 font-medium" style={{ width: widths.versement }}>{formatCurrencyDZD(parseFloat(String(record.paymentAmount)) || 0)}</td>
                           {userRole === 'ADMIN' && (
-                            <td className="px-4 py-3 text-right font-medium" style={{ width: widths.benefice }}>
+                            <td className="px-2 py-2 text-right font-medium" style={{ width: widths.benefice }}>
                               <span className={(parseFloat(String(record.benefice)) || 0) >= 0 ? 'text-emerald-600' : 'text-red-600'}>
                                 {formatCurrencyDZD(parseFloat(String(record.benefice)) || 0)}
                               </span>
                             </td>
                           )}
-                          <td className="px-4 py-3 text-center" style={{ width: widths.status }}>
+                          <td className="px-2 py-2 text-center" style={{ width: widths.status }}>
                             <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${getStatusBadge(record.status)}`}>
                               {record.status}
                             </span>
                           </td>
-                          <td className="px-4 py-3 text-slate-600 text-[10px] truncate" style={{ width: widths.salespersonname }}>
+                          <td className="px-2 py-2 text-slate-600 text-[10px] truncate" style={{ width: widths.salespersonname }}>
                             {record.salesPerson || '-'}
                             {record.orderType && <div className="text-[8px] opacity-50 uppercase">{record.orderType}</div>}
                           </td>
-                          <td className="px-4 py-3 text-center flex gap-1 justify-center items-center" style={{ width: 140 }}>
+                          <td className="px-2 py-2 text-center flex gap-1 justify-center items-center" style={{ width: 140 }}>
                             {record.recordType === 'ORDER' ? (
                               <>
                                 <div className="flex gap-1 mr-2 border-r border-slate-200 pr-2">
