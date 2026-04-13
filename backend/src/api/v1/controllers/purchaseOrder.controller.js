@@ -1,5 +1,6 @@
 const pool = require('../../../config/database');
 const accountingService = require('../services/accounting.service');
+const auditService = require('../../../services/audit.service');
 
 /**
  * Helper: Parse dimensions (e.g. "60x60") => m2
@@ -429,6 +430,27 @@ async function createPurchaseOrder(req, res, next) {
         }
 
         await client.query('COMMIT');
+
+        // Audit log for purchase order creation
+        try {
+            await auditService.log(
+                userId,
+                'CREATE_PURCHASE',
+                'PurchaseOrders',
+                newPurchaseOrderID,
+                null,
+                {
+                    poNumber: poNumber,
+                    supplierName: supplierName,
+                    totalAmount: totalAmount,
+                    itemCount: items.length,
+                    payment: payment,
+                    warehouseId: warehouseId
+                }
+            );
+        } catch (auditErr) {
+            console.error('Audit log error (non-blocking):', auditErr.message);
+        }
 
         // Refresh materialized view to update stock in catalogue/POS/purchasing
         try {
@@ -1091,7 +1113,7 @@ async function deletePurchaseOrder(req, res, next) {
         const { id } = req.params;
         const userRole = req.user.role;
 
-        const checkRes = await client.query('SELECT Status FROM PurchaseOrders WHERE PurchaseOrderID = $1', [id]);
+        const checkRes = await client.query('SELECT Status, PONumber FROM PurchaseOrders WHERE PurchaseOrderID = $1', [id]);
         if (checkRes.rows.length === 0) {
             await client.query('ROLLBACK');
             return res.status(404).json({ success: false, message: 'Purchase Order not found' });
@@ -1200,6 +1222,20 @@ async function deletePurchaseOrder(req, res, next) {
         await client.query('DELETE FROM PurchaseOrders WHERE PurchaseOrderID = $1', [id]);
 
         await client.query('COMMIT');
+
+        // Audit log for purchase order deletion
+        try {
+            await auditService.log(
+                req.user?.userId,
+                'DELETE_PURCHASE',
+                'PurchaseOrders',
+                id,
+                { poNumber: checkRes.rows[0]?.ponumber },
+                null
+            );
+        } catch (auditErr) {
+            console.error('Audit log error (non-blocking):', auditErr.message);
+        }
 
         // Refresh materialized view to update catalogue stats
         try {

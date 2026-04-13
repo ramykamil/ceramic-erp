@@ -827,6 +827,7 @@ export default function SettingsPage() {
                                             </td>
                                             <td className="px-4 py-3">
                                                 <span className={`inline-flex items-center px-2.5 py-1 rounded text-xs font-bold border ${log.action.includes('SALE') ? 'bg-green-50 text-green-700 border-green-200' :
+                                                    log.action.includes('PURCHASE') && !log.action.includes('DELETE') ? 'bg-teal-50 text-teal-700 border-teal-200' :
                                                     log.action.includes('DELETE') ? 'bg-red-50 text-red-700 border-red-200' :
                                                         log.action.includes('UPDATE') ? 'bg-amber-50 text-amber-700 border-amber-200' :
                                                             log.action === 'LOGIN' ? 'bg-purple-50 text-purple-700 border-purple-200' :
@@ -839,6 +840,9 @@ export default function SettingsPage() {
                                                             'CREATE_ORDER': '📝 Nouvelle Commande',
                                                             'UPDATE_ORDER': '🔄 Modif. Commande',
                                                             'UPDATE_ORDER_STATUS': '🚚 Statut Changé',
+                                                            'CREATE_PURCHASE': '🛒 Nouvel Achat',
+                                                            'UPDATE_PURCHASE': '🔄 Modif. Achat',
+                                                            'DELETE_PURCHASE': '🗑️ Suppr. Achat',
                                                             'CREATE_CUSTOMER': '👤 Nouveau Client',
                                                             'UPDATE_CUSTOMER': '✏️ Modif. Client',
                                                             'LOGIN': '🔑 Connexion',
@@ -852,7 +856,7 @@ export default function SettingsPage() {
                                             </td>
                                             <td className="px-4 py-3 text-slate-600">
                                                 {(() => {
-                                                    const tableMap: any = { 'Orders': 'Commande', 'Customers': 'Client', 'Products': 'Produit', 'Users': 'Utilisateur', 'Inventory': 'Stock' };
+                                                    const tableMap: any = { 'Orders': 'Commande', 'Customers': 'Client', 'Products': 'Produit', 'Users': 'Utilisateur', 'Inventory': 'Stock', 'PurchaseOrders': 'Achat' };
                                                     return `${tableMap[log.tablename] || log.tablename} #${log.recordid}`;
                                                 })()}
                                             </td>
@@ -863,6 +867,8 @@ export default function SettingsPage() {
                                                     // Sales / Orders
                                                     if (log.action.includes('SALE')) return `Total: ${v.totalamount} DA | Payé: ${v.paymentAmount || v.payment || 0} DA`;
                                                     if (log.action === 'CREATE_ORDER') return `Client: ${v.retailClientName || v.customername || 'Client'} | ${v.totalamount || 0} DA`;
+                                                    if (log.action === 'CREATE_PURCHASE') return `📦 ${v.poNumber || ''} | Fournisseur: ${v.supplierName || '-'} | ${v.totalAmount || 0} DA | ${v.itemCount || 0} articles`;
+                                                    if (log.action === 'DELETE_PURCHASE') return `Supprimé`;
 
                                                     // Customers
                                                     if (log.action === 'UPDATE_CUSTOMER') {
