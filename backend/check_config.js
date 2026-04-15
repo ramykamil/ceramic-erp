@@ -10,11 +10,10 @@ async function check() {
     const client = await pool.connect();
     try {
         const res = await client.query(`
-            SELECT oi.OrderItemID, oi.OrderID, oi.Quantity, u.UnitCode, oi.UnitPrice, o.OrderNumber, o.CreatedAt 
-            FROM OrderItems oi 
-            JOIN Orders o ON oi.OrderID = o.OrderID 
-            LEFT JOIN Units u ON oi.UnitID = u.UnitID 
-            WHERE oi.OrderID IN (1953, 1140, 1740) AND oi.ProductID = 3865
+            SELECT p.ProductID, p.ProductName, p.Size, p.QteParColis, p.QteColisParPalette, u.UnitCode as PrimaryUnit 
+            FROM Products p 
+            LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID 
+            WHERE p.ProductID=3865
         `);
         console.table(res.rows);
     } finally {

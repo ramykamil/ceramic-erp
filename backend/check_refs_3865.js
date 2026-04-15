@@ -6,15 +6,13 @@ const pool = new Pool({
     ssl: { rejectUnauthorized: false }, max: 3, connectionTimeoutMillis: 15000
 });
 
-async function check() {
+async function run() {
     const client = await pool.connect();
     try {
         const res = await client.query(`
-            SELECT oi.OrderItemID, oi.OrderID, oi.Quantity, u.UnitCode, oi.UnitPrice, o.OrderNumber, o.CreatedAt 
-            FROM OrderItems oi 
-            JOIN Orders o ON oi.OrderID = o.OrderID 
-            LEFT JOIN Units u ON oi.UnitID = u.UnitID 
-            WHERE oi.OrderID IN (1953, 1140, 1740) AND oi.ProductID = 3865
+            SELECT ReferenceType, ReferenceID, CreatedAt, Quantity, TransactionType 
+            FROM InventoryTransactions 
+            WHERE ProductID = 3865 AND CreatedAt >= '2026-04-06'
         `);
         console.table(res.rows);
     } finally {
@@ -22,4 +20,4 @@ async function check() {
         pool.end();
     }
 }
-check();
+run();

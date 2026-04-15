@@ -24,35 +24,37 @@ const convertToStockUnit = (quantity, unitCode, productInfo) => {
     const sqmPerPiece = parseDimensions(productInfo.Size || productInfo.size || productInfo.ProductName || productInfo.productname);
     const piecesPerBox = parseFloat(productInfo.QteParColis || productInfo.qteparcolis) || 0;
     const boxesPerPallet = parseFloat(productInfo.QteColisParPalette || productInfo.qtecolisparpalette) || 0;
-    const isFicheProduct = (productInfo.ProductName || productInfo.productname || '').toLowerCase().startsWith('fiche');
 
-    const isTileProduct = !isFicheProduct && sqmPerPiece > 0;
-    const isReceivingInSQM = ['SQM', 'M2', 'M²'].includes(uCode);
-    const isReceivingInPCS = ['PCS', 'PIECE', 'PIÈCE'].includes(uCode);
+    // Determine target primary unit
+    let targetUnit = primaryUnitCode || 'PCS';
+    if (['PIECE', 'PIÈCE'].includes(targetUnit)) targetUnit = 'PCS';
+    if (['M2', 'M²'].includes(targetUnit)) targetUnit = 'SQM';
 
-    if (isTileProduct) {
-        if (isReceivingInSQM) return qty;
-        if (isReceivingInPCS) return qty * sqmPerPiece;
-        if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(uCode)) {
-            const pcs = piecesPerBox > 0 ? qty * piecesPerBox : qty;
-            return pcs * sqmPerPiece;
-        }
-        if (['PALLET', 'PALETTE', 'PAL'].includes(uCode)) {
-            const boxes = boxesPerPallet > 0 ? qty * boxesPerPallet : qty;
-            const pcs = piecesPerBox > 0 ? boxes * piecesPerBox : boxes;
-            return pcs * sqmPerPiece;
-        }
-        return qty;
-    } else {
-        if (isReceivingInPCS || uCode === primaryUnitCode) return qty;
-        if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(uCode) && piecesPerBox > 0) {
-            return qty * piecesPerBox;
-        }
-        if (['PALLET', 'PALETTE', 'PAL'].includes(uCode) && boxesPerPallet > 0 && piecesPerBox > 0) {
-            return qty * boxesPerPallet * piecesPerBox;
-        }
-        return qty;
+    // Same for receiving unit
+    let receiveUnit = uCode;
+    if (['PIECE', 'PIÈCE'].includes(receiveUnit)) receiveUnit = 'PCS';
+    if (['M2', 'M²'].includes(receiveUnit)) receiveUnit = 'SQM';
+    if (['CARTON', 'CRT', 'CTN'].includes(receiveUnit)) receiveUnit = 'BOX';
+    if (['PALETTE', 'PAL'].includes(receiveUnit)) receiveUnit = 'PALLET';
+
+    // 1. Calculate raw pieces received
+    let rawPieces = qty;
+    if (receiveUnit === 'BOX') {
+        rawPieces = piecesPerBox > 0 ? qty * piecesPerBox : qty;
+    } else if (receiveUnit === 'PALLET') {
+        const boxes = boxesPerPallet > 0 ? qty * boxesPerPallet : qty;
+        rawPieces = piecesPerBox > 0 ? boxes * piecesPerBox : boxes;
+    } else if (receiveUnit === 'SQM' && sqmPerPiece > 0) {
+        rawPieces = qty / sqmPerPiece;
     }
+
+    // 2. Convert from raw pieces into the Target Unit
+    if (targetUnit === 'SQM' && sqmPerPiece > 0) {
+        return rawPieces * sqmPerPiece;
+    }
+
+    // Target unit is PCS (or anything else)
+    return rawPieces;
 };
 
 /**

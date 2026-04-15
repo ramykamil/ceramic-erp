@@ -32,12 +32,8 @@ const convertUnitToInventory = (qty, cartUnitCode, primaryUnitCode, sqmPerPiece,
   // Intelligent deduction of effective primary unit (matches frontend POS logic)
   let effectivePrimaryUnit = primaryUnitCode;
 
-  const hasTileDimensions = /\d+\s*[xX*\/]\s*\d+/.test(productName);
-
-  if (hasTileDimensions && !isFicheProduct) {
-    // Treat all tiles with dimensions as tracked in SQM natively
-    effectivePrimaryUnit = 'SQM';
-  }
+  // The automatic override that forced tiles to SQM natively has been REMOVED.
+  // The system now strictly respects the 'primaryUnitCode' defined in the product matrix.
 
   // If primary is not set, we default to PCS
   const isPrimaryPcs = (effectivePrimaryUnit === 'PCS' || effectivePrimaryUnit === 'PIECE' || !effectivePrimaryUnit);
