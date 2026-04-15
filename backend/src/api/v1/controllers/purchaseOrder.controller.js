@@ -890,7 +890,17 @@ async function updatePurchaseOrder(req, res, next) {
                 const pInfo = productInfoRes.rows[0];
                 const quantityInStockUnit = convertToStockUnit(item.quantity, pInfo?.unitcode, pInfo || {});
 
-                const itemPoolId = String(item.poItemId || '');
+                let itemPoolId = String(item.poItemId || '');
+
+                // Fallback: If no poItemId was provided, try to match by productId among unprocessed items
+                if (!itemPoolId) {
+                    for (const [oldId, oldItem] of oldItemsMap) {
+                        if (!processedIds.has(oldId) && String(oldItem.productid) === String(item.productId)) {
+                            itemPoolId = oldId;
+                            break;
+                        }
+                    }
+                }
 
                 if (itemPoolId && oldItemsMap.has(itemPoolId)) {
                     // --- UPDATE EXISTING ITEM ---
