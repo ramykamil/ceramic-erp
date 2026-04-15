@@ -1227,6 +1227,40 @@ async function deletePurchaseOrder(req, res, next) {
             }
         }
 
+        // --- Clean up and revert any UPDATE-related transactions linked to this PO ---
+        const puTxRes = await client.query(`
+            SELECT it.ProductID, it.WarehouseID, it.Quantity, it.TransactionType, p.QteParColis, p.QteColisParPalette
+            FROM InventoryTransactions it
+            JOIN Products p ON it.ProductID = p.ProductID
+            WHERE it.ReferenceType = 'PURCHASE_UPDATE' AND it.ReferenceID = $1
+        `, [id]);
+
+        for (const tx of puTxRes.rows) {
+            // An 'IN' means we artificially added stock during an update. We reverse it by subtracting.
+            const modifier = tx.transactiontype === 'IN' ? '-' : '+';
+            await client.query(`
+                UPDATE Inventory
+                SET QuantityOnHand = QuantityOnHand ${modifier} $1,
+                    UpdatedAt = CURRENT_TIMESTAMP
+                WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
+            `, [tx.quantity, tx.productid, tx.warehouseid]);
+
+            // Recalculate pallets for affected item
+            const ppc = parseFloat(tx.qteparcolis) || 0;
+            const cpp = parseFloat(tx.qtecolisparpalette) || 0;
+            const invRow = await client.query('SELECT QuantityOnHand FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\' AND FactoryID IS NULL', [tx.productid, tx.warehouseid]);
+            if (invRow.rows.length > 0) {
+                const currentQty = parseFloat(invRow.rows[0].quantityonhand || 0);
+                const newColis = ppc > 0 ? parseFloat((currentQty / ppc).toFixed(4)) : 0;
+                const newPallets = cpp > 0 ? parseFloat((newColis / cpp).toFixed(4)) : 0;
+                await client.query(`
+                    UPDATE Inventory SET ColisCount = $1, PalletCount = $2
+                    WHERE ProductID = $3 AND WarehouseID = $4 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
+                `, [newColis, newPallets, tx.productid, tx.warehouseid]);
+            }
+        }
+        await client.query('DELETE FROM InventoryTransactions WHERE ReferenceType = \'PURCHASE_UPDATE\' AND ReferenceID = $1', [id]);
+
         // Delete PO items and PO
         await client.query('DELETE FROM PurchaseOrderItems WHERE PurchaseOrderID = $1', [id]);
         await client.query('DELETE FROM PurchaseOrders WHERE PurchaseOrderID = $1', [id]);
