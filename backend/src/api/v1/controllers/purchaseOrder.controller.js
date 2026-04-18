@@ -18,39 +18,10 @@ const parseDimensions = (str) => {
  * Helper: Convert a quantity in a specific unit to the stock unit (SQM or PCS)
  */
 const convertToStockUnit = (quantity, unitCode, productInfo) => {
-    const qty = parseFloat(quantity) || 0;
-    const uCode = (unitCode || '').toUpperCase();
-    const sqmPerPiece = parseDimensions(productInfo.Size || productInfo.size || productInfo.ProductName || productInfo.productname);
-    const piecesPerBox = parseFloat(productInfo.QteParColis || productInfo.qteparcolis) || 0;
-
-    // TILE PRODUCT LOGIC: If it has dimensions, inventory is ALWAYS in SQM
-    // regardless of what PrimaryUnitID says.
-    if (sqmPerPiece > 0) {
-        if (['M2', 'M²', 'SQM'].includes(uCode)) {
-            return qty; // Already in SQM
-        } else if (['PCS', 'PIECE', 'PIÈCE'].includes(uCode)) {
-            return qty * sqmPerPiece; // PCS -> SQM
-        } else if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(uCode) && piecesPerBox > 0) {
-            // BOX -> SQM
-            return qty * piecesPerBox; 
-        }
-        return qty;
-    }
-
-    // NON-TILE PRODUCT LOGIC
-    const primaryUnitCode = (productInfo.PrimaryUnitCode || productInfo.primaryunitcode || '').toUpperCase();
-    let targetUnit = primaryUnitCode || 'PCS';
-    if (['PIECE', 'PIÈCE'].includes(targetUnit)) targetUnit = 'PCS';
-
-    let receiveUnit = uCode;
-    if (['PIECE', 'PIÈCE'].includes(receiveUnit)) receiveUnit = 'PCS';
-    if (['CARTON', 'CRT', 'CTN'].includes(receiveUnit)) receiveUnit = 'BOX';
-
-    if (receiveUnit === 'BOX') {
-        return piecesPerBox > 0 ? qty * piecesPerBox : qty;
-    }
-    
-    return qty;
+    // ZERO CONVERSION LOGIC:
+    // The frontend already calculates the correct total quantity in the primary unit.
+    // We add this quantity directly to inventory without any further math.
+    return parseFloat(quantity) || 0;
 };
 
 /**

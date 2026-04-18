@@ -22,42 +22,10 @@ const isServiceItem = (name) => {
 };
 
 const convertUnitToInventory = (qty, cartUnitCode, primaryUnitCode, sqmPerPiece, productName, qteParColis = 0) => {
-  let finalQty = parseFloat(qty) || 0;
-  
-  // Identify service items (Fiche)
-  const isFicheProduct = (productName || '').toLowerCase().startsWith('fiche');
-  if (isFicheProduct) return finalQty;
-
-  // TILE PRODUCT LOGIC: If it has dimensions, inventory is ALWAYS in SQM
-  // regardless of what primaryUnitCode says (matches GoodsReceipt convention)
-  if (sqmPerPiece > 0) {
-    const isCartSqm = ['SQM', 'M2', 'M²'].includes(cartUnitCode);
-    const isCartPcs = ['PCS', 'PIECE', 'PIÈCH'].includes(cartUnitCode);
-    const isCartBox = ['BOX', 'CARTON', 'CRT', 'CTN'].includes(cartUnitCode);
-
-    if (isCartSqm) {
-      return finalQty; // Already in SQM
-    } else if (isCartPcs) {
-      return finalQty * sqmPerPiece; // PCS -> SQM
-    } else if (isCartBox && qteParColis > 0) {
-      // BOX -> SQM (assuming qteParColis is number of pieces per box)
-      // Wait, in many tile products qteParColis is SQM per box. 
-      // In the frontend, it depends on the unit.
-      // Let's use the safest conversion: BOX -> SQM directly if qteParColis is SQM
-      return finalQty * qteParColis; 
-    }
-    return finalQty;
-  }
-
-  // NON-TILE PRODUCT LOGIC
-  const isCartPcs = ['PCS', 'PIECE', 'PIÈCE'].includes(cartUnitCode);
-  const isPrimaryPcs = (primaryUnitCode === 'PCS' || primaryUnitCode === 'PIECE' || !primaryUnitCode);
-  
-  if (isCartPcs && isPrimaryPcs) {
-    return finalQty;
-  }
-  
-  return finalQty;
+  // ZERO CONVERSION LOGIC:
+  // The frontend/POS already calculates the correct final quantity in the product's primary unit.
+  // The backend strictly records exactly what the frontend sends.
+  return parseFloat(qty) || 0;
 };
 // ===================================
 // ===== INVENTORY VALIDATION HELPER =====

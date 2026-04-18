@@ -148,57 +148,11 @@ async function createGoodsReceipt(req, res, next) {
                     return 0;
                 };
 
-                const sqmPerPiece = parseDimensions(pInfo.size || pInfo.productname);
-                const piecesPerBox = parseFloat(pInfo.qteparcolis) || 0;
-                const boxesPerPallet = parseFloat(pInfo.qtecolisparpalette) || 0;
-                const isFicheProduct = (pInfo.productname || '').toLowerCase().startsWith('fiche');
-
-                // CONVENTION (matching finalizeOrder):
-                // All tile products (those with dimensions like 45x45, 60x60, etc.) are tracked
-                // in SQM in inventory, REGARDLESS of what PrimaryUnitID says.
-                // This is because finalizeOrder converts PCS->SQM for deduction.
-                // So we must add in SQM as well to keep consistency.
-                const isTileProduct = !isFicheProduct && sqmPerPiece > 0;
-                const isReceivingInSQM = ['SQM', 'M2', 'M²'].includes(unitCode);
-                const isReceivingInPCS = ['PCS', 'PIECE', 'PIÈCE'].includes(unitCode);
-
-                if (isTileProduct) {
-                    // TILE PRODUCT: inventory is always in SQM
-                    if (isReceivingInSQM) {
-                        // Already in SQM — use as-is, no conversion needed
-                        finalQtyToAdd = qtyReceived;
-                        console.log(`[GoodsReceipt] Tile received in SQM — keeping ${qtyReceived} SQM as-is`);
-                    } else if (isReceivingInPCS) {
-                        // Convert PCS -> SQM
-                        finalQtyToAdd = qtyReceived * sqmPerPiece;
-                        console.log(`[GoodsReceipt] Tile: ${qtyReceived} PCS * ${sqmPerPiece} = ${finalQtyToAdd} SQM`);
-                    } else if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(unitCode)) {
-                        // BOX -> PCS -> SQM
-                        const pcs = piecesPerBox > 0 ? qtyReceived * piecesPerBox : qtyReceived;
-                        finalQtyToAdd = pcs * sqmPerPiece;
-                        console.log(`[GoodsReceipt] Tile: ${qtyReceived} BOX -> ${pcs} PCS -> ${finalQtyToAdd} SQM`);
-                    } else if (['PALLET', 'PALETTE', 'PAL'].includes(unitCode)) {
-                        // PALLET -> BOX -> PCS -> SQM
-                        const boxes = boxesPerPallet > 0 ? qtyReceived * boxesPerPallet : qtyReceived;
-                        const pcs = piecesPerBox > 0 ? boxes * piecesPerBox : boxes;
-                        finalQtyToAdd = pcs * sqmPerPiece;
-                        console.log(`[GoodsReceipt] Tile: ${qtyReceived} PAL -> ${boxes} BOX -> ${pcs} PCS -> ${finalQtyToAdd} SQM`);
-                    } else {
-                        finalQtyToAdd = qtyReceived;
-                    }
-                } else {
-                    // NON-TILE PRODUCT: inventory is in PrimaryUnit (usually PCS)
-                    if (isReceivingInPCS || unitCode === primaryUnitCode) {
-                        finalQtyToAdd = qtyReceived;
-                    } else if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(unitCode) && piecesPerBox > 0) {
-                        finalQtyToAdd = qtyReceived * piecesPerBox;
-                    } else if (['PALLET', 'PALETTE', 'PAL'].includes(unitCode) && boxesPerPallet > 0 && piecesPerBox > 0) {
-                        finalQtyToAdd = qtyReceived * boxesPerPallet * piecesPerBox;
-                    } else {
-                        finalQtyToAdd = qtyReceived;
-                    }
-                    console.log(`[GoodsReceipt] Non-tile: ${qtyReceived} ${unitCode} -> ${finalQtyToAdd} ${primaryUnitCode || 'STOCK_UNIT'}`);
-                }
+                // ZERO CONVERSION LOGIC:
+                // The backend strictly records exactly what was entered in the form.
+                // We assume the frontend has already normalized the unit (SQM or PCS).
+                finalQtyToAdd = qtyReceived;
+                console.log(`[GoodsReceipt] Recording raw quantity: ${qtyReceived} (No conversion applied)`);
             }
 
             // 2b. Mettre à jour PurchaseOrderItems (quantité réceptionnée)
