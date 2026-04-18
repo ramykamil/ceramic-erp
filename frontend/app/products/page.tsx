@@ -24,12 +24,16 @@ interface Product {
   famille: string;
   prixvente: number;
   prixachat: number;
-  purchaseprice?: number; // Added fallback
+  purchaseprice?: number; 
   calibre: string;
   choix: string;
   qteparcolis: number;
   qtecolisparpalette: number;
   totalqty: number;
+  totalreserved: number;
+  totalavailable: number;
+  availablepalettes: number;
+  availablecolis: number;
   nbpalette: number;
   nbcolis: number;
   size: string;
@@ -141,6 +145,7 @@ export default function ProductsPage() {
     nbpalette: 80,
     nbcolis: 70,
     totalqty: 80,
+    available: 180,
     prixachat: 90,
     prixvente: 90,
     calibre: 70,
@@ -695,7 +700,8 @@ export default function ProductsPage() {
                     <ResizableHeader columnKey="productname" width={widths.productname} onResize={handleResize} onClick={() => handleSort('productname')} className="p-1.5 text-left cursor-pointer hover:bg-slate-600">Libellé {getSortIcon('productname')}</ResizableHeader>
                     <ResizableHeader columnKey="nbpalette" width={widths.nbpalette} onResize={handleResize} onClick={() => handleSort('nbpalette')} className="p-1.5 text-right cursor-pointer hover:bg-indigo-700" style={{ backgroundColor: '#3730a3' }}>Pal. {getSortIcon('nbpalette')}</ResizableHeader>
                     <ResizableHeader columnKey="nbcolis" width={widths.nbcolis} onResize={handleResize} onClick={() => handleSort('nbcolis')} className="p-1.5 text-right cursor-pointer hover:bg-indigo-700" style={{ backgroundColor: '#3730a3' }}>Colis {getSortIcon('nbcolis')}</ResizableHeader>
-                    <ResizableHeader columnKey="totalqty" width={widths.totalqty} onResize={handleResize} onClick={() => handleSort('totalqty')} className="p-1.5 text-right font-bold cursor-pointer hover:bg-blue-700" style={{ backgroundColor: '#1e40af' }}>Qté {getSortIcon('totalqty')}</ResizableHeader>
+                    <ResizableHeader columnKey="totalqty" width={widths.totalqty} onResize={handleResize} onClick={() => handleSort('totalqty')} className="p-1.5 text-right font-bold cursor-pointer hover:bg-blue-700" style={{ backgroundColor: '#1e40af' }}>Physique {getSortIcon('totalqty')}</ResizableHeader>
+                    <ResizableHeader columnKey="available" width={widths.available} onResize={handleResize} onClick={() => handleSort('totalavailable')} className="p-1.5 text-center font-bold cursor-pointer hover:bg-emerald-700" style={{ backgroundColor: '#059669' }}>Disponible (Réel) {getSortIcon('totalavailable')}</ResizableHeader>
                     <ResizableHeader columnKey="prixachat" width={widths.prixachat} onResize={handleResize} onClick={() => handleSort('prixachat')} className="p-1.5 text-right cursor-pointer hover:bg-slate-600">P. Achat {getSortIcon('prixachat')}</ResizableHeader>
                     <ResizableHeader columnKey="prixvente" width={widths.prixvente} onResize={handleResize} onClick={() => handleSort('prixvente')} className="p-1.5 text-right cursor-pointer hover:bg-slate-600">P. Vente {getSortIcon('prixvente')}</ResizableHeader>
 
@@ -718,7 +724,16 @@ export default function ProductsPage() {
                       {/* Stock Columns */}
                       <td className="p-1 text-right bg-indigo-50/50 font-mono">{formatQty(p.nbpalette)}</td>
                       <td className="p-1 text-right bg-indigo-50/50 font-mono">{formatQty(p.nbcolis)}</td>
-                      <td className="p-1 text-right bg-blue-50/50 font-bold font-mono text-blue-700">{formatQty(p.totalqty)}</td>
+                      <td className="p-1 text-right bg-blue-50/50 font-medium font-mono text-blue-700">{formatQty(p.totalqty)}</td>
+                      
+                      {/* Real Available Column */}
+                      <td className="p-1 text-center bg-emerald-50 font-bold font-mono text-emerald-700 border-x border-emerald-100">
+                        <span title="Palettes">{formatQty(p.availablepalettes)} Pal</span>
+                        <span className="mx-1 text-emerald-300">|</span>
+                        <span title="Colis">{formatQty(p.availablecolis)} Ctn</span>
+                        <span className="mx-1 text-emerald-300">|</span>
+                        <span title="Quantité Totale" className="text-emerald-900">{formatQty(p.totalavailable)}</span>
+                      </td>
 
                       {/* Prices */}
                       <td className="p-1 text-right font-mono">{formatMoney(Number(p.prixachat) || Number(p.purchaseprice) || 0)}</td>

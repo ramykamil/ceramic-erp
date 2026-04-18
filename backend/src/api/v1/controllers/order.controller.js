@@ -566,6 +566,13 @@ async function createOrder(req, res, next) {
 
     await client.query('COMMIT');
 
+    // Refresh materialized view to update stock in catalogue/POS/purchasing
+    try {
+      await pool.query('REFRESH MATERIALIZED VIEW mv_Catalogue');
+    } catch (refreshError) {
+      console.log('Note: mv_Catalogue refresh skipped:', refreshError.message);
+    }
+
     res.status(201).json({
       success: true,
       message: 'Order created successfully',
@@ -733,6 +740,13 @@ async function addOrderItem(req, res, next) {
     `, [orderId]);
 
     await client.query('COMMIT');
+
+    // Refresh materialized view to update stock in catalogue/POS/purchasing
+    try {
+      await pool.query('REFRESH MATERIALIZED VIEW mv_Catalogue');
+    } catch (refreshError) {
+      console.log('Note: mv_Catalogue refresh skipped:', refreshError.message);
+    }
 
     res.status(201).json({
       success: true,
@@ -1237,6 +1251,13 @@ const updateOrder = async (req, res) => {
 
     await client.query('COMMIT');
 
+    // Refresh materialized view to update stock in catalogue/POS/purchasing
+    try {
+      await pool.query('REFRESH MATERIALIZED VIEW mv_Catalogue');
+    } catch (refreshError) {
+      console.log('Note: mv_Catalogue refresh skipped:', refreshError.message);
+    }
+
     // Return success
     res.json({
       success: true,
@@ -1372,6 +1393,14 @@ async function deleteOrder(req, res, next) {
     await client.query('DELETE FROM Orders WHERE OrderID = $1', [id]);
 
     await client.query('COMMIT');
+    
+    // Refresh materialized view to update stock in catalogue/POS/purchasing
+    try {
+      await pool.query('REFRESH MATERIALIZED VIEW mv_Catalogue');
+    } catch (refreshError) {
+      console.log('Note: mv_Catalogue refresh skipped:', refreshError.message);
+    }
+
     res.json({ success: true, message: 'Order deleted and reserved stock released' });
   } catch (error) {
     await client.query('ROLLBACK');

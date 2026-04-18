@@ -24,6 +24,7 @@ SELECT
     p.QteColisParPalette,
     p.Size,
     COALESCE(inv.TotalQty, 0) as TotalQty,
+    COALESCE(inv.TotalReserved, 0) as TotalReserved,
     COALESCE(inv.NbPalette, 0) as NbPalette,
     COALESCE(inv.NbColis, 0) as NbColis,
     CASE 
@@ -42,6 +43,7 @@ LEFT JOIN (
     SELECT 
         ProductID,
         SUM(QuantityOnHand) as TotalQty,
+        SUM(QuantityReserved) as TotalReserved,
         SUM(PalletCount) as NbPalette,
         SUM(ColisCount) as NbColis
     FROM Inventory 

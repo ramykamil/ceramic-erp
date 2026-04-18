@@ -119,6 +119,7 @@ async function getProducts(req, res, next) {
         SELECT 
           ProductID, 
           SUM(QuantityOnHand) as realtotalqty, 
+          SUM(QuantityReserved) as realtotalreserved,
           SUM(PalletCount) as realnbpalette, 
           SUM(ColisCount) as realnbcolis
         FROM Inventory
@@ -149,9 +150,25 @@ async function getProducts(req, res, next) {
       data = data.map(p => {
         const live = invMap[p.productid];
         const unitInfo = unitMap[p.productid];
+        
+        const totalqty = live ? Math.max(0, parseFloat(live.realtotalqty)) : 0;
+        const totalreserved = live ? Math.max(0, parseFloat(live.realtotalreserved || 0)) : 0;
+        const totalavailable = Math.max(0, totalqty - totalreserved);
+        
+        // Exact decimals calculations
+        const ppc = parseFloat(p.derivedpiecespercolis || p.qteparcolis || 0);
+        const cpp = parseFloat(p.derivedcolisperpalette || p.qtecolisparpalette || 0);
+        
+        const availablecolis = ppc > 0 ? parseFloat((totalavailable / ppc).toFixed(4)) : 0;
+        const availablepalettes = cpp > 0 ? parseFloat((availablecolis / cpp).toFixed(4)) : 0;
+
         return {
           ...p,
-          totalqty: live ? Math.max(0, parseFloat(live.realtotalqty)) : 0,
+          totalqty,
+          totalreserved,
+          totalavailable,
+          availablepalettes,
+          availablecolis,
           nbpalette: live ? Math.max(0, parseFloat(live.realnbpalette)) : 0,
           nbcolis: live ? Math.max(0, parseFloat(live.realnbcolis)) : 0,
           primaryunitid: unitInfo?.primaryunitid || null,
