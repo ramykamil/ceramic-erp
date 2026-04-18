@@ -23,31 +23,40 @@ const isServiceItem = (name) => {
 
 const convertUnitToInventory = (qty, cartUnitCode, primaryUnitCode, sqmPerPiece, productName, qteParColis = 0) => {
   let finalQty = parseFloat(qty) || 0;
+  
+  // Identify service items (Fiche)
   const isFicheProduct = (productName || '').toLowerCase().startsWith('fiche');
-  if (isFicheProduct || sqmPerPiece <= 0) return finalQty;
+  if (isFicheProduct) return finalQty;
 
-  const isCartPcs = (cartUnitCode === 'PCS' || cartUnitCode === 'PIECE');
-  const isCartSqm = (cartUnitCode === 'SQM' || cartUnitCode === 'M2');
+  // TILE PRODUCT LOGIC: If it has dimensions, inventory is ALWAYS in SQM
+  // regardless of what primaryUnitCode says (matches GoodsReceipt convention)
+  if (sqmPerPiece > 0) {
+    const isCartSqm = ['SQM', 'M2', 'M²'].includes(cartUnitCode);
+    const isCartPcs = ['PCS', 'PIECE', 'PIÈCH'].includes(cartUnitCode);
+    const isCartBox = ['BOX', 'CARTON', 'CRT', 'CTN'].includes(cartUnitCode);
 
-  // Intelligent deduction of effective primary unit (matches frontend POS logic)
-  let effectivePrimaryUnit = primaryUnitCode;
-
-  // The automatic override that forced tiles to SQM natively has been REMOVED.
-  // The system now strictly respects the 'primaryUnitCode' defined in the product matrix.
-
-  // If primary is not set, we default to PCS
-  const isPrimaryPcs = (effectivePrimaryUnit === 'PCS' || effectivePrimaryUnit === 'PIECE' || !effectivePrimaryUnit);
-  const isPrimarySqm = (effectivePrimaryUnit === 'SQM' || effectivePrimaryUnit === 'M2');
-
-  // SQM cart -> PCS inventory
-  if (isCartSqm && isPrimaryPcs) {
-    return finalQty / sqmPerPiece;
+    if (isCartSqm) {
+      return finalQty; // Already in SQM
+    } else if (isCartPcs) {
+      return finalQty * sqmPerPiece; // PCS -> SQM
+    } else if (isCartBox && qteParColis > 0) {
+      // BOX -> SQM (assuming qteParColis is number of pieces per box)
+      // Wait, in many tile products qteParColis is SQM per box. 
+      // In the frontend, it depends on the unit.
+      // Let's use the safest conversion: BOX -> SQM directly if qteParColis is SQM
+      return finalQty * qteParColis; 
+    }
+    return finalQty;
   }
-  // PCS cart -> SQM inventory
-  else if (isCartPcs && isPrimarySqm) {
-    return finalQty * sqmPerPiece;
-  }
 
+  // NON-TILE PRODUCT LOGIC
+  const isCartPcs = ['PCS', 'PIECE', 'PIÈCE'].includes(cartUnitCode);
+  const isPrimaryPcs = (primaryUnitCode === 'PCS' || primaryUnitCode === 'PIECE' || !primaryUnitCode);
+  
+  if (isCartPcs && isPrimaryPcs) {
+    return finalQty;
+  }
+  
   return finalQty;
 };
 // ===================================

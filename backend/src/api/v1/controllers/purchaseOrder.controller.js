@@ -7,7 +7,7 @@ const auditService = require('../../../services/audit.service');
  */
 const parseDimensions = (str) => {
     if (!str) return 0;
-    const match = str.match(/(\d{2,3})[xX*\/](\d{2,3})/);
+    const match = str.match(/(\d{2,3})\s*[xX*\/]\s*(\d{2,3})/);
     if (match) {
         return (parseInt(match[1]) * parseInt(match[2])) / 10000;
     }
@@ -20,41 +20,37 @@ const parseDimensions = (str) => {
 const convertToStockUnit = (quantity, unitCode, productInfo) => {
     const qty = parseFloat(quantity) || 0;
     const uCode = (unitCode || '').toUpperCase();
-    const primaryUnitCode = (productInfo.PrimaryUnitCode || productInfo.primaryunitcode || '').toUpperCase();
     const sqmPerPiece = parseDimensions(productInfo.Size || productInfo.size || productInfo.ProductName || productInfo.productname);
     const piecesPerBox = parseFloat(productInfo.QteParColis || productInfo.qteparcolis) || 0;
-    const boxesPerPallet = parseFloat(productInfo.QteColisParPalette || productInfo.qtecolisparpalette) || 0;
 
-    // Determine target primary unit
+    // TILE PRODUCT LOGIC: If it has dimensions, inventory is ALWAYS in SQM
+    // regardless of what PrimaryUnitID says.
+    if (sqmPerPiece > 0) {
+        if (['M2', 'M²', 'SQM'].includes(uCode)) {
+            return qty; // Already in SQM
+        } else if (['PCS', 'PIECE', 'PIÈCE'].includes(uCode)) {
+            return qty * sqmPerPiece; // PCS -> SQM
+        } else if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(uCode) && piecesPerBox > 0) {
+            // BOX -> SQM
+            return qty * piecesPerBox; 
+        }
+        return qty;
+    }
+
+    // NON-TILE PRODUCT LOGIC
+    const primaryUnitCode = (productInfo.PrimaryUnitCode || productInfo.primaryunitcode || '').toUpperCase();
     let targetUnit = primaryUnitCode || 'PCS';
     if (['PIECE', 'PIÈCE'].includes(targetUnit)) targetUnit = 'PCS';
-    if (['M2', 'M²'].includes(targetUnit)) targetUnit = 'SQM';
 
-    // Same for receiving unit
     let receiveUnit = uCode;
     if (['PIECE', 'PIÈCE'].includes(receiveUnit)) receiveUnit = 'PCS';
-    if (['M2', 'M²'].includes(receiveUnit)) receiveUnit = 'SQM';
     if (['CARTON', 'CRT', 'CTN'].includes(receiveUnit)) receiveUnit = 'BOX';
-    if (['PALETTE', 'PAL'].includes(receiveUnit)) receiveUnit = 'PALLET';
 
-    // 1. Calculate raw pieces received
-    let rawPieces = qty;
     if (receiveUnit === 'BOX') {
-        rawPieces = piecesPerBox > 0 ? qty * piecesPerBox : qty;
-    } else if (receiveUnit === 'PALLET') {
-        const boxes = boxesPerPallet > 0 ? qty * boxesPerPallet : qty;
-        rawPieces = piecesPerBox > 0 ? boxes * piecesPerBox : boxes;
-    } else if (receiveUnit === 'SQM' && sqmPerPiece > 0) {
-        rawPieces = qty / sqmPerPiece;
+        return piecesPerBox > 0 ? qty * piecesPerBox : qty;
     }
-
-    // 2. Convert from raw pieces into the Target Unit
-    if (targetUnit === 'SQM' && sqmPerPiece > 0) {
-        return rawPieces * sqmPerPiece;
-    }
-
-    // Target unit is PCS (or anything else)
-    return rawPieces;
+    
+    return qty;
 };
 
 /**
