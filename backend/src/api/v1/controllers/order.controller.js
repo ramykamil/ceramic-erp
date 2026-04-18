@@ -61,7 +61,7 @@ const checkOrderStock = async (client, orderId, warehouseId) => {
 
   for (const item of itemsResult.rows) {
     const qtyNum = parseFloat(item.quantity) || 0;
-    
+
     // Basic quantity check
     if (qtyNum <= 0) {
       throw new Error(`Le produit "${item.productname}" a une quantité non valide (${item.quantity}). Veuillez corriger avant de valider.`);
@@ -74,11 +74,11 @@ const checkOrderStock = async (client, orderId, warehouseId) => {
 
     const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
     const requiredQty = convertUnitToInventory(
-      qtyNum, 
-      item.unitcode, 
-      item.primaryunitcode, 
-      sqmPerPiece, 
-      item.productname, 
+      qtyNum,
+      item.unitcode,
+      item.primaryunitcode,
+      sqmPerPiece,
+      item.productname,
       parseFloat(item.qteparcolis) || 0
     );
 
@@ -90,10 +90,10 @@ const checkOrderStock = async (client, orderId, warehouseId) => {
     `, [item.productid, effectiveWarehouseId]);
 
     const onHand = inventoryCheck.rows.length > 0 ? parseFloat(inventoryCheck.rows[0].quantityonhand) : 0;
-    
+
     // Enforcement: Total on hand must meet the required order quantity
     if (onHand < requiredQty) {
-       throw new Error(`Stock insuffisant pour "${item.productname}". En stock: ${onHand.toFixed(2)}, Requis: ${requiredQty.toFixed(2)} (Entrepôt: ${effectiveWarehouseId})`);
+      throw new Error(`Stock insuffisant pour "${item.productname}". En stock: ${onHand.toFixed(2)}, Requis: ${requiredQty.toFixed(2)} (Entrepôt: ${effectiveWarehouseId})`);
     }
   }
   return itemsResult;
@@ -106,10 +106,10 @@ const checkOrderStock = async (client, orderId, warehouseId) => {
 const deductOrderInventory = async (client, items, warehouseId, orderId, orderNumber, userId) => {
   const effectiveWarehouseId = warehouseId || 1;
   const effectiveUserId = userId || 1;
-  
+
   for (const item of items) {
     let qtyToDeduct = parseFloat(item.quantity) || 0;
-    
+
     // Skip inventory deduction for service items (Transport/Fiche)
     if (isServiceItem(item.productname)) {
       console.log(`[Inventory] Skipping deduction for service item: ${item.productname}`);
@@ -119,11 +119,11 @@ const deductOrderInventory = async (client, items, warehouseId, orderId, orderNu
     // Universal UNIT CONVERSION LOGIC (matches checkOrderStock)
     const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
     const convertedQty = convertUnitToInventory(
-      qtyToDeduct, 
-      item.unitcode, 
-      item.primaryunitcode, 
-      sqmPerPiece, 
-      item.productname, 
+      qtyToDeduct,
+      item.unitcode,
+      item.primaryunitcode,
+      sqmPerPiece,
+      item.productname,
       parseFloat(item.qteparcolis) || 0
     );
 
@@ -450,7 +450,7 @@ async function createOrder(req, res, next) {
 
       for (const item of items) {
         const { productId, quantity, unitId, unitPrice: providedUnitPrice, discountPercent = 0, taxPercent = 0, palletCount: rawPalletCount = 0, colisCount: rawColisCount = 0, productName } = item;
-        
+
         if (parseFloat(quantity) <= 0) {
           throw new Error(`Le produit "${productName || productId}" a une quantité de 0 ou moins. Veuillez corriger la quantité.`);
         }
@@ -566,13 +566,6 @@ async function createOrder(req, res, next) {
 
     await client.query('COMMIT');
 
-    // Refresh materialized view to update stock in catalogue/POS/purchasing
-    try {
-      await pool.query('REFRESH MATERIALIZED VIEW mv_Catalogue');
-    } catch (refreshError) {
-      console.log('Note: mv_Catalogue refresh skipped:', refreshError.message);
-    }
-
     res.status(201).json({
       success: true,
       message: 'Order created successfully',
@@ -598,7 +591,7 @@ async function addOrderItem(req, res, next) {
 
     const { orderId } = req.params;
     const { productId, quantity, unitId, unitPrice: providedUnitPrice, discountPercent = 0, taxPercent = 0, palletCount: rawPalletCount = 0, colisCount: rawColisCount = 0, productName } = req.body;
-    
+
     if (parseFloat(quantity) <= 0) {
       throw new Error(`La quantité pour "${productName || 'ce produit'}" doit être supérieure à 0.`);
     }
@@ -740,13 +733,6 @@ async function addOrderItem(req, res, next) {
     `, [orderId]);
 
     await client.query('COMMIT');
-
-    // Refresh materialized view to update stock in catalogue/POS/purchasing
-    try {
-      await pool.query('REFRESH MATERIALIZED VIEW mv_Catalogue');
-    } catch (refreshError) {
-      console.log('Note: mv_Catalogue refresh skipped:', refreshError.message);
-    }
 
     res.status(201).json({
       success: true,
@@ -1170,93 +1156,86 @@ const updateOrder = async (req, res) => {
       id
     ]);
 
-      // 5. Insert NEW items and Reserve Inventory (SKIPPING MANUAL PRODUCTS)
-      // Note: We always Reserve (Status is PENDING now). 
-      // User must click Confirm again to finalize/deduct stock.
-      for (const item of items) {
-        const lineTotal = Number(item.quantity) * Number(item.unitPrice);
+    // 5. Insert NEW items and Reserve Inventory (SKIPPING MANUAL PRODUCTS)
+    // Note: We always Reserve (Status is PENDING now). 
+    // User must click Confirm again to finalize/deduct stock.
+    for (const item of items) {
+      const lineTotal = Number(item.quantity) * Number(item.unitPrice);
 
-        // Get product details for cost, code check, and UNIT CONVERSION
-        const productRes = await client.query(
-          `SELECT p.PurchasePrice, p.BasePrice, p.ProductCode, p.ProductName, p.Size, p.PrimaryUnitID, p.QteParColis, 
+      // Get product details for cost, code check, and UNIT CONVERSION
+      const productRes = await client.query(
+        `SELECT p.PurchasePrice, p.BasePrice, p.ProductCode, p.ProductName, p.Size, p.PrimaryUnitID, p.QteParColis, 
                   u.UnitCode as PrimaryUnitCode 
            FROM Products p 
            LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID 
            WHERE p.ProductID = $1`,
-          [item.productId]
-        );
-        const p = productRes.rows[0];
-        const costPrice = parseFloat(p?.purchaseprice) || parseFloat(p?.baseprice) || 0;
-        const pCode = p?.productcode || '';
+        [item.productId]
+      );
+      const p = productRes.rows[0];
+      const costPrice = parseFloat(p?.purchaseprice) || parseFloat(p?.baseprice) || 0;
+      const pCode = p?.productcode || '';
 
-        // Insert Item with CostPrice and LinkProductName
-        // Use palletCount/palettes and colisCount/cartons with fallbacks
-        const palletCount = parseFloat(item.palletCount || item.palettes) || 0;
-        const colisCount = parseFloat(item.colisCount || item.cartons) || 0;
+      // Insert Item with CostPrice and LinkProductName
+      // Use palletCount/palettes and colisCount/cartons with fallbacks
+      const palletCount = parseFloat(item.palletCount || item.palettes) || 0;
+      const colisCount = parseFloat(item.colisCount || item.cartons) || 0;
 
-        await client.query(`
+      await client.query(`
                 INSERT INTO OrderItems (OrderID, ProductID, Quantity, UnitPrice, LineTotal, UnitID, PalletCount, ColisCount, CostPrice, LinkProductName)
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             `, [
-                id, 
-                item.productId, 
-                item.quantity, 
-                item.unitPrice, 
-                lineTotal, 
-                item.unitId, 
-                palletCount, 
-                colisCount, 
-                costPrice, 
-                item.productName || null
-            ]);
+        id,
+        item.productId,
+        item.quantity,
+        item.unitPrice,
+        lineTotal,
+        item.unitId,
+        palletCount,
+        colisCount,
+        costPrice,
+        item.productName || null
+      ]);
 
-        // Reserve Inventory ONLY if NOT MANUAL and NOT a Service Item
-        if (pCode !== 'MANUAL' && p && !isServiceItem(p.productname || item.productName)) {
-          // Fetch Unit Code for the current item unit
-          const unitRes = await client.query('SELECT UnitCode FROM Units WHERE UnitID = $1', [item.unitId]);
-          const unitCode = unitRes.rows.length > 0 ? unitRes.rows[0].unitcode : 'PCS';
+      // Reserve Inventory ONLY if NOT MANUAL and NOT a Service Item
+      if (pCode !== 'MANUAL' && p && !isServiceItem(p.productname || item.productName)) {
+        // Fetch Unit Code for the current item unit
+        const unitRes = await client.query('SELECT UnitCode FROM Units WHERE UnitID = $1', [item.unitId]);
+        const unitCode = unitRes.rows.length > 0 ? unitRes.rows[0].unitcode : 'PCS';
 
-          const sqmPerPiece = parseSqmPerPiece(p.size || p.productname);
-          let qtyToReserve = parseFloat(item.quantity) || 0;
+        const sqmPerPiece = parseSqmPerPiece(p.size || p.productname);
+        let qtyToReserve = parseFloat(item.quantity) || 0;
 
-          // Universal UNIT CONVERSION LOGIC
-          qtyToReserve = convertUnitToInventory(
-            qtyToReserve, 
-            unitCode, 
-            p.primaryunitcode, 
-            sqmPerPiece, 
-            p.productname, 
-            parseFloat(p.qteparcolis) || 0
-          );
+        // Universal UNIT CONVERSION LOGIC
+        qtyToReserve = convertUnitToInventory(
+          qtyToReserve,
+          unitCode,
+          p.primaryunitcode,
+          sqmPerPiece,
+          p.productname,
+          parseFloat(p.qteparcolis) || 0
+        );
 
-          // Assuming Warehouse 1 (standard for POS)
-          const invCheck = await client.query('SELECT InventoryID FROM Inventory WHERE ProductID = $1 AND WarehouseID = 1 AND OwnershipType = \'OWNED\'', [item.productId]);
+        // Assuming Warehouse 1 (standard for POS)
+        const invCheck = await client.query('SELECT InventoryID FROM Inventory WHERE ProductID = $1 AND WarehouseID = 1 AND OwnershipType = \'OWNED\'', [item.productId]);
 
-          if (invCheck.rows.length > 0) {
-            await client.query(`
+        if (invCheck.rows.length > 0) {
+          await client.query(`
                 UPDATE Inventory 
                 SET QuantityReserved = QuantityReserved + $1,
                     UpdatedAt = CURRENT_TIMESTAMP
                 WHERE ProductID = $2 AND WarehouseID = 1 AND OwnershipType = 'OWNED'
               `, [qtyToReserve, item.productId]);
-          } else {
-            // Create inventory record if missing (safety check)
-            await client.query(`
+        } else {
+          // Create inventory record if missing (safety check)
+          await client.query(`
                 INSERT INTO Inventory (ProductID, WarehouseID, OwnershipType, QuantityReserved, QuantityOnHand)
                 VALUES ($1, 1, 'OWNED', $2, 0)
               `, [item.productId, qtyToReserve]);
-          }
         }
       }
+    }
 
     await client.query('COMMIT');
-
-    // Refresh materialized view to update stock in catalogue/POS/purchasing
-    try {
-      await pool.query('REFRESH MATERIALIZED VIEW mv_Catalogue');
-    } catch (refreshError) {
-      console.log('Note: mv_Catalogue refresh skipped:', refreshError.message);
-    }
 
     // Return success
     res.json({
@@ -1393,14 +1372,6 @@ async function deleteOrder(req, res, next) {
     await client.query('DELETE FROM Orders WHERE OrderID = $1', [id]);
 
     await client.query('COMMIT');
-    
-    // Refresh materialized view to update stock in catalogue/POS/purchasing
-    try {
-      await pool.query('REFRESH MATERIALIZED VIEW mv_Catalogue');
-    } catch (refreshError) {
-      console.log('Note: mv_Catalogue refresh skipped:', refreshError.message);
-    }
-
     res.json({ success: true, message: 'Order deleted and reserved stock released' });
   } catch (error) {
     await client.query('ROLLBACK');
