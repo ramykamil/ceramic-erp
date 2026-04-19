@@ -21,11 +21,45 @@ const isServiceItem = (name) => {
   return n.includes('transport') || n.includes('fiche');
 };
 
-const convertUnitToInventory = (qty, cartUnitCode, primaryUnitCode, sqmPerPiece, productName, qteParColis = 0) => {
-  // ZERO CONVERSION LOGIC:
-  // The frontend/POS already calculates the correct final quantity in the product's primary unit.
-  // The backend strictly records exactly what the frontend sends.
-  return parseFloat(qty) || 0;
+const convertUnitToInventory = (qty, cartUnitCode, primaryUnitCode, sqmPerPiece, productName, qteParColis = 0, cartonsPerPalette = 0) => {
+  const q = parseFloat(qty) || 0;
+  if (!cartUnitCode || !primaryUnitCode || cartUnitCode === primaryUnitCode) return q;
+
+  // Normalization logic: if qteParColis is decimal (e.g. 1.44), it's often M2 per carton.
+  // We need to determine if we should treat it as Pieces or SQM.
+  // If cartUnit is CARTON and primary is SQM, and qteParColis is 1.44, then 1 CARTON = 1.44 SQM.
+  
+  let piecesQty = q;
+  
+  // 1. Convert from cartUnit to PCS (Base)
+  if (cartUnitCode === 'SQM' && sqmPerPiece > 0) {
+    piecesQty = q / sqmPerPiece;
+  } else if (cartUnitCode === 'CARTON' || cartUnitCode === 'CRT' || cartUnitCode === 'COLIS') {
+    piecesQty = qteParColis > 0 ? q * qteParColis : q;
+    // If qteParColis was actually SQM, piecesQty is now SQM. We'll handle that in step 2.
+  } else if (cartUnitCode === 'PALETTE' || cartUnitCode === 'PAL') {
+    piecesQty = q * (qteParColis || 1) * (cartonsPerPalette || 1);
+  }
+
+  // 2. Convert from PCS (Base) to primaryUnit
+  // Special case: if cartUnit was CARTON and qteParColis was effectively the SQM count, 
+  // and primary unit is SQM, we might already have the SQM count.
+  
+  if (primaryUnitCode === 'SQM') {
+    if ((cartUnitCode === 'CARTON' || cartUnitCode === 'CRT' || cartUnitCode === 'COLIS') && qteParColis > 0 && sqmPerPiece > 0) {
+      // If qteParColis is a multiple of sqmPerPiece, it's likely Pieces.
+      // If it's NOT a multiple (e.g. 1.44 and 0.2025), it's likely already SQM.
+      const isMultiple = Math.abs(qteParColis / sqmPerPiece - Math.round(qteParColis / sqmPerPiece)) < 0.01;
+      if (!isMultiple) return q * qteParColis; // Return SQM directly
+    }
+    return sqmPerPiece > 0 ? piecesQty * sqmPerPiece : piecesQty;
+  }
+  
+  if (primaryUnitCode === 'CARTON' || primaryUnitCode === 'CRT' || primaryUnitCode === 'COLIS') {
+    return qteParColis > 0 ? piecesQty / qteParColis : piecesQty;
+  }
+
+  return piecesQty; // PCS
 };
 // ===================================
 // ===== INVENTORY VALIDATION HELPER =====
@@ -45,6 +79,7 @@ const checkOrderStock = async (client, orderId, warehouseId) => {
       p.Size as size, 
       p.PrimaryUnitID as primaryunitid, 
       p.QteParColis as qteparcolis,
+      p.QteColisParPalette as qtecolisparpalette,
       pu_p.UnitCode as primaryunitcode
     FROM OrderItems oi
     LEFT JOIN Units u ON oi.UnitID = u.UnitID
@@ -79,7 +114,8 @@ const checkOrderStock = async (client, orderId, warehouseId) => {
       item.primaryunitcode,
       sqmPerPiece,
       item.productname,
-      parseFloat(item.qteparcolis) || 0
+      parseFloat(item.qteparcolis) || 0,
+      parseFloat(item.qtecolisparpalette) || 0
     );
 
     // Query inventory record (OWNED stock only)
@@ -87,6 +123,7 @@ const checkOrderStock = async (client, orderId, warehouseId) => {
       SELECT QuantityOnHand, QuantityReserved 
       FROM Inventory 
       WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = 'OWNED'
+      AND FactoryID IS NULL
     `, [item.productid, effectiveWarehouseId]);
 
     const onHand = inventoryCheck.rows.length > 0 ? parseFloat(inventoryCheck.rows[0].quantityonhand) : 0;
@@ -124,7 +161,8 @@ const deductOrderInventory = async (client, items, warehouseId, orderId, orderNu
       item.primaryunitcode,
       sqmPerPiece,
       item.productname,
-      parseFloat(item.qteparcolis) || 0
+      parseFloat(item.qteparcolis) || 0,
+      parseFloat(item.qtecolisparpalette) || 0
     );
 
     if (convertedQty !== qtyToDeduct) {
@@ -140,6 +178,7 @@ const deductOrderInventory = async (client, items, warehouseId, orderId, orderNu
         QuantityReserved = GREATEST(0, QuantityReserved - $1),
         UpdatedAt = CURRENT_TIMESTAMP
       WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED'
+      AND FactoryID IS NULL
       RETURNING QuantityOnHand
     `, [qtyToDeduct, item.productid, effectiveWarehouseId]);
 
@@ -156,6 +195,7 @@ const deductOrderInventory = async (client, items, warehouseId, orderId, orderNu
           UPDATE Inventory 
           SET ColisCount = $1, PalletCount = $2 
           WHERE ProductID = $3 AND WarehouseID = $4 AND OwnershipType = 'OWNED'
+          AND FactoryID IS NULL
         `, [newColis, newPallets, item.productid, effectiveWarehouseId]);
       }
     }
@@ -460,7 +500,7 @@ async function createOrder(req, res, next) {
 
         // Get product details
         const productResult = await client.query(
-          'SELECT p.PurchasePrice, p.BasePrice, p.ProductName, p.ProductCode, p.Size, p.PrimaryUnitID, p.QteParColis, u.UnitCode as PrimaryUnitCode FROM Products p LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID WHERE p.ProductID = $1',
+          'SELECT p.PurchasePrice, p.BasePrice, p.ProductName, p.ProductCode, p.Size, p.PrimaryUnitID, p.QteParColis, p.QteColisParPalette, u.UnitCode as PrimaryUnitCode FROM Products p LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID WHERE p.ProductID = $1',
           [productId]
         );
         const costPrice = parseFloat(productResult.rows[0]?.purchaseprice) || parseFloat(productResult.rows[0]?.baseprice) || 0;
@@ -477,10 +517,10 @@ async function createOrder(req, res, next) {
           let qtyToReserve = parseFloat(quantity) || 0;
 
           // Universal UNIT CONVERSION LOGIC
-          qtyToReserve = convertUnitToInventory(qtyToReserve, unitCode, product.primaryunitcode, sqmPerPiece, product.productname, parseFloat(product.qteparcolis) || 0);
+          qtyToReserve = convertUnitToInventory(qtyToReserve, unitCode, product.primaryunitcode, sqmPerPiece, product.productname, parseFloat(product.qteparcolis) || 0, parseFloat(product.qtecolisparpalette) || 0);
 
           // Check stock availability
-          const inventoryCheck = await client.query('SELECT QuantityOnHand, QuantityReserved FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\'', [productId, effectiveWarehouseId]);
+          const inventoryCheck = await client.query('SELECT QuantityOnHand, QuantityReserved FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\' AND FactoryID IS NULL', [productId, effectiveWarehouseId]);
 
           let currentOnHand = 0;
           let currentReserved = 0;
@@ -499,7 +539,7 @@ async function createOrder(req, res, next) {
               UPDATE Inventory 
               SET QuantityReserved = QuantityReserved + $1,
                   UpdatedAt = CURRENT_TIMESTAMP
-              WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED'
+              WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
           `, [qtyToReserve, productId, effectiveWarehouseId]);
         } else if (product && product.productcode === 'MANUAL') {
           console.log('Skipping inventory reservation for MANUAL product');
@@ -617,7 +657,7 @@ async function addOrderItem(req, res, next) {
 
     // Get product details for stock check + unit conversion
     const productResult = await client.query(
-      'SELECT p.PurchasePrice, p.BasePrice, p.ProductName, p.ProductCode, p.Size, p.PrimaryUnitID, p.QteParColis, u.UnitCode as PrimaryUnitCode FROM Products p LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID WHERE p.ProductID = $1',
+      'SELECT p.PurchasePrice, p.BasePrice, p.ProductName, p.ProductCode, p.Size, p.PrimaryUnitID, p.QteParColis, p.QteColisParPalette, u.UnitCode as PrimaryUnitCode FROM Products p LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID WHERE p.ProductID = $1',
       [productId]
     );
     const costPrice = parseFloat(productResult.rows[0]?.purchaseprice) || parseFloat(productResult.rows[0]?.baseprice) || 0;
@@ -635,12 +675,12 @@ async function addOrderItem(req, res, next) {
       const sqmPerPiece = parseSqmPerPiece(product.size || product.productname);
 
       // Universal UNIT CONVERSION LOGIC
-      qtyToReserve = convertUnitToInventory(qtyToReserve, unitCode, product.primaryunitcode, sqmPerPiece, product.productname, parseFloat(product.qteparcolis) || 0);
+      qtyToReserve = convertUnitToInventory(qtyToReserve, unitCode, product.primaryunitcode, sqmPerPiece, product.productname, parseFloat(product.qteparcolis) || 0, parseFloat(product.qtecolisparpalette) || 0);
 
       const warehouseId = orderResult.rows[0].warehouseid || 1;
 
       // Check stock availability BEFORE inserting the order item
-      const inventoryCheck = await client.query('SELECT QuantityOnHand, QuantityReserved FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\'', [productId, warehouseId]);
+      const inventoryCheck = await client.query('SELECT QuantityOnHand, QuantityReserved FROM Inventory WHERE ProductID = $1 AND WarehouseID = $2 AND OwnershipType = \'OWNED\' AND FactoryID IS NULL', [productId, warehouseId]);
 
       let currentOnHand = 0;
       let currentReserved = 0;
@@ -659,7 +699,7 @@ async function addOrderItem(req, res, next) {
           UPDATE Inventory 
           SET QuantityReserved = QuantityReserved + $1,
               UpdatedAt = CURRENT_TIMESTAMP
-          WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED'
+          WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
       `, [qtyToReserve, productId, warehouseId]);
     } else if (product && product.productcode === 'MANUAL') {
       console.log('Skipping inventory reservation for MANUAL product');
@@ -1048,7 +1088,7 @@ const updateOrder = async (req, res) => {
     // 2a. Revert Inventory
     // Fetch old items with product details for unit conversion
     const oldItemsRes = await client.query(`
-        SELECT oi.*, p.ProductName, p.Size, p.PrimaryUnitID, pu_p.UnitCode as PrimaryUnitCode, u.UnitCode 
+        SELECT oi.*, p.ProductName, p.Size, p.PrimaryUnitID, p.QteParColis, p.QteColisParPalette, pu_p.UnitCode as PrimaryUnitCode, u.UnitCode 
         FROM OrderItems oi
         JOIN Products p ON oi.ProductID = p.ProductID
         LEFT JOIN Units pu_p ON p.PrimaryUnitID = pu_p.UnitID
@@ -1060,21 +1100,29 @@ const updateOrder = async (req, res) => {
       if (isServiceItem(item.productname)) continue;
       const qty = parseFloat(item.quantity);
       const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
-      const convertedQty = convertUnitToInventory(qty, item.unitcode, item.primaryunitcode, sqmPerPiece, item.productname);
+      const convertedQty = convertUnitToInventory(
+        qty,
+        item.unitcode,
+        item.primaryunitcode,
+        sqmPerPiece,
+        item.productname,
+        parseFloat(item.qteparcolis) || 0,
+        parseFloat(item.qtecolisparpalette) || 0
+      );
 
       if (order.status === 'PENDING' || order.status === 'CANCELLED') {
         // PENDING/CANCELLED: Simply un-reserve
         await client.query(`
           UPDATE Inventory 
           SET QuantityReserved = GREATEST(0, QuantityReserved - $1)
-          WHERE ProductID = $2 AND WarehouseID = 1 AND OwnershipType = 'OWNED'
+          WHERE ProductID = $2 AND WarehouseID = 1 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
         `, [convertedQty, item.productid]);
       } else if (order.status === 'CONFIRMED' || order.status === 'DELIVERED') {
         // CONFIRMED/DELIVERED: Item was SOLD (Deducted from OnHand). Add it back to OnHand.
         await client.query(`
           UPDATE Inventory 
           SET QuantityOnHand = QuantityOnHand + $1
-          WHERE ProductID = $2 AND WarehouseID = 1 AND OwnershipType = 'OWNED'
+          WHERE ProductID = $2 AND WarehouseID = 1 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
         `, [convertedQty, item.productid]);
       }
     }
@@ -1164,7 +1212,7 @@ const updateOrder = async (req, res) => {
 
       // Get product details for cost, code check, and UNIT CONVERSION
       const productRes = await client.query(
-        `SELECT p.PurchasePrice, p.BasePrice, p.ProductCode, p.ProductName, p.Size, p.PrimaryUnitID, p.QteParColis, 
+        `SELECT p.PurchasePrice, p.BasePrice, p.ProductCode, p.ProductName, p.Size, p.PrimaryUnitID, p.QteParColis, p.QteColisParPalette, 
                   u.UnitCode as PrimaryUnitCode 
            FROM Products p 
            LEFT JOIN Units u ON p.PrimaryUnitID = u.UnitID 
@@ -1212,18 +1260,19 @@ const updateOrder = async (req, res) => {
           p.primaryunitcode,
           sqmPerPiece,
           p.productname,
-          parseFloat(p.qteparcolis) || 0
+          parseFloat(p.qteparcolis) || 0,
+          parseFloat(p.qtecolisparpalette) || 0
         );
 
         // Assuming Warehouse 1 (standard for POS)
-        const invCheck = await client.query('SELECT InventoryID FROM Inventory WHERE ProductID = $1 AND WarehouseID = 1 AND OwnershipType = \'OWNED\'', [item.productId]);
+        const invCheck = await client.query('SELECT InventoryID FROM Inventory WHERE ProductID = $1 AND WarehouseID = 1 AND OwnershipType = \'OWNED\' AND FactoryID IS NULL', [item.productId]);
 
         if (invCheck.rows.length > 0) {
           await client.query(`
                 UPDATE Inventory 
                 SET QuantityReserved = QuantityReserved + $1,
                     UpdatedAt = CURRENT_TIMESTAMP
-                WHERE ProductID = $2 AND WarehouseID = 1 AND OwnershipType = 'OWNED'
+                WHERE ProductID = $2 AND WarehouseID = 1 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
               `, [qtyToReserve, item.productId]);
         } else {
           // Create inventory record if missing (safety check)
@@ -1341,7 +1390,7 @@ async function deleteOrder(req, res, next) {
 
     // Find items to release reserved stock
     const itemsRes = await client.query(`
-        SELECT oi.*, p.ProductName, p.Size, p.PrimaryUnitID, pu_p.UnitCode as PrimaryUnitCode, u.UnitCode
+        SELECT oi.*, p.ProductName, p.Size, p.PrimaryUnitID, p.QteParColis, p.QteColisParPalette, pu_p.UnitCode as PrimaryUnitCode, u.UnitCode
         FROM OrderItems oi
         JOIN Products p ON oi.ProductID = p.ProductID
         LEFT JOIN Units pu_p ON p.PrimaryUnitID = pu_p.UnitID
@@ -1356,11 +1405,19 @@ async function deleteOrder(req, res, next) {
       if (isServiceItem(item.productname)) continue;
       const qty = parseFloat(item.quantity) || 0;
       const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
-      const qtyToRelease = convertUnitToInventory(qty, item.unitcode, item.primaryunitcode, sqmPerPiece, item.productname);
+      const qtyToRelease = convertUnitToInventory(
+        qty,
+        item.unitcode,
+        item.primaryunitcode,
+        sqmPerPiece,
+        item.productname,
+        parseFloat(item.qteparcolis) || 0,
+        parseFloat(item.qtecolisparpalette) || 0
+      );
 
       await client.query(`
             UPDATE Inventory SET QuantityReserved = GREATEST(0, QuantityReserved - $1)
-            WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED'
+            WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
         `, [qtyToRelease, item.productid, warehouseId]);
     }
 
