@@ -81,14 +81,14 @@ async function reconcile() {
     const reservations = {}; // { productID_warehouseID: totalQuantity }
 
     for (const item of itemsRes.rows) {
-      const sqmPerPiece = parseSqmPerPiece(item.size || item.ProductName);
+      const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
       const convertedQty = convertUnitToInventory(
-        item.Quantity,
-        item.UnitCode,
-        item.PrimaryUnitCode,
+        item.quantity,
+        item.unitcode,
+        item.primaryunitcode,
         sqmPerPiece,
-        parseFloat(item.QteParColis) || 0,
-        parseFloat(item.QteColisParPalette) || 0
+        parseFloat(item.qteparcolis) || 0,
+        parseFloat(item.qtecolisparpalette) || 0
       );
 
       const key = `${item.productid}_${item.warehouseid || 1}`;
