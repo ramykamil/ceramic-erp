@@ -266,6 +266,20 @@ function POSContent() {
   const ticketRef = useRef<any>(null);
   const isCreatingManual = useRef(false);
 
+  // --- Server-side search state (bandwidth optimization) ---
+  const [searchResults, setSearchResults] = useState<Product[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const searchTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const [customerSearchResults, setCustomerSearchResults] = useState<Customer[]>([]);
+  const [isSearchingCustomer, setIsSearchingCustomer] = useState(false);
+  const customerSearchTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const [browserSearchResults, setBrowserSearchResults] = useState<Product[]>([]);
+  const [isSearchingBrowser, setIsSearchingBrowser] = useState(false);
+  const browserSearchTimerRef = useRef<NodeJS.Timeout | null>(null);
+  // --- End server-side search state ---
+
   const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
   const [newCustomerName, setNewCustomerName] = useState('');
   const [newCustomerType, setNewCustomerType] = useState<'RETAIL' | 'WHOLESALE'>('WHOLESALE');
@@ -287,13 +301,18 @@ function POSContent() {
   const selectedCustomer = useMemo(() => customers.find(c => c.customerid === selectedCustomerId), [selectedCustomerId, customers]);
 
   const filteredBrowserProducts = useMemo(() => {
+    // If user is searching in browser modal and server results are available, use those
+    if (browserSearch && browserSearch.length >= 2 && browserSearchResults.length > 0) {
+      return browserSearchResults;
+    }
+    // Otherwise filter the pre-loaded 200 products (instant browsing)
     return products.filter(p => 
       !browserSearch || 
       p.productname.toLowerCase().includes(browserSearch.toLowerCase()) || 
       p.productcode.toLowerCase().includes(browserSearch.toLowerCase()) || 
       p.famille?.toLowerCase().includes(browserSearch.toLowerCase())
     ).slice(0, 100);
-  }, [products, browserSearch]);
+  }, [products, browserSearch, browserSearchResults]);
 
   const { 
     selectedIndex, 
@@ -416,7 +435,7 @@ function POSContent() {
     const init = async () => {
       try {
         const [cust, prod, driv, veh, unit, settings, brandsRes] = await Promise.all([
-          api.getCustomers({ limit: 5000 }), api.getProducts({ limit: 5000 }),
+          api.getCustomers({ limit: 200 }), api.getProducts({ limit: 200 }),
           api.getDrivers(), api.getVehicles(), api.getUnits(), api.getSettings(), api.getBrands()
         ]);
         if (cust.success) setCustomers(cust.data as Customer[]);
@@ -621,13 +640,56 @@ function POSContent() {
   const totalNet = totalHT + Number(deliveryCost) - Number(discount) + Number(timber);
   const reste = totalNet - payment;
 
-  const filteredProducts = searchQuery.length > 1 ? products.filter(p =>
-    p.productname?.toLowerCase().includes(searchQuery.toLowerCase()) || p.productcode?.toLowerCase().includes(searchQuery.toLowerCase()) || p.brandname?.toLowerCase().includes(searchQuery.toLowerCase())
-  ).slice(0, 50) : [];
+  // --- Server-side product search with debounce ---
+  useEffect(() => {
+    if (searchQuery.length < 2) { setSearchResults([]); return; }
+    if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
+    searchTimerRef.current = setTimeout(async () => {
+      setIsSearching(true);
+      try {
+        const res = await api.getProducts({ search: searchQuery, limit: 50 });
+        if (res.success) setSearchResults(res.data as Product[]);
+      } catch (e) { console.error(e); }
+      setIsSearching(false);
+    }, 300);
+    return () => { if (searchTimerRef.current) clearTimeout(searchTimerRef.current); };
+  }, [searchQuery]);
 
-  const filteredCustomers = customerSearchQuery.length > 1 ? customers.filter(c =>
-    c.customertype !== 'RETAIL' && (c.customername?.toLowerCase().includes(customerSearchQuery.toLowerCase()))
-  ).slice(0, 30) : [];
+  const filteredProducts = searchResults;
+
+  // --- Server-side customer search with debounce ---
+  useEffect(() => {
+    if (customerSearchQuery.length < 2) { setCustomerSearchResults([]); return; }
+    if (customerSearchTimerRef.current) clearTimeout(customerSearchTimerRef.current);
+    customerSearchTimerRef.current = setTimeout(async () => {
+      setIsSearchingCustomer(true);
+      try {
+        const res = await api.getCustomers({ search: customerSearchQuery });
+        if (res.success) setCustomerSearchResults(
+          (res.data as Customer[]).filter(c => c.customertype !== 'RETAIL').slice(0, 30)
+        );
+      } catch (e) { console.error(e); }
+      setIsSearchingCustomer(false);
+    }, 300);
+    return () => { if (customerSearchTimerRef.current) clearTimeout(customerSearchTimerRef.current); };
+  }, [customerSearchQuery]);
+
+  const filteredCustomers = customerSearchResults;
+
+  // --- Server-side browser modal search with debounce ---
+  useEffect(() => {
+    if (!browserSearch || browserSearch.length < 2) { setBrowserSearchResults([]); return; }
+    if (browserSearchTimerRef.current) clearTimeout(browserSearchTimerRef.current);
+    browserSearchTimerRef.current = setTimeout(async () => {
+      setIsSearchingBrowser(true);
+      try {
+        const res = await api.getProducts({ search: browserSearch, limit: 100 });
+        if (res.success) setBrowserSearchResults(res.data as Product[]);
+      } catch (e) { console.error(e); }
+      setIsSearchingBrowser(false);
+    }, 300);
+    return () => { if (browserSearchTimerRef.current) clearTimeout(browserSearchTimerRef.current); };
+  }, [browserSearch]);
 
   const handleCreateCustomer = async () => {
     setIsCreatingCustomer(true);
@@ -758,7 +820,7 @@ function POSContent() {
                     {customerSearchQuery.length > 1 && filteredCustomers.length > 0 && (
                       <div className="absolute top-full inset-x-0 mt-1 bg-white border shadow-2xl rounded-xl z-50 max-h-48 overflow-y-auto ring-4 ring-black/5">
                         {filteredCustomers.map(c => (
-                          <div key={c.customerid} onClick={() => { setSelectedCustomerId(c.customerid); setCustomerSearchQuery(''); }} className="p-3 hover:bg-slate-50 cursor-pointer border-b last:border-0 transition-colors flex justify-between items-center">
+                          <div key={c.customerid} onClick={() => { setSelectedCustomerId(c.customerid); setCustomerSearchQuery(''); setCustomers(prev => prev.find(x => x.customerid === c.customerid) ? prev : [...prev, c]); }} className="p-3 hover:bg-slate-50 cursor-pointer border-b last:border-0 transition-colors flex justify-between items-center">
                             <div>
                                <div className="text-sm font-bold text-slate-800">{c.customername}</div>
                                <div className="text-[10px] text-slate-500 font-bold tracking-wider uppercase">Solde: {formatCurrency(c.currentbalance)}</div>
@@ -804,7 +866,13 @@ function POSContent() {
                   className="w-full p-1.5 pl-10 border-2 border-slate-200 rounded-2xl bg-slate-50 shadow-[inner_0_2px_4px_rgba(0,0,0,0.02)] focus:border-brand-primary/40 focus:bg-white transition-all font-bold text-sm"
                 />
                 <div className="absolute left-3.5 top-2.5 text-slate-400">🔍</div>
-                {searchQuery.length > 2 && filteredProducts.length > 0 && (
+                {searchQuery.length > 2 && isSearching && (
+                  <div className="absolute top-full left-0 mt-1 min-w-full lg:min-w-[500px] xl:min-w-[600px] bg-white border shadow-2xl rounded-2xl z-[60] p-6 ring-8 ring-black/5 animate-in fade-in slide-in-from-top-2 duration-200 text-center">
+                    <div className="inline-block w-5 h-5 border-2 border-slate-300 border-t-brand-primary rounded-full animate-spin"></div>
+                    <span className="ml-2 text-sm text-slate-400">Recherche...</span>
+                  </div>
+                )}
+                {searchQuery.length > 2 && !isSearching && filteredProducts.length > 0 && (
                   <div className="absolute top-full left-0 mt-1 min-w-full lg:min-w-[500px] xl:min-w-[600px] bg-white border shadow-2xl rounded-2xl z-[60] max-h-[60vh] overflow-y-auto ring-8 ring-black/5 animate-in fade-in slide-in-from-top-2 duration-200 custom-scrollbar">
                     {filteredProducts.map(p => (
                       <div key={p.productid} onClick={() => addToCart(p)} className="p-3 hover:bg-red-50 cursor-pointer flex items-center justify-between border-b last:border-0 border-slate-100">
