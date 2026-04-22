@@ -488,8 +488,24 @@ function POSContent() {
           const res = await api.getOrder(Number(editOrderId));
           if (res.success && res.data) {
             const order = res.data as any;
+
+            // Fetch any products not in the pre-loaded batch so we have their stock data
+            const missingIds = order.items
+              .map((item: any) => Number(item.productid))
+              .filter((id: number) => !products.find(x => Number(x.productid) === id));
+            
+            let allProducts = products;
+            if (missingIds.length > 0) {
+              try {
+                const missingRes = await api.getProducts({ ids: missingIds.join(','), limit: missingIds.length });
+                if (missingRes.success && missingRes.data) {
+                  allProducts = [...products, ...(missingRes.data as Product[])];
+                }
+              } catch (e) { console.error('Failed to fetch missing products:', e); }
+            }
+
             const items: OrderItem[] = order.items.map((item: any) => {
-              const p = products.find(x => Number(x.productid) === Number(item.productid));
+              const p = allProducts.find(x => Number(x.productid) === Number(item.productid));
               // Use backend item data as primary source (backend joins Products + Brands tables),
               // fall back to pre-loaded product array only if backend data is missing.
               const rawPiecesPerColis = parseFloat(item.qteparcolis) || p?.derivedpiecespercolis || 0;
