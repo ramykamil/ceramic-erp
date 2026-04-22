@@ -490,28 +490,33 @@ function POSContent() {
             const order = res.data as any;
             const items: OrderItem[] = order.items.map((item: any) => {
               const p = products.find(x => Number(x.productid) === Number(item.productid));
-              const { piecesPerCarton, sqmPerPiece } = normalizePackaging(item.productname, p?.derivedpiecespercolis || 0, parseSqmPerPiece(item.productname));
+              // Use backend item data as primary source (backend joins Products + Brands tables),
+              // fall back to pre-loaded product array only if backend data is missing.
+              const rawPiecesPerColis = parseFloat(item.qteparcolis) || p?.derivedpiecespercolis || 0;
+              const rawColisPerPalette = parseFloat(item.qtecolisparpalette) || p?.derivedcolisperpalette || 0;
+              const { piecesPerCarton, sqmPerPiece } = normalizePackaging(item.productname, rawPiecesPerColis, parseSqmPerPiece(item.productname));
               const currentUnit = units.find(u => u.unitid === item.unitid)?.unitcode || 'PCS';
 
               let palettes = Number(item.palletcount) || 0;
               let cartons = Number(item.coliscount) || 0;
 
               // SELF-HEALING: If counts are zero in DB but we have packaging data, recalculate them
-              if (palettes === 0 && cartons === 0 && (piecesPerCarton > 0 || (p?.derivedcolisperpalette || 0) > 0)) {
+              if (palettes === 0 && cartons === 0 && (piecesPerCarton > 0 || rawColisPerPalette > 0)) {
                 let pieces = Number(item.quantity);
                 if (currentUnit === 'SQM' && sqmPerPiece > 0) pieces = Number(item.quantity) / sqmPerPiece;
                 else if ((currentUnit === 'CARTON' || currentUnit === 'CRT') && piecesPerCarton > 0) pieces = Number(item.quantity) * piecesPerCarton;
                 cartons = Number((piecesPerCarton > 0 ? pieces / piecesPerCarton : pieces).toFixed(2));
-                palettes = Number(((p?.derivedcolisperpalette || 0) > 0 ? cartons / (p?.derivedcolisperpalette || 0) : 0).toFixed(2));
+                palettes = Number((rawColisPerPalette > 0 ? cartons / rawColisPerPalette : 0).toFixed(2));
               }
 
               return {
                 rowId: crypto.randomUUID(), productId: Number(item.productid), productCode: item.productcode, productName: item.productname,
-                brandName: p?.famille || p?.brandname || '', stockQty: p?.totalqty || 0, stockPalettes: p?.nbpalette || 0, stockCartons: p?.nbcolis || 0,
-                piecesPerCarton, cartonsPerPalette: p?.derivedcolisperpalette || 0, sqmPerPiece,
+                brandName: item.brandname || p?.famille || p?.brandname || '', 
+                stockQty: p?.totalqty || 0, stockPalettes: p?.nbpalette || 0, stockCartons: p?.nbcolis || 0,
+                piecesPerCarton, cartonsPerPalette: rawColisPerPalette, sqmPerPiece,
                 palettes, cartons, quantity: Number(item.quantity),
                 unitId: item.unitid, unitPrice: Number(item.unitprice), lineTotal: Number(item.linetotal),
-                purchasePrice: Number(p?.prixachat) || 0
+                purchasePrice: Number(item.costprice) || Number(p?.prixachat) || 0
               };
             });
             setCart(items);
