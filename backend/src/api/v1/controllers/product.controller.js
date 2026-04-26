@@ -752,15 +752,20 @@ async function getProductPurchaseHistory(req, res, next) {
       }
     }
 
+    // Track whether qteparcolis was originally a decimal (m²/carton) vs integer (pcs/carton)
+    const wasQteParColisDecimal = qteParColis > 0 && qteParColis % 1 !== 0;
+
     const ordersWithPackaging = purchaseResult.rows.map(row => {
       const qty = parseFloat(row.qty || 0);
       let cartons = 0;
       let pallets = 0;
 
       if (piecesPerCarton > 0) {
-        // Convert qty to pieces first (if unit is SQM)
+        // Only convert qty from m² to pieces when qteparcolis was originally a decimal
+        // (meaning it was in m²/carton and piecesPerCarton was normalized above).
+        // When qteparcolis is already an integer (pcs/carton), qty is already in pieces.
         let pieces = qty;
-        if (sqmPerPiece > 0) {
+        if (sqmPerPiece > 0 && wasQteParColisDecimal) {
           pieces = qty / sqmPerPiece;
         }
         cartons = parseFloat((pieces / piecesPerCarton).toFixed(2));
