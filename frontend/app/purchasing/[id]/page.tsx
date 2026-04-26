@@ -99,11 +99,13 @@ export default function PurchaseOrderDetailPage() {
         let piecesPerCarton = Number(item.qteparcolis) || 0;
         const cartonsPerPalette = Number(item.qtecolisparpalette) || 0;
 
-        // Smart Packaging Detection (Match Edit Page Logic)
-        const sqmPerPiece = parseSqmPerPiece(item.productname);
+        // Smart Packaging Detection (Match Creation Page Logic)
+        let sqmPerPiece = parseSqmPerPiece(item.productname);
         if (sqmPerPiece > 0 && piecesPerCarton > 0 && piecesPerCarton % 1 !== 0) {
           const calculatedPieces = Math.round(piecesPerCarton / sqmPerPiece);
           if (Math.abs(calculatedPieces * sqmPerPiece - piecesPerCarton) < 0.05) {
+            // FIX: Use the effective sqmPerPiece derived from packaging (matches creation page)
+            sqmPerPiece = piecesPerCarton / calculatedPieces;
             piecesPerCarton = calculatedPieces;
           }
         }
@@ -267,18 +269,19 @@ export default function PurchaseOrderDetailPage() {
                   let piecesPerCarton = Number(item.qteparcolis) || 0;
                   const cartonsPerPalette = Number(item.qtecolisparpalette) || 0;
 
-                  // Smart Packaging Detection (Match Edit Page Logic)
-                  const sqmPerPiece = parseSqmPerPiece(item.productname);
+                  // Smart Packaging Detection (Match Creation Page Logic)
+                  let sqmPerPiece = parseSqmPerPiece(item.productname);
                   if (sqmPerPiece > 0 && piecesPerCarton > 0 && piecesPerCarton % 1 !== 0) {
                     const calculatedPieces = Math.round(piecesPerCarton / sqmPerPiece);
                     if (Math.abs(calculatedPieces * sqmPerPiece - piecesPerCarton) < 0.05) {
+                      // FIX: Use the effective sqmPerPiece derived from packaging (matches creation page)
+                      sqmPerPiece = piecesPerCarton / calculatedPieces;
                       piecesPerCarton = calculatedPieces;
                     }
                   }
 
                   // Calculate pieces, cartons, palettes correctly based on unit
                   let pieces = qty;
-                  // sqmPerPiece already defined above
 
                   if (item.unitcode === 'SQM' && sqmPerPiece > 0) {
                     pieces = qty / sqmPerPiece;

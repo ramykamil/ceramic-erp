@@ -741,13 +741,16 @@ async function getProductPurchaseHistory(req, res, next) {
       return 0;
     };
 
-    const sqmPerPiece = parseSqmPerPiece(product.productname);
+    let sqmPerPiece = parseSqmPerPiece(product.productname);
     let piecesPerCarton = qteParColis;
 
     // If qteparcolis is a decimal (e.g. 1.42 = m²/ctn), normalize to integer pieces
     if (sqmPerPiece > 0 && piecesPerCarton > 0 && piecesPerCarton % 1 !== 0) {
       const calculatedPieces = Math.round(piecesPerCarton / sqmPerPiece);
       if (Math.abs(calculatedPieces * sqmPerPiece - piecesPerCarton) < 0.05) {
+        // FIX: Use the effective sqmPerPiece derived from packaging (matches creation page)
+        // This ensures SQM→pieces conversion produces the same values as when the PO was created
+        sqmPerPiece = qteParColis / calculatedPieces;
         piecesPerCarton = calculatedPieces;
       }
     }
