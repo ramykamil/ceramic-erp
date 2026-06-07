@@ -1319,6 +1319,33 @@ class ApiClient {
       body: JSON.stringify(data),
     });
   }
+
+  // === BI Analytics & Intelligence ===
+  async getDemandForecast(productId: number, daysBack: number = 30) {
+    return this.request(`/bi/forecast/${productId}?daysBack=${daysBack}`);
+  }
+
+  async getLowStockPredictions(daysAhead: number = 7, daysBack: number = 30) {
+    return this.request(`/bi/low-stock?daysAhead=${daysAhead}&daysBack=${daysBack}`);
+  }
+
+  async getTrendingProducts(daysBack: number = 30) {
+    return this.request(`/bi/trending?daysBack=${daysBack}`);
+  }
+
+  async getProfitMarginAnalysis(startDate?: string, endDate?: string) {
+    const params = new URLSearchParams();
+    if (startDate) params.append('startDate', startDate);
+    if (endDate) params.append('endDate', endDate);
+    return this.request(`/bi/profit-analysis?${params.toString()}`);
+  }
+
+  async sendWhatsappNotification(data: { phone: string; type: 'INVOICE' | 'OVERDUE'; invoiceNumber?: string; amount?: number; customerName?: string; balance?: number }) {
+    return this.request('/bi/notify-whatsapp', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
 }
 
 const api = new ApiClient(API_BASE_URL);

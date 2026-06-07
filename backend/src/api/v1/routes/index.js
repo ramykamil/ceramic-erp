@@ -275,6 +275,14 @@ router.get('/settings/audit', authenticateToken, requireRole(['ADMIN']), auditCo
 // --- Salespersons List (for filtering) - accessible by ADMIN, MANAGER, SALES_WHOLESALE ---
 router.get('/users/salespersons', authenticateToken, requireRole(['ADMIN', 'MANAGER', 'SALES_WHOLESALE']), settingsController.getUsers);
 
+// --- Business Intelligence (BI) & WhatsApp Notifications ---
+const biController = require('../controllers/bi.controller');
+router.get('/bi/forecast/:productId', authenticateToken, biController.getDemandForecast);
+router.get('/bi/low-stock', authenticateToken, biController.getLowStockPredictions);
+router.get('/bi/trending', authenticateToken, biController.getTrendingProducts);
+router.get('/bi/profit-analysis', authenticateToken, biController.getProfitMarginAnalysis);
+router.post('/bi/notify-whatsapp', authenticateToken, biController.sendWhatsappNotification);
+
 module.exports = router;
 
 

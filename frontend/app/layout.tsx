@@ -13,7 +13,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr">
-      <body className="min-h-screen text-slate-900 font-sans flex flex-col">
+      <body className="min-h-screen font-sans flex flex-col">
         <ToastProvider>
           {/* Global Keyboard Shortcuts (ESC to go back) */}
           <GlobalKeyboardShortcuts />

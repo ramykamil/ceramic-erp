@@ -3,36 +3,104 @@
 @import "tailwindcss/utilities";
 
 /* ============================================
-   ALLAOUA CERAM - Brand Color System
-   Primary: Red (#DC2626)
-   Secondary: Black (#1F2937)
-   Background: White/Light Gray (#F8FAFC)
+   ALLAOUA CERAM — Premium Dark Glassmorphism Design System
+   Primary: Sky Blue (#0284C7)
+   Accent: Teal (#14B8A6)
+   Surface: Deep Navy (#0B0F19)
    ============================================ */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 :root {
-  /* Brand Colors - Blue Theme */
+  /* Brand Colors */
   --brand-primary: #0284C7;
   --brand-primary-dark: #0369A1;
-  --brand-primary-light: #E0F2FE;
-  --brand-secondary: #1F2937;
-  --brand-secondary-light: #374151;
-  --brand-accent: #075985;
+  --brand-primary-light: #38BDF8;
+  --brand-secondary: #0F172A;
+  --brand-secondary-light: #1E293B;
+  --brand-accent: #14B8A6;
+  --brand-accent-light: #2DD4BF;
 
-  /* UI Colors */
-  --bg-primary: #F8FAFC;
-  --bg-secondary: #FFFFFF;
-  --text-primary: #1F2937;
-  --text-secondary: #6B7280;
-  --border-color: #E5E7EB;
+  /* Surface Colors */
+  --bg-primary: #0B0F19;
+  --bg-secondary: rgba(15, 23, 42, 0.6);
+  --bg-card: rgba(15, 23, 42, 0.45);
+  --bg-elevated: rgba(30, 41, 59, 0.5);
+
+  /* Text Colors */
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+
+  /* Border & Shadow */
+  --border-color: rgba(255, 255, 255, 0.07);
+  --border-hover: rgba(2, 132, 199, 0.35);
+  --glow-primary: rgba(2, 132, 199, 0.25);
+  --glow-accent: rgba(20, 184, 166, 0.2);
 }
 
-/* Global Body Background with Logo Pattern */
+/* ============================================
+   Global Foundations
+   ============================================ */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background-color: #F8FAFC;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg-primary);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(2, 132, 199, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(20, 184, 166, 0.06) 0%, transparent 50%);
+  background-attachment: fixed;
+  color: var(--text-primary);
   position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Main centered large watermark */
+/* ============================================
+   Glassmorphism Core Utilities
+   ============================================ */
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  border-color: var(--border-hover);
+  box-shadow:
+    0 12px 48px rgba(2, 132, 199, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transform: translateY(-3px);
+}
+
+.glass-navbar {
+  background: rgba(11, 15, 25, 0.75);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.glass-modal {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(32px) saturate(150%);
+  -webkit-backdrop-filter: blur(32px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.25rem;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   Watermark Background
+   ============================================ */
 body::before {
   content: '';
   position: fixed;
@@ -47,12 +115,11 @@ body::before {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.04;
+  opacity: 0.025;
   pointer-events: none;
   z-index: -1;
 }
 
-/* Subtle diagonal pattern overlay */
 body::after {
   content: '';
   position: fixed;
@@ -66,91 +133,124 @@ body::after {
   background-size: 200px;
   background-repeat: repeat;
   transform: rotate(-15deg);
-  opacity: 0.025;
+  opacity: 0.012;
   pointer-events: none;
   z-index: -2;
 }
 
-/* Custom Brand Utilities */
-.bg-brand-primary {
-  background-color: var(--brand-primary);
-}
+/* ============================================
+   Brand Color Utilities
+   ============================================ */
+.bg-brand-primary { background-color: var(--brand-primary); }
+.bg-brand-primary-light { background-color: var(--brand-primary-light); }
+.text-brand-primary { color: var(--brand-primary); }
+.border-brand-primary { border-color: var(--brand-primary); }
 
-.bg-brand-primary-light {
-  background-color: var(--brand-primary-light);
-}
-
-.text-brand-primary {
-  color: var(--brand-primary);
-}
-
-.border-brand-primary {
-  border-color: var(--brand-primary);
-}
-
-/* Brand Button Styles */
+/* ============================================
+   Button System
+   ============================================ */
 .btn-brand-primary {
-  background-color: var(--brand-primary);
+  background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
   color: white;
   padding: 0.625rem 1.25rem;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   font-weight: 600;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 14px var(--glow-primary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .btn-brand-primary:hover {
-  background-color: var(--brand-primary-dark);
-  box-shadow: 0 4px 6px rgba(2, 132, 199, 0.3);
-  transform: translateY(-1px);
+  box-shadow: 0 8px 24px var(--glow-primary);
+  transform: translateY(-2px);
+  filter: brightness(1.1);
 }
 
-/* Glassy Blue Utility */
 .btn-glassy {
-  background: rgba(2, 132, 199, 0.85) !important;
+  background: rgba(2, 132, 199, 0.8) !important;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   color: white !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  box-shadow: 0 4px 15px rgba(2, 132, 199, 0.2) !important;
+  box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3) !important;
+  border-radius: 0.75rem;
 }
 
 .btn-glassy:hover {
   background: rgba(2, 132, 199, 1) !important;
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 8px 25px rgba(2, 132, 199, 0.4) !important;
-  border-color: rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 8px 30px rgba(2, 132, 199, 0.5) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 .btn-brand-secondary {
   background-color: var(--brand-secondary);
   color: white;
   padding: 0.625rem 1.25rem;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   font-weight: 600;
-  transition: all 0.2s ease;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
 }
 
 .btn-brand-secondary:hover {
   background-color: var(--brand-secondary-light);
+  border-color: var(--border-hover);
 }
 
-/* Brand Card Style */
+/* ============================================
+   Card Variants
+   ============================================ */
 .brand-card {
-  background: white;
-  border-radius: 0.75rem;
+  background: var(--bg-card);
+  border-radius: 1rem;
   border: 1px solid var(--border-color);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 }
 
 .brand-card:hover {
-  border-color: var(--brand-primary);
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+  border-color: var(--border-hover);
+  box-shadow: 0 8px 32px var(--glow-primary);
 }
 
-/* Brand Header Gradient */
+/* Stat Cards with gradient top strip */
+.stat-card {
+  position: relative;
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--brand-primary), var(--brand-accent));
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.stat-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+}
+
+.stat-card:hover::before {
+  opacity: 1;
+}
+
+/* ============================================
+   Brand Header & Section
+   ============================================ */
 .brand-header {
   background: linear-gradient(135deg, var(--brand-secondary) 0%, #374151 100%);
   color: white;
@@ -161,59 +261,113 @@ body::after {
   color: white;
 }
 
-/* Glassy Container - Updated for brand */
-.glassy-container {
-  background: rgba(255, 255, 255, 0.85) !important;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 0.75rem !important;
-  border: 1px solid rgba(2, 132, 199, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1) !important;
-}
-
-/* Brand Section Title */
 .section-title {
   font-weight: 700;
-  color: var(--brand-secondary);
+  color: var(--text-primary);
   padding-left: 0.75rem;
   border-left: 4px solid var(--brand-primary);
 }
 
-/* Brand Table Header */
+/* ============================================
+   Table Styles
+   ============================================ */
 .brand-table-header {
   background: linear-gradient(135deg, var(--brand-secondary) 0%, #374151 100%);
   color: white;
 }
 
-/* Brand Badge */
+/* Glassy Container */
+.glassy-container {
+  background: var(--bg-card) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 1rem !important;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* ============================================
+   Badges
+   ============================================ */
 .brand-badge {
-  background-color: var(--brand-primary);
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark));
   color: white;
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
   font-size: 0.75rem;
   font-weight: 600;
+  box-shadow: 0 2px 8px var(--glow-primary);
 }
 
 .brand-badge-outline {
-  background-color: transparent;
-  color: var(--brand-primary);
-  border: 1px solid var(--brand-primary);
+  background: transparent;
+  color: var(--brand-primary-light);
+  border: 1px solid rgba(2, 132, 199, 0.4);
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
   font-size: 0.75rem;
   font-weight: 600;
 }
 
-/* Mobile-specific utilities */
-@media (max-width: 768px) {
-  .hide-on-mobile {
-    display: none !important;
-  }
+/* ============================================
+   Animations & Keyframes
+   ============================================ */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
 
-  .show-on-mobile {
-    display: block !important;
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.4); }
+  50% { box-shadow: 0 0 20px 4px rgba(2, 132, 199, 0.15); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.06) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out both;
+}
+
+/* Stagger delays for card entrance */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+
+/* ============================================
+   Mobile Utilities
+   ============================================ */
+@media (max-width: 768px) {
+  .hide-on-mobile { display: none !important; }
+  .show-on-mobile { display: block !important; }
 
   .mobile-fullscreen-modal {
     position: fixed !important;
@@ -226,71 +380,68 @@ body::after {
     margin: 0 !important;
   }
 
-  .mobile-bottom-padding {
-    padding-bottom: 10rem !important;
-  }
-
-  .mobile-touch-target {
-    min-height: 44px;
-    min-width: 44px;
-  }
+  .mobile-bottom-padding { padding-bottom: 10rem !important; }
+  .mobile-touch-target { min-height: 44px; min-width: 44px; }
 }
 
-/* Desktop-only elements */
 @media (min-width: 769px) {
-  .show-on-mobile {
-    display: none !important;
-  }
+  .show-on-mobile { display: none !important; }
 }
 
-/* Print-specific styles */
+/* ============================================
+   Print Styles
+   ============================================ */
 @media print {
-  .no-print {
-    display: none !important;
-  }
-
-  .print-only {
-    display: block !important;
-  }
+  .no-print { display: none !important; }
+  .print-only { display: block !important; }
 }
 
-/* Input Focus States - Brand Color */
+/* ============================================
+   Form Focus States
+   ============================================ */
 input:focus,
 select:focus,
 textarea:focus {
   outline: none;
   border-color: var(--brand-primary) !important;
-  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15) !important;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2) !important;
 }
 
-/* Link Hover - Brand Color */
+/* Links */
 a:hover {
-  color: var(--brand-primary);
+  color: var(--brand-primary-light);
 }
 
-/* Scrollbar Styling */
+/* ============================================
+   Custom Scrollbar (Dark)
+   ============================================ */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
+  background: rgba(15, 23, 42, 0.4);
+  border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--brand-primary);
-  border-radius: 4px;
+  background: linear-gradient(180deg, var(--brand-primary), var(--brand-primary-dark));
+  border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--brand-primary-dark);
+  background: var(--brand-primary-light);
+}
+
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
 }
 
 /* ============================================
    POS Zero-Scroll Layout
-   Dynamically scales rows to fit screen
    ============================================ */
 .pos-zero-scroll-container tbody {
   display: flex !important;
@@ -301,7 +452,7 @@ a:hover {
 .pos-zero-scroll-container tbody tr {
   display: flex !important;
   flex: 1 1 0% !important;
-  min-height: 2.25rem !important; /* Slightly more compact */
+  min-height: 2.25rem !important;
   max-height: 4.5rem !important;
   align-items: center !important;
 }
@@ -326,34 +477,26 @@ a:hover {
   font-size: 0.8rem !important;
 }
 
-.pos-row-compact input, 
+.pos-row-compact input,
 .pos-row-compact select {
   height: 1.875rem !important;
   font-size: 0.75rem !important;
 }
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-}
 /* ============================================
-   Table Navigation & Selection Styles
+   Table Navigation & Selection
    ============================================ */
 .table-row-selected {
-  background-color: #CBD5E1 !important; /* slate-300 */
-  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.15) !important;
+  background-color: rgba(2, 132, 199, 0.15) !important;
+  box-shadow: inset 0 2px 12px rgba(2, 132, 199, 0.1) !important;
   font-weight: 700 !important;
   position: relative !important;
   z-index: 10 !important;
-  outline: 2px solid #94A3B8 !important; /* slate-400 */
+  outline: 2px solid rgba(2, 132, 199, 0.4) !important;
   outline-offset: -2px !important;
 }
 
 .table-row-selected td {
   background-color: transparent !important;
-  color: #1F2937 !important; /* brand-secondary */
+  color: var(--text-primary) !important;
 }
