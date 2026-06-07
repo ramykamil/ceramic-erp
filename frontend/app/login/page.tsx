@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import api from '@/lib/api';
 
 export default function LoginPage() {
@@ -74,15 +73,8 @@ export default function LoginPage() {
 
           {/* Logo */}
           <div className="text-center mb-8">
-            <div className="relative w-28 h-28 mx-auto mb-5">
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-sky-500/15 to-teal-500/10 animate-pulse-glow" />
-              <Image
-                src="/logo-allaoua-ceram.png"
-                alt="Allaoua Ceram"
-                fill
-                className="object-contain relative z-10 drop-shadow-lg"
-                priority
-              />
+            <div className="w-24 h-24 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-sky-500/20 to-teal-500/20 flex items-center justify-center border border-white/[0.06]">
+              <span className="text-5xl">🏗️</span>
             </div>
             <h1 className="text-2xl font-bold text-white mb-1">Bienvenue</h1>
             <p className="text-slate-400 text-sm">Connectez-vous à votre espace de gestion</p>
@@ -152,7 +144,7 @@ export default function LoginPage() {
 
           {/* Footer */}
           <div className="mt-8 pt-6 border-t border-white/5 text-center text-xs text-slate-500">
-            <p className="font-medium text-slate-400 mb-1">Allaoua Ceram - Système de Gestion</p>
+            <p className="font-medium text-slate-400 mb-1">Ceramic ERP — Système de Gestion</p>
             <p className="mb-2">© 2025 Développé par <span className="font-medium text-slate-300">Ramy Kamil Mecheri</span>. Tous droits réservés.</p>
             <p>
               <a href="mailto:ramy.mecherim2@gmail.com" className="hover:text-sky-400 transition-colors">ramy.mecherim2@gmail.com</a>

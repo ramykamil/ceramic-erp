@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { formatDate } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
@@ -283,15 +282,8 @@ export default function DashboardHomePage() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             {/* Logo et Titre */}
             <div className="flex items-center gap-4">
-              <div className="relative w-16 h-16 md:w-20 md:h-20 flex-shrink-0">
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-sky-500/20 to-teal-500/10 animate-pulse-glow" />
-                <Image
-                  src="/logo-allaoua-ceram.png"
-                  alt="Allaoua Ceram"
-                  fill
-                  className="object-contain relative z-10 drop-shadow-lg"
-                  priority
-                />
+              <div className="relative w-16 h-16 md:w-20 md:h-20 flex-shrink-0 rounded-2xl bg-gradient-to-br from-sky-500/20 to-teal-500/20 flex items-center justify-center border border-white/[0.06]">
+                <span className="text-3xl md:text-4xl">🏗️</span>
               </div>
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold text-white">

@@ -104,38 +104,11 @@ body {
 body::before {
   content: '';
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 70vmin;
-  height: 70vmin;
-  max-width: 600px;
-  max-height: 600px;
-  background-image: url('/logo-allaoua-ceram.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.025;
+  inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(148, 163, 184, 0.04) 1px, transparent 0);
+  background-size: 40px 40px;
   pointer-events: none;
   z-index: -1;
-}
-
-body::after {
-  content: '';
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  right: -50%;
-  bottom: -50%;
-  width: 200%;
-  height: 200%;
-  background-image: url('/logo-allaoua-ceram.png');
-  background-size: 200px;
-  background-repeat: repeat;
-  transform: rotate(-15deg);
-  opacity: 0.012;
-  pointer-events: none;
-  z-index: -2;
 }
 
 /* ============================================
