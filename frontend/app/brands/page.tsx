@@ -64,11 +64,11 @@ function BrandModal({ isOpen, onClose, onSave, initialData, isSaving }: BrandMod
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm p-4">
-      <div className="w-full max-w-lg bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden transform transition-all">
+      <div className="w-full max-w-lg bg-slate-900/60 rounded-xl shadow-2xl border border-slate-100 overflow-hidden transform transition-all">
         <form onSubmit={handleSubmit}>
           {/* Header */}
-          <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
-            <h2 className="text-lg font-semibold text-slate-800">
+          <div className="px-6 py-4 border-b border-slate-100 bg-slate-900/40/50">
+            <h2 className="text-lg font-semibold text-slate-100">
               {isEditing ? 'Modifier la Marque' : 'Ajouter une Nouvelle Marque'}
             </h2>
           </div>
@@ -76,7 +76,7 @@ function BrandModal({ isOpen, onClose, onSave, initialData, isSaving }: BrandMod
           {/* Body */}
           <div className="p-6 space-y-5">
             <div>
-              <label htmlFor="brandname" className="block text-sm font-medium text-slate-700 mb-1.5">Nom de la Marque *</label>
+              <label htmlFor="brandname" className="block text-sm font-medium text-slate-200 mb-1.5">Nom de la Marque *</label>
               <input
                 type="text"
                 id="brandname"
@@ -84,25 +84,25 @@ function BrandModal({ isOpen, onClose, onSave, initialData, isSaving }: BrandMod
                 value={formData.brandname}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition shadow-sm"
+                className="w-full px-3 py-2 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 outline-none transition shadow-sm shadow-black/10"
                 placeholder="Ex: Ceramex"
               />
             </div>
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-slate-700 mb-1.5">Description (Optionnel)</label>
+              <label htmlFor="description" className="block text-sm font-medium text-slate-200 mb-1.5">Description (Optionnel)</label>
               <textarea
                 id="description"
                 name="description"
                 value={formData.description || ''}
                 onChange={handleChange}
                 rows={3}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition shadow-sm resize-none"
+                className="w-full px-3 py-2 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 outline-none transition shadow-sm shadow-black/10 resize-none"
                 placeholder="Description courte..."
               />
             </div>
 
             <div>
-              <label htmlFor="initialBalance" className="block text-sm font-medium text-slate-700 mb-1.5">Ancien Crédit (Dette Initiale)</label>
+              <label htmlFor="initialBalance" className="block text-sm font-medium text-slate-200 mb-1.5">Ancien Crédit (Dette Initiale)</label>
               <div className="relative">
                 <input
                   type="number"
@@ -111,7 +111,7 @@ function BrandModal({ isOpen, onClose, onSave, initialData, isSaving }: BrandMod
                   step="0.01"
                   value={formData.initialBalance || ''}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition shadow-sm pr-12 text-right font-mono"
+                  className="w-full px-3 py-2 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 outline-none transition shadow-sm shadow-black/10 pr-12 text-right font-mono"
                   placeholder="0.00"
                 />
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
@@ -121,16 +121,16 @@ function BrandModal({ isOpen, onClose, onSave, initialData, isSaving }: BrandMod
               <p className="text-xs text-slate-500 mt-1">Dette existante avant l'utilisation du système.</p>
             </div>
             {isEditing && (
-              <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
+              <div className="flex items-center gap-3 p-3 bg-slate-900/40 rounded-lg border border-slate-100">
                 <input
                   id="isactive"
                   name="isactive"
                   type="checkbox"
                   checked={formData.isactive}
                   onChange={handleChange}
-                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                  className="h-4 w-4 rounded border-white/[0.08] text-sky-400 focus:ring-sky-500/30 cursor-pointer"
                 />
-                <label htmlFor="isactive" className="text-sm font-medium text-slate-700 cursor-pointer select-none">
+                <label htmlFor="isactive" className="text-sm font-medium text-slate-200 cursor-pointer select-none">
                   Marque Active
                 </label>
               </div>
@@ -138,19 +138,19 @@ function BrandModal({ isOpen, onClose, onSave, initialData, isSaving }: BrandMod
           </div>
 
           {/* Footer */}
-          <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3">
+          <div className="px-6 py-4 bg-slate-900/40 border-t border-slate-100 flex justify-end gap-3">
             <button
               type="button"
               onClick={onClose}
               disabled={isSaving}
-              className="px-4 py-2 rounded-lg text-sm font-medium text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 transition shadow-sm disabled:opacity-50"
+              className="px-4 py-2 rounded-lg text-sm font-medium text-slate-200 bg-slate-900/60 border border-white/[0.08] hover:bg-slate-900/40 transition shadow-sm shadow-black/10 disabled:opacity-50"
             >
               Annuler
             </button>
             <button
               type="submit"
               disabled={isSaving}
-              className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition shadow-sm disabled:opacity-50 flex items-center gap-2"
+              className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 transition shadow-sm shadow-black/10 disabled:opacity-50 flex items-center gap-2"
             >
               {isSaving && <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
               {isSaving ? 'Sauvegarde...' : (isEditing ? 'Mettre à Jour' : 'Ajouter')}
@@ -176,7 +176,7 @@ export default function BrandsPage() {
 
   const getSortIcon = (key: string) => {
     if (sortConfig.key !== key) return <span className="opacity-30 ml-1">↕</span>;
-    return sortConfig.direction === 'asc' ? <span className="ml-1 text-blue-600">▲</span> : <span className="ml-1 text-blue-600">▼</span>;
+    return sortConfig.direction === 'asc' ? <span className="ml-1 text-sky-400">▲</span> : <span className="ml-1 text-sky-400">▼</span>;
   };
 
   useEffect(() => {
@@ -276,27 +276,27 @@ export default function BrandsPage() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800">
+    <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-900/40 text-slate-100">
       <div className="max-w-7xl mx-auto">
 
         {/* --- Header --- */}
         <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-slate-800">Gestion des Marques</h1>
+            <h1 className="text-3xl font-bold text-slate-100">Gestion des Marques</h1>
             <p className="text-slate-500 text-sm mt-1">Administrez le catalogue des marques et fournisseurs</p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
             <button
               onClick={handleOpenAddModal}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2"
+              className="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm shadow-black/10 flex items-center gap-2"
             >
               <span className="text-lg leading-none">+</span> Nouvelle Marque
             </button>
 
             <Link
               href="/"
-              className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2.5 rounded-lg text-sm font-medium transition shadow-sm flex items-center gap-2"
+              className="bg-slate-900/60 border border-white/[0.08] hover:bg-slate-900/40 text-slate-200 px-4 py-2.5 rounded-lg text-sm font-medium transition shadow-sm shadow-black/10 flex items-center gap-2"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
@@ -308,53 +308,53 @@ export default function BrandsPage() {
 
         {/* --- Error Display --- */}
         {apiError && !isModalOpen && (
-          <div className="mb-6 p-4 bg-red-50 text-red-700 border border-red-200 rounded-lg text-sm">
+          <div className="mb-6 p-4 bg-sky-500/10 text-sky-300 border border-sky-500/20 rounded-lg text-sm">
             <strong>Erreur:</strong> {apiError}
           </div>
         )}
 
         {/* --- Data Table Container --- */}
-        <div className="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+        <div className="bg-slate-900/60 rounded-xl overflow-hidden border border-white/[0.06] shadow-sm shadow-black/10">
           {isLoading ? (
             <div className="text-center py-20">
-              <div className="inline-block w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+              <div className="inline-block w-8 h-8 border-4 border-sky-500/20 border-t-blue-600 rounded-full animate-spin mb-4"></div>
               <p className="text-slate-500">Chargement des marques...</p>
             </div>
           ) : brands.length === 0 && !apiError ? (
             <div className="text-center py-20 text-slate-400">
               <p className="text-lg">Aucune marque trouvée.</p>
-              <button onClick={handleOpenAddModal} className="mt-2 text-blue-600 hover:underline text-sm">
+              <button onClick={handleOpenAddModal} className="mt-2 text-sky-400 hover:underline text-sm">
                 Ajouter votre première marque
               </button>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
-                <thead className="text-xs text-slate-500 uppercase bg-slate-50 font-semibold border-b border-slate-100">
+                <thead className="text-xs text-slate-500 uppercase bg-slate-900/40 font-semibold border-b border-slate-100">
                   <tr>
-                    <th scope="col" className="px-6 py-4 cursor-pointer hover:bg-slate-100" onClick={() => handleSort('brandid')}>ID {getSortIcon('brandid')}</th>
-                    <th scope="col" className="px-6 py-4 cursor-pointer hover:bg-slate-100" onClick={() => handleSort('brandname')}>Nom {getSortIcon('brandname')}</th>
-                    <th scope="col" className="px-6 py-4 text-right cursor-pointer hover:bg-slate-100" onClick={() => handleSort('initialbalance')}>Ancien Crédit {getSortIcon('initialbalance')}</th>
-                    <th scope="col" className="px-6 py-4 text-right cursor-pointer hover:bg-slate-100" onClick={() => handleSort('currentbalance')}>Solde Actuel {getSortIcon('currentbalance')}</th>
+                    <th scope="col" className="px-6 py-4 cursor-pointer hover:bg-slate-800/50" onClick={() => handleSort('brandid')}>ID {getSortIcon('brandid')}</th>
+                    <th scope="col" className="px-6 py-4 cursor-pointer hover:bg-slate-800/50" onClick={() => handleSort('brandname')}>Nom {getSortIcon('brandname')}</th>
+                    <th scope="col" className="px-6 py-4 text-right cursor-pointer hover:bg-slate-800/50" onClick={() => handleSort('initialbalance')}>Ancien Crédit {getSortIcon('initialbalance')}</th>
+                    <th scope="col" className="px-6 py-4 text-right cursor-pointer hover:bg-slate-800/50" onClick={() => handleSort('currentbalance')}>Solde Actuel {getSortIcon('currentbalance')}</th>
                     <th scope="col" className="px-6 py-4 text-center">Statut</th>
                     <th scope="col" className="px-6 py-4 text-center">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {sortedBrands.map((brand) => (
-                    <tr key={brand.brandid} className={`hover:bg-slate-50 transition-colors duration-150 ${!brand.isactive ? 'bg-slate-50/50' : ''}`}>
+                    <tr key={brand.brandid} className={`hover:bg-slate-900/40 transition-colors duration-150 ${!brand.isactive ? 'bg-slate-900/40/50' : ''}`}>
                       <td className="px-6 py-4 font-mono text-slate-500 text-xs">{brand.brandid}</td>
-                      <td className="px-6 py-4 font-medium text-slate-900">{brand.brandname}</td>
+                      <td className="px-6 py-4 font-medium text-white">{brand.brandname}</td>
                       <td className="px-6 py-4 text-right font-mono text-amber-600 text-xs">
                         {brand.initialbalance ? Number(brand.initialbalance).toLocaleString('fr-DZ', { style: 'currency', currency: 'DZD' }) : '—'}
                       </td>
-                      <td className="px-6 py-4 text-right font-bold text-slate-700 text-xs">
+                      <td className="px-6 py-4 text-right font-bold text-slate-200 text-xs">
                         {Number(brand.currentbalance || 0).toLocaleString('fr-DZ', { style: 'currency', currency: 'DZD' })}
                       </td>
                       <td className="px-6 py-4 text-center">
                         <span className={`px-2.5 py-1 rounded-full text-xs font-medium border ${brand.isactive
                           ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                          : 'bg-red-50 text-red-700 border-red-200'
+                          : 'bg-sky-500/10 text-sky-300 border-sky-500/20'
                           }`}>
                           {brand.isactive ? 'Actif' : 'Inactif'}
                         </span>
@@ -363,7 +363,7 @@ export default function BrandsPage() {
                         <div className="flex items-center justify-center gap-3">
                           <button
                             onClick={() => handleOpenEditModal(brand)}
-                            className="text-blue-600 hover:text-blue-800 font-medium text-xs transition"
+                            className="text-sky-400 hover:text-blue-800 font-medium text-xs transition"
                           >
                             Modifier
                           </button>
@@ -371,7 +371,7 @@ export default function BrandsPage() {
                           {brand.isactive ? (
                             <button
                               onClick={() => handleDeleteBrand(brand.brandid)}
-                              className="text-red-500 hover:text-red-700 font-medium text-xs transition"
+                              className="text-sky-400 hover:text-sky-300 font-medium text-xs transition"
                             >
                               Désactiver
                             </button>

@@ -65,7 +65,7 @@ export default function ReportsPage() {
 
     const getSortIcon = (config: any, key: string) => {
         if (config.key !== key) return <span className="opacity-30 ml-1 text-[10px]">↕</span>;
-        return config.direction === 'asc' ? <span className="ml-1 text-blue-600">▲</span> : <span className="ml-1 text-blue-600">▼</span>;
+        return config.direction === 'asc' ? <span className="ml-1 text-sky-400">▲</span> : <span className="ml-1 text-sky-400">▼</span>;
     };
 
     const loadData = async () => {
@@ -108,23 +108,23 @@ export default function ReportsPage() {
     return (
         <div 
             ref={containerRef}
-            className="min-h-screen bg-slate-50 p-3 sm:p-4 lg:p-6 text-slate-800 outline-none"
+            className="min-h-screen bg-slate-900/40 p-3 sm:p-4 lg:p-6 text-slate-100 outline-none"
         >
             <div className="max-w-[1920px] mx-auto">
 
                 {/* === HEADER BAR === */}
                 <div className="mb-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
                     <div>
-                        <h1 className="text-xl md:text-2xl font-bold text-slate-800">📊 Statistiques & Rapports</h1>
+                        <h1 className="text-xl md:text-2xl font-bold text-slate-100">📊 Statistiques & Rapports</h1>
                         <p className="text-slate-500 text-xs mt-0.5">Analyse des ventes et performances</p>
                     </div>
-                    <Link href="/" className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium shadow-sm flex items-center gap-1.5">
+                    <Link href="/" className="bg-slate-900/60 border border-white/[0.08] hover:bg-slate-900/40 text-slate-200 px-3 py-2 rounded-lg text-sm font-medium shadow-sm shadow-black/10 flex items-center gap-1.5">
                         ← Retour
                     </Link>
                 </div>
 
                 {/* === DATE QUICK FILTER === */}
-                <div className="bg-white rounded-lg border border-slate-200 shadow-sm mb-4">
+                <div className="bg-slate-900/60 rounded-lg border border-white/[0.06] shadow-sm shadow-black/10 mb-4">
                     <div className="p-3 flex flex-wrap items-center justify-between gap-4">
                         <div>
                             <p className="text-xs text-slate-500 mb-2 font-medium">📅 Période:</p>
@@ -149,7 +149,7 @@ export default function ReportsPage() {
                             <StandardDateInput value={endDate} onChange={setEndDate} />
                         </div>
                         <button onClick={handleRefresh} disabled={isLoading}
-                            className="bg-brand-primary hover:bg-brand-primary-dark text-white px-4 py-1.5 rounded-lg text-sm font-medium disabled:opacity-50 shadow-sm transition-colors">
+                            className="bg-brand-primary hover:bg-brand-primary-dark text-white px-4 py-1.5 rounded-lg text-sm font-medium disabled:opacity-50 shadow-sm shadow-black/10 transition-colors">
                             {isLoading ? '⏳ Chargement...' : '🔄 Actualiser'}
                         </button>
                     </div>
@@ -158,23 +158,23 @@ export default function ReportsPage() {
                 {/* === KPI CARDS === */}
                 {kpis && (
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
-                        <div className="bg-slate-800 text-white rounded-lg p-4 shadow-sm">
+                        <div className="bg-slate-800 text-white rounded-lg p-4 shadow-sm shadow-black/10">
                             <div className="text-xs font-medium opacity-80 uppercase">Total Hier</div>
                             <div className="text-xl md:text-2xl font-bold mt-1">{formatDZD(kpis.totalHier)}</div>
                         </div>
-                        <div className="bg-brand-primary text-white rounded-lg p-4 shadow-sm">
+                        <div className="bg-brand-primary text-white rounded-lg p-4 shadow-sm shadow-black/10">
                             <div className="text-xs font-medium opacity-80 uppercase">Total Période</div>
                             <div className="text-xl md:text-2xl font-bold mt-1">{formatDZD(kpis.total)}</div>
                         </div>
-                        <div className="bg-emerald-600 text-white rounded-lg p-4 shadow-sm">
+                        <div className="bg-emerald-600 text-white rounded-lg p-4 shadow-sm shadow-black/10">
                             <div className="text-xs font-medium opacity-80 uppercase">Versements</div>
                             <div className="text-xl md:text-2xl font-bold mt-1">{formatDZD(kpis.versement)}</div>
                         </div>
-                        <div className="bg-red-600 text-white rounded-lg p-4 shadow-sm">
+                        <div className="bg-sky-600 text-white rounded-lg p-4 shadow-sm shadow-black/10">
                             <div className="text-xs font-medium opacity-80 uppercase">Reste</div>
                             <div className="text-xl md:text-2xl font-bold mt-1">{formatDZD(kpis.reste)}</div>
                         </div>
-                        <div className="bg-white border border-slate-200 text-slate-800 rounded-lg p-4 shadow-sm">
+                        <div className="bg-slate-900/60 border border-white/[0.06] text-slate-100 rounded-lg p-4 shadow-sm shadow-black/10">
                             <div className="text-xs font-medium text-slate-500 uppercase">Nb Ventes</div>
                             <div className="text-xl md:text-2xl font-bold mt-1">{kpis.count}</div>
                         </div>
@@ -182,13 +182,13 @@ export default function ReportsPage() {
                 )}
 
                 {/* === TABS === */}
-                <div className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
-                    <div className="flex border-b border-slate-200 bg-slate-50">
+                <div className="bg-slate-900/60 rounded-lg border border-white/[0.06] shadow-sm shadow-black/10 overflow-hidden">
+                    <div className="flex border-b border-white/[0.06] bg-slate-900/40">
                         {TABS.map(tab => (
                             <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                                 className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${activeTab === tab.key
-                                    ? 'border-brand-primary text-brand-primary bg-white'
-                                    : 'border-transparent text-slate-500 hover:text-slate-700'
+                                    ? 'border-brand-primary text-brand-primary bg-slate-900/60'
+                                    : 'border-transparent text-slate-500 hover:text-slate-200'
                                     }`}>
                                 <span>{tab.icon}</span> {tab.label}
                             </button>
@@ -210,7 +210,7 @@ export default function ReportsPage() {
                                 {activeTab === 'vente' && salesData && (
                                     <div className="overflow-x-auto">
                                         <table className="w-full text-sm">
-                                            <thead className="bg-slate-100 text-slate-600 uppercase text-[10px] font-bold">
+                                            <thead className="bg-slate-800/50 text-slate-400 uppercase text-[10px] font-bold">
                                                 <tr>
                                                     <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortSales('numero')}>N° {getSortIcon(sortConfigSales, 'numero')}</th>
                                                     <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortSales('client')}>Client {getSortIcon(sortConfigSales, 'client')}</th>
@@ -224,10 +224,10 @@ export default function ReportsPage() {
                                                 {sortedSales.length === 0 ? (
                                                     <tr><td colSpan={6} className="p-4 text-center text-slate-400">Aucune vente pour cette période</td></tr>
                                                 ) : sortedSales.map((t: any, i: number) => (
-                                                    <tr key={i} {...getRowProps(i)} className={getRowClass(i, "hover:bg-slate-50 transition cursor-pointer")}>
+                                                    <tr key={i} {...getRowProps(i)} className={getRowClass(i, "hover:bg-slate-900/40 transition cursor-pointer")}>
                                                         <td className="p-2 font-mono text-brand-primary">{t.numero}</td>
                                                         <td className="p-2 font-medium">{t.client || 'Client Comptoir'}</td>
-                                                        <td className="p-2 text-slate-600">{formatDate(t.date)}</td>
+                                                        <td className="p-2 text-slate-400">{formatDate(t.date)}</td>
                                                         <td className="p-2 text-slate-500">{t.heure || '-'}</td>
                                                         <td className="p-2 text-right font-mono font-bold">{formatDZD(t.total)}</td>
                                                         <td className={`p-2 text-right font-mono font-bold ${parseFloat(t.reste) > 0 ? 'text-brand-primary' : 'text-emerald-600'}`}>
@@ -243,28 +243,28 @@ export default function ReportsPage() {
                                 {/* BENEFICES TAB */}
                                 {activeTab === 'benefices' && financialsData && (
                                     <div className="space-y-4">
-                                        <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg p-6 text-center shadow-lg">
+                                        <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg p-6 text-center shadow-lg shadow-black/20">
                                             <div className="text-sm font-medium opacity-90 uppercase mb-1">💰 Chiffre d'Affaires</div>
                                             <div className="text-3xl md:text-4xl font-bold">{formatDZD(financialsData.chiffreAffaires)}</div>
                                         </div>
                                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                            <div className="bg-teal-600 text-white rounded-lg p-4 shadow-sm">
+                                            <div className="bg-teal-600 text-white rounded-lg p-4 shadow-sm shadow-black/10">
                                                 <div className="text-xs font-medium opacity-80">📈 Bénéfice Net</div>
                                                 <div className="text-2xl font-bold mt-2">{formatDZD(financialsData.beneficeNet)}</div>
                                             </div>
-                                            <div className="bg-cyan-600 text-white rounded-lg p-4 shadow-sm">
+                                            <div className="bg-cyan-600 text-white rounded-lg p-4 shadow-sm shadow-black/10">
                                                 <div className="text-xs font-medium opacity-80">👥 Crédit Clients</div>
                                                 <div className="text-2xl font-bold mt-2">{formatDZD(financialsData.creditClient)}</div>
                                             </div>
-                                            <div className="bg-purple-700 text-white rounded-lg p-4 shadow-sm">
+                                            <div className="bg-purple-700 text-white rounded-lg p-4 shadow-sm shadow-black/10">
                                                 <div className="text-xs font-medium opacity-80">🏭 Crédit Fournisseurs</div>
                                                 <div className="text-2xl font-bold mt-2">{formatDZD(financialsData.creditFournisseurs)}</div>
                                             </div>
-                                            <div className="bg-green-600 text-white rounded-lg p-4 shadow-sm">
+                                            <div className="bg-emerald-600 text-white rounded-lg p-4 shadow-sm shadow-black/10">
                                                 <div className="text-xs font-medium opacity-80">💸 Charges</div>
                                                 <div className="text-2xl font-bold mt-2">{formatDZD(financialsData.charges)}</div>
                                             </div>
-                                            <div className="bg-slate-800 text-white rounded-lg p-4 shadow-sm col-span-1 md:col-span-2">
+                                            <div className="bg-slate-800 text-white rounded-lg p-4 shadow-sm shadow-black/10 col-span-1 md:col-span-2">
                                                 <div className="text-xs font-medium opacity-80">💵 Capital</div>
                                                 <div className="text-2xl font-bold mt-2">{formatDZD(financialsData.capital)}</div>
                                             </div>
@@ -276,7 +276,7 @@ export default function ReportsPage() {
                                 {activeTab === 'marques' && (
                                     <div className="overflow-x-auto">
                                         <table className="w-full text-sm">
-                                            <thead className="bg-slate-100 text-slate-600 uppercase text-[10px] font-bold">
+                                            <thead className="bg-slate-800/50 text-slate-400 uppercase text-[10px] font-bold">
                                                 <tr>
                                                     <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortBrands('brand')}>Marque {getSortIcon(sortConfigBrands, 'brand')}</th>
                                                     <th className="p-2 text-right cursor-pointer hover:bg-slate-200" onClick={() => handleSortBrands('nb_produits')}>Nb Produits {getSortIcon(sortConfigBrands, 'nb_produits')}</th>
@@ -289,12 +289,12 @@ export default function ReportsPage() {
                                                 {sortedBrands.length === 0 ? (
                                                     <tr><td colSpan={5} className="p-4 text-center text-slate-400">Aucune marque vendue pour cette période</td></tr>
                                                 ) : sortedBrands.map((b, i) => (
-                                                    <tr key={i} className="hover:bg-slate-50">
-                                                        <td className="p-2 font-bold text-blue-600">{b.brand}</td>
+                                                    <tr key={i} className="hover:bg-slate-900/40">
+                                                        <td className="p-2 font-bold text-sky-400">{b.brand}</td>
                                                         <td className="p-2 text-right font-mono text-slate-500">{b.nb_produits}</td>
                                                         <td className="p-2 text-right font-mono">{Math.round(b.qty_total)}</td>
-                                                        <td className="p-2 text-right font-mono text-slate-600">{b.vente_count}x</td>
-                                                        <td className="p-2 text-right font-mono font-bold text-green-600">{formatDZD(b.total)}</td>
+                                                        <td className="p-2 text-right font-mono text-slate-400">{b.vente_count}x</td>
+                                                        <td className="p-2 text-right font-mono font-bold text-emerald-400">{formatDZD(b.total)}</td>
                                                     </tr>
                                                 ))}
                                             </tbody>
@@ -306,7 +306,7 @@ export default function ReportsPage() {
                                 {activeTab === 'produits' && (
                                     <div className="overflow-x-auto">
                                         <table className="w-full text-sm">
-                                            <thead className="bg-slate-100 text-slate-600 uppercase text-[10px] font-bold">
+                                            <thead className="bg-slate-800/50 text-slate-400 uppercase text-[10px] font-bold">
                                                 <tr>
                                                     <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortProducts('reference')}>Référence {getSortIcon(sortConfigProducts, 'reference')}</th>
                                                     <th className="p-2 text-left cursor-pointer hover:bg-slate-200" onClick={() => handleSortProducts('designation')}>Désignation {getSortIcon(sortConfigProducts, 'designation')}</th>
@@ -322,17 +322,17 @@ export default function ReportsPage() {
                                                 {sortedProducts.length === 0 ? (
                                                     <tr><td colSpan={8} className="p-4 text-center text-slate-400">Aucun produit vendu pour cette période</td></tr>
                                                 ) : sortedProducts.map((p, i) => (
-                                                    <tr key={i} className="hover:bg-slate-50">
-                                                        <td className="p-2 font-mono text-blue-600">{p.reference}</td>
+                                                    <tr key={i} className="hover:bg-slate-900/40">
+                                                        <td className="p-2 font-mono text-sky-400">{p.reference}</td>
                                                         <td className="p-2 font-medium">{p.designation}</td>
                                                         <td className="p-2">
-                                                            <span className="inline-block bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs">{p.brand || 'N/A'}</span>
+                                                            <span className="inline-block bg-slate-800/50 text-slate-400 px-2 py-0.5 rounded text-xs">{p.brand || 'N/A'}</span>
                                                         </td>
                                                         <td className="p-2 text-right font-mono">{Math.round(p.qty_total)}</td>
-                                                        <td className="p-2 text-right font-mono text-orange-600">{Math.round(p.colis_total || 0)}</td>
-                                                        <td className="p-2 text-right font-mono text-indigo-600">{Math.round(p.pallets_total || 0)}</td>
-                                                        <td className="p-2 text-right font-mono text-slate-600">{p.vente_count}x</td>
-                                                        <td className="p-2 text-right font-mono font-bold text-green-600">{formatDZD(p.total)}</td>
+                                                        <td className="p-2 text-right font-mono text-orange-400">{Math.round(p.colis_total || 0)}</td>
+                                                        <td className="p-2 text-right font-mono text-indigo-400">{Math.round(p.pallets_total || 0)}</td>
+                                                        <td className="p-2 text-right font-mono text-slate-400">{p.vente_count}x</td>
+                                                        <td className="p-2 text-right font-mono font-bold text-emerald-400">{formatDZD(p.total)}</td>
                                                     </tr>
                                                 ))}
                                             </tbody>
@@ -349,26 +349,26 @@ export default function ReportsPage() {
                                                 <input
                                                     type="text"
                                                     placeholder="Rechercher un client..."
-                                                    className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                                                    className="w-full pl-10 pr-4 py-2 bg-slate-900/60 border border-white/[0.06] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/30/20 focus:border-sky-500 transition-all"
                                                     value={searchQueryClients}
                                                     onChange={(e) => setSearchQueryClients(e.target.value)}
                                                 />
                                             </div>
-                                            <div className="text-xs text-slate-500 font-medium bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
+                                            <div className="text-xs text-slate-500 font-medium bg-slate-800/50 px-3 py-1 rounded-full border border-white/[0.06]">
                                                 {sortedClients.filter(c => c.nom?.toLowerCase().includes(searchQueryClients.toLowerCase()) || c.id?.toString().includes(searchQueryClients)).length} clients trouvés
                                             </div>
                                         </div>
 
-                                        <div className="overflow-x-auto bg-white rounded-xl border border-slate-200 shadow-sm">
+                                        <div className="overflow-x-auto bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10">
                                             <table className="w-full text-sm">
-                                                <thead className="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold border-b border-slate-200">
+                                                <thead className="bg-slate-900/40 text-slate-400 uppercase text-[10px] font-bold border-b border-white/[0.06]">
                                                     <tr>
-                                                        <th className="p-3 text-left cursor-pointer hover:bg-slate-100 transition-colors" onClick={() => handleSortClients('nom')}>Client {getSortIcon(sortConfigClients, 'nom')}</th>
-                                                        <th className="p-3 text-left cursor-pointer hover:bg-slate-100 transition-colors" onClick={() => handleSortClients('type')}>Type {getSortIcon(sortConfigClients, 'type')}</th>
-                                                        <th className="p-3 text-right cursor-pointer hover:bg-slate-100 transition-colors" onClick={() => handleSortClients('nb_commandes')}>Commandes {getSortIcon(sortConfigClients, 'nb_commandes')}</th>
-                                                        <th className="p-3 text-right cursor-pointer hover:bg-slate-100 transition-colors" onClick={() => handleSortClients('total')}>Total Achats {getSortIcon(sortConfigClients, 'total')}</th>
-                                                        <th className="p-3 text-right cursor-pointer hover:bg-slate-100 transition-colors" onClick={() => handleSortClients('versement')}>Versements {getSortIcon(sortConfigClients, 'versement')}</th>
-                                                        <th className="p-3 text-right cursor-pointer hover:bg-slate-100 transition-colors" onClick={() => handleSortClients('reste')}>Reste {getSortIcon(sortConfigClients, 'reste')}</th>
+                                                        <th className="p-3 text-left cursor-pointer hover:bg-slate-800/50 transition-colors" onClick={() => handleSortClients('nom')}>Client {getSortIcon(sortConfigClients, 'nom')}</th>
+                                                        <th className="p-3 text-left cursor-pointer hover:bg-slate-800/50 transition-colors" onClick={() => handleSortClients('type')}>Type {getSortIcon(sortConfigClients, 'type')}</th>
+                                                        <th className="p-3 text-right cursor-pointer hover:bg-slate-800/50 transition-colors" onClick={() => handleSortClients('nb_commandes')}>Commandes {getSortIcon(sortConfigClients, 'nb_commandes')}</th>
+                                                        <th className="p-3 text-right cursor-pointer hover:bg-slate-800/50 transition-colors" onClick={() => handleSortClients('total')}>Total Achats {getSortIcon(sortConfigClients, 'total')}</th>
+                                                        <th className="p-3 text-right cursor-pointer hover:bg-slate-800/50 transition-colors" onClick={() => handleSortClients('versement')}>Versements {getSortIcon(sortConfigClients, 'versement')}</th>
+                                                        <th className="p-3 text-right cursor-pointer hover:bg-slate-800/50 transition-colors" onClick={() => handleSortClients('reste')}>Reste {getSortIcon(sortConfigClients, 'reste')}</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody className="divide-y divide-slate-100">
@@ -381,18 +381,18 @@ export default function ReportsPage() {
                                                         c.nom?.toLowerCase().includes(searchQueryClients.toLowerCase()) ||
                                                         c.id?.toString().includes(searchQueryClients)
                                                     ).map((c, i) => (
-                                                        <tr key={i} className="hover:bg-blue-50/50 cursor-pointer transition-colors group" onClick={() => setSelectedClient(c)}>
-                                                            <td className="p-3 font-semibold text-slate-700 group-hover:text-blue-700">{c.nom}</td>
+                                                        <tr key={i} className="hover:bg-sky-500/10/50 cursor-pointer transition-colors group" onClick={() => setSelectedClient(c)}>
+                                                            <td className="p-3 font-semibold text-slate-200 group-hover:text-sky-300">{c.nom}</td>
                                                             <td className="p-3">
-                                                                <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${c.type === 'WHOLESALE' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'
+                                                                <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${c.type === 'WHOLESALE' ? 'bg-sky-500/10 text-sky-300' : 'bg-emerald-100 text-emerald-700'
                                                                     }`}>
                                                                     {c.type === 'WHOLESALE' ? 'Gros' : 'Détail'}
                                                                 </span>
                                                             </td>
-                                                            <td className="p-3 text-right font-mono text-slate-600">{c.nb_commandes}</td>
-                                                            <td className="p-3 text-right font-mono font-bold text-slate-800">{formatDZD(c.total)}</td>
+                                                            <td className="p-3 text-right font-mono text-slate-400">{c.nb_commandes}</td>
+                                                            <td className="p-3 text-right font-mono font-bold text-slate-100">{formatDZD(c.total)}</td>
                                                             <td className="p-3 text-right font-mono text-emerald-600">{formatDZD(c.versement)}</td>
-                                                            <td className={`p-3 text-right font-mono font-bold ${parseFloat(c.reste) > 0 ? 'text-red-600' : 'text-emerald-600'}`}>
+                                                            <td className={`p-3 text-right font-mono font-bold ${parseFloat(c.reste) > 0 ? 'text-sky-400' : 'text-emerald-600'}`}>
                                                                 {formatDZD(c.reste)}
                                                             </td>
                                                         </tr>

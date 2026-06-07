@@ -218,9 +218,9 @@ export default function SettingsPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+            <div className="min-h-screen bg-slate-900/40 flex items-center justify-center">
                 <div className="text-center">
-                    <div className="inline-block w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+                    <div className="inline-block w-10 h-10 border-4 border-sky-500/20 border-t-blue-600 rounded-full animate-spin mb-4"></div>
                     <p className="text-slate-500">Chargement des paramètres...</p>
                 </div>
             </div>
@@ -238,16 +238,16 @@ export default function SettingsPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-800">
+        <div className="min-h-screen bg-slate-900/40 text-slate-100">
 
             {/* HEADER */}
-            <div className="bg-white border-b border-slate-200 shadow-sm">
+            <div className="bg-slate-900/60 border-b border-white/[0.06] shadow-sm shadow-black/10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center py-4">
                         <div className="flex items-center gap-4">
                             <Link
                                 href="/"
-                                className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2"
+                                className="bg-slate-900/60 border border-white/[0.08] hover:bg-slate-900/40 text-slate-200 px-3 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
@@ -255,7 +255,7 @@ export default function SettingsPage() {
                                 Retour
                             </Link>
                             <div>
-                                <h1 className="text-2xl font-bold text-slate-800">⚙️ Paramètres</h1>
+                                <h1 className="text-2xl font-bold text-slate-100">⚙️ Paramètres</h1>
                                 <p className="text-sm text-slate-500">Configuration de l'application</p>
                             </div>
                         </div>
@@ -280,7 +280,7 @@ export default function SettingsPage() {
             </div>
 
             {/* TABS */}
-            <div className="bg-white border-b border-slate-200">
+            <div className="bg-slate-900/60 border-b border-white/[0.06]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex gap-1 pt-2 overflow-x-auto">
                         {tabs.map(tab => (
@@ -288,8 +288,8 @@ export default function SettingsPage() {
                                 key={tab.key}
                                 onClick={() => setActiveTab(tab.key)}
                                 className={`px-5 py-3 rounded-t-lg font-medium text-sm whitespace-nowrap transition ${activeTab === tab.key
-                                    ? 'bg-slate-50 text-blue-700 border-t-2 border-x border-blue-500 border-slate-200 -mb-px font-bold'
-                                    : 'bg-white text-slate-500 hover:bg-slate-100 hover:text-slate-700'
+                                    ? 'bg-slate-900/40 text-sky-300 border-t-2 border-x border-blue-500 border-white/[0.06] -mb-px font-bold'
+                                    : 'bg-slate-900/60 text-slate-500 hover:bg-slate-800/50 hover:text-slate-200'
                                     }`}
                             >
                                 <span className="mr-2">{tab.icon}</span>
@@ -305,68 +305,68 @@ export default function SettingsPage() {
 
                 {/* TAB 1: SOCIETE */}
                 {activeTab === 'SOCIETE' && (
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                    <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 p-6">
                         <h2 className="text-lg font-semibold mb-6 pb-2 border-b border-slate-100">🏢 Informations de la Société</h2>
                         <div className="max-w-2xl grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="md:col-span-2">
-                                <label className="block text-sm font-bold text-slate-700 mb-1">Raison Sociale</label>
+                                <label className="block text-sm font-bold text-slate-200 mb-1">Raison Sociale</label>
                                 <input name="companyname" value={formData.companyname || ''} onChange={handleChange}
-                                    className="w-full p-3 border border-slate-300 rounded-lg bg-blue-50 font-bold text-lg focus:ring-2 focus:ring-blue-500" />
+                                    className="w-full p-3 border border-white/[0.08] rounded-lg bg-sky-500/10 font-bold text-lg focus:ring-2 focus:ring-sky-500/30" />
                             </div>
                             <div className="md:col-span-2">
-                                <label className="block text-sm font-bold text-slate-700 mb-1">Activité</label>
+                                <label className="block text-sm font-bold text-slate-200 mb-1">Activité</label>
                                 <input name="activity" value={formData.activity || ''} onChange={handleChange}
-                                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                                    className="w-full p-3 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30" />
                             </div>
                             <div className="md:col-span-2">
-                                <label className="block text-sm font-bold text-slate-700 mb-1">Adresse</label>
+                                <label className="block text-sm font-bold text-slate-200 mb-1">Adresse</label>
                                 <textarea name="address" value={formData.address || ''} onChange={handleChange} rows={2}
-                                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                                    className="w-full p-3 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30" />
                             </div>
                             <div>
-                                <label className="block text-sm font-bold text-slate-700 mb-1">Téléphone 1</label>
+                                <label className="block text-sm font-bold text-slate-200 mb-1">Téléphone 1</label>
                                 <input name="phone1" value={formData.phone1 || ''} onChange={handleChange}
-                                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                                    className="w-full p-3 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30" />
                             </div>
                             <div>
-                                <label className="block text-sm font-bold text-slate-700 mb-1">Téléphone 2</label>
+                                <label className="block text-sm font-bold text-slate-200 mb-1">Téléphone 2</label>
                                 <input name="phone2" value={formData.phone2 || ''} onChange={handleChange}
-                                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                                    className="w-full p-3 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30" />
                             </div>
                             <div>
-                                <label className="block text-sm font-bold text-slate-700 mb-1">Email</label>
+                                <label className="block text-sm font-bold text-slate-200 mb-1">Email</label>
                                 <input name="email" type="email" value={formData.email || ''} onChange={handleChange}
-                                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                                    className="w-full p-3 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30" />
                             </div>
                             <div>
-                                <label className="block text-sm font-bold text-slate-700 mb-1">N° RC</label>
+                                <label className="block text-sm font-bold text-slate-200 mb-1">N° RC</label>
                                 <input name="rc" value={formData.rc || ''} onChange={handleChange}
-                                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                                    className="w-full p-3 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30" />
                             </div>
                             <div>
-                                <label className="block text-sm font-bold text-slate-700 mb-1">NIF</label>
+                                <label className="block text-sm font-bold text-slate-200 mb-1">NIF</label>
                                 <input name="nif" value={formData.nif || ''} onChange={handleChange}
-                                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                                    className="w-full p-3 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30" />
                             </div>
                             <div>
-                                <label className="block text-sm font-bold text-slate-700 mb-1">AI</label>
+                                <label className="block text-sm font-bold text-slate-200 mb-1">AI</label>
                                 <input name="ai" value={formData.ai || ''} onChange={handleChange}
-                                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                                    className="w-full p-3 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30" />
                             </div>
                             <div>
-                                <label className="block text-sm font-bold text-slate-700 mb-1">NIS</label>
+                                <label className="block text-sm font-bold text-slate-200 mb-1">NIS</label>
                                 <input name="nis" value={formData.nis || ''} onChange={handleChange}
-                                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                                    className="w-full p-3 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30" />
                             </div>
                             <div>
-                                <label className="block text-sm font-bold text-slate-700 mb-1">RIB</label>
+                                <label className="block text-sm font-bold text-slate-200 mb-1">RIB</label>
                                 <input name="rib" value={formData.rib || ''} onChange={handleChange}
-                                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                                    className="w-full p-3 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30" />
                             </div>
                             <div>
-                                <label className="block text-sm font-bold text-slate-700 mb-1">Capital</label>
+                                <label className="block text-sm font-bold text-slate-200 mb-1">Capital</label>
                                 <input name="capital" value={formData.capital || ''} onChange={handleChange}
-                                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                                    className="w-full p-3 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30" />
                             </div>
                         </div>
                     </div>
@@ -375,52 +375,52 @@ export default function SettingsPage() {
                 {/* TAB 2: IMPRESSION */}
                 {activeTab === 'IMPRESSION' && (
                     <div className="space-y-6">
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                        <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 p-6">
                             <h3 className="font-bold text-lg mb-4 pb-2 border-b border-slate-100">🖨️ Format par Défaut</h3>
                             <div className="flex gap-6">
-                                <label className="flex items-center gap-3 p-4 border rounded-lg cursor-pointer hover:bg-slate-50">
+                                <label className="flex items-center gap-3 p-4 border border-slate-600/40 rounded-lg cursor-pointer hover:bg-slate-900/40">
                                     <input type="radio" name="defaultprintformat" value="A4"
                                         checked={formData.defaultprintformat === 'A4'} onChange={handleChange}
-                                        className="w-5 h-5 text-blue-600" />
+                                        className="w-5 h-5 text-sky-400" />
                                     <span className="font-medium">📄 A4 Standard</span>
                                 </label>
-                                <label className="flex items-center gap-3 p-4 border rounded-lg cursor-pointer hover:bg-slate-50">
+                                <label className="flex items-center gap-3 p-4 border border-slate-600/40 rounded-lg cursor-pointer hover:bg-slate-900/40">
                                     <input type="radio" name="defaultprintformat" value="TICKET"
                                         checked={formData.defaultprintformat === 'TICKET' || !formData.defaultprintformat} onChange={handleChange}
-                                        className="w-5 h-5 text-blue-600" />
+                                        className="w-5 h-5 text-sky-400" />
                                     <span className="font-medium">🧾 Ticket de Caisse</span>
                                 </label>
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                        <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 p-6">
                             <h3 className="font-bold text-lg mb-4 pb-2 border-b border-slate-100">🧾 Personnalisation Ticket</h3>
                             <div className="max-w-xl space-y-4">
                                 <div>
-                                    <label className="block text-sm font-bold text-slate-700 mb-1">Largeur Ticket</label>
+                                    <label className="block text-sm font-bold text-slate-200 mb-1">Largeur Ticket</label>
                                     <select name="ticketwidth" value={formData.ticketwidth || '80mm'} onChange={handleChange}
-                                        className="w-40 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                        className="w-40 p-3 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30">
                                         <option value="80mm">80mm</option>
                                         <option value="58mm">58mm</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-bold text-slate-700 mb-1">En-tête (Header)</label>
+                                    <label className="block text-sm font-bold text-slate-200 mb-1">En-tête (Header)</label>
                                     <input name="ticketheader" value={formData.ticketheader || ''} onChange={handleChange}
-                                        placeholder="Bienvenue chez ALLAOUA CERAM"
-                                        className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                                        placeholder="Bienvenue chez Ceramic ERP"
+                                        className="w-full p-3 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-bold text-slate-700 mb-1">Pied de page (Footer)</label>
+                                    <label className="block text-sm font-bold text-slate-200 mb-1">Pied de page (Footer)</label>
                                     <input name="ticketfooter" value={formData.ticketfooter || ''} onChange={handleChange}
                                         placeholder="Merci pour votre confiance!"
-                                        className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                                        className="w-full p-3 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30" />
                                 </div>
                                 <div className="pt-2">
                                     <label className="flex items-center gap-3 cursor-pointer">
                                         <input type="checkbox" name="showbalanceonticket"
                                             checked={formData.showbalanceonticket || false} onChange={handleChange}
-                                            className="w-5 h-5 text-blue-600 rounded" />
+                                            className="w-5 h-5 text-sky-400 rounded" />
                                         <span className="font-medium">Afficher le solde client sur le ticket</span>
                                     </label>
                                 </div>
@@ -431,46 +431,46 @@ export default function SettingsPage() {
 
                 {/* TAB 3: PARAMETRAGE */}
                 {activeTab === 'PARAMETRAGE' && (
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                    <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 p-6">
                         <h2 className="text-lg font-semibold mb-6 pb-2 border-b border-slate-100">⚙️ Paramètres Généraux</h2>
                         <div className="max-w-xl space-y-4">
-                            <div className="flex items-center justify-between p-4 border rounded-lg bg-slate-50">
+                            <div className="flex items-center justify-between p-4 border border-slate-600/40 rounded-lg bg-slate-900/40">
                                 <div>
                                     <span className="font-medium">Mettre à jour le Prix Achat automatiquement</span>
                                     <p className="text-xs text-slate-500">Lors de la réception des marchandises</p>
                                 </div>
                                 <input type="checkbox" name="updatepurchaseprice"
                                     checked={formData.updatepurchaseprice || false} onChange={handleChange}
-                                    className="w-6 h-6 text-blue-600 rounded" />
+                                    className="w-6 h-6 text-sky-400 rounded" />
                             </div>
-                            <div className="flex items-center justify-between p-4 border rounded-lg bg-slate-50">
+                            <div className="flex items-center justify-between p-4 border border-slate-600/40 rounded-lg bg-slate-900/40">
                                 <div>
                                     <span className="font-medium">Activer la gestion par palette / colis</span>
                                     <p className="text-xs text-slate-500">Afficher les colonnes palettes/cartons dans POS</p>
                                 </div>
                                 <input type="checkbox" name="enablepalletmanagement"
                                     checked={formData.enablepalletmanagement !== false} onChange={handleChange}
-                                    className="w-6 h-6 text-blue-600 rounded" />
+                                    className="w-6 h-6 text-sky-400 rounded" />
                             </div>
-                            <div className="p-4 border rounded-lg bg-slate-50">
+                            <div className="p-4 border border-slate-600/40 rounded-lg bg-slate-900/40">
                                 <label className="block font-medium mb-2">Préfixe Code Barre</label>
                                 <input name="barcodeprefix" value={formData.barcodeprefix || '20'} onChange={handleChange}
-                                    className="w-24 p-3 border border-slate-300 rounded-lg text-center font-mono text-lg" />
+                                    className="w-24 p-3 border border-white/[0.08] rounded-lg text-center font-mono text-lg" />
                             </div>
-                            <div className="p-4 border rounded-lg bg-slate-50">
+                            <div className="p-4 border border-slate-600/40 rounded-lg bg-slate-900/40">
                                 <label className="block font-medium mb-2">Taux TVA par défaut (%)</label>
                                 <input type="number" name="defaulttaxrate" value={formData.defaulttaxrate || 19} onChange={handleChange}
-                                    className="w-24 p-3 border border-slate-300 rounded-lg text-center font-mono text-lg" />
+                                    className="w-24 p-3 border border-white/[0.08] rounded-lg text-center font-mono text-lg" />
                             </div>
-                            <div className="p-4 border rounded-lg bg-slate-50">
+                            <div className="p-4 border border-slate-600/40 rounded-lg bg-slate-900/40">
                                 <label className="block font-medium mb-2">Timbre fiscal par défaut (DA)</label>
                                 <input type="number" name="defaulttimbre" value={formData.defaulttimbre || 0} onChange={handleChange}
-                                    className="w-32 p-3 border border-slate-300 rounded-lg text-center font-mono text-lg" />
+                                    className="w-32 p-3 border border-white/[0.08] rounded-lg text-center font-mono text-lg" />
                             </div>
                         </div>
 
                         {/* MARGIN SETTINGS SECTION */}
-                        <div className="mt-8 pt-6 border-t border-slate-200">
+                        <div className="mt-8 pt-6 border-t border-white/[0.06]">
                             <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
                                 <span className="text-2xl">💰</span>
                                 Marges Commerciales
@@ -481,8 +481,8 @@ export default function SettingsPage() {
                                 <span className="font-medium">Formule: Prix de Vente = Prix d'Achat × (1 + Marge%)</span>
                             </p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-xl">
-                                <div className="p-4 border rounded-lg bg-green-50 border-green-200">
-                                    <label className="block font-medium mb-2 text-green-800">
+                                <div className="p-4 border border-slate-600/40 rounded-lg bg-emerald-500/10 border-emerald-500/20">
+                                    <label className="block font-medium mb-2 text-emerald-300">
                                         🏪 Marge Détail (%)
                                     </label>
                                     <div className="flex items-center gap-2 mb-2">
@@ -490,7 +490,7 @@ export default function SettingsPage() {
                                             name="retailmargintype"
                                             value={formData.retailmargintype || 'PERCENT'}
                                             onChange={handleChange}
-                                            className="text-xs p-1 border border-green-300 rounded text-green-700 font-bold bg-green-50"
+                                            className="text-xs p-1 border border-green-300 rounded text-emerald-400 font-bold bg-emerald-500/10"
                                         >
                                             <option value="PERCENT">% (Pourcentage)</option>
                                             <option value="AMOUNT">DA (Montant Fixe)</option>
@@ -504,24 +504,24 @@ export default function SettingsPage() {
                                             onChange={handleChange}
                                             step={formData.retailmargintype === 'AMOUNT' ? "10" : "0.5"}
                                             min="0"
-                                            className="w-24 p-3 border border-green-300 rounded-lg text-center font-mono text-lg font-bold text-green-800 focus:ring-2 focus:ring-green-500"
+                                            className="w-24 p-3 border border-green-300 rounded-lg text-center font-mono text-lg font-bold text-emerald-300 focus:ring-2 focus:ring-green-500"
                                         />
-                                        <span className="text-xl text-green-700 font-bold">
+                                        <span className="text-xl text-emerald-400 font-bold">
                                             {formData.retailmargintype === 'AMOUNT' ? 'DA' : '%'}
                                         </span>
                                     </div>
                                 </div>
-                                <div className="p-4 border rounded-lg bg-blue-50 border-blue-200">
+                                <div className="p-4 border border-slate-600/40 rounded-lg bg-sky-500/10 border-sky-500/20">
                                     <label className="block font-medium mb-2 text-blue-800">
                                         🏭 Marge Gros
                                     </label>
-                                    <p className="text-xs text-blue-600 mb-2">Appliquée aux ventes WHOLESALE</p>
+                                    <p className="text-xs text-sky-400 mb-2">Appliquée aux ventes WHOLESALE</p>
                                     <div className="flex items-center gap-2 mb-2">
                                         <select
                                             name="wholesalemargintype"
                                             value={formData.wholesalemargintype || 'PERCENT'}
                                             onChange={handleChange}
-                                            className="text-xs p-1 border border-blue-300 rounded text-blue-700 font-bold bg-blue-50"
+                                            className="text-xs p-1 border border-blue-300 rounded text-sky-300 font-bold bg-sky-500/10"
                                         >
                                             <option value="PERCENT">% (Pourcentage)</option>
                                             <option value="AMOUNT">DA (Montant Fixe)</option>
@@ -535,9 +535,9 @@ export default function SettingsPage() {
                                             onChange={handleChange}
                                             step={formData.wholesalemargintype === 'AMOUNT' ? "10" : "0.5"}
                                             min="0"
-                                            className="w-24 p-3 border border-blue-300 rounded-lg text-center font-mono text-lg font-bold text-blue-800 focus:ring-2 focus:ring-blue-500"
+                                            className="w-24 p-3 border border-blue-300 rounded-lg text-center font-mono text-lg font-bold text-blue-800 focus:ring-2 focus:ring-sky-500/30"
                                         />
-                                        <span className="text-xl text-blue-700 font-bold">
+                                        <span className="text-xl text-sky-300 font-bold">
                                             {formData.wholesalemargintype === 'AMOUNT' ? 'DA' : '%'}
                                         </span>
                                     </div>
@@ -549,7 +549,7 @@ export default function SettingsPage() {
                         </div>
 
                         {/* ACCESS CONTROL SECTION */}
-                        <div className="mt-8 pt-6 border-t border-slate-200">
+                        <div className="mt-8 pt-6 border-t border-white/[0.06]">
                             <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
                                 <span className="text-2xl">🔒</span>
                                 Contrôle d'Accès & Sécurité
@@ -558,14 +558,14 @@ export default function SettingsPage() {
                                 Restreindre l'accès à l'application pour certains rôles utilisateurs. Les Administrateurs et Managers ne sont pas affectés.
                             </p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mb-6">
-                                <div className="p-4 border rounded-lg bg-orange-50 border-orange-200">
+                                <div className="p-4 border border-slate-600/40 rounded-lg bg-orange-50 border-orange-500/20">
                                     <label className="block font-medium mb-2 text-orange-800">
                                         🕒 Heures de Travail
                                     </label>
-                                    <p className="text-xs text-orange-600 mb-3">Bloquer l'accès en dehors de ces horaires</p>
+                                    <p className="text-xs text-orange-400 mb-3">Bloquer l'accès en dehors de ces horaires</p>
                                     <div className="flex items-center gap-4">
                                         <div className="flex-1">
-                                            <span className="text-xs text-orange-700 block mb-1">Ouverture</span>
+                                            <span className="text-xs text-orange-400 block mb-1">Ouverture</span>
                                             <input
                                                 type="time"
                                                 name="workstarttime"
@@ -575,7 +575,7 @@ export default function SettingsPage() {
                                             />
                                         </div>
                                         <div className="flex-1">
-                                            <span className="text-xs text-orange-700 block mb-1">Fermeture</span>
+                                            <span className="text-xs text-orange-400 block mb-1">Fermeture</span>
                                             <input
                                                 type="time"
                                                 name="workendtime"
@@ -586,26 +586,26 @@ export default function SettingsPage() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="p-4 border rounded-lg bg-red-50 border-red-200">
-                                    <label className="block font-medium mb-2 text-red-800">
+                                <div className="p-4 border border-slate-600/40 rounded-lg bg-sky-500/10 border-sky-500/20">
+                                    <label className="block font-medium mb-2 text-sky-300">
                                         🛡️ IPs Autorisées (Whitelisting)
                                     </label>
-                                    <p className="text-xs text-red-600 mb-3">IPs séparées par des virgules (,). Si vide, l'accès est autorisé depuis n'importe où.</p>
+                                    <p className="text-xs text-sky-400 mb-3">IPs séparées par des virgules (,). Si vide, l'accès est autorisé depuis n'importe où.</p>
                                     <input
                                         type="text"
                                         name="allowedips"
                                         value={formData.allowedips || ''}
                                         onChange={handleChange}
                                         placeholder="ex: 192.168.1.1, 41.100.22.40"
-                                        className="w-full p-2 border border-red-300 rounded font-mono text-sm focus:ring-2 focus:ring-red-500"
+                                        className="w-full p-2 border border-sky-500/30 rounded font-mono text-sm focus:ring-2 focus:ring-sky-500/30"
                                     />
-                                    <p className="mt-2 text-[10px] text-red-500 font-bold">⚠️ Attention: Restreindre les IPs bloquera les utilisateurs qui ne sont pas sur ce réseau.</p>
+                                    <p className="mt-2 text-[10px] text-sky-400 font-bold">⚠️ Attention: Restreindre les IPs bloquera les utilisateurs qui ne sont pas sur ce réseau.</p>
                                 </div>
                             </div>
                         </div>
 
                         {/* MOBILE ACCESS SECTION */}
-                        <div className="mt-8 pt-6 border-t border-slate-200">
+                        <div className="mt-8 pt-6 border-t border-white/[0.06]">
                             <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
                                 <span className="text-2xl">📱</span>
                                 Accès Mobile
@@ -615,7 +615,7 @@ export default function SettingsPage() {
                                 <br />
                                 <span className="font-medium text-amber-600">⚠️ Assurez-vous d'être connecté au même réseau WiFi.</span>
                             </p>
-                            <div className="p-4 border rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+                            <div className="p-4 border border-slate-600/40 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 border-sky-500/20">
                                 <label className="block font-medium mb-2 text-blue-800">
                                     🌐 Adresse Réseau Local
                                 </label>
@@ -624,7 +624,7 @@ export default function SettingsPage() {
                                         type="text"
                                         readOnly
                                         value="http://192.168.0.214:3000"
-                                        className="flex-1 p-3 border border-blue-300 rounded-lg font-mono text-lg font-bold text-blue-800 bg-white select-all"
+                                        className="flex-1 p-3 border border-blue-300 rounded-lg font-mono text-lg font-bold text-blue-800 bg-slate-900/60 select-all"
                                         onClick={(e) => (e.target as HTMLInputElement).select()}
                                     />
                                     <button
@@ -632,7 +632,7 @@ export default function SettingsPage() {
                                             navigator.clipboard.writeText('http://192.168.0.214:3000');
                                             alert('✅ Adresse copiée!');
                                         }}
-                                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg font-medium flex items-center gap-2 transition"
+                                        className="bg-sky-600 hover:bg-sky-700 text-white px-4 py-3 rounded-lg font-medium flex items-center gap-2 transition"
                                     >
                                         📋 Copier
                                     </button>
@@ -647,7 +647,7 @@ export default function SettingsPage() {
 
                 {/* TAB 4: SAUVEGARDE */}
                 {activeTab === 'SAUVEGARDE' && (
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                    <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 p-6">
                         <h2 className="text-lg font-semibold mb-6 pb-2 border-b border-slate-100">💾 Sauvegarde de la Base de Données</h2>
                         <div className="flex flex-col items-center justify-center py-12 space-y-6">
                             <div className="text-6xl">🗄️</div>
@@ -657,7 +657,7 @@ export default function SettingsPage() {
                             </p>
                             <button
                                 onClick={handleBackup}
-                                className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-xl text-lg font-bold shadow-lg flex items-center gap-3 transition"
+                                className="bg-sky-600 hover:bg-sky-700 text-white px-10 py-4 rounded-xl text-lg font-bold shadow-lg shadow-black/20 flex items-center gap-3 transition"
                             >
                                 💾 Créer une Sauvegarde
                             </button>
@@ -670,12 +670,12 @@ export default function SettingsPage() {
 
                 {/* TAB 5: UTILISATEURS */}
                 {activeTab === 'UTILISATEURS' && (
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                    <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10">
                         <div className="flex justify-between items-center p-4 border-b border-slate-100">
                             <h2 className="text-lg font-semibold">👥 Gestion des Utilisateurs</h2>
                             <button
                                 onClick={() => openUserModal()}
-                                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2"
+                                className="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2"
                             >
                                 <span>+</span> Nouvel Utilisateur
                             </button>
@@ -683,7 +683,7 @@ export default function SettingsPage() {
 
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
-                                <thead className="bg-slate-50 text-xs uppercase text-slate-500 border-b">
+                                <thead className="bg-slate-900/40 text-xs uppercase text-slate-500 border-b">
                                     <tr>
                                         <th className="px-4 py-3 text-left">Utilisateur</th>
                                         <th className="px-4 py-3 text-left">Email</th>
@@ -694,19 +694,19 @@ export default function SettingsPage() {
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
                                     {users.map(user => (
-                                        <tr key={user.userid} className="hover:bg-slate-50">
+                                        <tr key={user.userid} className="hover:bg-slate-900/40">
                                             <td className="px-4 py-3 font-medium">{user.username}</td>
-                                            <td className="px-4 py-3 text-slate-600">{user.email || '-'}</td>
+                                            <td className="px-4 py-3 text-slate-400">{user.email || '-'}</td>
                                             <td className="px-4 py-3 text-center">
-                                                <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${user.role === 'ADMIN' ? 'bg-red-100 text-red-700' :
-                                                    user.role === 'MANAGER' ? 'bg-blue-100 text-blue-700' :
-                                                        'bg-slate-100 text-slate-700'
+                                                <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${user.role === 'ADMIN' ? 'bg-sky-500/10 text-sky-300' :
+                                                    user.role === 'MANAGER' ? 'bg-sky-500/10 text-sky-300' :
+                                                        'bg-slate-800/50 text-slate-200'
                                                     }`}>
                                                     {user.role}
                                                 </span>
                                             </td>
                                             <td className="px-4 py-3 text-center">
-                                                <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${user.isactive ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-500'
+                                                <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${user.isactive ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-800/50 text-slate-500'
                                                     }`}>
                                                     {user.isactive ? 'Actif' : 'Inactif'}
                                                 </span>
@@ -714,13 +714,13 @@ export default function SettingsPage() {
                                             <td className="px-4 py-3 text-center">
                                                 <button
                                                     onClick={() => openUserModal(user)}
-                                                    className="text-blue-600 hover:text-blue-800 font-medium mr-3"
+                                                    className="text-sky-400 hover:text-blue-800 font-medium mr-3"
                                                 >
                                                     Modifier
                                                 </button>
                                                 <button
                                                     onClick={() => deleteUser(user.userid)}
-                                                    className="text-red-600 hover:text-red-800 font-medium"
+                                                    className="text-sky-400 hover:text-sky-300 font-medium"
                                                 >
                                                     Supprimer
                                                 </button>
@@ -735,14 +735,14 @@ export default function SettingsPage() {
 
                 {/* TAB 6: SESSIONS */}
                 {activeTab === 'SESSIONS' && (
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                    <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10">
                         <div className="p-4 border-b border-slate-100">
                             <h2 className="text-lg font-semibold">📱 Appareils Connectés (30 derniers jours)</h2>
                             <p className="text-sm text-slate-500">Liste des connexions récentes au système</p>
                         </div>
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
-                                <thead className="bg-slate-50 text-xs uppercase text-slate-500 border-b">
+                                <thead className="bg-slate-900/40 text-xs uppercase text-slate-500 border-b">
                                     <tr>
                                         <th className="px-4 py-3 text-left">Utilisateur</th>
                                         <th className="px-4 py-3 text-left">Rôle</th>
@@ -754,16 +754,16 @@ export default function SettingsPage() {
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
                                     {sessions.map(session => (
-                                        <tr key={session.sessionid} className="hover:bg-slate-50 transition-colors">
-                                            <td className="px-4 py-3 font-medium text-slate-900">{session.username}</td>
+                                        <tr key={session.sessionid} className="hover:bg-slate-900/40 transition-colors">
+                                            <td className="px-4 py-3 font-medium text-white">{session.username}</td>
                                             <td className="px-4 py-3">
-                                                <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider ${session.role === 'ADMIN' ? 'bg-red-100 text-red-800' :
-                                                    session.role === 'MANAGER' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'
+                                                <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider ${session.role === 'ADMIN' ? 'bg-sky-500/10 text-sky-300' :
+                                                    session.role === 'MANAGER' ? 'bg-violet-500/10 text-purple-800' : 'bg-sky-500/10 text-blue-800'
                                                     }`}>
                                                     {session.role}
                                                 </span>
                                             </td>
-                                            <td className="px-4 py-3 font-mono text-xs text-slate-600 bg-slate-50 rounded w-fit">{session.ipaddress}</td>
+                                            <td className="px-4 py-3 font-mono text-xs text-slate-400 bg-slate-900/40 rounded w-fit">{session.ipaddress}</td>
                                             <td className="px-4 py-3 text-xs text-slate-500 max-w-xs truncate" title={session.useragent}>
                                                 {session.useragent && session.useragent.length > 50 ? session.useragent.substring(0, 50) + '...' : session.useragent}
                                             </td>
@@ -791,21 +791,21 @@ export default function SettingsPage() {
 
                 {/* TAB 7: HISTORIQUE */}
                 {activeTab === 'HISTORIQUE' && (
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                    <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10">
                         <div className="p-4 border-b border-slate-100 flex justify-between items-center">
                             <div>
                                 <h2 className="text-lg font-semibold">📜 Historique des Actions</h2>
                                 <p className="text-sm text-slate-500">Journal d'audit des modifications</p>
                             </div>
                             <div className="flex gap-2">
-                                <button disabled={auditPage === 1} onClick={() => setAuditPage(p => Math.max(1, p - 1))} className="px-3 py-1 border rounded hover:bg-slate-50 disabled:opacity-50">Prev</button>
-                                <span className="px-2 py-1 text-sm text-slate-600">Page {auditPage}</span>
-                                <button onClick={() => setAuditPage(p => p + 1)} className="px-3 py-1 border rounded hover:bg-slate-50">Next</button>
+                                <button disabled={auditPage === 1} onClick={() => setAuditPage(p => Math.max(1, p - 1))} className="px-3 py-1 border border-slate-600/40 rounded hover:bg-slate-900/40 disabled:opacity-50">Prev</button>
+                                <span className="px-2 py-1 text-sm text-slate-400">Page {auditPage}</span>
+                                <button onClick={() => setAuditPage(p => p + 1)} className="px-3 py-1 border border-slate-600/40 rounded hover:bg-slate-900/40">Next</button>
                             </div>
                         </div>
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
-                                <thead className="bg-slate-50 text-xs uppercase text-slate-500 border-b">
+                                <thead className="bg-slate-900/40 text-xs uppercase text-slate-500 border-b">
                                     <tr className="text-slate-500">
                                         <th className="px-4 py-3 text-left">Date</th>
                                         <th className="px-4 py-3 text-left">Utilisateur</th>
@@ -818,20 +818,20 @@ export default function SettingsPage() {
                                     {auditLoading ? (
                                         <tr><td colSpan={5} className="p-8 text-center text-slate-500">Chargement...</td></tr>
                                     ) : auditLogs.map((log: any) => (
-                                        <tr key={log.auditid} className="hover:bg-slate-50 text-sm transition-colors">
+                                        <tr key={log.auditid} className="hover:bg-slate-900/40 text-sm transition-colors">
                                             <td className="px-4 py-3 whitespace-nowrap text-slate-500">
                                                 {new Date(log.createdat).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                                             </td>
-                                            <td className="px-4 py-3 font-medium text-slate-700">
+                                            <td className="px-4 py-3 font-medium text-slate-200">
                                                 {log.username || 'Système'}
                                             </td>
                                             <td className="px-4 py-3">
-                                                <span className={`inline-flex items-center px-2.5 py-1 rounded text-xs font-bold border ${log.action.includes('SALE') ? 'bg-green-50 text-green-700 border-green-200' :
+                                                <span className={`inline-flex items-center px-2.5 py-1 rounded text-xs font-bold border ${log.action.includes('SALE') ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
                                                     log.action.includes('PURCHASE') && !log.action.includes('DELETE') ? 'bg-teal-50 text-teal-700 border-teal-200' :
-                                                    log.action.includes('DELETE') ? 'bg-red-50 text-red-700 border-red-200' :
+                                                    log.action.includes('DELETE') ? 'bg-sky-500/10 text-sky-300 border-sky-500/20' :
                                                         log.action.includes('UPDATE') ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                                                            log.action === 'LOGIN' ? 'bg-purple-50 text-purple-700 border-purple-200' :
-                                                                'bg-blue-50 text-blue-700 border-blue-200'
+                                                            log.action === 'LOGIN' ? 'bg-violet-500/10 text-violet-400 border-violet-500/20' :
+                                                                'bg-sky-500/10 text-sky-300 border-sky-500/20'
                                                     }`}>
                                                     {(() => {
                                                         const map: any = {
@@ -854,7 +854,7 @@ export default function SettingsPage() {
                                                     })()}
                                                 </span>
                                             </td>
-                                            <td className="px-4 py-3 text-slate-600">
+                                            <td className="px-4 py-3 text-slate-400">
                                                 {(() => {
                                                     const tableMap: any = { 'Orders': 'Commande', 'Customers': 'Client', 'Products': 'Produit', 'Users': 'Utilisateur', 'Inventory': 'Stock', 'PurchaseOrders': 'Achat' };
                                                     return `${tableMap[log.tablename] || log.tablename} #${log.recordid}`;
@@ -903,20 +903,20 @@ export default function SettingsPage() {
             {
                 showUserModal && (
                     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-                        <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
-                            <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50 rounded-t-xl">
-                                <h3 className="font-bold text-xl text-slate-800">{editingUser ? 'Modifier Utilisateur' : 'Nouvel Utilisateur'}</h3>
-                                <button onClick={() => setShowUserModal(false)} className="text-slate-400 hover:text-slate-600 text-3xl font-light">&times;</button>
+                        <div className="bg-slate-900/60 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+                            <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-900/40 rounded-t-xl">
+                                <h3 className="font-bold text-xl text-slate-100">{editingUser ? 'Modifier Utilisateur' : 'Nouvel Utilisateur'}</h3>
+                                <button onClick={() => setShowUserModal(false)} className="text-slate-400 hover:text-slate-400 text-3xl font-light">&times;</button>
                             </div>
                             <div className="p-6 overflow-y-auto flex-1">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                                     <div className="space-y-4">
                                         <div>
-                                            <label className="block text-sm font-semibold text-slate-700 mb-1">Nom d'utilisateur</label>
+                                            <label className="block text-sm font-semibold text-slate-200 mb-1">Nom d'utilisateur</label>
                                             <input
                                                 value={userForm.username}
                                                 onChange={e => setUserForm({ ...userForm, username: e.target.value })}
-                                                className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-medium"
+                                                className="w-full p-2.5 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition-all font-medium"
                                                 placeholder="Nom d'utilisateur..."
                                             />
                                             {editingUser && (
@@ -926,35 +926,35 @@ export default function SettingsPage() {
                                             )}
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-semibold text-slate-700 mb-1">
+                                            <label className="block text-sm font-semibold text-slate-200 mb-1">
                                                 Mot de passe {editingUser && <span className="text-slate-400 font-normal text-xs ml-1">(laisser vide pour ne pas changer)</span>}
                                             </label>
                                             <input
                                                 type="password"
                                                 value={userForm.password}
                                                 onChange={e => setUserForm({ ...userForm, password: e.target.value })}
-                                                className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                                className="w-full p-2.5 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition-all"
                                                 placeholder={editingUser ? "Modifier le mot de passe..." : "Définir un mot de passe..."}
                                             />
                                         </div>
                                     </div>
                                     <div className="space-y-4">
                                         <div>
-                                            <label className="block text-sm font-semibold text-slate-700 mb-1">Email</label>
+                                            <label className="block text-sm font-semibold text-slate-200 mb-1">Email</label>
                                             <input
                                                 type="email"
                                                 value={userForm.email}
                                                 onChange={e => setUserForm({ ...userForm, email: e.target.value })}
-                                                className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                                className="w-full p-2.5 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition-all"
                                                 placeholder="exemple@email.com"
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-semibold text-slate-700 mb-1">Rôle</label>
+                                            <label className="block text-sm font-semibold text-slate-200 mb-1">Rôle</label>
                                             <select
                                                 value={userForm.role}
                                                 onChange={e => setUserForm({ ...userForm, role: e.target.value })}
-                                                className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white"
+                                                className="w-full p-2.5 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition-all bg-slate-900/60"
                                             >
                                                 {ROLES.map(role => <option key={role} value={role}>{role}</option>)}
                                             </select>
@@ -962,44 +962,44 @@ export default function SettingsPage() {
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100 mb-6">
+                                <div className="flex items-center gap-3 p-3 bg-slate-900/40 rounded-lg border border-slate-100 mb-6">
                                     <input
                                         type="checkbox"
                                         id="isactive"
                                         checked={userForm.isactive}
                                         onChange={e => setUserForm({ ...userForm, isactive: e.target.checked })}
-                                        className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 cursor-pointer"
+                                        className="w-5 h-5 text-sky-400 rounded focus:ring-sky-500/30 cursor-pointer"
                                     />
-                                    <label htmlFor="isactive" className="font-medium text-slate-700 cursor-pointer select-none">Utilisateur actif (peut se connecter)</label>
+                                    <label htmlFor="isactive" className="font-medium text-slate-200 cursor-pointer select-none">Utilisateur actif (peut se connecter)</label>
                                 </div>
 
                                 <div className="border-t border-slate-100 pt-6">
                                     <div className="flex justify-between items-end mb-4">
                                         <div>
-                                            <label className="block text-sm font-bold text-slate-800 mb-1">Permissions Spécifiques</label>
+                                            <label className="block text-sm font-bold text-slate-100 mb-1">Permissions Spécifiques</label>
                                             <p className="text-xs text-slate-500">Cochez pour autoriser l'accès. Si tout est décoché, les permissions par défaut du rôle s'appliquent.</p>
                                         </div>
                                         <div className="flex gap-2 text-xs">
                                             <button
                                                 type="button"
                                                 onClick={() => setUserForm({ ...userForm, permissions: AVAILABLE_PERMISSIONS.map(p => p.key) })}
-                                                className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded transition-colors"
+                                                className="px-2 py-1 bg-slate-800/50 hover:bg-slate-200 text-slate-400 rounded transition-colors"
                                             >
                                                 Tout cocher
                                             </button>
                                             <button
                                                 type="button"
                                                 onClick={() => setUserForm({ ...userForm, permissions: [] })}
-                                                className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded transition-colors"
+                                                className="px-2 py-1 bg-slate-800/50 hover:bg-slate-200 text-slate-400 rounded transition-colors"
                                             >
                                                 Tout décocher
                                             </button>
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200 max-h-60 overflow-y-auto">
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-4 bg-slate-900/40 rounded-xl border border-white/[0.06] max-h-60 overflow-y-auto">
                                         {AVAILABLE_PERMISSIONS.map(perm => (
-                                            <label key={perm.key} className={`flex items-center gap-2.5 text-sm p-2 rounded-lg cursor-pointer transition-all border ${userForm.permissions.includes(perm.key) ? 'bg-white border-blue-200 shadow-sm' : 'hover:bg-white border-transparent'}`}>
+                                            <label key={perm.key} className={`flex items-center gap-2.5 text-sm p-2 rounded-lg cursor-pointer transition-all border ${userForm.permissions.includes(perm.key) ? 'bg-slate-900/60 border-sky-500/20 shadow-sm shadow-black/10' : 'hover:bg-slate-900/60 border-transparent'}`}>
                                                 <input
                                                     type="checkbox"
                                                     checked={userForm.permissions.includes(perm.key)}
@@ -1009,19 +1009,19 @@ export default function SettingsPage() {
                                                             : userForm.permissions.filter(p => p !== perm.key);
                                                         setUserForm({ ...userForm, permissions: newPerms });
                                                     }}
-                                                    className="w-4.5 h-4.5 text-blue-600 rounded focus:ring-blue-500 border-slate-300 cursor-pointer"
+                                                    className="w-4.5 h-4.5 text-sky-400 rounded focus:ring-sky-500/30 border-white/[0.08] cursor-pointer"
                                                 />
-                                                <span className={userForm.permissions.includes(perm.key) ? 'font-medium text-slate-900' : 'text-slate-600 '}>{perm.label}</span>
+                                                <span className={userForm.permissions.includes(perm.key) ? 'font-medium text-white' : 'text-slate-400 '}>{perm.label}</span>
                                             </label>
                                         ))}
                                     </div>
                                 </div>
                             </div>
-                            <div className="p-6 border-t border-slate-100 flex justify-end gap-3 bg-white rounded-b-xl">
-                                <button onClick={() => setShowUserModal(false)} className="px-5 py-2.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-lg font-medium transition-colors">
+                            <div className="p-6 border-t border-slate-100 flex justify-end gap-3 bg-slate-900/60 rounded-b-xl">
+                                <button onClick={() => setShowUserModal(false)} className="px-5 py-2.5 bg-slate-900/60 border border-white/[0.08] hover:bg-slate-900/40 text-slate-200 rounded-lg font-medium transition-colors">
                                     Annuler
                                 </button>
-                                <button onClick={saveUser} className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium shadow-sm hover:shadow-md transition-all flex items-center gap-2">
+                                <button onClick={saveUser} className="px-5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium shadow-sm shadow-black/10 hover:shadow-md shadow-black/20 transition-all flex items-center gap-2">
                                     <span>Enregistrer</span>
                                 </button>
                             </div>

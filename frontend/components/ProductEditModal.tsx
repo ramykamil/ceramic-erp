@@ -106,10 +106,10 @@ export default function ProductEditModal({ isOpen, product, brands, units, onClo
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      <div className="w-full max-w-lg bg-white rounded-xl shadow-2xl overflow-y-auto max-h-[90vh]">
-        <div className="p-5 border-b border-slate-100 flex justify-between items-center sticky top-0 bg-white z-10">
-          <h2 className="text-lg font-bold text-slate-800">Modifier Produit</h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
+      <div className="w-full max-w-lg bg-slate-900/60 rounded-xl shadow-2xl overflow-y-auto max-h-[90vh]">
+        <div className="p-5 border-b border-slate-100 flex justify-between items-center sticky top-0 bg-slate-900/60 z-10">
+          <h2 className="text-lg font-bold text-slate-100">Modifier Produit</h2>
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-400 text-2xl">&times;</button>
         </div>
         <div className="p-6 space-y-4">
           {/* Row 1: Code Produit & Marque */}
@@ -120,7 +120,7 @@ export default function ProductEditModal({ isOpen, product, brands, units, onClo
                 type="text"
                 value={editingProduct.productcode}
                 onChange={e => setEditingProduct({ ...editingProduct, productcode: e.target.value })}
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
               />
             </div>
             <div>
@@ -128,7 +128,7 @@ export default function ProductEditModal({ isOpen, product, brands, units, onClo
               <select
                 value={editingProduct.brandid !== undefined && editingProduct.brandid !== null ? String(editingProduct.brandid) : '0'}
                 onChange={e => setEditingProduct({ ...editingProduct, brandid: e.target.value === '0' ? null : Number(e.target.value) })}
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
               >
                 <option value="0">-- Aucune --</option>
                 {brands.map(b => (
@@ -145,7 +145,7 @@ export default function ProductEditModal({ isOpen, product, brands, units, onClo
               type="text"
               value={editingProduct.productname}
               onChange={e => setEditingProduct({ ...editingProduct, productname: e.target.value })}
-              className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+              className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
             />
           </div>
 
@@ -158,7 +158,7 @@ export default function ProductEditModal({ isOpen, product, brands, units, onClo
                 onWheel={(e) => e.currentTarget.blur()}
                 value={editingProduct.prixvente}
                 onChange={e => setEditingProduct({ ...editingProduct, prixvente: Number(e.target.value) })}
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
               />
             </div>
             <div>
@@ -168,7 +168,7 @@ export default function ProductEditModal({ isOpen, product, brands, units, onClo
                 onWheel={(e) => e.currentTarget.blur()}
                 value={editingProduct.prixachat}
                 onChange={e => setEditingProduct({ ...editingProduct, prixachat: Number(e.target.value) })}
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
               />
             </div>
           </div>
@@ -181,7 +181,7 @@ export default function ProductEditModal({ isOpen, product, brands, units, onClo
                 type="text"
                 value={editingProduct.calibre || ''}
                 onChange={e => setEditingProduct({ ...editingProduct, calibre: e.target.value })}
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
               />
             </div>
             <div>
@@ -189,7 +189,7 @@ export default function ProductEditModal({ isOpen, product, brands, units, onClo
               <select
                 value={editingProduct.choix || ''}
                 onChange={e => setEditingProduct({ ...editingProduct, choix: e.target.value })}
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
               >
                 <option value="">--</option>
                 <option value="1er Choix">1er Choix</option>
@@ -202,7 +202,7 @@ export default function ProductEditModal({ isOpen, product, brands, units, onClo
               <select
                 value={editingProduct.primaryunitid || ''}
                 onChange={e => setEditingProduct({ ...editingProduct, primaryunitid: Number(e.target.value) })}
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
               >
                 <option value="">-- Sélectionner --</option>
                 {units.map(u => (
@@ -213,8 +213,8 @@ export default function ProductEditModal({ isOpen, product, brands, units, onClo
           </div>
 
           {/* Packaging Section */}
-          <div className="border-t border-slate-200 pt-4 mt-2">
-            <h3 className="text-sm font-bold text-slate-700 mb-3">📦 Emballage</h3>
+          <div className="border-t border-white/[0.06] pt-4 mt-2">
+            <h3 className="text-sm font-bold text-slate-200 mb-3">📦 Emballage</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <div className="flex justify-between items-center mb-1">
@@ -224,7 +224,7 @@ export default function ProductEditModal({ isOpen, product, brands, units, onClo
                   <select
                     value={editingProduct.packagingUnit || 'm²'}
                     onChange={e => setEditingProduct({ ...editingProduct, packagingUnit: e.target.value })}
-                    className="text-xs p-0.5 border border-slate-300 rounded bg-slate-50 text-slate-700"
+                    className="text-xs p-0.5 border border-white/[0.08] rounded bg-slate-900/40 text-slate-200"
                   >
                     <option value="m²">m²</option>
                     <option value="pcs">pcs</option>
@@ -236,7 +236,7 @@ export default function ProductEditModal({ isOpen, product, brands, units, onClo
                   step="0.01"
                   value={editingProduct.qteparcolis ?? ''}
                   onChange={e => setEditingProduct({ ...editingProduct, qteparcolis: Number(e.target.value) })}
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                  className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
                   placeholder={editingProduct.packagingUnit === 'pcs' ? "Ex: 2" : "Ex: 1.44"}
                 />
               </div>
@@ -247,7 +247,7 @@ export default function ProductEditModal({ isOpen, product, brands, units, onClo
                   onWheel={(e) => e.currentTarget.blur()}
                   value={editingProduct.qtecolisparpalette ?? ''}
                   onChange={e => setEditingProduct({ ...editingProduct, qtecolisparpalette: Number(e.target.value) })}
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                  className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
                   placeholder="Ex: 48"
                 />
               </div>
@@ -255,13 +255,13 @@ export default function ProductEditModal({ isOpen, product, brands, units, onClo
           </div>
 
           {/* Manual Quantity Adjustment Section */}
-          <div className="border-t border-slate-200 pt-4 mt-2">
-            <h3 className="text-sm font-bold text-slate-700 mb-3">📊 Ajustement Quantité</h3>
-            <div className="bg-slate-50 rounded-lg p-3 space-y-3">
+          <div className="border-t border-white/[0.06] pt-4 mt-2">
+            <h3 className="text-sm font-bold text-slate-200 mb-3">📊 Ajustement Quantité</h3>
+            <div className="bg-slate-900/40 rounded-lg p-3 space-y-3">
               {/* Current Qty Display */}
               <div className="flex items-center justify-between">
                 <span className="text-xs font-medium text-slate-500 uppercase">Quantité actuelle</span>
-                <span className="text-sm font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded-full">
+                <span className="text-sm font-bold text-sky-300 bg-sky-500/10 px-3 py-1 rounded-full">
                   {formatQty(Number(editingProduct.totalqty || 0))}
                 </span>
               </div>
@@ -280,7 +280,7 @@ export default function ProductEditModal({ isOpen, product, brands, units, onClo
                       }
                     }}
                     placeholder={`Ex: ${formatQty(Number(editingProduct.totalqty || 0))}`}
-                    className="flex-1 p-2.5 border border-slate-300 rounded-lg text-sm"
+                    className="flex-1 p-2.5 border border-white/[0.08] rounded-lg text-sm"
                   />
                   <button
                     onClick={handleAdjustQuantity}
@@ -298,7 +298,7 @@ export default function ProductEditModal({ isOpen, product, brands, units, onClo
                   <div className="text-xs text-slate-400 text-center">Aucun changement</div>
                 );
                 return (
-                  <div className={`text-xs font-medium text-center py-1 px-2 rounded ${diff > 0 ? 'text-green-700 bg-green-50' : 'text-red-700 bg-red-50'}`}>
+                  <div className={`text-xs font-medium text-center py-1 px-2 rounded ${diff > 0 ? 'text-emerald-400 bg-emerald-500/10' : 'text-sky-300 bg-sky-500/10'}`}>
                     {diff > 0 ? '↑' : '↓'} Différence: {diff > 0 ? '+' : ''}{formatQty(diff)}
                   </div>
                 );
@@ -306,18 +306,18 @@ export default function ProductEditModal({ isOpen, product, brands, units, onClo
             </div>
           </div>
         </div>
-        <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3 font-medium text-sm">
+        <div className="p-4 bg-slate-900/40 border-t border-slate-100 flex justify-end gap-3 font-medium text-sm">
           <button
             onClick={onClose}
             disabled={isSaving}
-            className="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-lg"
+            className="bg-slate-900/60 border border-white/[0.08] text-slate-200 hover:bg-slate-900/40 px-4 py-2 rounded-lg"
           >
             Annuler
           </button>
           <button
             onClick={handleSaveEdit}
             disabled={isSaving}
-            className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-lg disabled:opacity-50"
+            className="bg-sky-600 text-white hover:bg-sky-700 px-4 py-2 rounded-lg disabled:opacity-50"
           >
             {isSaving ? 'Enregistrement...' : 'Enregistrer'}
           </button>

@@ -91,7 +91,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full bg-slate-800/50 border border-slate-600/40 rounded-xl px-4 py-3.5 text-white placeholder:text-slate-600 focus:border-sky-500 focus:ring-1 focus:ring-sky-500/30 transition-all text-sm"
+                className="w-full bg-slate-800/50 border border-slate-600/40 rounded-xl px-4 py-3.5 text-white placeholder:text-slate-400 focus:border-sky-500 focus:ring-1 focus:ring-sky-500/30 transition-all text-sm"
                 placeholder="Entrez votre identifiant"
               />
             </div>
@@ -106,14 +106,14 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full bg-slate-800/50 border border-slate-600/40 rounded-xl px-4 py-3.5 text-white placeholder:text-slate-600 focus:border-sky-500 focus:ring-1 focus:ring-sky-500/30 transition-all text-sm"
+                className="w-full bg-slate-800/50 border border-slate-600/40 rounded-xl px-4 py-3.5 text-white placeholder:text-slate-400 focus:border-sky-500 focus:ring-1 focus:ring-sky-500/30 transition-all text-sm"
                 placeholder="••••••••"
               />
             </div>
 
             {/* Error Banner */}
             {error && (
-              <div className="p-3.5 bg-red-500/10 border border-red-500/30 rounded-xl text-sm flex items-center gap-2.5 text-red-300 animate-fade-in-up">
+              <div className="p-3.5 bg-sky-500/10 border border-sky-500/30 rounded-xl text-sm flex items-center gap-2.5 text-red-300 animate-fade-in-up">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 flex-shrink-0 text-red-400" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                 </svg>

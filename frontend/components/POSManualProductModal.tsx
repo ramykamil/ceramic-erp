@@ -43,15 +43,15 @@ export function POSManualProductModal({
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden p-6">
-        <h2 className="text-xl font-bold mb-6 text-orange-600 border-b pb-4">Produit Manuel</h2>
+      <div className="w-full max-w-md bg-slate-900/60 rounded-2xl shadow-2xl overflow-hidden p-6">
+        <h2 className="text-xl font-bold mb-6 text-orange-400 border-b pb-4">Produit Manuel</h2>
         <div className="space-y-4">
           <input
             type="text"
             placeholder="Désignation..."
             value={manualProductName}
             onChange={(e) => setManualProductName(e.target.value)}
-            className="w-full p-4 bg-slate-50 border rounded-xl"
+            className="w-full p-4 bg-slate-900/40 border border-slate-600/40 rounded-xl"
           />
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
@@ -61,7 +61,7 @@ export function POSManualProductModal({
                 placeholder="Qté"
                 value={manualProductQty}
                 onChange={(e) => setManualProductQty(Number(e.target.value))}
-                className="w-full p-4 bg-slate-50 border rounded-xl"
+                className="w-full p-4 bg-slate-900/40 border border-slate-600/40 rounded-xl"
               />
             </div>
             <div className="space-y-1">
@@ -71,7 +71,7 @@ export function POSManualProductModal({
                 placeholder="Prix"
                 value={manualProductPrice}
                 onChange={(e) => setManualProductPrice(Number(e.target.value))}
-                className="w-full p-4 bg-slate-50 border rounded-xl"
+                className="w-full p-4 bg-slate-900/40 border border-slate-600/40 rounded-xl"
               />
             </div>
           </div>
@@ -83,7 +83,7 @@ export function POSManualProductModal({
                 placeholder="Colis"
                 value={manualProductColis}
                 onChange={(e) => setManualProductColis(Number(e.target.value))}
-                className="w-full p-4 bg-slate-50 border rounded-xl"
+                className="w-full p-4 bg-slate-900/40 border border-slate-600/40 rounded-xl"
               />
             </div>
             <div className="space-y-1">
@@ -93,7 +93,7 @@ export function POSManualProductModal({
                 placeholder="Palettes"
                 value={manualProductPalettes}
                 onChange={(e) => setManualProductPalettes(Number(e.target.value))}
-                className="w-full p-4 bg-slate-50 border rounded-xl"
+                className="w-full p-4 bg-slate-900/40 border border-slate-600/40 rounded-xl"
               />
             </div>
           </div>

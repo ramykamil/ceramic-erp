@@ -50,20 +50,20 @@ export function POSCustomerModal({ isOpen, onClose, onCreateSuccess }: POSCustom
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden p-6 scale-in">
-        <h2 className="text-xl font-bold mb-6 text-slate-800 border-b pb-4">Nouveau Client</h2>
+      <div className="w-full max-w-md bg-slate-900/60 rounded-2xl shadow-2xl overflow-hidden p-6 scale-in">
+        <h2 className="text-xl font-bold mb-6 text-slate-100 border-b pb-4">Nouveau Client</h2>
         <div className="space-y-4">
           <input
             type="text"
             placeholder="Nom complet..."
             value={newCustomerName}
             onChange={(e) => setNewCustomerName(e.target.value)}
-            className="w-full p-4 bg-slate-50 border rounded-xl"
+            className="w-full p-4 bg-slate-900/40 border border-slate-600/40 rounded-xl"
           />
           <select
             value={newCustomerType}
             onChange={(e) => setNewCustomerType(e.target.value as any)}
-            className="w-full p-4 bg-slate-50 border rounded-xl"
+            className="w-full p-4 bg-slate-900/40 border border-slate-600/40 rounded-xl"
           >
             <option value="WHOLESALE">Grossiste / Revendeur</option>
             <option value="RETAIL">Détaillant / Client de passage</option>
@@ -73,12 +73,12 @@ export function POSCustomerModal({ isOpen, onClose, onCreateSuccess }: POSCustom
             placeholder="Téléphone..."
             value={newCustomerPhone}
             onChange={(e) => setNewCustomerPhone(e.target.value)}
-            className="w-full p-4 bg-slate-50 border rounded-xl"
+            className="w-full p-4 bg-slate-900/40 border border-slate-600/40 rounded-xl"
           />
           <div className="flex gap-3 pt-4">
             <button
               onClick={onClose}
-              className="flex-1 py-4 text-slate-500 font-bold hover:text-slate-700 transition-colors"
+              className="flex-1 py-4 text-slate-500 font-bold hover:text-slate-200 transition-colors"
             >
               Annuler
             </button>

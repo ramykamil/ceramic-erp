@@ -140,7 +140,7 @@ function DashboardCard({ href, title, description, icon, colorClass }: NavButton
         <div className={`p-3 rounded-xl bg-gradient-to-br ${colorClass} text-2xl`}>
           {icon}
         </div>
-        <div className="text-slate-600 group-hover:text-sky-400 transition-all duration-300 text-xl group-hover:translate-x-1">
+        <div className="text-slate-400 group-hover:text-sky-400 transition-all duration-300 text-xl group-hover:translate-x-1">
           →
         </div>
       </div>

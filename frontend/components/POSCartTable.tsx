@@ -119,7 +119,7 @@ export function POSCartTable({
 }: POSCartTableProps) {
   return (
     <div className="flex-1 p-1 overflow-hidden flex flex-col">
-      <div className="flex-1 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+      <div className="flex-1 bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 overflow-hidden flex flex-col">
         <div className="flex-1 flex flex-col min-h-0" style={{ scrollbarGutter: 'stable' }}>
           {/* Desktop Table View */}
           <div className="hidden lg:block overflow-auto flex-1 custom-scrollbar">
@@ -219,12 +219,12 @@ export function POSCartTable({
                         `group transition-all duration-200 pos-row-compact cursor-pointer ${
                           isTransport
                             ? 'bg-amber-100/80 hover:bg-amber-200/90 border-b-2 border-amber-300 text-amber-900 shadow-[inset_0_1px_2px_rgba(0,0,0,0.05)]'
-                            : 'hover:bg-slate-50 border-b border-slate-100'
+                            : 'hover:bg-slate-900/40 border-b border-slate-100'
                         }`
                       )}
                       onClick={() => setCartSelectedIndex(idx)}
                     >
-                      <td className="px-2 py-0.5 text-slate-700 min-w-0 flex-none overflow-hidden" style={{ width: cartWidths.designation }}>
+                      <td className="px-2 py-0.5 text-slate-200 min-w-0 flex-none overflow-hidden" style={{ width: cartWidths.designation }}>
                         <div className="font-bold text-[11px] truncate w-full leading-tight" title={item.productName}>
                           {item.productName}
                         </div>
@@ -245,28 +245,28 @@ export function POSCartTable({
                         <SmartNumberInput
                           value={item.palettes}
                           onChange={(val) => updateItem(item.rowId, 'palettes', val)}
-                          className="w-full text-center p-0.5 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-xs shadow-inner"
+                          className="w-full text-center p-0.5 border border-white/[0.06] rounded font-bold text-indigo-400 bg-indigo-500/100/10/30 text-xs shadow-inner"
                         />
                       </td>
                       <td className="px-1.5 py-0.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.cartons }}>
                         <SmartNumberInput
                           value={item.cartons}
                           onChange={(val) => updateItem(item.rowId, 'cartons', val)}
-                          className="w-full text-center p-0.5 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-xs shadow-inner"
+                          className="w-full text-center p-0.5 border border-white/[0.06] rounded font-bold text-indigo-400 bg-indigo-500/100/10/30 text-xs shadow-inner"
                         />
                       </td>
                       <td className="px-2 py-0.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.quantity }}>
                         <SmartNumberInput
                           value={item.quantity}
                           onChange={(val) => updateItem(item.rowId, 'quantity', val)}
-                          className="w-full text-center p-0.5 border-2 border-red-200 rounded font-bold text-red-700 bg-red-50 text-xs shadow-sm"
+                          className="w-full text-center p-0.5 border-2 border-sky-500/20 rounded font-bold text-sky-300 bg-sky-500/10 text-xs shadow-sm shadow-black/10"
                         />
                       </td>
                       <td className="px-1.5 py-0.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.unite }}>
                         <select
                           value={item.unitId}
                           onChange={(e) => updateItem(item.rowId, 'unitId', Number(e.target.value))}
-                          className="w-full p-0.5 border border-slate-200 rounded text-[10px] bg-white hover:border-slate-400 transition-colors"
+                          className="w-full p-0.5 border border-white/[0.06] rounded text-[10px] bg-slate-900/60 hover:border-slate-400 transition-colors"
                         >
                           {units
                             .filter((u) => u.unitcode !== 'BOX')
@@ -281,8 +281,8 @@ export function POSCartTable({
                         <SmartNumberInput
                           value={item.unitPrice}
                           onChange={(val) => updateItem(item.rowId, 'unitPrice', val)}
-                          className={`w-full text-right p-0.5 border rounded font-mono text-xs shadow-inner ${
-                            item.purchasePrice && item.unitPrice < item.purchasePrice ? 'border-red-500 text-red-600 bg-red-50' : 'border-slate-200'
+                          className={`w-full text-right p-0.5 border border-slate-600/40 rounded font-mono text-xs shadow-inner ${
+                            item.purchasePrice && item.unitPrice < item.purchasePrice ? 'border-sky-500 text-sky-400 bg-sky-500/10' : 'border-white/[0.06]'
                           }`}
                         />
                       </td>
@@ -291,11 +291,11 @@ export function POSCartTable({
                           {item.priceSource}
                         </span>
                       </td>
-                      <td className="px-2 py-0.5 text-right font-bold text-slate-800 text-[11px] flex-none overflow-hidden" style={{ width: cartWidths.totalligne }}>
+                      <td className="px-2 py-0.5 text-right font-bold text-slate-100 text-[11px] flex-none overflow-hidden" style={{ width: cartWidths.totalligne }}>
                         {formatCurrency(item.lineTotal)}
                       </td>
                       <td className="px-1 py-0.5 text-center w-10 flex-none overflow-hidden">
-                        <button onClick={() => removeItem(item.rowId)} className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-700 transition-all text-xl">
+                        <button onClick={() => removeItem(item.rowId)} className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-sky-300 transition-all text-xl">
                           &times;
                         </button>
                       </td>
@@ -336,17 +336,17 @@ export function POSCartTable({
           )}
 
           {/* Mobile Cards View */}
-          <div className="lg:hidden flex-1 overflow-auto p-2 pb-44 space-y-3 custom-scrollbar bg-slate-50">
+          <div className="lg:hidden flex-1 overflow-auto p-2 pb-44 space-y-3 custom-scrollbar bg-slate-900/40">
             {cart.map((item) => {
               const isTransport = item.productName.toUpperCase().includes('TRANSPORT');
               return (
-                <div key={item.rowId} className={`rounded-2xl border p-4 space-y-4 ${isTransport ? 'bg-amber-50 border-2 border-amber-300 shadow-lg shadow-amber-900/5' : 'bg-white border-slate-200 shadow-sm'}`}>
+                <div key={item.rowId} className={`rounded-2xl border p-4 space-y-4 ${isTransport ? 'bg-amber-50 border-2 border-amber-300 shadow-lg shadow-black/20 shadow-amber-900/5' : 'bg-slate-900/60 border-white/[0.06] shadow-sm shadow-black/10'}`}>
                   <div className="flex justify-between items-start">
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-black text-slate-800 leading-tight truncate">{item.productName}</h4>
+                      <h4 className="font-black text-slate-100 leading-tight truncate">{item.productName}</h4>
                       <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{item.brandName || 'SANS MARQUE'}</p>
                     </div>
-                    <button onClick={() => removeItem(item.rowId)} className="p-2 text-red-400 hover:bg-red-50 rounded-full transition-colors">
+                    <button onClick={() => removeItem(item.rowId)} className="p-2 text-red-400 hover:bg-sky-500/10 rounded-full transition-colors">
                       &times;
                     </button>
                   </div>
@@ -358,12 +358,12 @@ export function POSCartTable({
                         <SmartNumberInput
                           value={item.quantity}
                           onChange={(val) => updateItem(item.rowId, 'quantity', val)}
-                          className="w-full text-center p-3 border-2 border-red-200 rounded-xl font-black text-red-700 bg-red-50 text-xl"
+                          className="w-full text-center p-3 border-2 border-sky-500/20 rounded-xl font-black text-sky-300 bg-sky-500/10 text-xl"
                         />
                         <select
                           value={item.unitId}
                           onChange={(e) => updateItem(item.rowId, 'unitId', Number(e.target.value))}
-                          className="p-3 border border-slate-200 rounded-xl text-xs bg-slate-50 font-bold"
+                          className="p-3 border border-white/[0.06] rounded-xl text-xs bg-slate-900/40 font-bold"
                         >
                           {units
                             .filter((u) => u.unitcode !== 'BOX')
@@ -380,19 +380,19 @@ export function POSCartTable({
                       <SmartNumberInput
                         value={item.unitPrice}
                         onChange={(val) => updateItem(item.rowId, 'unitPrice', val)}
-                        className="w-full text-right p-3 border border-slate-200 rounded-xl font-bold bg-slate-50 text-lg"
+                        className="w-full text-right p-3 border border-white/[0.06] rounded-xl font-bold bg-slate-900/40 text-lg"
                       />
                     </div>
                   </div>
 
                   {(item.piecesPerCarton > 0 || item.cartonsPerPalette > 0) && (
-                    <div className="bg-indigo-50/50 rounded-xl p-3 grid grid-cols-2 gap-4">
+                    <div className="bg-indigo-500/100/10/50 rounded-xl p-3 grid grid-cols-2 gap-4">
                       <div className="space-y-1">
                         <label className="text-[9px] font-bold text-indigo-400 uppercase tracking-wider">Cartons (Ctns)</label>
                         <SmartNumberInput
                           value={item.cartons}
                           onChange={(val) => updateItem(item.rowId, 'cartons', val)}
-                          className="w-full text-center p-2 border border-indigo-100 rounded-lg font-bold text-indigo-700 bg-white"
+                          className="w-full text-center p-2 border border-indigo-100 rounded-lg font-bold text-indigo-400 bg-slate-900/60"
                         />
                       </div>
                       <div className="space-y-1">
@@ -400,7 +400,7 @@ export function POSCartTable({
                         <SmartNumberInput
                           value={item.palettes}
                           onChange={(val) => updateItem(item.rowId, 'palettes', val)}
-                          className="w-full text-center p-2 border border-indigo-100 rounded-lg font-bold text-indigo-700 bg-white"
+                          className="w-full text-center p-2 border border-indigo-100 rounded-lg font-bold text-indigo-400 bg-slate-900/60"
                         />
                       </div>
                     </div>
@@ -412,7 +412,7 @@ export function POSCartTable({
                     </span>
                     <div className="text-right">
                       <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Total Ligne</p>
-                      <p className="text-xl font-black text-slate-900 leading-none">{formatCurrency(item.lineTotal)}</p>
+                      <p className="text-xl font-black text-white leading-none">{formatCurrency(item.lineTotal)}</p>
                     </div>
                   </div>
                 </div>

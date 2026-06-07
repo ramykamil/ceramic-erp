@@ -30,7 +30,7 @@ export default function Footer() {
                             </svg>
                             ramy.mecherim2@gmail.com
                         </a>
-                        <span className="text-slate-700">|</span>
+                        <span className="text-slate-200">|</span>
                         <a
                             href="tel:+213664975983"
                             className="hover:text-sky-400 transition-colors inline-flex items-center gap-1"

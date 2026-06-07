@@ -277,7 +277,7 @@ export default function NewPurchaseReturnPage() {
     };
 
     if (loadingInit) return (
-        <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="min-h-screen bg-slate-900/40 flex items-center justify-center">
             <div className="flex flex-col items-center gap-2">
                 <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
                 <p className="text-slate-500 font-medium">Chargement des données...</p>
@@ -288,16 +288,16 @@ export default function NewPurchaseReturnPage() {
     const totalAmount = items.reduce((sum, i) => sum + i.lineTotal, 0);
 
     return (
-        <div className="min-h-screen bg-slate-50 p-6">
+        <div className="min-h-screen bg-slate-900/40 p-6">
             <div className="max-w-7xl mx-auto space-y-6">
                 {/* Header & Actions */}
-                <div className="flex items-center justify-between bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <div className="flex items-center justify-between bg-slate-900/60 p-4 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10">
                     <div className="flex items-center gap-4">
-                        <Link href="/purchasing/returns" className="p-2 hover:bg-slate-100 rounded-lg text-slate-500 transition">
+                        <Link href="/purchasing/returns" className="p-2 hover:bg-slate-800/50 rounded-lg text-slate-500 transition">
                             <span className="text-xl">←</span>
                         </Link>
                         <div>
-                            <h1 className="text-2xl font-bold text-slate-800">Nouveau Retour</h1>
+                            <h1 className="text-2xl font-bold text-slate-100">Nouveau Retour</h1>
                             <p className="text-sm text-slate-500">Créer un bon de retour fournisseur</p>
                         </div>
                     </div>
@@ -305,8 +305,8 @@ export default function NewPurchaseReturnPage() {
                         <button
                             onClick={handleSubmit}
                             disabled={isSubmitting}
-                            className={`px-6 py-2.5 rounded-lg font-medium text-white shadow-sm transition-all flex items-center gap-2
-                                ${isSubmitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 hover:shadow-md'}`}
+                            className={`px-6 py-2.5 rounded-lg font-medium text-white shadow-sm shadow-black/10 transition-all flex items-center gap-2
+                                ${isSubmitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-sky-600 hover:bg-sky-700 hover:shadow-md shadow-black/20'}`}
                         >
                             {isSubmitting ? (
                                 <>
@@ -328,18 +328,18 @@ export default function NewPurchaseReturnPage() {
                     <div className="lg:col-span-1 space-y-6">
 
                         {/* 1. Supplier Selection */}
-                        <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-4 flex items-center gap-2">
+                        <div className="bg-slate-900/60 p-5 rounded-xl shadow-sm shadow-black/10 border border-white/[0.06]">
+                            <h3 className="text-sm font-bold text-white uppercase tracking-wide mb-4 flex items-center gap-2">
                                 🏭 Fournisseur
                             </h3>
 
                             <div className="space-y-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Fournisseur (Usine / Marque) <span className="text-red-500">*</span></label>
+                                    <label className="block text-sm font-medium text-slate-200 mb-1">Fournisseur (Usine / Marque) <span className="text-sky-400">*</span></label>
                                     <select
                                         value={supplierId}
                                         onChange={e => setSupplierId(e.target.value)}
-                                        className="w-full border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500 shadow-sm py-2.5"
+                                        className="w-full border-white/[0.08] rounded-lg text-sm focus:ring-sky-500/30 focus:border-sky-500 shadow-sm shadow-black/10 py-2.5"
                                     >
                                         <option value="">-- Sélectionner --</option>
                                         <optgroup label="Usines">
@@ -357,15 +357,15 @@ export default function NewPurchaseReturnPage() {
 
                                 {/* PO Selection (Dependent) */}
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                                    <label className="block text-sm font-medium text-slate-200 mb-1">
                                         Lier au Bon de Commande
-                                        {loadingPOs && <span className="ml-2 text-xs text-blue-500 animate-pulse">Chargement...</span>}
+                                        {loadingPOs && <span className="ml-2 text-xs text-sky-400 animate-pulse">Chargement...</span>}
                                     </label>
                                     <select
                                         value={purchaseOrderId}
                                         onChange={e => setPurchaseOrderId(e.target.value)}
                                         disabled={!supplierId}
-                                        className="w-full border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500 shadow-sm py-2.5 disabled:bg-slate-50 disabled:text-slate-400"
+                                        className="w-full border-white/[0.08] rounded-lg text-sm focus:ring-sky-500/30 focus:border-sky-500 shadow-sm shadow-black/10 py-2.5 disabled:bg-slate-900/40 disabled:text-slate-400"
                                     >
                                         <option value="">-- Aucun (Retour libre) --</option>
                                         {purchaseOrders.map(po => (
@@ -380,27 +380,27 @@ export default function NewPurchaseReturnPage() {
                         </div>
 
                         {/* 2. Details */}
-                        <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-4 flex items-center gap-2">
+                        <div className="bg-slate-900/60 p-5 rounded-xl shadow-sm shadow-black/10 border border-white/[0.06]">
+                            <h3 className="text-sm font-bold text-white uppercase tracking-wide mb-4 flex items-center gap-2">
                                 ℹ️ Détails
                             </h3>
                             <div className="space-y-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Date du retour</label>
+                                    <label className="block text-sm font-medium text-slate-200 mb-1">Date du retour</label>
                                     <input
                                         type="date"
                                         value={date}
                                         onChange={e => setDate(e.target.value)}
-                                        className="w-full border-slate-300 rounded-lg text-sm shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                        className="w-full border-white/[0.08] rounded-lg text-sm shadow-sm shadow-black/10 focus:ring-sky-500/30 focus:border-sky-500"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Notes / Motif global</label>
+                                    <label className="block text-sm font-medium text-slate-200 mb-1">Notes / Motif global</label>
                                     <textarea
                                         rows={4}
                                         value={notes}
                                         onChange={e => setNotes(e.target.value)}
-                                        className="w-full border-slate-300 rounded-lg text-sm shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                        className="w-full border-white/[0.08] rounded-lg text-sm shadow-sm shadow-black/10 focus:ring-sky-500/30 focus:border-sky-500"
                                         placeholder="Numéro de bon de livraison, raison principale..."
                                     />
                                 </div>
@@ -412,9 +412,9 @@ export default function NewPurchaseReturnPage() {
                     <div className="lg:col-span-2 space-y-4">
 
                         {/* Product Search Bar */}
-                        <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 z-30 relative">
+                        <div className="bg-slate-900/60 p-4 rounded-xl shadow-sm shadow-black/10 border border-white/[0.06] z-30 relative">
                             <div className="relative">
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Ajouter des articles</label>
+                                <label className="block text-sm font-medium text-slate-200 mb-1">Ajouter des articles</label>
                                 <div className="flex items-center relative">
                                     <span className="absolute left-3 text-slate-400">🔍</span>
                                     <input
@@ -422,26 +422,26 @@ export default function NewPurchaseReturnPage() {
                                         value={productSearch}
                                         onChange={e => setProductSearch(e.target.value)}
                                         placeholder="Rechercher par nom, code, dimension..."
-                                        className="w-full border-slate-300 rounded-lg pl-10 py-2.5 focus:ring-blue-500 focus:border-blue-500 shadow-sm text-sm"
+                                        className="w-full border-white/[0.08] rounded-lg pl-10 py-2.5 focus:ring-sky-500/30 focus:border-sky-500 shadow-sm shadow-black/10 text-sm"
                                         autoComplete="off"
                                     />
                                 </div>
 
                                 {/* Dropdown Results */}
                                 {filteredProducts.length > 0 && (
-                                    <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-xl shadow-xl z-50 max-h-80 overflow-y-auto ring-1 ring-black ring-opacity-5">
+                                    <div className="absolute top-full left-0 right-0 mt-2 bg-slate-900/60 border border-white/[0.06] rounded-xl shadow-xl z-50 max-h-80 overflow-y-auto ring-1 ring-black ring-opacity-5">
                                         <div className="p-2 grid grid-cols-1 gap-1">
                                             {filteredProducts.map(p => (
                                                 <button
                                                     key={p.productid}
                                                     onClick={() => addProduct(p)}
-                                                    className="flex justify-between items-center p-3 hover:bg-blue-50 rounded-lg transition-colors group text-left"
+                                                    className="flex justify-between items-center p-3 hover:bg-sky-500/10 rounded-lg transition-colors group text-left"
                                                 >
                                                     <div>
-                                                        <div className="font-semibold text-slate-800">{p.productname}</div>
+                                                        <div className="font-semibold text-slate-100">{p.productname}</div>
                                                         <div className="text-xs text-slate-500 font-mono">{p.productcode}</div>
                                                     </div>
-                                                    <div className="text-sm font-bold text-slate-600 bg-slate-100 px-2 py-1 rounded group-hover:bg-white transition-colors">
+                                                    <div className="text-sm font-bold text-slate-400 bg-slate-800/50 px-2 py-1 rounded group-hover:bg-slate-900/60 transition-colors">
                                                         {formatCurrency(p.prixachat || 0)}
                                                     </div>
                                                 </button>
@@ -453,15 +453,15 @@ export default function NewPurchaseReturnPage() {
                         </div>
 
                         {/* Items Table */}
-                        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden min-h-[400px] flex flex-col">
+                        <div className="bg-slate-900/60 rounded-xl shadow-sm shadow-black/10 border border-white/[0.06] overflow-hidden min-h-[400px] flex flex-col">
                             <div className="overflow-x-auto flex-1">
                                 <table className="w-full text-sm">
-                                    <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 uppercase text-xs font-semibold">
+                                    <thead className="bg-slate-900/40 border-b border-white/[0.06] text-slate-400 uppercase text-xs font-semibold">
                                         <tr>
                                             <th className="px-4 py-3 text-left w-1/3">Produit</th>
-                                            <th className="px-2 py-3 text-center w-16 bg-slate-100 hidden sm:table-cell">Pal</th>
-                                            <th className="px-2 py-3 text-center w-16 bg-slate-100 hidden sm:table-cell">Ctn</th>
-                                            <th className="px-2 py-3 text-center w-24 bg-blue-50 text-blue-800">Qté (pcs)</th>
+                                            <th className="px-2 py-3 text-center w-16 bg-slate-800/50 hidden sm:table-cell">Pal</th>
+                                            <th className="px-2 py-3 text-center w-16 bg-slate-800/50 hidden sm:table-cell">Ctn</th>
+                                            <th className="px-2 py-3 text-center w-24 bg-sky-500/10 text-blue-800">Qté (pcs)</th>
                                             <th className="px-4 py-3 text-right w-32">Prix Achat</th>
                                             <th className="px-4 py-3 text-right w-32">Total</th>
                                             <th className="px-2 py-3 w-10"></th>
@@ -480,16 +480,16 @@ export default function NewPurchaseReturnPage() {
                                             </tr>
                                         ) : (
                                             items.map((item, idx) => (
-                                                <tr key={idx} className="hover:bg-slate-50 transition-colors group">
+                                                <tr key={idx} className="hover:bg-slate-900/40 transition-colors group">
                                                     <td className="px-4 py-3">
-                                                        <div className="font-semibold text-slate-900">{item.productName}</div>
+                                                        <div className="font-semibold text-white">{item.productName}</div>
                                                         <div className="text-xs text-slate-500 mb-1">{item.productCode}</div>
                                                         <input
                                                             type="text"
                                                             placeholder="Motif (ex: Cassé, Erreur...)"
                                                             value={item.reason}
                                                             onChange={e => updateItem(idx, 'reason', e.target.value)}
-                                                            className="w-full text-xs border-slate-200 rounded px-2 py-1 placeholder-slate-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-shadow"
+                                                            className="w-full text-xs border-white/[0.06] rounded px-2 py-1 placeholder-slate-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-shadow"
                                                         />
                                                     </td>
                                                     <td className="px-2 py-3 hidden sm:table-cell">
@@ -498,7 +498,7 @@ export default function NewPurchaseReturnPage() {
                                                             value={item.palettes}
                                                             onChange={e => updateItem(idx, 'palettes', e.target.value)}
                                                             disabled={!item.cartonsPerPalette}
-                                                            className="w-full text-center border-slate-200 rounded py-1.5 focus:ring-blue-500 focus:border-blue-500 disabled:bg-slate-50 disabled:text-slate-300"
+                                                            className="w-full text-center border-white/[0.06] rounded py-1.5 focus:ring-sky-500/30 focus:border-sky-500 disabled:bg-slate-900/40 disabled:text-slate-300"
                                                         />
                                                     </td>
                                                     <td className="px-2 py-3 hidden sm:table-cell">
@@ -507,15 +507,15 @@ export default function NewPurchaseReturnPage() {
                                                             value={item.cartons}
                                                             onChange={e => updateItem(idx, 'cartons', e.target.value)}
                                                             disabled={!item.piecesPerCarton}
-                                                            className="w-full text-center border-slate-200 rounded py-1.5 focus:ring-blue-500 focus:border-blue-500 disabled:bg-slate-50 disabled:text-slate-300"
+                                                            className="w-full text-center border-white/[0.06] rounded py-1.5 focus:ring-sky-500/30 focus:border-sky-500 disabled:bg-slate-900/40 disabled:text-slate-300"
                                                         />
                                                     </td>
-                                                    <td className="px-2 py-3 bg-blue-50/30">
+                                                    <td className="px-2 py-3 bg-sky-500/10/30">
                                                         <input
                                                             type="number" min="0" step="0.01"
                                                             value={item.quantity}
                                                             onChange={e => updateItem(idx, 'quantity', e.target.value)}
-                                                            className="w-full text-center border-blue-300 bg-white font-bold text-blue-700 rounded py-1.5 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                                            className="w-full text-center border-blue-300 bg-slate-900/60 font-bold text-sky-300 rounded py-1.5 shadow-sm shadow-black/10 focus:ring-sky-500/30 focus:border-sky-500"
                                                         />
                                                         {item.sqmPerPiece > 0 && (
                                                             <div className="text-[10px] text-center text-slate-500 mt-1 font-mono">
@@ -528,16 +528,16 @@ export default function NewPurchaseReturnPage() {
                                                             type="number" min="0" step="0.01"
                                                             value={item.unitPrice}
                                                             onChange={e => updateItem(idx, 'unitPrice', e.target.value)}
-                                                            className="w-full text-right border-slate-200 rounded py-1.5 focus:ring-blue-500 focus:border-blue-500 text-slate-600"
+                                                            className="w-full text-right border-white/[0.06] rounded py-1.5 focus:ring-sky-500/30 focus:border-sky-500 text-slate-400"
                                                         />
                                                     </td>
-                                                    <td className="px-4 py-3 text-right font-bold text-slate-900 font-mono">
+                                                    <td className="px-4 py-3 text-right font-bold text-white font-mono">
                                                         {formatCurrency(item.lineTotal)}
                                                     </td>
                                                     <td className="px-2 py-3 text-center">
                                                         <button
                                                             onClick={() => removeItem(idx)}
-                                                            className="w-8 h-8 flex items-center justify-center rounded-full text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors"
+                                                            className="w-8 h-8 flex items-center justify-center rounded-full text-slate-400 hover:bg-sky-500/10 hover:text-sky-400 transition-colors"
                                                             title="Supprimer la ligne"
                                                         >
                                                             ✕
@@ -551,13 +551,13 @@ export default function NewPurchaseReturnPage() {
                             </div>
 
                             {/* Footer Totals */}
-                            <div className="bg-slate-50 border-t border-slate-200 p-4 lg:p-6 flex flex-col sm:flex-row justify-end items-center gap-4 sm:gap-8">
+                            <div className="bg-slate-900/40 border-t border-white/[0.06] p-4 lg:p-6 flex flex-col sm:flex-row justify-end items-center gap-4 sm:gap-8">
                                 <div className="text-slate-500 text-sm">
                                     {items.length} produit(s)
                                 </div>
-                                <div className="flex items-center gap-4 bg-white px-6 py-3 rounded-lg border border-slate-200 shadow-sm">
-                                    <span className="text-slate-600 font-medium uppercase text-sm tracking-wide">Total Estimé</span>
-                                    <span className="text-2xl font-bold text-slate-900">{formatCurrency(totalAmount)}</span>
+                                <div className="flex items-center gap-4 bg-slate-900/60 px-6 py-3 rounded-lg border border-white/[0.06] shadow-sm shadow-black/10">
+                                    <span className="text-slate-400 font-medium uppercase text-sm tracking-wide">Total Estimé</span>
+                                    <span className="text-2xl font-bold text-white">{formatCurrency(totalAmount)}</span>
                                 </div>
                             </div>
                         </div>

@@ -41,8 +41,8 @@ export function StandardDateInput({ value, onChange, placeholder, id, className 
     return (
         <div className={`relative group inline-block min-w-[130px] ${className || ''}`}>
             {/* Custom display overlay - forcing DD/MM/YYYY */}
-            <div className="absolute inset-0 flex items-center px-3 py-2 border border-slate-300 rounded-lg bg-white group-focus-within:ring-2 group-focus-within:ring-brand-primary/20 group-focus-within:border-brand-primary pointer-events-none z-10 transition-all duration-200">
-                <span className={`text-sm ${value ? 'text-slate-800 font-medium' : 'text-slate-400'}`}>
+            <div className="absolute inset-0 flex items-center px-3 py-2 border border-white/[0.08] rounded-lg bg-slate-900/60 group-focus-within:ring-2 group-focus-within:ring-brand-primary/20 group-focus-within:border-brand-primary pointer-events-none z-10 transition-all duration-200">
+                <span className={`text-sm ${value ? 'text-slate-100 font-medium' : 'text-slate-400'}`}>
                     {value ? formatDisplayDate(value) : (placeholder || 'JJ/MM/AAAA')}
                 </span>
                 <span className="ml-auto text-slate-400 text-xs">📅</span>
@@ -194,8 +194,8 @@ export function DateQuickFilter({
                     key={preset}
                     onClick={() => handlePresetClick(preset)}
                     className={`px-3 py-1.5 text-xs font-medium rounded-full transition ${activePreset === preset
-                        ? 'bg-brand-primary text-white shadow-sm'
-                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                        ? 'bg-brand-primary text-white shadow-sm shadow-black/10'
+                        : 'bg-slate-800/50 text-slate-400 hover:bg-slate-200'
                         }`}
                 >
                     {presetLabels[preset]}
@@ -203,7 +203,7 @@ export function DateQuickFilter({
             ))}
 
             {showCustom && (
-                <div className="flex items-center gap-2 ml-2 pl-2 border-l border-slate-200 animate-in fade-in slide-in-from-left-2 duration-300">
+                <div className="flex items-center gap-2 ml-2 pl-2 border-l border-white/[0.06] animate-in fade-in slide-in-from-left-2 duration-300">
                     <StandardDateInput 
                         value={customStart} 
                         onChange={setCustomStart} 
@@ -218,7 +218,7 @@ export function DateQuickFilter({
                     <button
                         onClick={handleCustomApply}
                         disabled={!customStart || !customEnd}
-                        className="px-3 py-1.5 text-xs bg-slate-800 text-white rounded-lg disabled:opacity-50 hover:bg-slate-900 transition-colors shadow-sm font-bold"
+                        className="px-3 py-1.5 text-xs bg-slate-800 text-white rounded-lg disabled:opacity-50 hover:bg-slate-900 transition-colors shadow-sm shadow-black/10 font-bold"
                     >
                         OK
                     </button>

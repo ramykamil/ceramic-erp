@@ -99,11 +99,11 @@ export default function DriversPage() {
             <div className="flex justify-between items-center mb-6">
                 <div>
                     <Link href="/logistics" className="text-sm text-blue-100 hover:text-white mb-2 block">← Retour Logistique</Link>
-                    <h1 className="text-3xl font-bold text-white drop-shadow-md">Gestion des Chauffeurs</h1>
+                    <h1 className="text-3xl font-bold text-white drop-shadow-md shadow-black/20">Gestion des Chauffeurs</h1>
                 </div>
                 <button
                     onClick={() => handleOpenModal()}
-                    className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm shadow-lg px-4 py-2 rounded-lg transition"
+                    className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm shadow-lg shadow-black/20 px-4 py-2 rounded-lg transition"
                 >
                     + Nouveau Chauffeur
                 </button>
@@ -112,27 +112,27 @@ export default function DriversPage() {
             {isLoading ? (
                 <p className="text-center text-slate-500 py-8">Chargement...</p>
             ) : (
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div className="bg-slate-900/60 rounded-xl shadow-sm shadow-black/10 border border-white/[0.06] overflow-hidden">
                     <table className="w-full text-left">
-                        <thead className="bg-slate-50 border-b border-slate-200">
+                        <thead className="bg-slate-900/40 border-b border-white/[0.06]">
                             <tr>
-                                <th className="p-4 font-semibold text-slate-700">Nom Complet</th>
-                                <th className="p-4 font-semibold text-slate-700">Permis</th>
-                                <th className="p-4 font-semibold text-slate-700">Téléphone</th>
-                                <th className="p-4 font-semibold text-slate-700">Statut</th>
-                                <th className="p-4 font-semibold text-slate-700 text-right">Actions</th>
+                                <th className="p-4 font-semibold text-slate-200">Nom Complet</th>
+                                <th className="p-4 font-semibold text-slate-200">Permis</th>
+                                <th className="p-4 font-semibold text-slate-200">Téléphone</th>
+                                <th className="p-4 font-semibold text-slate-200">Statut</th>
+                                <th className="p-4 font-semibold text-slate-200 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                             {drivers.map((driver) => (
-                                <tr key={driver.driverid} className="hover:bg-slate-50">
-                                    <td className="p-4 font-medium text-slate-900">{driver.firstname} {driver.lastname}</td>
-                                    <td className="p-4 text-slate-600">{driver.licensenumber}</td>
-                                    <td className="p-4 text-slate-600">{driver.phone}</td>
+                                <tr key={driver.driverid} className="hover:bg-slate-900/40">
+                                    <td className="p-4 font-medium text-white">{driver.firstname} {driver.lastname}</td>
+                                    <td className="p-4 text-slate-400">{driver.licensenumber}</td>
+                                    <td className="p-4 text-slate-400">{driver.phone}</td>
                                     <td className="p-4">
-                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${driver.status === 'AVAILABLE' ? 'bg-green-100 text-green-700' :
-                                            driver.status === 'ON_DELIVERY' ? 'bg-blue-100 text-blue-700' :
-                                                'bg-slate-100 text-slate-700'
+                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${driver.status === 'AVAILABLE' ? 'bg-emerald-500/10 text-emerald-400' :
+                                            driver.status === 'ON_DELIVERY' ? 'bg-sky-500/10 text-sky-300' :
+                                                'bg-slate-800/50 text-slate-200'
                                             }`}>
                                             {driver.status === 'AVAILABLE' ? 'DISPONIBLE' :
                                                 driver.status === 'ON_DELIVERY' ? 'EN LIVRAISON' : 'HORS SERVICE'}
@@ -141,13 +141,13 @@ export default function DriversPage() {
                                     <td className="p-4 text-right space-x-2">
                                         <button
                                             onClick={() => handleOpenModal(driver)}
-                                            className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                                            className="text-sky-400 hover:text-blue-800 text-sm font-medium"
                                         >
                                             Modifier
                                         </button>
                                         <button
                                             onClick={() => handleDelete(driver.driverid)}
-                                            className="text-red-600 hover:text-red-800 text-sm font-medium"
+                                            className="text-sky-400 hover:text-sky-300 text-sm font-medium"
                                         >
                                             Supprimer
                                         </button>
@@ -168,59 +168,59 @@ export default function DriversPage() {
 
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
-                        <h2 className="text-xl font-bold text-slate-800 mb-4">
+                    <div className="bg-slate-900/60 rounded-xl shadow-xl w-full max-w-md p-6">
+                        <h2 className="text-xl font-bold text-slate-100 mb-4">
                             {editingDriver ? 'Modifier Chauffeur' : 'Nouveau Chauffeur'}
                         </h2>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Prénom</label>
+                                    <label className="block text-sm font-medium text-slate-200 mb-1">Prénom</label>
                                     <input
                                         type="text"
                                         required
                                         value={formData.firstName}
                                         onChange={e => setFormData({ ...formData, firstName: e.target.value })}
-                                        className="w-full p-2 border border-slate-300 rounded-lg"
+                                        className="w-full p-2 border border-white/[0.08] rounded-lg"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Nom</label>
+                                    <label className="block text-sm font-medium text-slate-200 mb-1">Nom</label>
                                     <input
                                         type="text"
                                         required
                                         value={formData.lastName}
                                         onChange={e => setFormData({ ...formData, lastName: e.target.value })}
-                                        className="w-full p-2 border border-slate-300 rounded-lg"
+                                        className="w-full p-2 border border-white/[0.08] rounded-lg"
                                     />
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Numéro Permis</label>
+                                <label className="block text-sm font-medium text-slate-200 mb-1">Numéro Permis</label>
                                 <input
                                     type="text"
                                     required
                                     value={formData.licenseNumber}
                                     onChange={e => setFormData({ ...formData, licenseNumber: e.target.value })}
-                                    className="w-full p-2 border border-slate-300 rounded-lg"
+                                    className="w-full p-2 border border-white/[0.08] rounded-lg"
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Téléphone</label>
+                                <label className="block text-sm font-medium text-slate-200 mb-1">Téléphone</label>
                                 <input
                                     type="tel"
                                     required
                                     value={formData.phone}
                                     onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                                    className="w-full p-2 border border-slate-300 rounded-lg"
+                                    className="w-full p-2 border border-white/[0.08] rounded-lg"
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Statut</label>
+                                <label className="block text-sm font-medium text-slate-200 mb-1">Statut</label>
                                 <select
                                     value={formData.status}
                                     onChange={e => setFormData({ ...formData, status: e.target.value })}
-                                    className="w-full p-2 border border-slate-300 rounded-lg"
+                                    className="w-full p-2 border border-white/[0.08] rounded-lg"
                                 >
                                     <option value="AVAILABLE">Disponible</option>
                                     <option value="ON_DELIVERY">En Livraison</option>
@@ -231,13 +231,13 @@ export default function DriversPage() {
                                 <button
                                     type="button"
                                     onClick={() => setIsModalOpen(false)}
-                                    className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg"
+                                    className="px-4 py-2 text-slate-400 hover:bg-slate-800/50 rounded-lg"
                                 >
                                     Annuler
                                 </button>
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                                    className="px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700"
                                 >
                                     Enregistrer
                                 </button>

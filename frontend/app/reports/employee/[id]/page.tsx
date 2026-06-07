@@ -81,7 +81,7 @@ export default function EmployeeReportPage() {
     };
 
     if (isLoading) return <div className="p-8 text-center text-slate-500">Chargement du rapport...</div>;
-    if (error) return <div className="p-8 text-center text-red-500">Erreur: {error}</div>;
+    if (error) return <div className="p-8 text-center text-sky-400">Erreur: {error}</div>;
     if (!stats) return <div className="p-8 text-center text-slate-500">Employé non trouvé.</div>;
 
     return (
@@ -89,15 +89,15 @@ export default function EmployeeReportPage() {
             {/* Header */}
             <div className="mb-8 flex justify-between items-start">
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-800 mb-2">
+                    <h1 className="text-3xl font-bold text-slate-100 mb-2">
                         {stats.employee.firstname} {stats.employee.lastname}
                     </h1>
                     <div className="flex gap-3 text-sm text-slate-500">
-                        <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">{stats.employee.position}</span>
-                        <span className="bg-slate-100 text-slate-700 px-2 py-1 rounded">{stats.employee.department}</span>
+                        <span className="bg-sky-500/10 text-blue-800 px-2 py-1 rounded">{stats.employee.position}</span>
+                        <span className="bg-slate-800/50 text-slate-200 px-2 py-1 rounded">{stats.employee.department}</span>
                     </div>
                 </div>
-                <Link href="/hr/employees" className="text-blue-600 hover:text-blue-800 font-medium">
+                <Link href="/hr/employees" className="text-sky-400 hover:text-blue-800 font-medium">
                     ← Retour aux Employés
                 </Link>
             </div>
@@ -105,18 +105,18 @@ export default function EmployeeReportPage() {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 {/* Sales Card */}
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div className="bg-slate-900/60 p-6 rounded-xl shadow-sm border border-white/\[0.06\]">
                     <h3 className="text-sm font-medium text-slate-500 mb-1">Ventes Totales</h3>
-                    <div className="text-2xl font-bold text-green-600">
+                    <div className="text-2xl font-bold text-emerald-400">
                         {Number(stats.sales.totalsales).toLocaleString('fr-DZ', { style: 'currency', currency: 'DZD' })}
                     </div>
                     <div className="text-xs text-slate-400 mt-2">{stats.sales.ordercount} commandes</div>
                 </div>
 
                 {/* Attendance Card */}
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div className="bg-slate-900/60 p-6 rounded-xl shadow-sm border border-white/\[0.06\]">
                     <h3 className="text-sm font-medium text-slate-500 mb-1">Présence</h3>
-                    <div className="text-2xl font-bold text-blue-600">
+                    <div className="text-2xl font-bold text-sky-400">
                         {stats.attendance.presentdays} <span className="text-sm font-normal text-slate-400">/ {stats.attendance.totaldays} jours</span>
                     </div>
                     <div className="text-xs text-slate-400 mt-2">
@@ -125,18 +125,18 @@ export default function EmployeeReportPage() {
                 </div>
 
                 {/* Hours Card */}
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div className="bg-slate-900/60 p-6 rounded-xl shadow-sm border border-white/\[0.06\]">
                     <h3 className="text-sm font-medium text-slate-500 mb-1">Heures Travaillées</h3>
-                    <div className="text-2xl font-bold text-purple-600">
+                    <div className="text-2xl font-bold text-violet-400">
                         {stats.attendance.totalhours} h
                     </div>
                     <div className="text-xs text-slate-400 mt-2">Total cumulé</div>
                 </div>
 
                 {/* Status Card */}
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div className="bg-slate-900/60 p-6 rounded-xl shadow-sm border border-white/\[0.06\]">
                     <h3 className="text-sm font-medium text-slate-500 mb-1">Compte Utilisateur</h3>
-                    <div className={`text-lg font-semibold ${stats.employee.userid ? 'text-green-600' : 'text-slate-400'}`}>
+                    <div className={`text-lg font-semibold ${stats.employee.userid ? 'text-emerald-400' : 'text-slate-400'}`}>
                         {stats.employee.userid ? 'Actif' : 'Non lié'}
                     </div>
                     <div className="text-xs text-slate-400 mt-2">
@@ -147,13 +147,13 @@ export default function EmployeeReportPage() {
 
             {/* Session History */}
             {stats.employee.userid && (
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div className="bg-slate-900/60 rounded-xl shadow-sm border border-white/\[0.06\] overflow-hidden">
                     <div className="p-6 border-b border-slate-100">
-                        <h2 className="text-lg font-semibold text-slate-800">Historique de Connexion Récent</h2>
+                        <h2 className="text-lg font-semibold text-slate-100">Historique de Connexion Récent</h2>
                     </div>
                     <div className="overflow-x-auto">
-                        <table className="w-full text-sm text-left text-slate-600">
-                            <thead className="bg-slate-50 text-xs uppercase font-semibold text-slate-500">
+                        <table className="w-full text-sm text-left text-slate-400">
+                            <thead className="bg-slate-900/40 text-xs uppercase font-semibold text-slate-500">
                                 <tr>
                                     <th className="px-6 py-3">Date/Heure</th>
                                     <th className="px-6 py-3">Action</th>
@@ -168,12 +168,12 @@ export default function EmployeeReportPage() {
                                     </tr>
                                 ) : (
                                     sessions.map((log) => (
-                                        <tr key={log.auditid} className="hover:bg-slate-50">
+                                        <tr key={log.auditid} className="hover:bg-slate-900/40">
                                             <td className="px-6 py-3 font-medium">
                                                 {new Date(log.createdat).toLocaleString('fr-FR')}
                                             </td>
                                             <td className="px-6 py-3">
-                                                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${log.action === 'LOGIN' ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-700'
+                                                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${log.action === 'LOGIN' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-800/50 text-slate-200'
                                                     }`}>
                                                     {log.action}
                                                 </span>

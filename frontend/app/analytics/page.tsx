@@ -180,7 +180,7 @@ export default function AnalyticsPage() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex-shrink-0 px-5 py-3 rounded-xl text-sm font-medium transition-all duration-300 border ${
                 activeTab === tab.id
-                  ? 'bg-sky-500/20 border-sky-500/40 text-sky-300 shadow-lg shadow-sky-500/10'
+                  ? 'bg-sky-500/20 border-sky-500/40 text-sky-300 shadow-lg shadow-black/20 shadow-sky-500/10'
                   : 'bg-slate-800/30 border-slate-700/30 text-slate-400 hover:bg-slate-700/40 hover:text-slate-200'
               }`}
             >
@@ -300,7 +300,7 @@ export default function AnalyticsPage() {
               {/* Trending Down */}
               <div className="glass-card p-5">
                 <h3 className="text-base font-bold text-white mb-4 flex items-center gap-2">
-                  <span className="w-7 h-7 rounded-lg bg-red-500/15 flex items-center justify-center text-sm">📉</span>
+                  <span className="w-7 h-7 rounded-lg bg-sky-500/15 flex items-center justify-center text-sm">📉</span>
                   Produits en Baisse
                 </h3>
                 {trending?.trendingDown?.length > 0 ? (
@@ -342,7 +342,7 @@ export default function AnalyticsPage() {
                 <p className="text-sm text-slate-400">Produits qui risquent d&apos;être en rupture dans les {lowStock?.forecastDays || 7} prochains jours</p>
               </div>
               <div className={`text-4xl font-black px-6 py-3 rounded-2xl ${
-                (lowStock?.atRiskCount || 0) > 0 ? 'bg-red-500/15 text-red-400 animate-pulse-glow' : 'bg-emerald-500/15 text-emerald-400'
+                (lowStock?.atRiskCount || 0) > 0 ? 'bg-sky-500/15 text-red-400 animate-pulse-glow' : 'bg-emerald-500/15 text-emerald-400'
               }`}>
                 {lowStock?.atRiskCount || 0}
               </div>
@@ -375,7 +375,7 @@ export default function AnalyticsPage() {
                           <td className="p-4 text-center">
                             <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
                               p.daysLeft <= 3
-                                ? 'bg-red-500/20 text-red-300 animate-pulse'
+                                ? 'bg-sky-500/20 text-red-300 animate-pulse'
                                 : p.daysLeft <= 7
                                 ? 'bg-amber-500/20 text-amber-300'
                                 : 'bg-emerald-500/20 text-emerald-300'
@@ -444,7 +444,7 @@ export default function AnalyticsPage() {
                     value={waPhone}
                     onChange={(e) => setWaPhone(e.target.value)}
                     placeholder="213XXXXXXXXX"
-                    className="w-full bg-slate-800/50 border border-slate-600/40 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:border-sky-500 transition-colors"
+                    className="w-full bg-slate-800/50 border border-slate-600/40 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-400 focus:border-sky-500 transition-colors"
                   />
                 </div>
 
@@ -457,7 +457,7 @@ export default function AnalyticsPage() {
                         value={waInvoice}
                         onChange={(e) => setWaInvoice(e.target.value)}
                         placeholder="FAC-00123"
-                        className="w-full bg-slate-800/50 border border-slate-600/40 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:border-sky-500 transition-colors"
+                        className="w-full bg-slate-800/50 border border-slate-600/40 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-400 focus:border-sky-500 transition-colors"
                       />
                     </div>
                     <div>
@@ -467,7 +467,7 @@ export default function AnalyticsPage() {
                         value={waAmount}
                         onChange={(e) => setWaAmount(e.target.value)}
                         placeholder="150000"
-                        className="w-full bg-slate-800/50 border border-slate-600/40 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:border-sky-500 transition-colors"
+                        className="w-full bg-slate-800/50 border border-slate-600/40 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-400 focus:border-sky-500 transition-colors"
                       />
                     </div>
                   </>
@@ -480,7 +480,7 @@ export default function AnalyticsPage() {
                         value={waCustomerName}
                         onChange={(e) => setWaCustomerName(e.target.value)}
                         placeholder="Mohamed Ali"
-                        className="w-full bg-slate-800/50 border border-slate-600/40 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:border-sky-500 transition-colors"
+                        className="w-full bg-slate-800/50 border border-slate-600/40 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-400 focus:border-sky-500 transition-colors"
                       />
                     </div>
                     <div>
@@ -490,7 +490,7 @@ export default function AnalyticsPage() {
                         value={waBalance}
                         onChange={(e) => setWaBalance(e.target.value)}
                         placeholder="85000"
-                        className="w-full bg-slate-800/50 border border-slate-600/40 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:border-sky-500 transition-colors"
+                        className="w-full bg-slate-800/50 border border-slate-600/40 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-400 focus:border-sky-500 transition-colors"
                       />
                     </div>
                   </>
@@ -521,7 +521,7 @@ export default function AnalyticsPage() {
                 <div className={`mt-4 p-4 rounded-xl border text-sm ${
                   waResult.success
                     ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
-                    : 'bg-red-500/10 border-red-500/30 text-red-300'
+                    : 'bg-sky-500/10 border-sky-500/30 text-red-300'
                 }`}>
                   <p className="font-medium">{waResult.success ? '✅ Message envoyé avec succès' : '❌ Erreur d\'envoi'}</p>
                   {waResult.data?.message && <p className="text-xs mt-1 opacity-80">{waResult.data.message}</p>}

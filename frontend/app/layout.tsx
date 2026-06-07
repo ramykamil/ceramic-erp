@@ -6,8 +6,8 @@ import Footer from "@/components/layout/Footer";
 import GlobalKeyboardShortcuts from "@/components/GlobalKeyboardShortcuts";
 
 export const metadata = {
-  title: "Allaoua Ceram - Système de Gestion",
-  description: "Système de gestion pour Allaoua Ceram - Carrelages et céramiques",
+  title: "Ceramic ERP - Système de Gestion",
+  description: "Système de gestion pour Ceramic ERP - Carrelages et céramiques",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

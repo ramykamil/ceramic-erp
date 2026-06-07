@@ -175,7 +175,7 @@ function ProductFormContent() {
     return (
         <>
             {apiError && (
-                <div className="mb-4 p-4 bg-red-100 text-red-700 border border-red-200 rounded-lg">
+                <div className="mb-4 p-4 bg-sky-500/10 text-sky-300 border border-sky-500/20 rounded-lg">
                     <strong>Erreur:</strong> {apiError}
                 </div>
             )}
@@ -184,40 +184,40 @@ function ProductFormContent() {
                 {/* Code & Nom */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label htmlFor="productcode" className="block text-sm font-medium text-slate-700 mb-1">Code Produit *</label>
+                        <label htmlFor="productcode" className="block text-sm font-medium text-slate-200 mb-1">Code Produit *</label>
                         <input type="text" id="productcode" name="productcode" value={formData.productcode} onChange={handleChange} required disabled={isEditing}
-                            className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white bg-opacity-80 disabled:bg-slate-100" />
+                            className="w-full p-2 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition bg-slate-900/60 bg-opacity-80 disabled:bg-slate-800/50" />
                         {isEditing && <p className="text-xs text-slate-500 mt-1">Le code produit ne peut pas être modifié.</p>}
                     </div>
                     <div>
-                        <label htmlFor="productname" className="block text-sm font-medium text-slate-700 mb-1">Nom Produit *</label>
+                        <label htmlFor="productname" className="block text-sm font-medium text-slate-200 mb-1">Nom Produit *</label>
                         <input type="text" id="productname" name="productname" value={formData.productname} onChange={handleChange} required
-                            className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white bg-opacity-80" />
+                            className="w-full p-2 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition bg-slate-900/60 bg-opacity-80" />
                     </div>
                 </div>
 
                 {/* Catégorie, Marque, Unité */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
-                        <label htmlFor="categoryid" className="block text-sm font-medium text-slate-700 mb-1">Catégorie</label>
+                        <label htmlFor="categoryid" className="block text-sm font-medium text-slate-200 mb-1">Catégorie</label>
                         <select id="categoryid" name="categoryid" value={formData.categoryid} onChange={handleChange}
-                            className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white bg-opacity-80">
+                            className="w-full p-2 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition bg-slate-900/60 bg-opacity-80">
                             <option value="">-- Sélectionner --</option>
                             {categories.map(cat => <option key={cat.categoryid} value={cat.categoryid}>{cat.categoryname}</option>)}
                         </select>
                     </div>
                     <div>
-                        <label htmlFor="brandid" className="block text-sm font-medium text-slate-700 mb-1">Marque</label>
+                        <label htmlFor="brandid" className="block text-sm font-medium text-slate-200 mb-1">Marque</label>
                         <select id="brandid" name="brandid" value={formData.brandid} onChange={handleChange}
-                            className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white bg-opacity-80">
+                            className="w-full p-2 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition bg-slate-900/60 bg-opacity-80">
                             <option value="">-- Sélectionner --</option>
                             {brands.map(brand => <option key={brand.brandid} value={brand.brandid}>{brand.brandname}</option>)}
                         </select>
                     </div>
                     <div>
-                        <label htmlFor="primaryunitid" className="block text-sm font-medium text-slate-700 mb-1">Unité Primaire *</label>
+                        <label htmlFor="primaryunitid" className="block text-sm font-medium text-slate-200 mb-1">Unité Primaire *</label>
                         <select id="primaryunitid" name="primaryunitid" value={formData.primaryunitid} onChange={handleChange} required
-                            className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white bg-opacity-80">
+                            className="w-full p-2 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition bg-slate-900/60 bg-opacity-80">
                             <option value="">-- Sélectionner --</option>
                             {units.map(unit => <option key={unit.unitid} value={unit.unitid}>{unit.unitname} ({unit.unitcode})</option>)}
                         </select>
@@ -227,9 +227,9 @@ function ProductFormContent() {
                 {/* Entrepôt - only show when creating new product */}
                 {!isEditing && (
                     <div>
-                        <label htmlFor="warehouseid" className="block text-sm font-medium text-slate-700 mb-1">Entrepôt Initial *</label>
+                        <label htmlFor="warehouseid" className="block text-sm font-medium text-slate-200 mb-1">Entrepôt Initial *</label>
                         <select id="warehouseid" name="warehouseid" value={formData.warehouseid} onChange={handleChange} required
-                            className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white bg-opacity-80">
+                            className="w-full p-2 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition bg-slate-900/60 bg-opacity-80">
                             <option value="">-- Sélectionner l'entrepôt --</option>
                             {warehouses.map(wh => <option key={wh.warehouseid} value={wh.warehouseid}>{wh.warehousename}</option>)}
                         </select>
@@ -239,32 +239,32 @@ function ProductFormContent() {
 
                 {/* Description */}
                 <div>
-                    <label htmlFor="description" className="block text-sm font-medium text-slate-700 mb-1">Description</label>
+                    <label htmlFor="description" className="block text-sm font-medium text-slate-200 mb-1">Description</label>
                     <textarea id="description" name="description" value={formData.description} onChange={handleChange} rows={3}
-                        className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white bg-opacity-80" />
+                        className="w-full p-2 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition bg-slate-900/60 bg-opacity-80" />
                 </div>
 
                 {/* Image URL */}
                 <div>
-                    <label htmlFor="imageUrl" className="block text-sm font-medium text-slate-700 mb-1">Lien Image (URL)</label>
+                    <label htmlFor="imageUrl" className="block text-sm font-medium text-slate-200 mb-1">Lien Image (URL)</label>
                     <input type="url" id="imageUrl" name="imageUrl" value={formData.imageUrl} onChange={handleChange} placeholder="https://example.com/image.jpg"
-                        className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white bg-opacity-80" />
+                        className="w-full p-2 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition bg-slate-900/60 bg-opacity-80" />
                 </div>
 
                 {/* Prix de Base */}
                 <div>
-                    <label htmlFor="baseprice" className="block text-sm font-medium text-slate-700 mb-1">Prix de Base (DZD) *</label>
+                    <label htmlFor="baseprice" className="block text-sm font-medium text-slate-200 mb-1">Prix de Base (DZD) *</label>
                     <input type="number" id="baseprice" name="baseprice" value={formData.baseprice} onChange={handleChange} required min="0" step="0.01"
-                        className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white bg-opacity-80" />
+                        className="w-full p-2 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition bg-slate-900/60 bg-opacity-80" />
                 </div>
 
                 {/* Submit Buttons */}
-                <div className="flex justify-end gap-4 border-t border-slate-200 pt-6">
-                    <Link href="/products" className="bg-slate-200 text-slate-700 hover:bg-slate-300 px-5 py-2 rounded-lg font-medium text-sm transition">
+                <div className="flex justify-end gap-4 border-t border-white/[0.06] pt-6">
+                    <Link href="/products" className="bg-slate-200 text-slate-200 hover:bg-slate-300 px-5 py-2 rounded-lg font-medium text-sm transition">
                         Annuler
                     </Link>
                     <button type="submit" disabled={isSaving}
-                        className="bg-blue-600 text-white hover:bg-blue-700 px-5 py-2 rounded-lg font-medium text-sm transition disabled:opacity-50">
+                        className="bg-sky-600 text-white hover:bg-sky-700 px-5 py-2 rounded-lg font-medium text-sm transition disabled:opacity-50">
                         {isSaving ? 'Sauvegarde...' : (isEditing ? 'Mettre à Jour Produit' : 'Ajouter Produit')}
                     </button>
                 </div>
@@ -285,7 +285,7 @@ export default function ProductFormPage() {
                             <DynamicTitle />
                         </Suspense>
                     </h1>
-                    <Link href="/products" className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                    <Link href="/products" className="text-sky-400 hover:text-blue-800 text-sm font-medium">
                         ← Retour à la Liste
                     </Link>
                 </div>

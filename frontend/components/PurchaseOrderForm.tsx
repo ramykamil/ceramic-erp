@@ -634,7 +634,7 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-100 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-800/50 flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block w-10 h-10 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin mb-4"></div>
           <p className="text-slate-500">Chargement...</p>
@@ -650,14 +650,14 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
       </div>
 
       <div className="max-w-full mx-auto">
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-4">
+        <div className="bg-slate-900/60 rounded-xl shadow-sm shadow-black/10 border border-white/[0.06] p-4 mb-4">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center text-white text-xl">
+              <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white text-xl">
                 {mode === 'edit' ? '✏️' : '📦'}
               </div>
               <div>
-                <h1 className="text-xl font-bold text-slate-800">
+                <h1 className="text-xl font-bold text-slate-100">
                   {mode === 'edit' ? 'Modifier Bon de Commande' : 'Nouveau Bon de Commande'}
                 </h1>
                 <p className="text-xs text-slate-500">
@@ -667,7 +667,7 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
             </div>
             <Link
               href="/purchasing"
-              className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium transition"
+              className="bg-slate-800/50 hover:bg-slate-200 text-slate-200 px-3 py-2 rounded-lg text-sm font-medium transition"
             >
               ← Retour
             </Link>
@@ -675,12 +675,12 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
         </div>
 
         {apiError && (
-          <div className="mb-4 p-3 bg-red-50 text-red-700 border border-red-200 rounded-lg text-sm">
+          <div className="mb-4 p-3 bg-sky-500/10 text-sky-300 border border-sky-500/20 rounded-lg text-sm">
             <strong>Erreur:</strong> {apiError}
           </div>
         )}
 
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="bg-slate-900/60 rounded-xl shadow-sm shadow-black/10 border border-white/[0.06] overflow-hidden">
           <div className="p-4 border-b border-slate-100 bg-gradient-to-r from-green-50 to-emerald-50">
             <div className="relative max-w-2xl">
               <input
@@ -688,27 +688,27 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="🔍 Rechercher un produit à ajouter..."
-                className="w-full p-3 pl-4 pr-10 text-sm border-2 border-green-300 rounded-xl bg-white focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                className="w-full p-3 pl-4 pr-10 text-sm border-2 border-green-300 rounded-xl bg-slate-900/60 focus:ring-2 focus:ring-green-500 focus:border-green-500"
               />
               {searchQuery && (
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
                   {isSearching && <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>}
-                  <button onClick={() => setSearchQuery('')} className="text-slate-400 hover:text-slate-600">
+                  <button onClick={() => setSearchQuery('')} className="text-slate-400 hover:text-slate-400">
                     ✕
                   </button>
                 </div>
               )}
               {filteredProducts.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 mt-1 bg-slate-900/60 border border-white/[0.06] rounded-lg shadow-lg shadow-black/20 z-50 max-h-60 overflow-y-auto">
                   {filteredProducts.map(p => (
                     <button
                       key={p.productid}
                       type="button"
                       onClick={() => addToCart(p)}
-                      className="w-full px-4 py-3 text-left hover:bg-green-50 border-b border-slate-100 last:border-b-0 flex justify-between items-center"
+                      className="w-full px-4 py-3 text-left hover:bg-emerald-500/10 border-b border-slate-100 last:border-b-0 flex justify-between items-center"
                     >
                       <div>
-                        <div className="font-medium text-slate-800">
+                        <div className="font-medium text-slate-100">
                           {p.productname}
                           <span className="text-slate-500 text-xs ml-2 font-normal">
                             ({p.brandname || p.famille || 'Sans marque'})
@@ -718,7 +718,7 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                       </div>
                       <div className="text-right">
                         {p.baseprice > 0 && <div className="text-xxs text-slate-400">Base: {formatCurrencyDZD(p.baseprice)}</div>}
-                        <div className="text-sm font-bold text-green-600">
+                        <div className="text-sm font-bold text-emerald-400">
                           {formatCurrencyDZD(Number(p.purchaseprice) || Number(p.baseprice) || Number(p.prixachat))}
                         </div>
                         <div className="text-xs text-slate-400">Stock: {p.totalqty || 0}</div>
@@ -775,53 +775,53 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                   </tr>
                 ) : (
                   cart.map((item, index) => (
-                    <tr key={item.tempId} className="hover:bg-green-50">
+                    <tr key={item.tempId} className="hover:bg-emerald-500/10">
                       <td className="px-2 py-2 text-slate-400">{index + 1}</td>
                       <td className="px-2 py-2">
-                        <div className="font-medium text-slate-800 truncate">{item.productName}</div>
+                        <div className="font-medium text-slate-100 truncate">{item.productName}</div>
                         {item.piecesPerCarton > 0 && (
                           <div className="text-xs text-slate-400">
                             {item.piecesPerCarton} pcs/ctn • {item.cartonsPerPalette} ctn/pal
                           </div>
                         )}
                       </td>
-                      <td className="px-2 py-2 text-slate-600 text-xs">{item.brandName || '-'}</td>
-                      <td className="px-2 py-2 text-right text-slate-500 bg-slate-50 font-mono">
+                      <td className="px-2 py-2 text-slate-400 text-xs">{item.brandName || '-'}</td>
+                      <td className="px-2 py-2 text-right text-slate-500 bg-slate-900/40 font-mono">
                         {item.currentStock.toLocaleString()}
                       </td>
-                      <td className="px-2 py-2 bg-indigo-50">
+                      <td className="px-2 py-2 bg-indigo-500/100/10">
                         <input
                           type="number"
                           min="0"
                           value={item.palettes}
                           onChange={(e) => updateCartItem(index, 'palettes', Number(e.target.value))}
-                          className="w-full text-center p-1.5 border-2 border-indigo-300 rounded font-bold text-indigo-900 bg-white"
+                          className="w-full text-center p-1.5 border-2 border-indigo-300 rounded font-bold text-indigo-900 bg-slate-900/60"
                         />
                       </td>
-                      <td className="px-2 py-2 bg-indigo-50">
+                      <td className="px-2 py-2 bg-indigo-500/100/10">
                         <input
                           type="number"
                           min="0"
                           value={item.cartons}
                           onChange={(e) => updateCartItem(index, 'cartons', Number(e.target.value))}
-                          className="w-full text-center p-1.5 border-2 border-indigo-300 rounded font-bold text-indigo-900 bg-white"
+                          className="w-full text-center p-1.5 border-2 border-indigo-300 rounded font-bold text-indigo-900 bg-slate-900/60"
                         />
                       </td>
-                      <td className="px-2 py-2 bg-green-50">
+                      <td className="px-2 py-2 bg-emerald-500/10">
                         <input
                           type="number"
                           min="0"
                           step="0.01"
                           value={item.quantity}
                           onChange={(e) => updateCartItem(index, 'quantity', Number(e.target.value))}
-                          className="w-full text-center p-1.5 border-2 border-green-400 rounded font-bold text-green-900 bg-white"
+                          className="w-full text-center p-1.5 border-2 border-green-400 rounded font-bold text-green-900 bg-slate-900/60"
                         />
                       </td>
                       <td className="px-2 py-2">
                         <select
                           value={item.unitId}
                           onChange={(e) => updateCartItem(index, 'unitId', Number(e.target.value))}
-                          className="w-full p-1.5 text-xs border border-slate-200 rounded"
+                          className="w-full p-1.5 text-xs border border-white/[0.06] rounded"
                         >
                           {units.filter(u => u.unitcode !== 'BOX').map(u => (
                             <option key={u.unitid} value={u.unitid}>{u.unitcode}</option>
@@ -835,17 +835,17 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                           step="0.01"
                           value={item.unitPrice}
                           onChange={(e) => updateCartItem(index, 'unitPrice', Number(e.target.value))}
-                          className="w-full text-right p-1.5 border border-slate-200 rounded font-mono"
+                          className="w-full text-right p-1.5 border border-white/[0.06] rounded font-mono"
                         />
                       </td>
-                      <td className="px-2 py-2 text-right font-bold text-green-700 bg-green-50">
+                      <td className="px-2 py-2 text-right font-bold text-emerald-400 bg-emerald-500/10">
                         {formatCurrencyDZD(item.lineTotal)}
                       </td>
                       <td className="px-2 py-2 text-center">
                         <button
                           type="button"
                           onClick={() => removeFromCart(item.tempId)}
-                          className="text-red-500 hover:text-red-700 font-bold"
+                          className="text-sky-400 hover:text-sky-300 font-bold"
                         >
                           ✕
                         </button>
@@ -857,24 +857,24 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
             </table>
           </div>
 
-          <div className="p-4 bg-gradient-to-r from-slate-50 to-green-50 border-t border-slate-200">
+          <div className="p-4 bg-gradient-to-r from-slate-50 to-green-50 border-t border-white/[0.06]">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex flex-wrap gap-4 text-sm">
-                <div className="bg-white px-4 py-2 rounded-lg border border-slate-200">
+                <div className="bg-slate-900/60 px-4 py-2 rounded-lg border border-white/[0.06]">
                   <span className="text-slate-500">Articles:</span>
-                  <span className="ml-2 font-bold text-slate-700">{cart.length}</span>
+                  <span className="ml-2 font-bold text-slate-200">{cart.length}</span>
                 </div>
-                <div className="bg-indigo-50 px-4 py-2 rounded-lg border border-indigo-200">
-                  <span className="text-indigo-600">Palettes:</span>
+                <div className="bg-indigo-500/100/10 px-4 py-2 rounded-lg border border-indigo-200">
+                  <span className="text-indigo-400">Palettes:</span>
                   <span className="ml-2 font-bold text-indigo-800">{totalPalettes}</span>
                 </div>
-                <div className="bg-indigo-50 px-4 py-2 rounded-lg border border-indigo-200">
-                  <span className="text-indigo-600">Cartons:</span>
+                <div className="bg-indigo-500/100/10 px-4 py-2 rounded-lg border border-indigo-200">
+                  <span className="text-indigo-400">Cartons:</span>
                   <span className="ml-2 font-bold text-indigo-800">{totalCartons}</span>
                 </div>
-                <div className="bg-green-50 px-4 py-2 rounded-lg border border-green-200">
-                  <span className="text-green-600">Qté Totale:</span>
-                  <span className="ml-2 font-bold text-green-800">{totalQty.toFixed(2)}</span>
+                <div className="bg-emerald-500/10 px-4 py-2 rounded-lg border border-emerald-500/20">
+                  <span className="text-emerald-400">Qté Totale:</span>
+                  <span className="ml-2 font-bold text-emerald-300">{totalQty.toFixed(2)}</span>
                 </div>
               </div>
 
@@ -885,7 +885,7 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                     type="date"
                     value={orderDate}
                     onChange={(e) => setOrderDate(e.target.value)}
-                    className="w-36 p-2 text-sm border border-slate-200 rounded-lg bg-white"
+                    className="w-36 p-2 text-sm border border-white/[0.06] rounded-lg bg-slate-900/60"
                   />
                 </div>
                 {mode === 'create' && (
@@ -897,7 +897,7 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                       step="0.01"
                       value={transportCost}
                       onChange={(e) => setTransportCost(Number(e.target.value))}
-                      className="w-28 p-2 text-sm border border-slate-200 rounded-lg bg-white text-right"
+                      className="w-28 p-2 text-sm border border-white/[0.06] rounded-lg bg-slate-900/60 text-right"
                       placeholder="0.00"
                     />
                   </div>
@@ -911,7 +911,7 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                       step="0.01"
                       value={payment}
                       onChange={(e) => setPayment(Number(e.target.value))}
-                      className="w-32 p-2 text-sm border-2 border-green-300 rounded-lg bg-white font-bold text-green-800 text-right"
+                      className="w-32 p-2 text-sm border-2 border-green-300 rounded-lg bg-slate-900/60 font-bold text-emerald-300 text-right"
                       placeholder="0.00"
                     />
                   </div>
@@ -922,7 +922,7 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                     <select
                       value={paymentMethod}
                       onChange={(e) => setPaymentMethod(e.target.value as any)}
-                      className="w-28 p-2 text-sm border border-slate-200 rounded-lg bg-white"
+                      className="w-28 p-2 text-sm border border-white/[0.06] rounded-lg bg-slate-900/60"
                     >
                       <option value="ESPECE">💵 Espèce</option>
                       <option value="VIREMENT">🏦 Virement</option>
@@ -935,11 +935,11 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
               <div className="flex items-center gap-4">
                 <div className="text-right">
                   <div className="text-xs text-slate-500">Total Commande (HT)</div>
-                  <div className="text-lg font-bold text-slate-700">{formatCurrencyDZD(totalHT)}</div>
+                  <div className="text-lg font-bold text-slate-200">{formatCurrencyDZD(totalHT)}</div>
                   {transportCost > 0 && <div className="text-xs text-slate-500">+ Transport: {formatCurrencyDZD(transportCost)}</div>}
-                  <div className="text-2xl font-bold text-green-700">{formatCurrencyDZD(totalHT + transportCost)}</div>
+                  <div className="text-2xl font-bold text-emerald-400">{formatCurrencyDZD(totalHT + transportCost)}</div>
                   {payment > 0 && (
-                    <div className="text-xs text-orange-600">Reste: {formatCurrencyDZD((totalHT + transportCost) - payment)}</div>
+                    <div className="text-xs text-orange-400">Reste: {formatCurrencyDZD((totalHT + transportCost) - payment)}</div>
                   )}
                 </div>
 
@@ -947,7 +947,7 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                   type="button"
                   onClick={handlePrintBC}
                   disabled={cart.length === 0}
-                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-3 rounded-xl font-bold text-sm transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="bg-slate-800/50 hover:bg-slate-200 text-slate-200 px-4 py-3 rounded-xl font-bold text-sm transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   🖨️ Imprimer
                 </button>
@@ -956,7 +956,7 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                   type="button"
                   onClick={handleSubmit}
                   disabled={isSaving || cart.length === 0}
-                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-bold text-sm transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="bg-emerald-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-bold text-sm transition shadow-lg shadow-black/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   {isSaving ? (
                     <>

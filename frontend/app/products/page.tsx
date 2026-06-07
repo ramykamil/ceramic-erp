@@ -311,7 +311,7 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-slate-50 text-slate-800 overflow-hidden">
+    <div className="h-screen flex flex-col bg-slate-900/40 text-slate-100 overflow-hidden">
       <div className="flex flex-col h-full max-w-[1920px] mx-auto w-full p-4">
 
         {/* Header & Global Stats */}
@@ -325,25 +325,25 @@ export default function ProductsPage() {
             <div className="flex gap-2">
               <button
                 onClick={() => setIsSyncModalOpen(true)}
-                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-3 py-1.5 rounded text-xs font-medium shadow-sm flex items-center gap-2 transition"
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-3 py-1.5 rounded text-xs font-medium shadow-sm shadow-black/10 flex items-center gap-2 transition"
               >
                 📥 Sync Excel
               </button>
               <button
                 onClick={handleExport}
                 disabled={isExporting}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded text-xs font-medium shadow-sm flex items-center gap-2 disabled:opacity-50"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded text-xs font-medium shadow-sm shadow-black/10 flex items-center gap-2 disabled:opacity-50"
               >
                 {isExporting ? '⏳ Exportation...' : '📄 Excel'}
               </button>
-              <Link href="/" className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-3 py-1.5 rounded text-xs font-medium transition shadow-sm flex items-center gap-2">
+              <Link href="/" className="bg-slate-900/60 border border-white/[0.08] hover:bg-slate-900/40 text-slate-200 px-3 py-1.5 rounded text-xs font-medium transition shadow-sm shadow-black/10 flex items-center gap-2">
                 ← Retour
               </Link>
               <button
                 onClick={() => {
                   setIsCreateModalOpen(true);
                 }}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded text-xs font-medium shadow-sm flex items-center gap-2"
+                className="bg-sky-600 hover:bg-sky-700 text-white px-3 py-1.5 rounded text-xs font-medium shadow-sm shadow-black/10 flex items-center gap-2"
               >
                 <span className="text-lg leading-none">+</span> Nouveau
               </button>
@@ -354,7 +354,7 @@ export default function ProductsPage() {
         </div>
 
         {/* SEARCH & FILTERS - Compact */}
-        <div className="bg-white rounded border border-slate-200 shadow-sm p-2 mb-2 flex-shrink-0">
+        <div className="bg-slate-900/60 rounded border border-white/[0.06] shadow-sm shadow-black/10 p-2 mb-2 flex-shrink-0">
           <div className="flex flex-wrap gap-2 items-center">
             <div className="flex-1 min-w-[200px]">
               <input
@@ -362,14 +362,14 @@ export default function ProductsPage() {
                 placeholder="🔍 Rechercher..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full p-1.5 border border-slate-300 rounded text-xs focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full p-1.5 border border-white/[0.08] rounded text-xs focus:ring-2 focus:ring-sky-500/30 focus:border-transparent"
               />
             </div>
             <div className="flex gap-2">
               <select
                 value={familleFilter}
                 onChange={e => setFamilleFilter(e.target.value)}
-                className="p-1.5 border border-slate-300 rounded text-xs bg-white min-w-[100px]"
+                className="p-1.5 border border-white/[0.08] rounded text-xs bg-slate-900/60 min-w-[100px]"
               >
                 <option value="">Famille : Toutes</option>
                 {uniqueFamilles.map(f => (
@@ -379,7 +379,7 @@ export default function ProductsPage() {
               <select
                 value={choixFilter}
                 onChange={e => setChoixFilter(e.target.value)}
-                className="p-1.5 border border-slate-300 rounded text-xs bg-white min-w-[100px]"
+                className="p-1.5 border border-white/[0.08] rounded text-xs bg-slate-900/60 min-w-[100px]"
               >
                 <option value="">Choix : Tous</option>
                 {uniqueChoix.map(c => (
@@ -392,7 +392,7 @@ export default function ProductsPage() {
               <select
                 value={stockFilter}
                 onChange={e => setStockFilter(e.target.value)}
-                className="p-1.5 border border-slate-300 rounded text-xs bg-white min-w-[100px]"
+                className="p-1.5 border border-white/[0.08] rounded text-xs bg-slate-900/60 min-w-[100px]"
               >
                 <option value="">Stock : Tous</option>
                 <option value="instock">En stock</option>
@@ -402,7 +402,7 @@ export default function ProductsPage() {
               {(familleFilter || choixFilter || stockFilter) && (
                 <button
                   onClick={() => { setFamilleFilter(''); setChoixFilter(''); setStockFilter(''); }}
-                  className="text-red-600 hover:text-red-700 text-xs font-medium"
+                  className="text-sky-400 hover:text-sky-300 text-xs font-medium"
                 >
                   ✕ Effacer
                 </button>
@@ -412,7 +412,7 @@ export default function ProductsPage() {
         </div>
 
         {/* DATA TABLE - Maximized Height */}
-        <div className="bg-white rounded border border-slate-200 shadow-sm flex-1 min-h-0 flex flex-col" style={{ maxHeight: 'calc(100vh - 165px)' }}>
+        <div className="bg-slate-900/60 rounded border border-white/[0.06] shadow-sm shadow-black/10 flex-1 min-h-0 flex flex-col" style={{ maxHeight: 'calc(100vh - 165px)' }}>
           <div className="flex-1 w-full h-full">
             {loading && page === 1 ? (
               <div className="flex items-center justify-center h-64">
@@ -440,7 +440,7 @@ export default function ProductsPage() {
                       <tr
                         {...props}
                         {...getRowProps(index)}
-                        className={getRowClass(index, "hover:bg-blue-50 transition-colors cursor-pointer")}
+                        className={getRowClass(index, "hover:bg-sky-500/10 transition-colors cursor-pointer")}
                         onClick={() => setSelectedIndex(index)}
                       />
                     );
@@ -453,7 +453,7 @@ export default function ProductsPage() {
                     <ResizableHeader columnKey="productname" width={widths.productname} onResize={handleResize} onClick={() => handleSort('productname')} className="p-1.5 text-left cursor-pointer hover:bg-slate-600">Libellé {getSortIcon('productname')}</ResizableHeader>
                     <ResizableHeader columnKey="nbpalette" width={widths.nbpalette} onResize={handleResize} onClick={() => handleSort('nbpalette')} className="p-1.5 text-right cursor-pointer hover:bg-indigo-700" style={{ backgroundColor: '#3730a3' }}>Pal. {getSortIcon('nbpalette')}</ResizableHeader>
                     <ResizableHeader columnKey="nbcolis" width={widths.nbcolis} onResize={handleResize} onClick={() => handleSort('nbcolis')} className="p-1.5 text-right cursor-pointer hover:bg-indigo-700" style={{ backgroundColor: '#3730a3' }}>Colis {getSortIcon('nbcolis')}</ResizableHeader>
-                    <ResizableHeader columnKey="totalqty" width={widths.totalqty} onResize={handleResize} onClick={() => handleSort('totalqty')} className="p-1.5 text-right font-bold cursor-pointer hover:bg-blue-700" style={{ backgroundColor: '#1e40af' }}>Qté {getSortIcon('totalqty')}</ResizableHeader>
+                    <ResizableHeader columnKey="totalqty" width={widths.totalqty} onResize={handleResize} onClick={() => handleSort('totalqty')} className="p-1.5 text-right font-bold cursor-pointer hover:bg-sky-700" style={{ backgroundColor: '#1e40af' }}>Qté {getSortIcon('totalqty')}</ResizableHeader>
                     <ResizableHeader columnKey="prixachat" width={widths.prixachat} onResize={handleResize} onClick={() => handleSort('prixachat')} className="p-1.5 text-right cursor-pointer hover:bg-slate-600">P. Achat {getSortIcon('prixachat')}</ResizableHeader>
                     <ResizableHeader columnKey="prixvente" width={widths.prixvente} onResize={handleResize} onClick={() => handleSort('prixvente')} className="p-1.5 text-right cursor-pointer hover:bg-slate-600">P. Vente {getSortIcon('prixvente')}</ResizableHeader>
 
@@ -469,43 +469,43 @@ export default function ProductsPage() {
 
                   return (
                     <>
-                      <td className="p-1 text-slate-600 truncate">{p.famille || '-'}</td>
+                      <td className="p-1 text-slate-400 truncate">{p.famille || '-'}</td>
 
                       <td className="p-1 font-medium truncate max-w-[200px]" title={p.productname}>{p.productname}</td>
 
                       {/* Stock Columns */}
-                      <td className="p-1 text-right bg-indigo-50/50 font-mono">{formatQty(p.nbpalette)}</td>
-                      <td className="p-1 text-right bg-indigo-50/50 font-mono">{formatQty(p.nbcolis)}</td>
-                      <td className="p-1 text-right bg-blue-50/50 font-bold font-mono text-blue-700">{formatQty(p.totalqty)}</td>
+                      <td className="p-1 text-right bg-indigo-500/100/10/50 font-mono">{formatQty(p.nbpalette)}</td>
+                      <td className="p-1 text-right bg-indigo-500/100/10/50 font-mono">{formatQty(p.nbcolis)}</td>
+                      <td className="p-1 text-right bg-sky-500/10/50 font-bold font-mono text-sky-300">{formatQty(p.totalqty)}</td>
 
                       {/* Prices */}
                       <td className="p-1 text-right font-mono">{formatMoney(Number(p.prixachat) || Number(p.purchaseprice) || 0)}</td>
                       <td className="p-1 text-right font-mono">{formatMoney(p.prixvente)}</td>
 
                       {/* Packaging Info */}
-                      <td className="p-1 text-right text-blue-600 font-mono font-medium text-[10px]">
+                      <td className="p-1 text-right text-sky-400 font-mono font-medium text-[10px]">
                         {formatQCQty(Number(p.derivedpiecespercolis || p.qteparcolis || 0))}
                       </td>
-                      <td className="p-1 text-right text-blue-600 font-mono font-medium text-[10px]">
+                      <td className="p-1 text-right text-sky-400 font-mono font-medium text-[10px]">
                         {Number(p.derivedcolisperpalette || p.qtecolisparpalette || 0)}
                       </td>
 
                       {/* Total Value */}
-                      <td className="p-1 text-right font-bold text-green-700 font-mono">{formatMoney(Number(p.totalqty || 0) * (Number(p.prixachat) || Number(p.purchaseprice) || 0))}</td>
+                      <td className="p-1 text-right font-bold text-emerald-400 font-mono">{formatMoney(Number(p.totalqty || 0) * (Number(p.prixachat) || Number(p.purchaseprice) || 0))}</td>
 
                       {/* Actions */}
                       <td className="p-1 text-center py-1.5">
                         <div className="flex justify-center gap-0.5">
                           <button
                             onClick={() => loadSalesHistory(p.productid)}
-                            className="text-green-600 hover:text-green-800 hover:bg-green-100 p-1 rounded transition"
+                            className="text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 p-1 rounded transition"
                             title="Historique"
                           >
                             📊
                           </button>
                           <button
                             onClick={() => openEditModal(p)}
-                            className="text-blue-600 hover:text-blue-800 hover:bg-blue-100 p-1 rounded transition"
+                            className="text-sky-400 hover:text-blue-800 hover:bg-sky-500/10 p-1 rounded transition"
                             title="Modifier"
                           >
                             ✏️
@@ -513,7 +513,7 @@ export default function ProductsPage() {
                           <button
                             onClick={() => handleDelete(p.productid)}
                             disabled={isDeleting}
-                            className="text-red-600 hover:text-red-800 hover:bg-red-100 p-1 rounded transition disabled:opacity-50"
+                            className="text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 p-1 rounded transition disabled:opacity-50"
                             title="Supprimer"
                           >
                             🗑️
@@ -529,57 +529,57 @@ export default function ProductsPage() {
         </div>
 
         {/* FOOTER TOTALS & PAGINATION - Fixed */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-3 mt-4 flex-shrink-0">
+        <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 p-3 mt-4 flex-shrink-0">
           <div className="flex flex-col gap-2">
 
             {/* Filtered Stats - Moved Here & Dynamic */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 border-b border-slate-100 pb-2 mb-1">
               {/* Stock Filtered */}
-              <div className="bg-slate-50 rounded shadow-sm border border-slate-200 px-2 py-1 flex items-center justify-between">
+              <div className="bg-slate-900/40 rounded shadow-sm shadow-black/10 border border-white/[0.06] px-2 py-1 flex items-center justify-between">
                 <div>
                   <div className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Stock (Filtre)</div>
                   <div className="flex items-baseline gap-1">
-                    <span className="text-sm font-bold text-slate-800">
+                    <span className="text-sm font-bold text-slate-100">
                       {formatQty(filterTotals?.totalQty ?? 0)}
                     </span>
                     <span className="text-[9px] text-slate-400">m²</span>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-[9px] font-medium text-blue-600 bg-white px-1.5 py-0.5 rounded-full border border-blue-100">
+                  <div className="text-[9px] font-medium text-sky-400 bg-slate-900/60 px-1.5 py-0.5 rounded-full border border-blue-100">
                     {formatQty(filterTotals?.totalPalette ?? 0)} <span className="text-slate-400">pal.</span>
                   </div>
                 </div>
               </div>
 
               {/* Articles Filtered */}
-              <div className="bg-slate-50 rounded shadow-sm border border-slate-200 px-2 py-1 flex items-center justify-between">
+              <div className="bg-slate-900/40 rounded shadow-sm shadow-black/10 border border-white/[0.06] px-2 py-1 flex items-center justify-between">
                 <div>
                   <div className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Articles (Filtre)</div>
                   <div className="flex items-baseline gap-1">
-                    <span className="text-sm font-bold text-slate-800">{totalItems}</span>
+                    <span className="text-sm font-bold text-slate-100">{totalItems}</span>
                     <span className="text-[9px] text-slate-400">réf.</span>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-[9px] font-medium text-violet-600 bg-white px-1.5 py-0.5 rounded-full border border-violet-100">
+                  <div className="text-[9px] font-medium text-violet-600 bg-slate-900/60 px-1.5 py-0.5 rounded-full border border-violet-100">
                     {formatQty(filterTotals?.totalColis ?? 0)} <span className="text-slate-400">col.</span>
                   </div>
                 </div>
               </div>
 
               {/* Valeur Achat Filtered */}
-              <div className="bg-slate-50 rounded shadow-sm border border-slate-200 px-2 py-1 flex items-center justify-between">
+              <div className="bg-slate-900/40 rounded shadow-sm shadow-black/10 border border-white/[0.06] px-2 py-1 flex items-center justify-between">
                 <div>
                   <div className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Valeur (Achat)</div>
-                  <div className="text-sm font-bold text-slate-800 truncate">
+                  <div className="text-sm font-bold text-slate-100 truncate">
                     {formatMoney(filterTotals?.valeurAchat ?? 0)}
                   </div>
                 </div>
               </div>
 
               {/* Valeur Vente Filtered */}
-              <div className="bg-emerald-50/50 rounded shadow-sm border border-emerald-100 px-2 py-1 flex items-center justify-between">
+              <div className="bg-emerald-50/50 rounded shadow-sm shadow-black/10 border border-emerald-100 px-2 py-1 flex items-center justify-between">
                 <div>
                   <div className="text-[9px] uppercase font-bold text-emerald-600/80 tracking-wider">Valeur (Vente)</div>
                   <div className="text-sm font-bold text-emerald-700 truncate">
@@ -592,10 +592,10 @@ export default function ProductsPage() {
             {/* Pagination Controls Row */}
             <div className="flex flex-wrap justify-between items-center gap-4">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-mono text-slate-600">
-                  Affichage de <span className="font-bold text-slate-900">{products.length}</span> sur <span className="font-bold text-slate-900">{totalItems}</span> produits
+                <span className="text-sm font-mono text-slate-400">
+                  Affichage de <span className="font-bold text-white">{products.length}</span> sur <span className="font-bold text-white">{totalItems}</span> produits
                 </span>
-                {loading && page > 1 && <span className="text-sm text-blue-500 animate-pulse ml-4 font-medium">Chargement en cours...</span>}
+                {loading && page > 1 && <span className="text-sm text-sky-400 animate-pulse ml-4 font-medium">Chargement en cours...</span>}
               </div>
 
               {/* Keep existing page totals if user wants doubles, but user asked for these cards. 

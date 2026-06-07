@@ -78,12 +78,12 @@ const formatCurrencyDZD = (amount: number | null | undefined): string => {
 const getStatusBadge = (status: string): string => {
     const statusClasses: Record<string, string> = {
         PENDING: 'bg-amber-50 text-amber-700 border border-amber-200',
-        APPROVED: 'bg-blue-50 text-blue-700 border border-blue-200',
+        APPROVED: 'bg-sky-500/10 text-sky-300 border border-sky-500/20',
         RECEIVED: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
-        PARTIAL: 'bg-purple-50 text-purple-700 border border-purple-200',
-        CANCELLED: 'bg-red-50 text-red-700 border border-red-200',
+        PARTIAL: 'bg-violet-500/10 text-violet-400 border border-violet-500/20',
+        CANCELLED: 'bg-sky-500/10 text-sky-300 border border-sky-500/20',
     };
-    return statusClasses[status] || 'bg-slate-50 text-slate-700 border border-slate-200';
+    return statusClasses[status] || 'bg-slate-900/40 text-slate-200 border border-white/[0.06]';
 };
 
 // --- Component ---
@@ -188,20 +188,20 @@ export default function PurchaseHistoryPage() {
     };
 
     return (
-        <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800">
+        <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-900/40 text-slate-100">
             <div className="max-w-7xl mx-auto">
 
                 {/* --- Header --- */}
                 <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold text-slate-800">Historique des Achats</h1>
+                        <h1 className="text-3xl font-bold text-slate-100">Historique des Achats</h1>
                         <p className="text-slate-500 text-sm mt-1">Suivi des achats par fournisseur avec totaux détaillés</p>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-3">
                         <Link
                             href="/purchasing"
-                            className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2.5 rounded-lg text-sm font-medium transition shadow-sm flex items-center gap-2"
+                            className="bg-slate-900/60 border border-white/[0.08] hover:bg-slate-900/40 text-slate-200 px-4 py-2.5 rounded-lg text-sm font-medium transition shadow-sm shadow-black/10 flex items-center gap-2"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
@@ -212,7 +212,7 @@ export default function PurchaseHistoryPage() {
                 </div>
 
                 {/* --- Date Quick Filter --- */}
-                <div className="mb-4 p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
+                <div className="mb-4 p-3 bg-slate-900/60 rounded-lg border border-white/[0.06] shadow-sm shadow-black/10">
                     <div className="flex flex-wrap items-center justify-between gap-4">
                         <div>
                             <p className="text-xs text-slate-500 mb-2 font-medium">📅 Filtrer par date:</p>
@@ -231,36 +231,36 @@ export default function PurchaseHistoryPage() {
 
                 {/* --- Error Display --- */}
                 {apiError && (
-                    <div className="mb-6 p-4 bg-red-50 text-red-700 border border-red-200 rounded-lg text-sm">
+                    <div className="mb-6 p-4 bg-sky-500/10 text-sky-300 border border-sky-500/20 rounded-lg text-sm">
                         <strong>Erreur:</strong> {apiError}
                     </div>
                 )}
 
                 {/* --- Summary Cards --- */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                    <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div className="bg-slate-900/60 p-5 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10">
                         <p className="text-slate-500 text-xs font-medium uppercase tracking-wider">Total Acheté</p>
-                        <p className="text-2xl font-bold text-slate-800 mt-1">{formatCurrencyDZD(summary.totalBought)}</p>
+                        <p className="text-2xl font-bold text-slate-100 mt-1">{formatCurrencyDZD(summary.totalBought)}</p>
                     </div>
-                    <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div className="bg-slate-900/60 p-5 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10">
                         <p className="text-slate-500 text-xs font-medium uppercase tracking-wider">Total Payé</p>
                         <p className="text-2xl font-bold text-emerald-600 mt-1">{formatCurrencyDZD(summary.totalPaid)}</p>
                     </div>
-                    <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div className="bg-slate-900/60 p-5 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10">
                         <p className="text-slate-500 text-xs font-medium uppercase tracking-wider">Reste à Payer</p>
-                        <p className={`text-2xl font-bold mt-1 ${summary.totalLeft > 0 ? 'text-red-600' : 'text-slate-800'}`}>
+                        <p className={`text-2xl font-bold mt-1 ${summary.totalLeft > 0 ? 'text-sky-400' : 'text-slate-100'}`}>
                             {formatCurrencyDZD(summary.totalLeft)}
                         </p>
                     </div>
-                    <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div className="bg-slate-900/60 p-5 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10">
                         <p className="text-slate-500 text-xs font-medium uppercase tracking-wider">Nombre de Commandes</p>
-                        <p className="text-2xl font-bold text-blue-600 mt-1">{summary.orderCount}</p>
+                        <p className="text-2xl font-bold text-sky-400 mt-1">{summary.orderCount}</p>
                     </div>
                 </div>
 
                 {/* --- Filter Bar --- */}
-                <div className="mb-6 flex items-center gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                    <label htmlFor="factoryFilter" className="text-sm font-medium text-slate-700 whitespace-nowrap">
+                <div className="mb-6 flex items-center gap-4 bg-slate-900/60 p-4 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10">
+                    <label htmlFor="factoryFilter" className="text-sm font-medium text-slate-200 whitespace-nowrap">
                         Fournisseur :
                     </label>
                     <select
@@ -274,7 +274,7 @@ export default function PurchaseHistoryPage() {
                                 setSelectedSupplier({ id: Number(idStr), type: type as 'FACTORY' | 'BRAND' });
                             }
                         }}
-                        className="w-full sm:w-64 p-2 border border-slate-300 rounded-lg text-sm text-slate-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full sm:w-64 p-2 border border-white/[0.08] rounded-lg text-sm text-slate-200 focus:ring-2 focus:ring-sky-500/30 focus:border-transparent"
                     >
                         <option value="">Tous les Fournisseurs</option>
                         {suppliers.map((s) => (
@@ -286,7 +286,7 @@ export default function PurchaseHistoryPage() {
                     {selectedSupplier && (
                         <button
                             onClick={() => setSelectedSupplier(null)}
-                            className="text-slate-500 hover:text-slate-700 text-sm"
+                            className="text-slate-500 hover:text-slate-200 text-sm"
                         >
                             ✕ Effacer
                         </button>
@@ -295,9 +295,9 @@ export default function PurchaseHistoryPage() {
 
                 {/* --- Main Content Area --- */}
                 {isLoading ? (
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                    <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10">
                         <div className="text-center py-20">
-                            <div className="inline-block w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+                            <div className="inline-block w-8 h-8 border-4 border-sky-500/20 border-t-blue-600 rounded-full animate-spin mb-4"></div>
                             <p className="text-slate-500">Chargement...</p>
                         </div>
                     </div>
@@ -305,12 +305,12 @@ export default function PurchaseHistoryPage() {
                     /* --- Factory Detail View --- */
                     <div className="space-y-6">
                         {/* Factory Info Card */}
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                        <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 p-6">
                             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                 <div>
                                     <div className="flex items-center gap-2">
-                                        <h2 className="text-xl font-bold text-slate-800">{factoryDetail.factory.factoryname}</h2>
-                                        <span className={`px-2 py-0.5 rounded text-xs font-bold ${selectedSupplier.type === 'BRAND' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}`}>
+                                        <h2 className="text-xl font-bold text-slate-100">{factoryDetail.factory.factoryname}</h2>
+                                        <span className={`px-2 py-0.5 rounded text-xs font-bold ${selectedSupplier.type === 'BRAND' ? 'bg-violet-500/10 text-violet-400' : 'bg-sky-500/10 text-sky-300'}`}>
                                             {selectedSupplier.type === 'BRAND' ? 'MARQUE' : 'USINE'}
                                         </span>
                                     </div>
@@ -327,9 +327,9 @@ export default function PurchaseHistoryPage() {
                                     </div>
                                 </div>
                                 <div className="flex gap-4 text-center">
-                                    <div className="bg-slate-50 px-4 py-2 rounded-lg">
+                                    <div className="bg-slate-900/40 px-4 py-2 rounded-lg">
                                         <p className="text-xs text-slate-500">Acheté</p>
-                                        <p className="text-lg font-bold text-slate-800">{formatCurrencyDZD(factoryDetail.totals.totalBought)}</p>
+                                        <p className="text-lg font-bold text-slate-100">{formatCurrencyDZD(factoryDetail.totals.totalBought)}</p>
                                     </div>
                                     {factoryDetail.totals.initialBalance > 0 && (
                                         <div className="bg-amber-50 px-4 py-2 rounded-lg">
@@ -341,9 +341,9 @@ export default function PurchaseHistoryPage() {
                                         <p className="text-xs text-emerald-600">Payé</p>
                                         <p className="text-lg font-bold text-emerald-600">{formatCurrencyDZD(factoryDetail.totals.totalPaid)}</p>
                                     </div>
-                                    <div className={`px-4 py-2 rounded-lg ${factoryDetail.totals.totalLeft > 0 ? 'bg-red-50' : 'bg-slate-50'}`}>
-                                        <p className={`text-xs ${factoryDetail.totals.totalLeft > 0 ? 'text-red-600' : 'text-slate-500'}`}>Reste</p>
-                                        <p className={`text-lg font-bold ${factoryDetail.totals.totalLeft > 0 ? 'text-red-600' : 'text-slate-800'}`}>
+                                    <div className={`px-4 py-2 rounded-lg ${factoryDetail.totals.totalLeft > 0 ? 'bg-sky-500/10' : 'bg-slate-900/40'}`}>
+                                        <p className={`text-xs ${factoryDetail.totals.totalLeft > 0 ? 'text-sky-400' : 'text-slate-500'}`}>Reste</p>
+                                        <p className={`text-lg font-bold ${factoryDetail.totals.totalLeft > 0 ? 'text-sky-400' : 'text-slate-100'}`}>
                                             {formatCurrencyDZD(factoryDetail.totals.totalLeft)}
                                         </p>
                                     </div>
@@ -352,12 +352,12 @@ export default function PurchaseHistoryPage() {
                         </div>
 
                         {/* Tabs */}
-                        <div className="flex gap-2 border-b border-slate-200">
+                        <div className="flex gap-2 border-b border-white/[0.06]">
                             <button
                                 onClick={() => setActiveTab('orders')}
                                 className={`px-4 py-2 text-sm font-medium transition ${activeTab === 'orders'
-                                    ? 'text-blue-600 border-b-2 border-blue-600'
-                                    : 'text-slate-500 hover:text-slate-700'
+                                    ? 'text-sky-400 border-b-2 border-blue-600'
+                                    : 'text-slate-500 hover:text-slate-200'
                                     }`}
                             >
                                 Commandes ({factoryDetail.orders.length})
@@ -365,8 +365,8 @@ export default function PurchaseHistoryPage() {
                             <button
                                 onClick={() => setActiveTab('payments')}
                                 className={`px-4 py-2 text-sm font-medium transition ${activeTab === 'payments'
-                                    ? 'text-blue-600 border-b-2 border-blue-600'
-                                    : 'text-slate-500 hover:text-slate-700'
+                                    ? 'text-sky-400 border-b-2 border-blue-600'
+                                    : 'text-slate-500 hover:text-slate-200'
                                     }`}
                             >
                                 Paiements ({factoryDetail.payments.length})
@@ -375,16 +375,16 @@ export default function PurchaseHistoryPage() {
 
                         {/* Tab Content */}
                         {isLoadingDetail ? (
-                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                            <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10">
                                 <div className="text-center py-10">
-                                    <div className="inline-block w-6 h-6 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+                                    <div className="inline-block w-6 h-6 border-4 border-sky-500/20 border-t-blue-600 rounded-full animate-spin"></div>
                                 </div>
                             </div>
                         ) : activeTab === 'orders' ? (
-                            <div className="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+                            <div className="bg-slate-900/60 rounded-xl overflow-hidden border border-white/[0.06] shadow-sm shadow-black/10">
                                 <div className="overflow-x-auto">
                                     <table className="w-full text-sm text-left">
-                                        <thead className="text-xs text-slate-500 uppercase bg-slate-50 font-semibold border-b border-slate-100">
+                                        <thead className="text-xs text-slate-500 uppercase bg-slate-900/40 font-semibold border-b border-slate-100">
                                             <tr>
                                                 <th scope="col" className="px-6 py-4">Numéro</th>
                                                 <th scope="col" className="px-6 py-4">Date</th>
@@ -405,13 +405,13 @@ export default function PurchaseHistoryPage() {
                                                 </tr>
                                             ) : (
                                                 factoryDetail.orders.map((order) => (
-                                                    <tr key={order.purchaseorderid} className="hover:bg-slate-50 transition-colors duration-150">
+                                                    <tr key={order.purchaseorderid} className="hover:bg-slate-900/40 transition-colors duration-150">
                                                         <td className="px-6 py-4 font-mono text-slate-500 font-medium">{order.ponumber}</td>
                                                         <td className="px-6 py-4 text-slate-500">{formatDate(order.orderdate)}</td>
-                                                        <td className="px-6 py-4 text-slate-600">{order.warehousename}</td>
-                                                        <td className="px-6 py-4 text-right font-medium text-slate-800">{formatCurrencyDZD(order.totalamount)}</td>
+                                                        <td className="px-6 py-4 text-slate-400">{order.warehousename}</td>
+                                                        <td className="px-6 py-4 text-right font-medium text-slate-100">{formatCurrencyDZD(order.totalamount)}</td>
                                                         <td className="px-6 py-4 text-right text-emerald-600">{formatCurrencyDZD(order.amountpaid)}</td>
-                                                        <td className={`px-6 py-4 text-right font-medium ${parseFloat(String(order.amountleft)) > 0 ? 'text-red-600' : 'text-slate-500'}`}>
+                                                        <td className={`px-6 py-4 text-right font-medium ${parseFloat(String(order.amountleft)) > 0 ? 'text-sky-400' : 'text-slate-500'}`}>
                                                             {formatCurrencyDZD(order.amountleft)}
                                                         </td>
                                                         <td className="px-6 py-4 text-center">
@@ -422,7 +422,7 @@ export default function PurchaseHistoryPage() {
                                                         <td className="px-6 py-4 text-center">
                                                             <Link
                                                                 href={`/purchasing/${order.purchaseorderid}`}
-                                                                className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-3 py-1.5 rounded transition font-medium text-xs"
+                                                                className="text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 px-3 py-1.5 rounded transition font-medium text-xs"
                                                             >
                                                                 Voir
                                                             </Link>
@@ -435,10 +435,10 @@ export default function PurchaseHistoryPage() {
                                 </div>
                             </div>
                         ) : (
-                            <div className="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+                            <div className="bg-slate-900/60 rounded-xl overflow-hidden border border-white/[0.06] shadow-sm shadow-black/10">
                                 <div className="overflow-x-auto">
                                     <table className="w-full text-sm text-left">
-                                        <thead className="text-xs text-slate-500 uppercase bg-slate-50 font-semibold border-b border-slate-100">
+                                        <thead className="text-xs text-slate-500 uppercase bg-slate-900/40 font-semibold border-b border-slate-100">
                                             <tr>
                                                 <th scope="col" className="px-6 py-4">Date</th>
                                                 <th scope="col" className="px-6 py-4">N° Commande</th>
@@ -455,10 +455,10 @@ export default function PurchaseHistoryPage() {
                                                 </tr>
                                             ) : (
                                                 factoryDetail.payments.map((payment) => (
-                                                    <tr key={payment.transactionid} className="hover:bg-slate-50 transition-colors duration-150">
+                                                    <tr key={payment.transactionid} className="hover:bg-slate-900/40 transition-colors duration-150">
                                                         <td className="px-6 py-4 text-slate-500">{formatDate(payment.transactiondate)}</td>
                                                         <td className="px-6 py-4 font-mono text-slate-500">{payment.ponumber}</td>
-                                                        <td className="px-6 py-4 text-slate-600">{payment.description}</td>
+                                                        <td className="px-6 py-4 text-slate-400">{payment.description}</td>
                                                         <td className="px-6 py-4 text-right font-medium text-emerald-600">{formatCurrencyDZD(payment.amount)}</td>
                                                     </tr>
                                                 ))
@@ -471,7 +471,7 @@ export default function PurchaseHistoryPage() {
                     </div>
                 ) : (
                     /* --- Overview Table (All Factories) --- */
-                    <div className="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+                    <div className="bg-slate-900/60 rounded-xl overflow-hidden border border-white/[0.06] shadow-sm shadow-black/10">
                         {historyData.length === 0 ? (
                             <div className="text-center py-20 text-slate-400">
                                 <p className="text-lg">Aucune donnée d'historique disponible.</p>
@@ -479,7 +479,7 @@ export default function PurchaseHistoryPage() {
                         ) : (
                             <div className="overflow-x-auto">
                                 <table className="w-full text-sm text-left">
-                                    <thead className="text-xs text-slate-500 uppercase bg-slate-50 font-semibold border-b border-slate-100">
+                                    <thead className="text-xs text-slate-500 uppercase bg-slate-900/40 font-semibold border-b border-slate-100">
                                         <tr>
                                             <th scope="col" className="px-6 py-4">Fournisseur</th>
                                             <th scope="col" className="px-6 py-4 text-center">Commandes</th>
@@ -491,22 +491,22 @@ export default function PurchaseHistoryPage() {
                                     </thead>
                                     <tbody className="divide-y divide-slate-100">
                                         {historyData.map((row) => (
-                                            <tr key={row.factoryid} className="hover:bg-slate-50 transition-colors duration-150">
-                                                <td className="px-6 py-4 font-medium text-slate-800">{row.factoryname}</td>
+                                            <tr key={row.factoryid} className="hover:bg-slate-900/40 transition-colors duration-150">
+                                                <td className="px-6 py-4 font-medium text-slate-100">{row.factoryname}</td>
                                                 <td className="px-6 py-4 text-center">
-                                                    <span className="bg-blue-50 text-blue-700 px-2 py-1 rounded-full text-xs font-medium">
+                                                    <span className="bg-sky-500/10 text-sky-300 px-2 py-1 rounded-full text-xs font-medium">
                                                         {row.ordercount}
                                                     </span>
                                                 </td>
-                                                <td className="px-6 py-4 text-right font-medium text-slate-800">{formatCurrencyDZD(row.totalbought)}</td>
+                                                <td className="px-6 py-4 text-right font-medium text-slate-100">{formatCurrencyDZD(row.totalbought)}</td>
                                                 <td className="px-6 py-4 text-right text-emerald-600">{formatCurrencyDZD(row.totalpaid)}</td>
-                                                <td className={`px-6 py-4 text-right font-medium ${parseFloat(String(row.totalleft)) > 0 ? 'text-red-600' : 'text-slate-500'}`}>
+                                                <td className={`px-6 py-4 text-right font-medium ${parseFloat(String(row.totalleft)) > 0 ? 'text-sky-400' : 'text-slate-500'}`}>
                                                     {formatCurrencyDZD(row.totalleft)}
                                                 </td>
                                                 <td className="px-6 py-4 text-center">
                                                     <button
                                                         onClick={() => setSelectedSupplier({ id: row.factoryid, type: row.suppliertype })}
-                                                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-3 py-1.5 rounded transition font-medium text-xs inline-flex items-center gap-1"
+                                                        className="text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 px-3 py-1.5 rounded transition font-medium text-xs inline-flex items-center gap-1"
                                                     >
                                                         <span>Détails</span>
                                                         <span>→</span>

@@ -96,13 +96,13 @@ const formatCurrencyDZD = (amount: number | null | undefined): string => {
 // Fonction pour obtenir les classes de badge de statut
 const getStatusBadge = (status: string): string => {
   const statusClasses = {
-    PENDING: 'bg-yellow-100 text-yellow-800 border border-yellow-200',
-    APPROVED: 'bg-blue-100 text-blue-800 border border-blue-200',
-    RECEIVED: 'bg-green-100 text-green-800 border border-green-200',
-    PARTIAL: 'bg-purple-100 text-purple-800 border border-purple-200',
-    CANCELLED: 'bg-red-100 text-red-800 border border-red-200',
+    PENDING: 'bg-amber-500/10 text-amber-300 border border-amber-500/20',
+    APPROVED: 'bg-sky-500/10 text-blue-800 border border-sky-500/20',
+    RECEIVED: 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/20',
+    PARTIAL: 'bg-violet-500/10 text-purple-800 border border-violet-500/20',
+    CANCELLED: 'bg-sky-500/10 text-sky-300 border border-sky-500/20',
   };
-  return statusClasses[status as keyof typeof statusClasses] || 'bg-gray-100 text-gray-800 border border-gray-200';
+  return statusClasses[status as keyof typeof statusClasses] || 'bg-slate-800/50 text-slate-100 border border-white/\[0.06\]';
 };
 
 // Helper to parse dimensions
@@ -397,10 +397,10 @@ export default function ReceivePurchaseOrderPage() {
   if (apiError) {
     return (
       <div className="p-8">
-        <div className="max-w-xl mx-auto p-4 bg-red-100 text-red-700 border border-red-200 rounded-lg">
+        <div className="max-w-xl mx-auto p-4 bg-sky-500/10 text-sky-300 border border-sky-500/20 rounded-lg">
           <strong>Erreur:</strong> {apiError}
           <div className="mt-4">
-            <Link href="/purchasing" className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+            <Link href="/purchasing" className="text-sky-400 hover:text-blue-800 text-sm font-medium">
               ← Retour à la liste
             </Link>
           </div>
@@ -424,7 +424,7 @@ export default function ReceivePurchaseOrderPage() {
           <div className="flex gap-2">
             <button
               onClick={openFactureModal}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 flex items-center gap-2 text-sm"
+              className="bg-emerald-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 flex items-center gap-2 text-sm"
             >
               📄 Générer Facture
             </button>
@@ -434,7 +434,7 @@ export default function ReceivePurchaseOrderPage() {
             >
               🖨️ Imprimer BC
             </button>
-            <Link href="/purchasing" className="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 text-sm">
+            <Link href="/purchasing" className="bg-slate-900/60 border border-white/\[0.08\] text-slate-200 px-4 py-2 rounded-lg hover:bg-slate-900/40 text-sm">
               Retour
             </Link>
           </div>
@@ -445,13 +445,13 @@ export default function ReceivePurchaseOrderPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="flex items-center gap-4">
               <span className="text-xs text-slate-500 font-medium">Fournisseur:</span>
-              <span className="font-bold text-slate-800 text-base">
+              <span className="font-bold text-slate-100 text-base">
                 {po.factoryname || 'Fournisseur Inconnu'}
               </span>
             </div>
             <div className="flex items-center gap-4">
               <span className="text-xs text-slate-500 font-medium">Date Commande:</span>
-              <span className="font-bold text-slate-800">
+              <span className="font-bold text-slate-100">
                 {formatDate(po.orderdate)}
               </span>
             </div>
@@ -464,13 +464,13 @@ export default function ReceivePurchaseOrderPage() {
             <div className="flex flex-col gap-1 items-end">
               <div className="flex items-center gap-4">
                 <span className="text-xs text-slate-500 font-medium">Transport:</span>
-                <span className="font-bold text-slate-700">
+                <span className="font-bold text-slate-200">
                   {formatCurrencyDZD(po.deliverycost)}
                 </span>
               </div>
               <div className="flex items-center gap-4">
                 <span className="text-xs text-slate-500 font-medium">Total:</span>
-                <span className="font-bold text-green-700 text-lg">
+                <span className="font-bold text-emerald-400 text-lg">
                   {formatCurrencyDZD(po.totalamount)}
                 </span>
               </div>
@@ -482,10 +482,10 @@ export default function ReceivePurchaseOrderPage() {
         <form onSubmit={handleSubmit}>
           {/* Tableau des Articles */}
           <div className="glassy-container overflow-hidden mb-6">
-            <h2 className="text-xl font-semibold text-slate-700 p-5">Articles à Réceptionner</h2>
+            <h2 className="text-xl font-semibold text-slate-200 p-5">Articles à Réceptionner</h2>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm text-left text-slate-600">
-                <thead className="text-xs text-slate-700 uppercase bg-slate-100 font-semibold">
+              <table className="w-full text-sm text-left text-slate-400">
+                <thead className="text-xs text-slate-200 uppercase bg-slate-800/50 font-semibold">
                   <tr>
                     <th scope="col" className="px-4 py-3">Produit</th>
                     <th scope="col" className="px-2 py-3 text-center">Pal</th>
@@ -496,7 +496,7 @@ export default function ReceivePurchaseOrderPage() {
                     <th scope="col" className="px-4 py-3 text-center w-1/5">Qté à Réceptionner *</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200">
+                <tbody className="divide-y divide-white/\[0.06\]">
                   {po.items.map((item, index) => {
                     const itemInput = itemInputs.find(i => i.poItemId === item.poitemid);
                     const qtyRemaining = itemInput?.quantityRemaining || 0;
@@ -529,9 +529,9 @@ export default function ReceivePurchaseOrderPage() {
                     const palettes = (cartonsPerPalette > 0 && cartonsNum > 0) ? (cartonsNum / cartonsPerPalette).toFixed(2) : '-';
 
                     return (
-                      <tr key={item.poitemid} className={isFullyReceived ? 'bg-green-50/50 opacity-60' : 'hover:bg-blue-50/50'}>
+                      <tr key={item.poitemid} className={isFullyReceived ? 'bg-emerald-500/10/50 opacity-60' : 'hover:bg-sky-500/10/50'}>
                         <td className="px-4 py-3">
-                          <div className="font-medium text-slate-900">{item.productname}</div>
+                          <div className="font-medium text-white">{item.productname}</div>
                           <div className="text-xs text-slate-500 font-mono">{item.productcode}</div>
                           {(piecesPerCarton > 0 || cartonsPerPalette > 0) && (
                             <div className="text-[10px] text-slate-400 mt-0.5">
@@ -548,7 +548,7 @@ export default function ReceivePurchaseOrderPage() {
                         <td className="px-4 py-3 text-right font-medium">{qtyRemaining} {item.unitcode}</td>
                         <td className="px-4 py-3 text-center">
                           {isFullyReceived ? (
-                            <span className="text-sm font-medium text-green-600">Complet</span>
+                            <span className="text-sm font-medium text-emerald-400">Complet</span>
                           ) : (
                             <input
                               type="number"
@@ -557,7 +557,7 @@ export default function ReceivePurchaseOrderPage() {
                               min="0"
                               max={qtyRemaining}
                               step="any"
-                              className="w-full p-2 border border-slate-300 rounded-lg text-right"
+                              className="w-full p-2 border border-white/\[0.08\] rounded-lg text-right"
                               placeholder="0"
                             />
                           )}
@@ -581,19 +581,19 @@ export default function ReceivePurchaseOrderPage() {
                   />
                 </div>
               <div>
-                <label htmlFor="receiptNotes" className="block text-sm font-medium text-slate-700 mb-1">Notes (N° BL, etc.)</label>
+                <label htmlFor="receiptNotes" className="block text-sm font-medium text-slate-200 mb-1">Notes (N° BL, etc.)</label>
                 <textarea id="receiptNotes" value={receiptNotes} onChange={(e) => setReceiptNotes(e.target.value)} rows={3}
-                  className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80" />
+                  className="w-full p-2 border border-white/\[0.08\] rounded-lg bg-slate-900/60 bg-opacity-80" />
               </div>
             </div>
             <div className="w-full md:w-1/2 flex flex-col items-end gap-4">
               {/* TODO: Afficher un résumé des totaux réceptionnés si nécessaire */}
               <div className="flex gap-4">
-                <Link href="/purchasing" className="bg-slate-200 text-slate-700 hover:bg-slate-300 px-5 py-2 rounded-lg font-medium text-sm transition">
+                <Link href="/purchasing" className="bg-slate-200 text-slate-200 hover:bg-slate-300 px-5 py-2 rounded-lg font-medium text-sm transition">
                   Annuler
                 </Link>
                 <button type="submit" disabled={isSaving || isLoading}
-                  className="bg-green-600 text-white hover:bg-green-700 px-5 py-2 rounded-lg font-medium text-sm transition disabled:opacity-50 inline-flex items-center gap-2">
+                  className="bg-emerald-600 text-white hover:bg-green-700 px-5 py-2 rounded-lg font-medium text-sm transition disabled:opacity-50 inline-flex items-center gap-2">
                   <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /><path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h12.5a.75.75 0 010 1.5H3.75A.75.75 0 013 10z" clipRule="evenodd" /></svg>
                   {isSaving ? 'Enregistrement...' : 'Enregistrer la Réception'}
                 </button>
@@ -624,16 +624,16 @@ export default function ReceivePurchaseOrderPage() {
       {/* Facture Modal */}
       {isFactureModalOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
+          <div className="bg-slate-900/60 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
             {/* Modal Header */}
-            <div className="p-4 border-b border-slate-200 flex justify-between items-center bg-green-50 rounded-t-2xl">
+            <div className="p-4 border-b border-white/\[0.06\] flex justify-between items-center bg-emerald-500/10 rounded-t-2xl">
               <div>
-                <h2 className="text-xl font-bold text-green-800">📄 Générer Facture</h2>
-                <p className="text-sm text-green-600">{factureNumber}</p>
+                <h2 className="text-xl font-bold text-emerald-300">📄 Générer Facture</h2>
+                <p className="text-sm text-emerald-400">{factureNumber}</p>
               </div>
               <button
                 onClick={() => setIsFactureModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 text-2xl"
+                className="text-slate-400 hover:text-slate-400 text-2xl"
               >
                 ×
               </button>
@@ -642,15 +642,15 @@ export default function ReceivePurchaseOrderPage() {
             {/* Modal Body */}
             <div className="p-4 overflow-y-auto flex-1 space-y-4">
               {/* Supplier Info */}
-              <div className="bg-slate-50 p-3 rounded-lg">
+              <div className="bg-slate-900/40 p-3 rounded-lg">
                 <p className="text-sm text-slate-500">Fournisseur</p>
                 <p className="font-bold">{po.factoryname}</p>
               </div>
 
               {/* Editable Items Table */}
-              <div className="border border-slate-200 rounded-lg overflow-hidden">
+              <div className="border border-white/\[0.06\] rounded-lg overflow-hidden">
                 <table className="w-full text-sm">
-                  <thead className="bg-slate-100">
+                  <thead className="bg-slate-800/50">
                     <tr>
                       <th className="px-3 py-2 text-left">Produit</th>
                       <th className="px-3 py-2 text-center w-16">Pal</th>
@@ -673,7 +673,7 @@ export default function ReceivePurchaseOrderPage() {
                             min="0"
                             value={item.palettes}
                             onChange={(e) => updateFactureItem(idx, 'palettes', Number(e.target.value))}
-                            className="w-full p-1 border border-slate-200 rounded text-center text-sm"
+                            className="w-full p-1 border border-white/\[0.06\] rounded text-center text-sm"
                           />
                         </td>
                         <td className="px-1 py-2">
@@ -682,7 +682,7 @@ export default function ReceivePurchaseOrderPage() {
                             min="0"
                             value={item.cartons}
                             onChange={(e) => updateFactureItem(idx, 'cartons', Number(e.target.value))}
-                            className="w-full p-1 border border-slate-200 rounded text-center text-sm"
+                            className="w-full p-1 border border-white/\[0.06\] rounded text-center text-sm"
                           />
                         </td>
                         <td className="px-1 py-2">
@@ -692,7 +692,7 @@ export default function ReceivePurchaseOrderPage() {
                             step="0.01"
                             value={item.quantity}
                             onChange={(e) => updateFactureItem(idx, 'quantity', Number(e.target.value))}
-                            className="w-full p-1 border border-blue-300 rounded text-center text-sm bg-blue-50 font-medium"
+                            className="w-full p-1 border border-blue-300 rounded text-center text-sm bg-sky-500/10 font-medium"
                           />
                         </td>
                         <td className="px-1 py-2">
@@ -702,7 +702,7 @@ export default function ReceivePurchaseOrderPage() {
                             step="0.01"
                             value={item.unitPrice}
                             onChange={(e) => updateFactureItem(idx, 'unitPrice', Number(e.target.value))}
-                            className="w-full p-1 border border-slate-200 rounded text-right text-sm"
+                            className="w-full p-1 border border-white/\[0.06\] rounded text-right text-sm"
                           />
                         </td>
                         <td className="px-3 py-2 text-right font-mono font-medium">
@@ -711,7 +711,7 @@ export default function ReceivePurchaseOrderPage() {
                       </tr>
                     ))}
                   </tbody>
-                  <tfoot className="bg-slate-50">
+                  <tfoot className="bg-slate-900/40">
                     <tr>
                       <td className="px-3 py-2 text-right text-xs text-slate-500">Totaux:</td>
                       <td className="px-1 py-2 text-center text-xs font-medium">
@@ -724,7 +724,7 @@ export default function ReceivePurchaseOrderPage() {
                         {(factureItems.reduce((sum, i) => sum + (Number(i.quantity) || 0), 0) || 0).toFixed(2)} m²
                       </td>
                       <td className="px-1 py-2"></td>
-                      <td className="px-3 py-2 text-right font-mono font-bold text-blue-600">
+                      <td className="px-3 py-2 text-right font-mono font-bold text-sky-400">
                         {formatCurrencyDZD(factureSubtotal)}
                       </td>
                     </tr>
@@ -733,7 +733,7 @@ export default function ReceivePurchaseOrderPage() {
               </div>
 
               {/* Totals */}
-              <div className="bg-slate-50 rounded-lg p-4 space-y-3">
+              <div className="bg-slate-900/40 rounded-lg p-4 space-y-3">
                 {/* TVA Toggle */}
                 <div className="flex items-center justify-between">
                   <label className="flex items-center gap-2">
@@ -741,7 +741,7 @@ export default function ReceivePurchaseOrderPage() {
                       type="checkbox"
                       checked={factureTVA}
                       onChange={(e) => setFactureTVA(e.target.checked)}
-                      className="w-4 h-4 text-green-600"
+                      className="w-4 h-4 text-emerald-400"
                     />
                     <span className="text-sm">Appliquer TVA (19%)</span>
                   </label>
@@ -755,7 +755,7 @@ export default function ReceivePurchaseOrderPage() {
                     min="0"
                     value={factureDiscount}
                     onChange={(e) => setFactureDiscount(Number(e.target.value))}
-                    className="w-32 p-1 border border-slate-300 rounded text-right"
+                    className="w-32 p-1 border border-white/\[0.08\] rounded text-right"
                   />
                 </div>
 
@@ -768,36 +768,36 @@ export default function ReceivePurchaseOrderPage() {
                     <span className="font-mono">{formatCurrencyDZD(factureSubtotal)}</span>
                   </div>
                   {factureTVA && (
-                    <div className="flex justify-between text-slate-600">
+                    <div className="flex justify-between text-slate-400">
                       <span>TVA (19%)</span>
                       <span className="font-mono">{formatCurrencyDZD(factureTVAAmount)}</span>
                     </div>
                   )}
                   {factureDiscount > 0 && (
-                    <div className="flex justify-between text-red-600">
+                    <div className="flex justify-between text-sky-400">
                       <span>Remise</span>
                       <span className="font-mono">-{formatCurrencyDZD(factureDiscount)}</span>
                     </div>
                   )}
                   <div className="flex justify-between text-lg font-bold pt-2 border-t">
                     <span>TOTAL TTC</span>
-                    <span className="font-mono text-green-600">{formatCurrencyDZD(factureTotal)}</span>
+                    <span className="font-mono text-emerald-400">{formatCurrencyDZD(factureTotal)}</span>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Modal Footer */}
-            <div className="p-4 border-t border-slate-200 bg-slate-50 rounded-b-2xl flex justify-end gap-2">
+            <div className="p-4 border-t border-white/\[0.06\] bg-slate-900/40 rounded-b-2xl flex justify-end gap-2">
               <button
                 onClick={() => setIsFactureModalOpen(false)}
-                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium"
+                className="px-4 py-2 bg-slate-800/50 hover:bg-slate-200 text-slate-200 rounded-lg text-sm font-medium"
               >
                 Annuler
               </button>
               <button
                 onClick={handlePrintFacture}
-                className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium flex items-center gap-2"
+                className="px-6 py-2 bg-emerald-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium flex items-center gap-2"
               >
                 🖨️ Imprimer Facture
               </button>

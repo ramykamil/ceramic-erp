@@ -157,26 +157,26 @@ export default function CustomersListPage() {
   return (
     <div 
       ref={containerRef}
-      className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800 outline-none"
+      className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-900/40 text-slate-100 outline-none"
     >
       <div className="max-w-7xl mx-auto">
 
         {/* --- Header --- */}
         <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-slate-800">Liste des Clients</h1>
+            <h1 className="text-3xl font-bold text-slate-100">Liste des Clients</h1>
             <p className="text-slate-500 text-sm mt-1">Gérer la base client et les crédits</p>
           </div>
 
           {/* Stats Card */}
           {stats && (
-            <div className="bg-white p-3 px-5 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
+            <div className="bg-slate-900/60 p-3 px-5 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 flex items-center gap-4">
               <div className="p-2 bg-sky-100 rounded-lg text-brand-primary">
                 <span className="text-2xl">💰</span>
               </div>
               <div>
                 <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Crédit Total Clients</p>
-                <p className="text-xl font-bold text-slate-800">
+                <p className="text-xl font-bold text-slate-100">
                   {new Intl.NumberFormat('fr-DZ', { style: 'currency', currency: 'DZD' }).format(stats.totalReceivables)}
                 </p>
               </div>
@@ -195,7 +195,7 @@ export default function CustomersListPage() {
             {/* Retour Button (Clean Light Style) */}
             <Link
               href="/"
-              className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2.5 rounded-lg text-sm font-medium transition shadow-sm flex items-center gap-2"
+              className="bg-slate-900/60 border border-white/[0.08] hover:bg-slate-900/40 text-slate-200 px-4 py-2.5 rounded-lg text-sm font-medium transition shadow-sm shadow-black/10 flex items-center gap-2"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
@@ -207,20 +207,20 @@ export default function CustomersListPage() {
 
         {/* --- Error Display --- */}
         {apiError && (
-          <div className="mb-6 p-4 bg-red-50 text-red-700 border border-red-200 rounded-lg text-sm">
+          <div className="mb-6 p-4 bg-sky-500/10 text-sky-300 border border-sky-500/20 rounded-lg text-sm">
             <strong>Erreur:</strong> {apiError}
           </div>
         )}
 
         {/* --- Filters Section --- */}
-        <div className="mb-6 p-4 bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="mb-6 p-4 bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10">
           <div className="flex flex-wrap items-center gap-4">
             {/* Search Bar */}
             <div className="flex-1 min-w-[250px] relative">
               <input
                 type="text"
                 placeholder="🔍 Rechercher par nom ou code client..."
-                className="w-full p-2.5 pl-4 border border-slate-300 rounded-lg bg-white text-slate-800 placeholder:text-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm"
+                className="w-full p-2.5 pl-4 border border-white/[0.08] rounded-lg bg-slate-900/60 text-slate-100 placeholder:text-slate-400 focus:ring-2 focus:ring-sky-500/30 focus:border-transparent transition text-sm"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -234,10 +234,10 @@ export default function CustomersListPage() {
         </div>
 
         {/* --- Data Table Container --- */}
-        <div className="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+        <div className="bg-slate-900/60 rounded-xl overflow-hidden border border-white/[0.06] shadow-sm shadow-black/10">
           {isLoading ? (
             <div className="text-center py-20">
-              <div className="inline-block w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+              <div className="inline-block w-8 h-8 border-4 border-sky-500/20 border-t-blue-600 rounded-full animate-spin mb-4"></div>
               <p className="text-slate-500">Chargement des clients...</p>
             </div>
           ) : customers.length === 0 && !apiError ? (
@@ -247,7 +247,7 @@ export default function CustomersListPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left" style={{ tableLayout: 'fixed' }}>
-                <thead className="text-xs text-slate-500 uppercase bg-slate-50 font-semibold border-b border-slate-100">
+                <thead className="text-xs text-slate-500 uppercase bg-slate-900/40 font-semibold border-b border-slate-100">
                   <tr>
                     <ResizableSortableHeader label="Nom" sortKey="customername" currentDirection={getSortDirection('customername' as keyof Customer)} onSort={(k) => handleSort(k as keyof Customer)} width={widths.customername} onResize={handleResize} />
                     <ResizableSortableHeader label="Adresse" sortKey="address" currentDirection={getSortDirection('address' as keyof Customer)} onSort={(k) => handleSort(k as keyof Customer)} width={widths.address} onResize={handleResize} />
@@ -261,43 +261,43 @@ export default function CustomersListPage() {
                   {sortedData.map((customer, idx) => (
                     <tr 
                       key={customer.customerid} 
-                      className={getRowClass(idx, "hover:bg-slate-50 transition cursor-pointer")}
+                      className={getRowClass(idx, "hover:bg-slate-900/40 transition cursor-pointer")}
                       onClick={() => setSelectedIndex(idx)}
                     >
-                      <td className="px-6 py-4 font-medium text-slate-900">
+                      <td className="px-6 py-4 font-medium text-white">
                         {customer.customername}
                         <div className="text-xs text-slate-400 font-mono mt-0.5">{customer.customercode}</div>
                       </td>
-                      <td className="px-6 py-4 text-slate-600 max-w-xs truncate">{customer.address || '—'}</td>
-                      <td className="px-6 py-4 text-slate-600">
+                      <td className="px-6 py-4 text-slate-400 max-w-xs truncate">{customer.address || '—'}</td>
+                      <td className="px-6 py-4 text-slate-400">
                         <div>{customer.phone || '—'}</div>
                         <div className="text-xs text-slate-400">{customer.email}</div>
                       </td>
-                      <td className={`px-6 py-4 text-right font-bold ${customer.currentbalance > 0 ? 'text-red-600' : 'text-slate-700'}`}>
+                      <td className={`px-6 py-4 text-right font-bold ${customer.currentbalance > 0 ? 'text-sky-400' : 'text-slate-200'}`}>
                         {formatCurrencyDZD(customer.currentbalance)}
                       </td>
-                      <td className="px-6 py-4 text-right font-medium text-blue-600">
+                      <td className="px-6 py-4 text-right font-medium text-sky-400">
                         {formatCurrencyDZD(customer.totalbought)}
                       </td>
                       <td className="px-6 py-4 text-center">
                         <div className="flex items-center justify-center gap-2">
                           <Link
                             href={`/customers/${customer.customerid}`}
-                            className="text-blue-600 hover:text-blue-800 hover:bg-blue-50 px-3 py-1 rounded transition font-medium text-xs"
+                            className="text-sky-400 hover:text-blue-800 hover:bg-sky-500/10 px-3 py-1 rounded transition font-medium text-xs"
                             title="Gérer Prix Spécifiques"
                           >
                             Prix
                           </Link>
                           <Link
                             href={`/customers/${customer.customerid}?tab=situation`}
-                            className="text-green-600 hover:text-green-800 hover:bg-green-50 px-3 py-1 rounded transition font-medium text-xs"
+                            className="text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 px-3 py-1 rounded transition font-medium text-xs"
                             title="Voir Situation Financière"
                           >
                             Situation
                           </Link>
                           <button
                             onClick={() => router.push(`/customers/${customer.customerid}/edit`)}
-                            className="text-purple-600 hover:text-purple-800 hover:bg-purple-50 px-3 py-1 rounded transition font-medium text-xs"
+                            className="text-violet-400 hover:text-purple-800 hover:bg-violet-500/10 px-3 py-1 rounded transition font-medium text-xs"
                             title="Modifier Client"
                           >
                             Modifier
@@ -306,7 +306,7 @@ export default function CustomersListPage() {
                           {customer.isactive ? (
                             <button
                               onClick={() => handleDelete(customer.customerid, customer.customername)}
-                              className="text-red-600 hover:text-red-800 hover:bg-red-50 px-3 py-1 rounded transition font-medium text-xs"
+                              className="text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 px-3 py-1 rounded transition font-medium text-xs"
                               title="Désactiver Client"
                             >
                               Désactiver
@@ -314,7 +314,7 @@ export default function CustomersListPage() {
                           ) : (
                             <button
                               onClick={() => handleHardDelete(customer.customerid, customer.customercode)}
-                              className="text-slate-500 hover:text-slate-700 hover:bg-slate-200 px-3 py-1 rounded transition font-medium text-xs"
+                              className="text-slate-500 hover:text-slate-200 hover:bg-slate-200 px-3 py-1 rounded transition font-medium text-xs"
                               title="Supprimer Définitivement"
                             >
                               Supprimer

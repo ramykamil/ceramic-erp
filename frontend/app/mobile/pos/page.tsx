@@ -81,9 +81,9 @@ export default function MobilePOS() {
 
     if (isCheckout) {
         return (
-            <div className="min-h-screen bg-slate-50 p-4 flex flex-col">
+            <div className="min-h-screen bg-slate-900/40 p-4 flex flex-col">
                 <div className="flex items-center gap-4 mb-6">
-                    <button onClick={() => setIsCheckout(false)} className="p-2 bg-white rounded-lg shadow-sm">
+                    <button onClick={() => setIsCheckout(false)} className="p-2 bg-slate-900/60 rounded-lg shadow-sm shadow-black/10">
                         ←
                     </button>
                     <h1 className="text-xl font-bold">Panier ({cart.length})</h1>
@@ -91,26 +91,26 @@ export default function MobilePOS() {
 
                 <div className="flex-1 overflow-y-auto space-y-4">
                     {cart.map(item => (
-                        <div key={item.product.productid} className="bg-white p-4 rounded-xl shadow-sm flex justify-between items-center">
+                        <div key={item.product.productid} className="bg-slate-900/60 p-4 rounded-xl shadow-sm shadow-black/10 flex justify-between items-center">
                             <div>
                                 <div className="font-medium">{item.product.productname}</div>
                                 <div className="text-sm text-slate-500">{item.product.baseprice} DZD</div>
                             </div>
                             <div className="flex items-center gap-3">
-                                <button onClick={() => updateQuantity(item.product.productid, -1)} className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center font-bold">-</button>
+                                <button onClick={() => updateQuantity(item.product.productid, -1)} className="w-8 h-8 bg-slate-800/50 rounded-full flex items-center justify-center font-bold">-</button>
                                 <span className="w-6 text-center font-medium">{item.quantity}</span>
-                                <button onClick={() => updateQuantity(item.product.productid, 1)} className="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">+</button>
+                                <button onClick={() => updateQuantity(item.product.productid, 1)} className="w-8 h-8 bg-sky-500/10 text-sky-400 rounded-full flex items-center justify-center font-bold">+</button>
                             </div>
                         </div>
                     ))}
                 </div>
 
-                <div className="mt-4 bg-white p-4 rounded-xl shadow-lg border border-slate-100">
+                <div className="mt-4 bg-slate-900/60 p-4 rounded-xl shadow-lg shadow-black/20 border border-slate-100">
                     <div className="flex justify-between items-center mb-4">
                         <span className="text-slate-500">Total</span>
-                        <span className="text-2xl font-bold text-blue-600">{totalAmount.toLocaleString()} DZD</span>
+                        <span className="text-2xl font-bold text-sky-400">{totalAmount.toLocaleString()} DZD</span>
                     </div>
-                    <button onClick={handleCheckout} className="w-full bg-green-600 text-white py-4 rounded-xl font-bold text-lg shadow-lg active:scale-95 transition-transform">
+                    <button onClick={handleCheckout} className="w-full bg-emerald-600 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-black/20 active:scale-95 transition-transform">
                         Valider la Commande
                     </button>
                 </div>
@@ -119,17 +119,17 @@ export default function MobilePOS() {
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 p-4 pb-24">
+        <div className="min-h-screen bg-slate-900/40 p-4 pb-24">
             {/* Header & Search */}
-            <div className="sticky top-0 bg-slate-50 pt-2 pb-4 z-10">
+            <div className="sticky top-0 bg-slate-900/40 pt-2 pb-4 z-10">
                 <div className="flex justify-between items-center mb-4">
-                    <h1 className="text-2xl font-bold text-slate-800">Mobile POS</h1>
-                    <button onClick={() => router.push('/mobile/dashboard')} className="text-sm text-blue-600 font-medium">Quitter</button>
+                    <h1 className="text-2xl font-bold text-slate-100">Mobile POS</h1>
+                    <button onClick={() => router.push('/mobile/dashboard')} className="text-sm text-sky-400 font-medium">Quitter</button>
                 </div>
                 <input
                     type="text"
                     placeholder="Rechercher produit..."
-                    className="w-full p-4 rounded-xl border-none shadow-sm bg-white focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-4 rounded-xl border-none shadow-sm shadow-black/10 bg-slate-900/60 focus:ring-2 focus:ring-sky-500/30"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
@@ -141,12 +141,12 @@ export default function MobilePOS() {
                     <button
                         key={product.productid}
                         onClick={() => addToCart(product)}
-                        className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 text-left active:scale-95 transition-transform flex flex-col justify-between h-32"
+                        className="bg-slate-900/60 p-4 rounded-xl shadow-sm shadow-black/10 border border-slate-100 text-left active:scale-95 transition-transform flex flex-col justify-between h-32"
                     >
-                        <div className="font-medium text-slate-800 line-clamp-2">{product.productname}</div>
+                        <div className="font-medium text-slate-100 line-clamp-2">{product.productname}</div>
                         <div>
                             <div className="text-xs text-slate-400">{product.productcode}</div>
-                            <div className="font-bold text-blue-600 mt-1">{product.baseprice} DZD</div>
+                            <div className="font-bold text-sky-400 mt-1">{product.baseprice} DZD</div>
                         </div>
                     </button>
                 ))}

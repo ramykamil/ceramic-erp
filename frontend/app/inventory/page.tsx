@@ -268,16 +268,16 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      <div className="w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden">
+      <div className="w-full max-w-2xl bg-slate-900/60 rounded-xl shadow-2xl border border-white/[0.06] overflow-hidden">
         <form onSubmit={handleSubmit}>
-          <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-            <h2 className="text-lg font-bold text-slate-800">📦 Ajustement Manuel du Stock</h2>
-            <button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
+          <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-900/40">
+            <h2 className="text-lg font-bold text-slate-100">📦 Ajustement Manuel du Stock</h2>
+            <button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-400 text-2xl leading-none">&times;</button>
           </div>
 
           <div className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
             {error && (
-              <div className="p-3 bg-red-50 text-red-700 border border-red-200 rounded-lg text-sm">
+              <div className="p-3 bg-sky-500/10 text-sky-300 border border-sky-500/20 rounded-lg text-sm">
                 <strong>Erreur:</strong> {error}
               </div>
             )}
@@ -299,13 +299,13 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
                   }}
                   onFocus={() => setShowProductDropdown(true)}
                   placeholder="🔍 Rechercher un produit..."
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-slate-800"
+                  className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-slate-900/60 text-slate-100"
                 />
                 {selectedProduct && (
                   <button
                     type="button"
                     onClick={clearProduct}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-red-500"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-sky-400"
                   >
                     ✕
                   </button>
@@ -314,15 +314,15 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
 
               {/* Search Results Dropdown */}
               {showProductDropdown && products.length > 0 && !selectedProduct && (
-                <div className="absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                <div className="absolute z-50 w-full mt-1 bg-slate-900/60 border border-white/[0.06] rounded-lg shadow-lg shadow-black/20 max-h-60 overflow-y-auto">
                   {products.map(p => (
                     <button
                       key={p.productid}
                       type="button"
                       onClick={() => selectProduct(p)}
-                      className="w-full px-3 py-2 text-left text-sm hover:bg-indigo-50 border-b border-slate-100 last:border-0"
+                      className="w-full px-3 py-2 text-left text-sm hover:bg-indigo-500/100/10 border-b border-slate-100 last:border-0"
                     >
-                      <span className="font-medium text-slate-800">{p.productname}</span>
+                      <span className="font-medium text-slate-100">{p.productname}</span>
                       <span className="text-slate-400 ml-2">({p.productcode})</span>
                     </button>
                   ))}
@@ -331,33 +331,33 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
 
               {/* Selected Product Badge */}
               {selectedProduct && (
-                <div className="mt-2 p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
+                <div className="mt-2 p-3 bg-indigo-500/100/10 border border-indigo-200 rounded-lg">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-indigo-600">✓</span>
+                    <span className="text-indigo-400">✓</span>
                     <span className="text-sm font-medium text-indigo-800">{selectedProduct.productname}</span>
                     <span className="text-xs text-indigo-500">({selectedProduct.productcode})</span>
                   </div>
 
                   {/* Current Stock Display */}
                   {currentInventory && (
-                    <div className="bg-white p-2 rounded-lg border border-indigo-100">
+                    <div className="bg-slate-900/60 p-2 rounded-lg border border-indigo-100">
                       <p className="text-xs text-slate-500 mb-2 font-medium">📊 Stock actuel:</p>
                       <div className="grid grid-cols-4 gap-2 text-center">
-                        <div className="bg-indigo-100 rounded p-1.5">
-                          <p className="text-lg font-bold text-indigo-700">{currentInventory.palettes}</p>
-                          <p className="text-[10px] text-indigo-600">Palettes</p>
+                        <div className="bg-indigo-500/100/100/10 rounded p-1.5">
+                          <p className="text-lg font-bold text-indigo-400">{currentInventory.palettes}</p>
+                          <p className="text-[10px] text-indigo-400">Palettes</p>
                         </div>
                         <div className="bg-cyan-100 rounded p-1.5">
                           <p className="text-lg font-bold text-cyan-700">{currentInventory.cartons}</p>
                           <p className="text-[10px] text-cyan-600">Cartons</p>
                         </div>
-                        <div className="bg-orange-100 rounded p-1.5">
-                          <p className="text-lg font-bold text-orange-700">{currentInventory.pieces}</p>
-                          <p className="text-[10px] text-orange-600">Pièces</p>
+                        <div className="bg-orange-500/10 rounded p-1.5">
+                          <p className="text-lg font-bold text-orange-400">{currentInventory.pieces}</p>
+                          <p className="text-[10px] text-orange-400">Pièces</p>
                         </div>
-                        <div className="bg-indigo-100 rounded p-1.5">
-                          <p className="text-lg font-bold text-indigo-700">{currentInventory.sqm.toFixed(2)}</p>
-                          <p className="text-[10px] text-indigo-600">m²</p>
+                        <div className="bg-indigo-500/100/100/10 rounded p-1.5">
+                          <p className="text-lg font-bold text-indigo-400">{currentInventory.sqm.toFixed(2)}</p>
+                          <p className="text-[10px] text-indigo-400">m²</p>
                         </div>
                       </div>
                     </div>
@@ -368,26 +368,26 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
 
             {/* Packaging Config (shown when product selected) */}
             {selectedProduct && (
-              <div className="bg-slate-50 p-3 rounded-lg">
+              <div className="bg-slate-900/40 p-3 rounded-lg">
                 <p className="text-xs text-slate-500 mb-2 font-medium">Ratios d'emballage</p>
                 <div className="grid grid-cols-3 gap-3">
                   <div>
                     <label className="block text-xs text-slate-500 mb-1">m²/pièce</label>
                     <input type="number" min="0.01" step="0.01" value={sqmPerPiece}
                       onChange={e => setSqmPerPiece(Number(e.target.value))}
-                      className="w-full p-2 text-sm border border-slate-300 rounded-lg text-center" />
+                      className="w-full p-2 text-sm border border-white/[0.08] rounded-lg text-center" />
                   </div>
                   <div>
                     <label className="block text-xs text-slate-500 mb-1">Pcs/Carton</label>
                     <input type="number" min="1" value={piecesPerCarton}
                       onChange={e => setPiecesPerCarton(Number(e.target.value))}
-                      className="w-full p-2 text-sm border border-slate-300 rounded-lg text-center" />
+                      className="w-full p-2 text-sm border border-white/[0.08] rounded-lg text-center" />
                   </div>
                   <div>
                     <label className="block text-xs text-slate-500 mb-1">Ctn/Palette</label>
                     <input type="number" min="1" value={cartonsPerPalette}
                       onChange={e => setCartonsPerPalette(Number(e.target.value))}
-                      className="w-full p-2 text-sm border border-slate-300 rounded-lg text-center" />
+                      className="w-full p-2 text-sm border border-white/[0.08] rounded-lg text-center" />
                   </div>
                 </div>
               </div>
@@ -398,24 +398,24 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="radio" name="adjType" checked={adjustmentType === 'ADD'}
                   onChange={() => setAdjustmentType('ADD')}
-                  className="w-4 h-4 text-green-600" />
-                <span className="text-sm font-medium text-green-700">➕ Ajouter au stock</span>
+                  className="w-4 h-4 text-emerald-400" />
+                <span className="text-sm font-medium text-emerald-400">➕ Ajouter au stock</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="radio" name="adjType" checked={adjustmentType === 'REMOVE'}
                   onChange={() => setAdjustmentType('REMOVE')}
-                  className="w-4 h-4 text-red-600" />
-                <span className="text-sm font-medium text-red-700">➖ Retirer du stock</span>
+                  className="w-4 h-4 text-sky-400" />
+                <span className="text-sm font-medium text-sky-300">➖ Retirer du stock</span>
               </label>
             </div>
 
             {/* Pal/Ctn/Pcs/SQM Inputs */}
             <div className="grid grid-cols-4 gap-3">
               <div>
-                <label className="block text-sm font-medium text-indigo-700 mb-1">🎨 Palettes</label>
+                <label className="block text-sm font-medium text-indigo-400 mb-1">🎨 Palettes</label>
                 <input type="number" min="0" step="any" value={palettes}
                   onChange={e => handlePalettesChange(Number(e.target.value))}
-                  className="w-full p-2 border-2 border-indigo-300 rounded-lg text-center font-bold text-indigo-700 bg-indigo-50" />
+                  className="w-full p-2 border-2 border-indigo-300 rounded-lg text-center font-bold text-indigo-400 bg-indigo-500/100/10" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-cyan-700 mb-1">📦 Cartons</label>
@@ -424,16 +424,16 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
                   className="w-full p-2 border-2 border-cyan-300 rounded-lg text-center font-bold text-cyan-700 bg-cyan-50" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-orange-700 mb-1">🔢 Pièces</label>
+                <label className="block text-sm font-medium text-orange-400 mb-1">🔢 Pièces</label>
                 <input type="number" min="0" value={pieces}
                   onChange={e => handlePiecesChange(Number(e.target.value))}
-                  className="w-full p-2 border-2 border-orange-300 rounded-lg text-center font-bold text-orange-700 bg-orange-50" />
+                  className="w-full p-2 border-2 border-orange-300 rounded-lg text-center font-bold text-orange-400 bg-orange-50" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-indigo-700 mb-1">📐 Quantité (m²)</label>
+                <label className="block text-sm font-medium text-indigo-400 mb-1">📐 Quantité (m²)</label>
                 <input type="number" min="0" step="0.01" value={quantity}
                   onChange={e => handleQuantityChange(Number(e.target.value))}
-                  className="w-full p-2 border-2 border-indigo-400 rounded-lg text-center font-bold text-indigo-700 bg-indigo-50" />
+                  className="w-full p-2 border-2 border-indigo-400 rounded-lg text-center font-bold text-indigo-400 bg-indigo-500/100/10" />
               </div>
             </div>
 
@@ -442,7 +442,7 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Entrepôt *</label>
                 <select value={warehouseId} onChange={(e) => setWarehouseId(Number(e.target.value))} required
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-slate-800">
+                  className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-slate-900/60 text-slate-100">
                   <option value="">-- Sélectionner --</option>
                   {warehouses.map(w => <option key={w.warehouseid} value={w.warehouseid}>{w.warehousename}</option>)}
                 </select>
@@ -451,7 +451,7 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Type *</label>
                 <select value={ownershipType} onChange={(e) => setOwnershipType(e.target.value as 'OWNED' | 'CONSIGNMENT')} required
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-slate-800">
+                  className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-slate-900/60 text-slate-100">
                   <option value="OWNED">Propre</option>
                   <option value="CONSIGNMENT">Consignation</option>
                 </select>
@@ -462,7 +462,7 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Usine *</label>
                 <select value={factoryId} onChange={(e) => setFactoryId(Number(e.target.value))} required
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-slate-800">
+                  className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-slate-900/60 text-slate-100">
                   <option value="">-- Sélectionner --</option>
                   {factories.map(f => <option key={f.factoryid} value={f.factoryid}>{f.factoryname}</option>)}
                 </select>
@@ -473,25 +473,25 @@ function StockAdjustmentModal({ isOpen, onClose, onSave, isSaving, error }: Stoc
               <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Note / Raison</label>
               <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2}
                 placeholder="Ex: Inventaire physique, correction d'erreur..."
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-slate-800" />
+                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-slate-900/60 text-slate-100" />
             </div>
           </div>
 
-          <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
+          <div className="p-4 bg-slate-900/40 border-t border-slate-100 flex justify-between items-center">
             <div className="text-sm">
               {quantity > 0 && (
-                <span className={`font-bold ${adjustmentType === 'ADD' ? 'text-green-600' : 'text-red-600'}`}>
+                <span className={`font-bold ${adjustmentType === 'ADD' ? 'text-emerald-400' : 'text-sky-400'}`}>
                   {adjustmentType === 'ADD' ? '+' : '-'}{quantity.toFixed(2)} m²
                 </span>
               )}
             </div>
             <div className="flex gap-3">
               <button type="button" onClick={onClose} disabled={isSaving}
-                className="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm">
+                className="bg-slate-900/60 border border-white/[0.08] text-slate-200 hover:bg-slate-900/40 px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm shadow-black/10">
                 Annuler
               </button>
               <button type="submit" disabled={isSaving || quantity <= 0}
-                className="bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2 disabled:opacity-50">
+                className="bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm shadow-black/10 flex items-center gap-2 disabled:opacity-50">
                 {isSaving ? 'Sauvegarde...' : 'Enregistrer'}
               </button>
             </div>
@@ -549,16 +549,16 @@ function ImportStockModal({ isOpen, onClose, onImport, isImporting }: ImportStoc
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden">
+      <div className="w-full max-w-md bg-slate-900/60 rounded-xl shadow-2xl border border-white/[0.06] overflow-hidden">
         <form onSubmit={handleSubmit}>
-          <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-            <h2 className="text-lg font-bold text-slate-800">Importer Stock CSV</h2>
-            <button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
+          <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-900/40">
+            <h2 className="text-lg font-bold text-slate-100">Importer Stock CSV</h2>
+            <button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-400 text-2xl leading-none">&times;</button>
           </div>
 
           <div className="p-6 grid grid-cols-1 gap-4">
             {error && (
-              <div className="p-3 bg-red-50 text-red-700 border border-red-200 rounded-lg text-sm">
+              <div className="p-3 bg-sky-500/10 text-sky-300 border border-sky-500/20 rounded-lg text-sm">
                 <strong>Erreur:</strong> {error}
               </div>
             )}
@@ -570,7 +570,7 @@ function ImportStockModal({ isOpen, onClose, onImport, isImporting }: ImportStoc
                 id="importFile"
                 accept=".csv"
                 onChange={(e) => setSelectedFile(e.target.files ? e.target.files[0] : null)}
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-slate-800"
+                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-slate-900/60 text-slate-100"
                 required
               />
             </div>
@@ -581,7 +581,7 @@ function ImportStockModal({ isOpen, onClose, onImport, isImporting }: ImportStoc
                 id="importWarehouse"
                 value={selectedWarehouseId}
                 onChange={(e) => setSelectedWarehouseId(Number(e.target.value))}
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-slate-800"
+                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-slate-900/60 text-slate-100"
                 required
               >
                 <option value="">-- Sélectionner Entrepôt --</option>
@@ -590,13 +590,13 @@ function ImportStockModal({ isOpen, onClose, onImport, isImporting }: ImportStoc
             </div>
           </div>
 
-          <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3">
+          <div className="p-4 bg-slate-900/40 border-t border-slate-100 flex justify-end gap-3">
             <button type="button" onClick={onClose} disabled={isImporting}
-              className="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm">
+              className="bg-slate-900/60 border border-white/[0.08] text-slate-200 hover:bg-slate-900/40 px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm shadow-black/10">
               Annuler
             </button>
             <button type="submit" disabled={isImporting || !selectedFile || !selectedWarehouseId}
-              className="bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2">
+              className="bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm shadow-black/10 flex items-center gap-2">
               {isImporting ? 'Importation...' : 'Importer'}
             </button>
           </div>
@@ -801,26 +801,26 @@ function InventoryLevelsContent() {
   return (
     <div 
       ref={containerRef}
-      className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800 outline-none"
+      className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-900/40 text-slate-100 outline-none"
     >
       <div className="max-w-7xl mx-auto">
 
         {/* --- Header --- */}
         <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-slate-800">Niveaux de Stock</h1>
+            <h1 className="text-3xl font-bold text-slate-100">Niveaux de Stock</h1>
             <p className="text-slate-500 text-sm mt-1">
               {activeTab === 'WHOLESALE' ? 'Entrepôts de Gros (Depots)' : 'Stock Détail (Magasins)'}
             </p>
           </div>
 
           {/* TABS */}
-          <div className="flex bg-white p-1 rounded-lg border border-slate-200 shadow-sm">
+          <div className="flex bg-slate-900/60 p-1 rounded-lg border border-white/[0.06] shadow-sm shadow-black/10">
             <button
               onClick={() => setActiveTab('WHOLESALE')}
               className={`px-4 py-2 text-sm font-medium rounded-md transition ${activeTab === 'WHOLESALE'
-                ? 'bg-brand-primary/10 text-brand-primary shadow-sm ring-1 ring-inset ring-brand-primary/20'
-                : 'text-slate-500 hover:text-slate-700'
+                ? 'bg-brand-primary/10 text-brand-primary shadow-sm shadow-black/10 ring-1 ring-inset ring-brand-primary/20'
+                : 'text-slate-500 hover:text-slate-200'
                 }`}
             >
               Stock Gros
@@ -828,8 +828,8 @@ function InventoryLevelsContent() {
             <button
               onClick={() => setActiveTab('RETAIL')}
               className={`px-4 py-2 text-sm font-medium rounded-md transition ${activeTab === 'RETAIL'
-                ? 'bg-brand-primary/10 text-brand-primary shadow-sm ring-1 ring-inset ring-brand-primary/20'
-                : 'text-slate-500 hover:text-slate-700'
+                ? 'bg-brand-primary/10 text-brand-primary shadow-sm shadow-black/10 ring-1 ring-inset ring-brand-primary/20'
+                : 'text-slate-500 hover:text-slate-200'
                 }`}
             >
               Stock Détail
@@ -841,7 +841,7 @@ function InventoryLevelsContent() {
             <button
               onClick={() => setIsImportModalOpen(true)}
               disabled={isImporting}
-              className="bg-brand-primary hover:bg-brand-primary-dark text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2 disabled:opacity-50"
+              className="bg-brand-primary hover:bg-brand-primary-dark text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm shadow-black/10 flex items-center gap-2 disabled:opacity-50"
             >
               <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
               {isImporting ? '...' : 'Import'}
@@ -867,7 +867,7 @@ function InventoryLevelsContent() {
                   'Stock'
                 );
               }}
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2"
+              className="bg-emerald-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm shadow-black/10 flex items-center gap-2"
             >
               📄 Excel
             </button>
@@ -875,7 +875,7 @@ function InventoryLevelsContent() {
             {/* Ajustement Button */}
             <button
               onClick={() => setIsAdjustModalOpen(true)}
-              className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2"
+              className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm shadow-black/10 flex items-center gap-2"
             >
               <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" /></svg>
               Ajustement
@@ -885,7 +885,7 @@ function InventoryLevelsContent() {
             {/* Quick Stock Entry Button */}
             <Link
               href="/inventory/quick-stock"
-              className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2"
+              className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm shadow-black/10 flex items-center gap-2"
             >
               <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg>
               Entrée Stock
@@ -894,7 +894,7 @@ function InventoryLevelsContent() {
             {/* Back Button */}
             <Link
               href="/"
-              className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2.5 rounded-lg text-sm font-medium transition shadow-sm flex items-center gap-2"
+              className="bg-slate-900/60 border border-white/[0.08] hover:bg-slate-900/40 text-slate-200 px-4 py-2.5 rounded-lg text-sm font-medium transition shadow-sm shadow-black/10 flex items-center gap-2"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
@@ -906,20 +906,20 @@ function InventoryLevelsContent() {
 
         {/* --- Error Display --- */}
         {apiError && (
-          <div className="mb-6 p-4 bg-red-50 text-red-700 border border-red-200 rounded-lg text-sm">
+          <div className="mb-6 p-4 bg-sky-500/10 text-sky-300 border border-sky-500/20 rounded-lg text-sm">
             <strong>Erreur:</strong> {apiError}
           </div>
         )}
 
         {/* --- Search & Filters Bar --- */}
-        <div className="mb-6 bg-white rounded-xl border border-slate-200 shadow-sm p-4">
+        <div className="mb-6 bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 p-4">
           <div className="flex flex-wrap items-center gap-4">
             {/* Search Input */}
             <div className="flex-1 min-w-[200px] relative">
               <input
                 type="text"
                 placeholder="🔍 Rechercher produit..."
-                className="w-full p-2.5 border border-slate-300 rounded-lg bg-white text-slate-800 placeholder:text-slate-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition text-sm"
+                className="w-full p-2.5 border border-white/[0.08] rounded-lg bg-slate-900/60 text-slate-100 placeholder:text-slate-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition text-sm"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -930,7 +930,7 @@ function InventoryLevelsContent() {
               <select
                 value={brandFilter}
                 onChange={(e) => setBrandFilter(e.target.value)}
-                className="p-2.5 border border-slate-300 rounded-lg text-sm bg-white text-slate-800 min-w-[150px]"
+                className="p-2.5 border border-white/[0.08] rounded-lg text-sm bg-slate-900/60 text-slate-100 min-w-[150px]"
               >
                 <option value="">Toutes Marques</option>
                 {allBrands.map(brand => (
@@ -944,8 +944,8 @@ function InventoryLevelsContent() {
               <button
                 onClick={() => setStockLevelFilter('all')}
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition ${stockLevelFilter === 'all'
-                  ? 'bg-slate-800 text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-slate-800 text-white shadow-sm shadow-black/10'
+                  : 'bg-slate-800/50 text-slate-400 hover:bg-slate-200'
                   }`}
               >
                 Tout
@@ -953,7 +953,7 @@ function InventoryLevelsContent() {
               <button
                 onClick={() => setStockLevelFilter('low')}
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition flex items-center gap-1.5 ${stockLevelFilter === 'low'
-                  ? 'bg-amber-500 text-white shadow-sm'
+                  ? 'bg-amber-500 text-white shadow-sm shadow-black/10'
                   : 'bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100'
                   }`}
               >
@@ -962,8 +962,8 @@ function InventoryLevelsContent() {
               <button
                 onClick={() => setStockLevelFilter('out')}
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition flex items-center gap-1.5 ${stockLevelFilter === 'out'
-                  ? 'bg-red-500 text-white shadow-sm'
-                  : 'bg-red-50 text-red-700 border border-red-200 hover:bg-red-100'
+                  ? 'bg-sky-500 text-white shadow-sm shadow-black/10'
+                  : 'bg-sky-500/10 text-sky-300 border border-sky-500/20 hover:bg-sky-500/10'
                   }`}
               >
                 🚫 Rupture
@@ -974,7 +974,7 @@ function InventoryLevelsContent() {
             {(brandFilter || stockLevelFilter !== 'all') && (
               <button
                 onClick={() => { setBrandFilter(''); setStockLevelFilter('all'); }}
-                className="text-red-600 hover:text-red-700 text-sm font-medium"
+                className="text-sky-400 hover:text-sky-300 text-sm font-medium"
               >
                 ✕ Effacer filtres
               </button>
@@ -984,17 +984,17 @@ function InventoryLevelsContent() {
           {/* Results count */}
           <div className="mt-3 text-xs text-slate-500">
             {filteredData.length} article(s) affichés{totalCount > filteredData.length && <span className="text-slate-400"> sur {totalCount} total</span>}
-            {brandFilter && <span className="ml-2">• Marque: <span className="font-medium text-indigo-600">{brandFilter}</span></span>}
+            {brandFilter && <span className="ml-2">• Marque: <span className="font-medium text-indigo-400">{brandFilter}</span></span>}
             {stockLevelFilter !== 'all' && <span className="ml-2">• Filtre: <span className="font-medium">{stockLevelFilter === 'low' ? 'Stock Faible' : 'Rupture'}</span></span>}
             {sortBy !== 'productname' && <span className="ml-2">• Trié par: <span className="font-medium">{sortBy} ({sortDir})</span></span>}
           </div>
         </div>
 
         {/* --- Data Table Container --- */}
-        <div className="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+        <div className="bg-slate-900/60 rounded-xl overflow-hidden border border-white/[0.06] shadow-sm shadow-black/10">
           {isLoading ? (
             <div className="text-center py-20">
-              <div className="inline-block w-8 h-8 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin mb-4"></div>
+              <div className="inline-block w-8 h-8 border-4 border-violet-500/20 border-t-purple-600 rounded-full animate-spin mb-4"></div>
               <p className="text-slate-500">Chargement des stocks...</p>
             </div>
           ) : inventoryLevels.length === 0 && !apiError ? (
@@ -1004,7 +1004,7 @@ function InventoryLevelsContent() {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left" style={{ tableLayout: 'fixed' }}>
-                <thead className="text-xs text-slate-500 uppercase bg-slate-50 font-semibold border-b border-slate-100">
+                <thead className="text-xs text-slate-500 uppercase bg-slate-900/40 font-semibold border-b border-slate-100">
                   <tr>
                     <ResizableSortableHeader label="Produit" sortKey="productname" currentDirection={getSortDirection('productname')} onSort={handleSort} width={widths.productname} onResize={handleResize} />
                     <ResizableSortableHeader label="Entrepôt" sortKey="warehousename" currentDirection={getSortDirection('warehousename')} onSort={handleSort} width={widths.warehousename} onResize={handleResize} />
@@ -1021,22 +1021,22 @@ function InventoryLevelsContent() {
                     <tr 
                       key={item.inventoryid} 
                       {...getRowProps(idx)}
-                      className={getRowClass(idx, "hover:bg-slate-50 transition cursor-pointer")}
+                      className={getRowClass(idx, "hover:bg-slate-900/40 transition cursor-pointer")}
                     >
                       <td className="px-6 py-4">
-                        <div className="font-medium text-slate-900">{item.productname}</div>
+                        <div className="font-medium text-white">{item.productname}</div>
                         <div className="text-xs text-slate-500 font-mono mt-0.5">{item.productcode}</div>
                       </td>
-                      <td className="px-6 py-4 text-slate-600">{item.warehousename}</td>
+                      <td className="px-6 py-4 text-slate-400">{item.warehousename}</td>
                       <td className="px-6 py-4">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-700 border border-indigo-200">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-500/100/100/10 text-indigo-400 border border-indigo-200">
                           {item.brandname || 'Sans Marque'}
                         </span>
                       </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex flex-col items-end gap-1">
                           {(item.palletcount || 0) > 0 && (
-                            <span className="text-xs font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md whitespace-nowrap">
+                            <span className="text-xs font-medium text-slate-400 bg-slate-800/50 px-2 py-0.5 rounded-md whitespace-nowrap">
                               {formatQuantity(item.palletcount)} Palettes
                             </span>
                           )}
@@ -1050,15 +1050,15 @@ function InventoryLevelsContent() {
                           )}
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-right font-mono text-slate-700 font-bold">{formatQuantity(item.quantityonhand)}</td>
+                      <td className="px-6 py-4 text-right font-mono text-slate-200 font-bold">{formatQuantity(item.quantityonhand)}</td>
                       <td className="px-6 py-4 text-right font-mono text-amber-600">{formatQuantity(item.quantityreserved)}</td>
-                      <td className={`px-6 py-4 text-right font-mono font-bold ${(item.quantityavailable || 0) <= (item.reorderlevel || 0) ? 'text-red-600' : 'text-emerald-600'}`}>
+                      <td className={`px-6 py-4 text-right font-mono font-bold ${(item.quantityavailable || 0) <= (item.reorderlevel || 0) ? 'text-sky-400' : 'text-emerald-600'}`}>
                         {formatQuantity(item.quantityavailable)}
                       </td>
                       <td className="px-6 py-4 text-center">
                         <Link
                           href={`/inventory/transactions?productId=${item.productid}`}
-                          className="text-purple-600 hover:text-purple-800 hover:bg-purple-50 px-3 py-1 rounded transition font-medium text-xs"
+                          className="text-violet-400 hover:text-purple-800 hover:bg-violet-500/10 px-3 py-1 rounded transition font-medium text-xs"
                         >
                           Historique
                         </Link>

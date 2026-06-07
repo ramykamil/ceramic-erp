@@ -144,22 +144,22 @@ export default function AttendancePage() {
     });
 
     return (
-        <div className="min-h-screen bg-slate-50 p-4">
+        <div className="min-h-screen bg-slate-900/40 p-4">
             <div className="max-w-4xl mx-auto">
 
                 {/* HEADER */}
                 <div className="flex justify-between items-center mb-6">
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-800">⏰ Pointage</h1>
+                        <h1 className="text-2xl font-bold text-slate-100">⏰ Pointage</h1>
                         <p className="text-sm text-slate-500">{employees.length} employés</p>
                     </div>
-                    <Link href="/" className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium shadow-sm">
+                    <Link href="/" className="bg-slate-900/60 border border-white/[0.08] hover:bg-slate-900/40 text-slate-200 px-4 py-2 rounded-lg text-sm font-medium shadow-sm shadow-black/10">
                         ← Retour
                     </Link>
                 </div>
 
                 {/* CLOCK PANEL */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-6">
+                <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 p-6 mb-6">
                     <div className="flex flex-col md:flex-row gap-6 items-center">
 
                         {/* Time Display */}
@@ -171,7 +171,7 @@ export default function AttendancePage() {
                         <div className="flex-1 w-full md:w-auto">
                             <label className="block text-xs font-medium text-slate-500 uppercase mb-2">Employé</label>
                             <select
-                                className="w-full p-3 border border-slate-300 rounded-lg text-sm"
+                                className="w-full p-3 border border-white/[0.08] rounded-lg text-sm"
                                 value={selectedEmployeeId}
                                 onChange={(e) => setSelectedEmployeeId(e.target.value)}
                             >
@@ -189,14 +189,14 @@ export default function AttendancePage() {
                             <button
                                 onClick={handleClockIn}
                                 disabled={!selectedEmployeeId || isLoading}
-                                className="bg-green-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-green-700 disabled:opacity-50 text-lg"
+                                className="bg-emerald-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-green-700 disabled:opacity-50 text-lg"
                             >
                                 ▶ Entrée
                             </button>
                             <button
                                 onClick={handleClockOut}
                                 disabled={!selectedEmployeeId || isLoading}
-                                className="bg-red-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-red-700 disabled:opacity-50 text-lg"
+                                className="bg-sky-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-sky-700 disabled:opacity-50 text-lg"
                             >
                                 ⏹ Sortie
                             </button>
@@ -205,7 +205,7 @@ export default function AttendancePage() {
 
                     {/* Message */}
                     {message && (
-                        <div className={`mt-4 p-3 rounded-lg text-sm font-medium text-center ${message.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                        <div className={`mt-4 p-3 rounded-lg text-sm font-medium text-center ${message.type === 'success' ? 'bg-emerald-500/10 text-emerald-300' : 'bg-sky-500/10 text-sky-300'
                             }`}>
                             {message.text}
                         </div>
@@ -213,9 +213,9 @@ export default function AttendancePage() {
                 </div>
 
                 {/* TODAY'S RECORDS */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                    <div className="p-4 border-b border-slate-100 bg-slate-50">
-                        <h2 className="font-bold text-slate-800">📋 Pointages du Jour ({todayRecords.length})</h2>
+                <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 overflow-hidden">
+                    <div className="p-4 border-b border-slate-100 bg-slate-900/40">
+                        <h2 className="font-bold text-slate-100">📋 Pointages du Jour ({todayRecords.length})</h2>
                     </div>
 
                     {todayRecords.length === 0 ? (
@@ -224,7 +224,7 @@ export default function AttendancePage() {
                         </div>
                     ) : (
                         <table className="w-full text-sm">
-                            <thead className="bg-slate-100 text-slate-600 text-xs uppercase">
+                            <thead className="bg-slate-800/50 text-slate-400 text-xs uppercase">
                                 <tr>
                                     <th className="p-3 text-left">Employé</th>
                                     <th className="p-3 text-center">Entrée</th>
@@ -234,16 +234,16 @@ export default function AttendancePage() {
                             </thead>
                             <tbody className="divide-y divide-slate-100">
                                 {todayRecords.map((record) => (
-                                    <tr key={record.attendanceid} className="hover:bg-blue-50">
+                                    <tr key={record.attendanceid} className="hover:bg-sky-500/10">
                                         <td className="p-3 font-medium">{record.firstname} {record.lastname}</td>
-                                        <td className="p-3 text-center font-mono text-green-600 font-bold">
+                                        <td className="p-3 text-center font-mono text-emerald-400 font-bold">
                                             {formatTime(record.checkintime)}
                                         </td>
-                                        <td className="p-3 text-center font-mono text-red-600 font-bold">
+                                        <td className="p-3 text-center font-mono text-sky-400 font-bold">
                                             {formatTime(record.checkouttime)}
                                         </td>
                                         <td className="p-3 text-center">
-                                            <span className="px-2 py-1 text-xs font-bold rounded-full bg-green-100 text-green-800">
+                                            <span className="px-2 py-1 text-xs font-bold rounded-full bg-emerald-500/10 text-emerald-300">
                                                 {record.status === 'PRESENT' ? 'PRÉSENT' : record.status}
                                             </span>
                                         </td>
@@ -256,12 +256,12 @@ export default function AttendancePage() {
 
                 {/* HISTORY (Last 10) */}
                 {attendanceHistory.length > todayRecords.length && (
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden mt-6">
-                        <div className="p-4 border-b border-slate-100 bg-slate-50">
-                            <h2 className="font-bold text-slate-800">📜 Historique Récent</h2>
+                    <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 overflow-hidden mt-6">
+                        <div className="p-4 border-b border-slate-100 bg-slate-900/40">
+                            <h2 className="font-bold text-slate-100">📜 Historique Récent</h2>
                         </div>
                         <table className="w-full text-sm">
-                            <thead className="bg-slate-100 text-slate-600 text-xs uppercase">
+                            <thead className="bg-slate-800/50 text-slate-400 text-xs uppercase">
                                 <tr>
                                     <th className="p-3 text-left">Date</th>
                                     <th className="p-3 text-left">Employé</th>
@@ -276,11 +276,11 @@ export default function AttendancePage() {
                                     const localDateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
                                     return localDateStr !== todayStr;
                                 }).slice(0, 10).map((record) => (
-                                    <tr key={record.attendanceid} className="hover:bg-slate-50">
-                                        <td className="p-3 font-mono text-slate-600">{formatDate(record.date)}</td>
+                                    <tr key={record.attendanceid} className="hover:bg-slate-900/40">
+                                        <td className="p-3 font-mono text-slate-400">{formatDate(record.date)}</td>
                                         <td className="p-3">{record.firstname} {record.lastname}</td>
-                                        <td className="p-3 text-center font-mono text-green-600">{formatTime(record.checkintime)}</td>
-                                        <td className="p-3 text-center font-mono text-red-600">{formatTime(record.checkouttime)}</td>
+                                        <td className="p-3 text-center font-mono text-emerald-400">{formatTime(record.checkintime)}</td>
+                                        <td className="p-3 text-center font-mono text-sky-400">{formatTime(record.checkouttime)}</td>
                                     </tr>
                                 ))}
                             </tbody>

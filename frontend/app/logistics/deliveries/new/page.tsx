@@ -107,7 +107,7 @@ export default function NewDeliveryPage() {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+            <div className="min-h-screen bg-slate-900/40 flex items-center justify-center">
                 <div className="text-center">
                     <div className="inline-block w-8 h-8 border-4 border-cyan-200 border-t-cyan-600 rounded-full animate-spin mb-4"></div>
                     <p className="text-slate-500 font-medium">Chargement du formulaire...</p>
@@ -117,7 +117,7 @@ export default function NewDeliveryPage() {
     }
 
     return (
-        <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800">
+        <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-900/40 text-slate-100">
             <div className="max-w-4xl mx-auto">
 
                 {/* --- Header --- */}
@@ -131,18 +131,18 @@ export default function NewDeliveryPage() {
                         </svg>
                         Retour aux livraisons
                     </Link>
-                    <h1 className="text-3xl font-bold text-slate-800">Nouvelle Livraison</h1>
+                    <h1 className="text-3xl font-bold text-slate-100">Nouvelle Livraison</h1>
                     <p className="text-slate-500 text-sm mt-1">Planifier une nouvelle livraison client</p>
                 </div>
 
                 {/* --- Form --- */}
-                <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <form onSubmit={handleSubmit} className="bg-slate-900/60 rounded-xl shadow-sm shadow-black/10 border border-white/[0.06] overflow-hidden">
                     <div className="p-6 space-y-6">
 
                         {/* Order Selection */}
                         <div>
-                            <label htmlFor="orderId" className="block text-sm font-medium text-slate-700 mb-1.5">
-                                Commande <span className="text-red-500">*</span>
+                            <label htmlFor="orderId" className="block text-sm font-medium text-slate-200 mb-1.5">
+                                Commande <span className="text-sky-400">*</span>
                             </label>
                             <select
                                 id="orderId"
@@ -150,7 +150,7 @@ export default function NewDeliveryPage() {
                                 value={formData.orderId}
                                 onChange={handleChange}
                                 required
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
+                                className="w-full px-3 py-2 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
                             >
                                 <option value="">Sélectionner une commande</option>
                                 {orders.map((order) => (
@@ -166,8 +166,8 @@ export default function NewDeliveryPage() {
 
                         {/* Delivery Date */}
                         <div>
-                            <label htmlFor="deliveryDate" className="block text-sm font-medium text-slate-700 mb-1.5">
-                                Date de livraison prévue <span className="text-red-500">*</span>
+                            <label htmlFor="deliveryDate" className="block text-sm font-medium text-slate-200 mb-1.5">
+                                Date de livraison prévue <span className="text-sky-400">*</span>
                             </label>
                             <input
                                 type="date"
@@ -176,13 +176,13 @@ export default function NewDeliveryPage() {
                                 value={formData.deliveryDate}
                                 onChange={handleChange}
                                 required
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
+                                className="w-full px-3 py-2 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
                             />
                         </div>
 
                         {/* Vehicle Selection */}
                         <div>
-                            <label htmlFor="vehicleId" className="block text-sm font-medium text-slate-700 mb-1.5">
+                            <label htmlFor="vehicleId" className="block text-sm font-medium text-slate-200 mb-1.5">
                                 Véhicule (Optionnel)
                             </label>
                             <select
@@ -190,7 +190,7 @@ export default function NewDeliveryPage() {
                                 name="vehicleId"
                                 value={formData.vehicleId}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
+                                className="w-full px-3 py-2 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
                             >
                                 <option value="">Non assigné</option>
                                 {vehicles.map((vehicle) => (
@@ -203,7 +203,7 @@ export default function NewDeliveryPage() {
 
                         {/* Driver Selection */}
                         <div>
-                            <label htmlFor="driverId" className="block text-sm font-medium text-slate-700 mb-1.5">
+                            <label htmlFor="driverId" className="block text-sm font-medium text-slate-200 mb-1.5">
                                 Chauffeur (Optionnel)
                             </label>
                             <select
@@ -211,7 +211,7 @@ export default function NewDeliveryPage() {
                                 name="driverId"
                                 value={formData.driverId}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
+                                className="w-full px-3 py-2 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
                             >
                                 <option value="">Non assigné</option>
                                 {drivers.map((driver) => (
@@ -224,7 +224,7 @@ export default function NewDeliveryPage() {
 
                         {/* Notes */}
                         <div>
-                            <label htmlFor="notes" className="block text-sm font-medium text-slate-700 mb-1.5">
+                            <label htmlFor="notes" className="block text-sm font-medium text-slate-200 mb-1.5">
                                 Notes / Instructions
                             </label>
                             <textarea
@@ -234,24 +234,24 @@ export default function NewDeliveryPage() {
                                 onChange={handleChange}
                                 rows={4}
                                 placeholder="Remarques, instructions spéciales, adresse de livraison..."
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition resize-none"
+                                className="w-full px-3 py-2 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition resize-none"
                             />
                         </div>
 
                     </div>
 
                     {/* Form Footer */}
-                    <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3">
+                    <div className="px-6 py-4 bg-slate-900/40 border-t border-slate-100 flex justify-end gap-3">
                         <Link
                             href="/logistics/deliveries"
-                            className="px-4 py-2 rounded-lg text-sm font-medium text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 transition shadow-sm"
+                            className="px-4 py-2 rounded-lg text-sm font-medium text-slate-200 bg-slate-900/60 border border-white/[0.08] hover:bg-slate-900/40 transition shadow-sm shadow-black/10"
                         >
                             Annuler
                         </Link>
                         <button
                             type="submit"
                             disabled={isSaving}
-                            className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-cyan-600 hover:bg-cyan-700 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                            className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-cyan-600 hover:bg-cyan-700 transition shadow-sm shadow-black/10 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                         >
                             {isSaving && <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
                             {isSaving ? 'Création...' : 'Créer la Livraison'}

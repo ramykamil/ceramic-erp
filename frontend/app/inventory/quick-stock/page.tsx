@@ -279,54 +279,54 @@ export default function QuickStockPage() {
     };
 
     return (
-        <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800">
+        <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-900/40 text-slate-100">
             <div className="max-w-6xl mx-auto">
 
                 {/* Header */}
                 <div className="mb-6 flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-800">📦 Entrée Stock Rapide</h1>
+                        <h1 className="text-2xl font-bold text-slate-100">📦 Entrée Stock Rapide</h1>
                         <p className="text-slate-500 text-sm">Ajoutez des produits anciens/divers et vendez directement</p>
                     </div>
                     <button
                         onClick={() => router.push('/inventory')}
-                        className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium rounded-lg flex items-center gap-2"
+                        className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-200 font-medium rounded-lg flex items-center gap-2"
                     >
                         ← Retour Inventaire
                     </button>
                 </div>
 
                 {/* Add Item Form - Enhanced with Pal/Ctn/Qty */}
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6">
-                    <h2 className="text-lg font-bold text-slate-700 mb-4">➕ Ajouter un article</h2>
+                <div className="bg-slate-900/60 rounded-xl shadow-sm shadow-black/10 border border-white/[0.06] p-4 mb-6">
+                    <h2 className="text-lg font-bold text-slate-200 mb-4">➕ Ajouter un article</h2>
 
                     {/* Product Name & Price */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                         <div className="sm:col-span-2">
-                            <label className="block text-sm font-medium text-slate-600 mb-1">Nom du produit</label>
+                            <label className="block text-sm font-medium text-slate-400 mb-1">Nom du produit</label>
                             <input
                                 type="text"
                                 value={newItemName}
                                 onChange={e => setNewItemName(e.target.value)}
                                 placeholder="Ex: Ancien carrelage 60x60"
-                                className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="w-full p-2 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-slate-600 mb-1">Prix unitaire (DA/m²)</label>
+                            <label className="block text-sm font-medium text-slate-400 mb-1">Prix unitaire (DA/m²)</label>
                             <input
                                 type="number"
                                 min="0"
                                 step="0.01"
                                 value={newUnitPrice}
                                 onChange={e => setNewUnitPrice(Number(e.target.value))}
-                                className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="w-full p-2 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500"
                             />
                         </div>
                     </div>
 
                     {/* Packaging Config */}
-                    <div className="bg-slate-50 p-3 rounded-lg mb-4">
+                    <div className="bg-slate-900/40 p-3 rounded-lg mb-4">
                         <p className="text-xs text-slate-500 mb-2 font-medium">Configuration emballage</p>
                         <div className="grid grid-cols-2 gap-4">
                             <div>
@@ -337,7 +337,7 @@ export default function QuickStockPage() {
                                     step="0.01"
                                     value={newSqmPerCarton}
                                     onChange={e => setNewSqmPerCarton(Number(e.target.value))}
-                                    className="w-full p-2 text-sm border border-slate-300 rounded-lg"
+                                    className="w-full p-2 text-sm border border-white/[0.08] rounded-lg"
                                 />
                             </div>
                             <div>
@@ -347,7 +347,7 @@ export default function QuickStockPage() {
                                     min="1"
                                     value={newCtnPerPalette}
                                     onChange={e => setNewCtnPerPalette(Number(e.target.value))}
-                                    className="w-full p-2 text-sm border border-slate-300 rounded-lg"
+                                    className="w-full p-2 text-sm border border-white/[0.08] rounded-lg"
                                 />
                             </div>
                         </div>
@@ -356,13 +356,13 @@ export default function QuickStockPage() {
                     {/* Pal / Ctn / Qty with auto-calculation */}
                     <div className="grid grid-cols-3 gap-4 mb-4">
                         <div>
-                            <label className="block text-sm font-medium text-purple-700 mb-1">🎨 Palettes</label>
+                            <label className="block text-sm font-medium text-violet-400 mb-1">🎨 Palettes</label>
                             <input
                                 type="number"
                                 min="0"
                                 value={newPalettes}
                                 onChange={e => handleNewPalettesChange(Number(e.target.value))}
-                                className="w-full p-2 border-2 border-purple-300 rounded-lg text-center font-bold text-purple-700 bg-purple-50"
+                                className="w-full p-2 border-2 border-purple-300 rounded-lg text-center font-bold text-violet-400 bg-violet-500/10"
                             />
                         </div>
                         <div>
@@ -376,22 +376,22 @@ export default function QuickStockPage() {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-blue-700 mb-1">📐 Quantité (m²)</label>
+                            <label className="block text-sm font-medium text-sky-300 mb-1">📐 Quantité (m²)</label>
                             <input
                                 type="number"
                                 min="0"
                                 step="0.01"
                                 value={newQuantity}
                                 onChange={e => handleNewQuantityChange(Number(e.target.value))}
-                                className="w-full p-2 border-2 border-blue-400 rounded-lg text-center font-bold text-blue-700 bg-blue-50"
+                                className="w-full p-2 border-2 border-blue-400 rounded-lg text-center font-bold text-sky-300 bg-sky-500/10"
                             />
                         </div>
                     </div>
 
                     {/* Total Value Preview */}
                     {newQuantity > 0 && newUnitPrice > 0 && (
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
-                            <p className="text-sm text-green-700">
+                        <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3 mb-4">
+                            <p className="text-sm text-emerald-400">
                                 Valeur totale: <span className="font-bold text-lg">{formatCurrency(newQuantity * newUnitPrice)}</span>
                             </p>
                         </div>
@@ -401,7 +401,7 @@ export default function QuickStockPage() {
                         <button
                             onClick={handleAddItem}
                             disabled={adding || !newItemName.trim() || newQuantity <= 0}
-                            className="px-6 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-6 py-2 bg-emerald-600 text-white font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {adding ? 'Ajout...' : '✓ Ajouter au Stock'}
                         </button>
@@ -409,9 +409,9 @@ export default function QuickStockPage() {
                 </div>
 
                 {/* Items List */}
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div className="p-4 border-b border-slate-200 bg-slate-50">
-                        <h2 className="text-lg font-bold text-slate-700">📋 Articles en Stock ({items.length})</h2>
+                <div className="bg-slate-900/60 rounded-xl shadow-sm shadow-black/10 border border-white/[0.06] overflow-hidden">
+                    <div className="p-4 border-b border-white/[0.06] bg-slate-900/40">
+                        <h2 className="text-lg font-bold text-slate-200">📋 Articles en Stock ({items.length})</h2>
                     </div>
 
                     {loading ? (
@@ -421,7 +421,7 @@ export default function QuickStockPage() {
                     ) : (
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
-                                <thead className="bg-slate-100 text-slate-600">
+                                <thead className="bg-slate-800/50 text-slate-400">
                                     <tr>
                                         <th className="px-4 py-3 text-left">Produit</th>
                                         <th className="px-4 py-3 text-center">Qté Total</th>
@@ -437,34 +437,34 @@ export default function QuickStockPage() {
                                         const available = Number(item.quantity) - Number(item.soldquantity);
                                         const stockValue = available * Number(item.unitprice);
                                         return (
-                                            <tr key={item.itemid} className="hover:bg-slate-50">
+                                            <tr key={item.itemid} className="hover:bg-slate-900/40">
                                                 <td className="px-4 py-3">
-                                                    <div className="font-medium text-slate-800">{item.itemname}</div>
+                                                    <div className="font-medium text-slate-100">{item.itemname}</div>
                                                     <div className="text-xs text-slate-400">
                                                         ID: QS-{item.itemid} • {formatDate(item.createdat)}
                                                     </div>
                                                 </td>
                                                 <td className="px-4 py-3 text-center font-mono">{Number(item.quantity).toFixed(2)} m²</td>
-                                                <td className="px-4 py-3 text-center font-mono text-orange-600">{Number(item.soldquantity).toFixed(2)} m²</td>
+                                                <td className="px-4 py-3 text-center font-mono text-orange-400">{Number(item.soldquantity).toFixed(2)} m²</td>
                                                 <td className="px-4 py-3 text-center">
-                                                    <span className={`font-bold ${available > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                    <span className={`font-bold ${available > 0 ? 'text-emerald-400' : 'text-sky-400'}`}>
                                                         {available.toFixed(2)} m²
                                                     </span>
                                                 </td>
                                                 <td className="px-4 py-3 text-right font-mono">{formatCurrency(Number(item.unitprice))}</td>
-                                                <td className="px-4 py-3 text-right font-mono font-bold text-blue-600">{formatCurrency(stockValue)}</td>
+                                                <td className="px-4 py-3 text-right font-mono font-bold text-sky-400">{formatCurrency(stockValue)}</td>
                                                 <td className="px-4 py-3 text-center">
                                                     <div className="flex justify-center gap-2">
                                                         <button
                                                             onClick={() => openSellModal(item)}
                                                             disabled={available <= 0}
-                                                            className="px-3 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                            className="px-3 py-1 text-xs bg-sky-600 text-white rounded hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed"
                                                         >
                                                             💰 Vendre
                                                         </button>
                                                         <button
                                                             onClick={() => handleDelete(item.itemid)}
-                                                            className="px-3 py-1 text-xs bg-red-100 text-red-600 rounded hover:bg-red-200"
+                                                            className="px-3 py-1 text-xs bg-sky-500/10 text-sky-400 rounded hover:bg-red-200"
                                                         >
                                                             🗑️
                                                         </button>
@@ -484,42 +484,42 @@ export default function QuickStockPage() {
             {/* Enhanced Sell Modal with Pal/Ctn/Qty and Print */}
             {sellModalOpen && selectedItem && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-                        <div className="p-4 border-b border-slate-200 bg-blue-50 rounded-t-2xl flex justify-between items-center">
+                    <div className="bg-slate-900/60 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                        <div className="p-4 border-b border-white/[0.06] bg-sky-500/10 rounded-t-2xl flex justify-between items-center">
                             <div>
                                 <h2 className="text-xl font-bold text-blue-800">💰 Vendre Article</h2>
-                                <p className="text-sm text-blue-600">{selectedItem.itemname}</p>
+                                <p className="text-sm text-sky-400">{selectedItem.itemname}</p>
                             </div>
-                            <button onClick={() => setSellModalOpen(false)} className="text-slate-400 hover:text-slate-600 text-2xl">×</button>
+                            <button onClick={() => setSellModalOpen(false)} className="text-slate-400 hover:text-slate-400 text-2xl">×</button>
                         </div>
 
                         {!saleCompleted ? (
                             <>
                                 <div className="p-4 space-y-4">
                                     {/* Stock Info */}
-                                    <div className="bg-slate-50 p-3 rounded-lg flex justify-between items-center">
+                                    <div className="bg-slate-900/40 p-3 rounded-lg flex justify-between items-center">
                                         <div>
                                             <p className="text-sm text-slate-500">Stock disponible</p>
-                                            <p className="text-2xl font-bold text-green-600">
+                                            <p className="text-2xl font-bold text-emerald-400">
                                                 {(Number(selectedItem.quantity) - Number(selectedItem.soldquantity)).toFixed(2)} m²
                                             </p>
                                         </div>
                                         <div className="text-right">
                                             <p className="text-sm text-slate-500">Prix unitaire</p>
-                                            <p className="text-xl font-bold text-slate-700">{formatCurrency(Number(selectedItem.unitprice))}/m²</p>
+                                            <p className="text-xl font-bold text-slate-200">{formatCurrency(Number(selectedItem.unitprice))}/m²</p>
                                         </div>
                                     </div>
 
                                     {/* Pal/Ctn/Qty Inputs */}
                                     <div className="grid grid-cols-3 gap-4">
                                         <div>
-                                            <label className="block text-sm font-medium text-purple-700 mb-1">🎨 Palettes</label>
+                                            <label className="block text-sm font-medium text-violet-400 mb-1">🎨 Palettes</label>
                                             <input
                                                 type="number"
                                                 min="0"
                                                 value={sellPalettes}
                                                 onChange={e => handleSellPalettesChange(Number(e.target.value))}
-                                                className="w-full p-2 border-2 border-purple-300 rounded-lg text-center font-bold text-purple-700 bg-purple-50"
+                                                className="w-full p-2 border-2 border-purple-300 rounded-lg text-center font-bold text-violet-400 bg-violet-500/10"
                                             />
                                         </div>
                                         <div>
@@ -533,23 +533,23 @@ export default function QuickStockPage() {
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-blue-700 mb-1">📐 Quantité (m²)</label>
+                                            <label className="block text-sm font-medium text-sky-300 mb-1">📐 Quantité (m²)</label>
                                             <input
                                                 type="number"
                                                 min="0"
                                                 step="0.01"
                                                 value={sellQuantity}
                                                 onChange={e => handleSellQuantityChange(Number(e.target.value))}
-                                                className="w-full p-2 border-2 border-blue-400 rounded-lg text-center font-bold text-blue-700 bg-blue-50"
+                                                className="w-full p-2 border-2 border-blue-400 rounded-lg text-center font-bold text-sky-300 bg-sky-500/10"
                                             />
                                         </div>
                                     </div>
 
                                     {/* Total */}
                                     {sellQuantity > 0 && (
-                                        <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
-                                            <p className="text-sm text-green-600">Total à payer</p>
-                                            <p className="text-3xl font-bold text-green-700">
+                                        <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-4 text-center">
+                                            <p className="text-sm text-emerald-400">Total à payer</p>
+                                            <p className="text-3xl font-bold text-emerald-400">
                                                 {formatCurrency(sellQuantity * Number(selectedItem.unitprice))}
                                             </p>
                                         </div>
@@ -557,21 +557,21 @@ export default function QuickStockPage() {
 
                                     {/* Customer Info */}
                                     <div className="border-t pt-4 space-y-3">
-                                        <p className="text-sm font-medium text-slate-600">Informations client (optionnel)</p>
+                                        <p className="text-sm font-medium text-slate-400">Informations client (optionnel)</p>
                                         <div className="grid grid-cols-2 gap-3">
                                             <input
                                                 type="text"
                                                 value={customerName}
                                                 onChange={e => setCustomerName(e.target.value)}
                                                 placeholder="Nom du client"
-                                                className="p-2 border border-slate-300 rounded-lg"
+                                                className="p-2 border border-white/[0.08] rounded-lg"
                                             />
                                             <input
                                                 type="text"
                                                 value={customerPhone}
                                                 onChange={e => setCustomerPhone(e.target.value)}
                                                 placeholder="Téléphone"
-                                                className="p-2 border border-slate-300 rounded-lg"
+                                                className="p-2 border border-white/[0.08] rounded-lg"
                                             />
                                         </div>
                                         <input
@@ -579,22 +579,22 @@ export default function QuickStockPage() {
                                             value={customerAddress}
                                             onChange={e => setCustomerAddress(e.target.value)}
                                             placeholder="Adresse"
-                                            className="w-full p-2 border border-slate-300 rounded-lg"
+                                            className="w-full p-2 border border-white/[0.08] rounded-lg"
                                         />
                                     </div>
                                 </div>
 
-                                <div className="p-4 border-t border-slate-200 flex justify-end gap-3">
+                                <div className="p-4 border-t border-white/[0.06] flex justify-end gap-3">
                                     <button
                                         onClick={() => setSellModalOpen(false)}
-                                        className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg"
+                                        className="px-4 py-2 text-slate-400 hover:bg-slate-800/50 rounded-lg"
                                     >
                                         Annuler
                                     </button>
                                     <button
                                         onClick={handleSell}
                                         disabled={selling || sellQuantity <= 0}
-                                        className="px-6 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 disabled:opacity-50"
+                                        className="px-6 py-2 bg-emerald-600 text-white font-medium rounded-lg hover:bg-green-700 disabled:opacity-50"
                                     >
                                         {selling ? 'Vente...' : '✓ Confirmer Vente'}
                                     </button>
@@ -605,9 +605,9 @@ export default function QuickStockPage() {
                             <div className="p-6">
                                 <div className="text-center mb-6">
                                     <div className="text-6xl mb-4">✅</div>
-                                    <h3 className="text-2xl font-bold text-green-700">Vente Effectuée !</h3>
+                                    <h3 className="text-2xl font-bold text-emerald-400">Vente Effectuée !</h3>
                                     <p className="text-slate-500">N° {saleNumber}</p>
-                                    <p className="text-lg font-bold text-blue-600 mt-2">
+                                    <p className="text-lg font-bold text-sky-400 mt-2">
                                         {sellQuantity.toFixed(2)} m² × {formatCurrency(Number(selectedItem.unitprice))} = {formatCurrency(sellQuantity * Number(selectedItem.unitprice))}
                                     </p>
                                 </div>
@@ -615,7 +615,7 @@ export default function QuickStockPage() {
                                 <div className="grid grid-cols-2 gap-4 mb-6">
                                     <button
                                         onClick={handlePrintBL}
-                                        className="p-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 flex flex-col items-center gap-2"
+                                        className="p-4 bg-sky-600 text-white rounded-xl hover:bg-sky-700 flex flex-col items-center gap-2"
                                     >
                                         <span className="text-2xl">📄</span>
                                         <span className="font-medium">Bon de Livraison</span>
@@ -631,7 +631,7 @@ export default function QuickStockPage() {
 
                                 <button
                                     onClick={() => setSellModalOpen(false)}
-                                    className="w-full py-3 bg-slate-200 text-slate-700 font-medium rounded-lg hover:bg-slate-300"
+                                    className="w-full py-3 bg-slate-200 text-slate-200 font-medium rounded-lg hover:bg-slate-300"
                                 >
                                     Fermer
                                 </button>

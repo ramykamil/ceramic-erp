@@ -242,13 +242,13 @@ export default function CustomerDetailPage() {
   if (isLoading && !customer) return <p className="p-8 text-center text-slate-500">Chargement...</p>;
   if (!customer && !isLoading) return (
     <div className="p-8 text-center">
-      <p className="text-red-500 mb-4">{apiError || 'Client non trouvé.'}</p>
-      <Link href="/customers" className="text-blue-600 hover:underline">Retour à la liste</Link>
+      <p className="text-sky-400 mb-4">{apiError || 'Client non trouvé.'}</p>
+      <Link href="/customers" className="text-sky-400 hover:underline">Retour à la liste</Link>
     </div>
   );
 
   return (
-    <div className="p-2 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800 printable-page">
+    <div className="p-2 sm:p-6 lg:p-8 min-h-screen bg-slate-900/40 text-slate-100 printable-page">
       <style jsx global>{`
         @media print {
           html, body {
@@ -286,26 +286,26 @@ export default function CustomerDetailPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 no-print">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800">{customer?.customername}</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-100">{customer?.customername}</h1>
             <p className="text-slate-500 text-sm sm:text-base">{customer?.customercode} - {customer?.customertype} (Liste: {customer?.pricelistname || 'N/A'})</p>
           </div>
-          <Link href="/customers" className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium shadow-sm transition-colors self-start sm:self-auto">
+          <Link href="/customers" className="bg-slate-900/60 border border-white/\[0.08\] hover:bg-slate-900/40 text-slate-200 px-3 py-2 rounded-lg text-sm font-medium shadow-sm transition-colors self-start sm:self-auto">
             ← Retour Liste
           </Link>
         </div>
 
         {/* Tabs */}
-        <div className="border-b border-slate-200 no-print overflow-x-auto">
+        <div className="border-b border-white/\[0.06\] no-print overflow-x-auto">
           <nav className="-mb-px flex space-x-8" aria-label="Tabs">
             <button
               onClick={() => setActiveTab('pricing')}
-              className={`${activeTab === 'pricing' ? 'border-purple-500 text-purple-600' : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+              className={`${activeTab === 'pricing' ? 'border-purple-500 text-violet-400' : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/\[0.08\]'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
             >
               Tarification (Règles & Exceptions)
             </button>
             <button
               onClick={() => setActiveTab('situation')}
-              className={`${activeTab === 'situation' ? 'border-purple-500 text-purple-600' : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+              className={`${activeTab === 'situation' ? 'border-purple-500 text-violet-400' : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/\[0.08\]'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
             >
               Situation (Solde & Historique)
             </button>
@@ -316,12 +316,12 @@ export default function CustomerDetailPage() {
         {activeTab === 'pricing' && (
           <div className="space-y-8">
             {/* Rules Section */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-6">
+            <div className="bg-slate-900/60 rounded-xl shadow-sm border border-white/\[0.06\] p-4 sm:p-6">
               <div className="flex justify-between items-center mb-4 border-b pb-2">
-                <h2 className="text-lg sm:text-xl font-bold text-slate-800">Règles de Prix (Par Lot)</h2>
+                <h2 className="text-lg sm:text-xl font-bold text-slate-100">Règles de Prix (Par Lot)</h2>
                 <button
                   onClick={handleFixMetadata}
-                  className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1 rounded transition border border-slate-300"
+                  className="text-xs bg-slate-800/50 hover:bg-slate-200 text-slate-400 px-3 py-1 rounded transition border border-white/\[0.08\]"
                   title="Détecter automatiquement les dimensions depuis les noms de produits"
                 >
                   Auto-détecter Dimensions
@@ -329,7 +329,7 @@ export default function CustomerDetailPage() {
               </div>
 
               {/* Add Rule Form */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 items-end bg-slate-50 p-4 rounded-lg border border-slate-100">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 items-end bg-slate-900/40 p-4 rounded-lg border border-slate-100">
                 <div>
                   <label className="block text-xs font-bold text-slate-500 mb-1">Marque</label>
                   <select
@@ -373,7 +373,7 @@ export default function CustomerDetailPage() {
               {/* Rules Table */}
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left border-collapse min-w-[500px]">
-                  <thead className="bg-slate-50 text-slate-500 uppercase text-xs">
+                  <thead className="bg-slate-900/40 text-slate-500 uppercase text-xs">
                     <tr>
                       <th className="px-4 py-3 border-b">Marque</th>
                       <th className="px-4 py-3 border-b">Dimension</th>
@@ -386,14 +386,14 @@ export default function CustomerDetailPage() {
                       <tr><td colSpan={4} className="text-center py-4 text-slate-400">Aucune règle définie.</td></tr>
                     ) : (
                       rules.map((rule, index) => (
-                        <tr key={`rule-${rule.ruleid}-${index}`} className="hover:bg-slate-50">
+                        <tr key={`rule-${rule.ruleid}-${index}`} className="hover:bg-slate-900/40">
                           <td className="px-4 py-3 border-b font-medium">{rule.brandname}</td>
                           <td className="px-4 py-3 border-b font-mono">{rule.size}</td>
-                          <td className="px-4 py-3 border-b text-right font-bold text-purple-600">
+                          <td className="px-4 py-3 border-b text-right font-bold text-violet-400">
                             {formatCurrencyDZD(Number(rule.specificprice || rule.price))}
                           </td>
                           <td className="px-4 py-3 border-b text-center">
-                            <button onClick={() => handleDeleteRule(rule.ruleid)} className="text-red-500 hover:underline text-xs">Supprimer</button>
+                            <button onClick={() => handleDeleteRule(rule.ruleid)} className="text-sky-400 hover:underline text-xs">Supprimer</button>
                           </td>
                         </tr>
                       ))
@@ -404,11 +404,11 @@ export default function CustomerDetailPage() {
             </div>
 
             {/* Specific Prices Section */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-6">
+            <div className="bg-slate-900/60 rounded-xl shadow-sm border border-white/\[0.06\] p-4 sm:p-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b pb-2 gap-4">
-                <h2 className="text-lg sm:text-xl font-bold text-slate-800">Prix Spécifiques (Exceptions)</h2>
+                <h2 className="text-lg sm:text-xl font-bold text-slate-100">Prix Spécifiques (Exceptions)</h2>
                 <div className="flex gap-2 w-full sm:w-auto">
-                  <button onClick={handleExport} disabled={isExporting} className="text-xs bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200 whitespace-nowrap">
+                  <button onClick={handleExport} disabled={isExporting} className="text-xs bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded hover:bg-green-200 whitespace-nowrap">
                     {isExporting ? '...' : 'Exporter CSV'}
                   </button>
                   <div className="flex items-center gap-1 flex-1 sm:flex-none">
@@ -419,7 +419,7 @@ export default function CustomerDetailPage() {
                       onChange={e => setImportFile(e.target.files?.[0] || null)}
                       className="text-xs w-full sm:w-40"
                     />
-                    <button onClick={handleImport} disabled={isImporting || !importFile} className="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200 whitespace-nowrap">
+                    <button onClick={handleImport} disabled={isImporting || !importFile} className="text-xs bg-sky-500/10 text-sky-300 px-3 py-1 rounded hover:bg-blue-200 whitespace-nowrap">
                       {isImporting ? '...' : 'Importer'}
                     </button>
                   </div>
@@ -428,7 +428,7 @@ export default function CustomerDetailPage() {
 
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left border-collapse min-w-[600px]">
-                  <thead className="bg-slate-50 text-slate-500 uppercase text-xs">
+                  <thead className="bg-slate-900/40 text-slate-500 uppercase text-xs">
                     <tr>
                       <th className="px-4 py-3 border-b">Produit</th>
                       <th className="px-4 py-3 border-b text-right">Prix Spécial</th>
@@ -441,15 +441,15 @@ export default function CustomerDetailPage() {
                       <tr><td colSpan={4} className="text-center py-4 text-slate-400">Aucun prix spécifique.</td></tr>
                     ) : (
                       prices.map((price, index) => (
-                        <tr key={`price-${price.productid}-${index}`} className="hover:bg-slate-50">
+                        <tr key={`price-${price.productid}-${index}`} className="hover:bg-slate-900/40">
                           <td className="px-4 py-3 border-b">
                             <div className="font-medium">{price.productname}</div>
                             <div className="text-xs text-slate-500">{price.productcode}</div>
                           </td>
-                          <td className="px-4 py-3 border-b text-right font-bold text-green-600">{formatCurrencyDZD(Number(price.specificprice))}</td>
+                          <td className="px-4 py-3 border-b text-right font-bold text-emerald-400">{formatCurrencyDZD(Number(price.specificprice))}</td>
                           <td className="px-4 py-3 border-b text-right text-slate-400 line-through">{formatCurrencyDZD(Number(price.baseprice))}</td>
                           <td className="px-4 py-3 border-b text-center">
-                            <button onClick={() => handleDeletePrice(price.productid)} className="text-red-500 hover:underline text-xs">Supprimer</button>
+                            <button onClick={() => handleDeletePrice(price.productid)} className="text-sky-400 hover:underline text-xs">Supprimer</button>
                           </td>
                         </tr>
                       ))
@@ -460,7 +460,7 @@ export default function CustomerDetailPage() {
             </div>
 
             {/* Aide */}
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm text-yellow-900">
+            <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-4 text-sm text-yellow-900">
               <h3 className="font-bold mb-2">💡 Cascade des Prix</h3>
               <ol className="list-decimal list-inside space-y-1">
                 <li><strong>Contrat (Prix Spécifique):</strong> Priorité absolue.</li>
@@ -476,7 +476,7 @@ export default function CustomerDetailPage() {
         {activeTab === 'situation' && (
           <div className="space-y-6">
             {/* Filters & Actions */}
-            <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 no-print">
+            <div className="bg-slate-900/60 p-4 rounded-lg shadow-sm border border-white/\[0.06\] flex flex-col md:flex-row justify-between items-start md:items-center gap-4 no-print">
               <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
                 <div className="flex items-center gap-2">
                   <label className="text-xs font-bold text-slate-500">Du</label>
@@ -496,14 +496,14 @@ export default function CustomerDetailPage() {
                     onChange={e => setSituationFilters({ ...situationFilters, endDate: e.target.value })}
                   />
                 </div>
-                <button onClick={fetchSituation} className="text-slate-500 hover:text-slate-700">
+                <button onClick={fetchSituation} className="text-slate-500 hover:text-slate-200">
                   🔄
                 </button>
               </div>
 
               <button
                 onClick={handlePrint}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded flex items-center gap-2 text-sm font-bold shadow-sm w-full md:w-auto justify-center"
+                className="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded flex items-center gap-2 text-sm font-bold shadow-sm w-full md:w-auto justify-center"
               >
                 <span>Imprimer</span>
                 <span>🖨️</span>
@@ -515,34 +515,34 @@ export default function CustomerDetailPage() {
               <div className="text-center border-b pb-4 mb-4">
                 <h1 className="text-2xl font-bold uppercase mb-1">Relevé de Compte Client</h1>
                 <h2 className="text-xl font-medium">{customer?.customername}</h2>
-                <p className="text-sm text-gray-500">Période du {formatDate(situationFilters.startDate)} au {formatDate(situationFilters.endDate)}</p>
+                <p className="text-sm text-slate-400">Période du {formatDate(situationFilters.startDate)} au {formatDate(situationFilters.endDate)}</p>
               </div>
             </div>
 
 
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-              <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
+              <div className="bg-slate-900/60 p-4 sm:p-6 rounded-xl shadow-sm border border-white/\[0.06\]">
                 <p className="text-slate-500 text-xs uppercase font-bold mb-1">Solde Précédent / Actuel</p>
-                <p className="text-xl sm:text-2xl font-bold text-slate-800">{formatCurrencyDZD(situationSummary?.globalBalance || customer?.currentbalance || 0)}</p>
+                <p className="text-xl sm:text-2xl font-bold text-slate-100">{formatCurrencyDZD(situationSummary?.globalBalance || customer?.currentbalance || 0)}</p>
               </div>
 
-              <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
+              <div className="bg-slate-900/60 p-4 sm:p-6 rounded-xl shadow-sm border border-white/\[0.06\]">
                 <p className="text-slate-500 text-xs uppercase font-bold mb-1">Total Versements (Période)</p>
-                <p className="text-xl sm:text-2xl font-bold text-green-600">{formatCurrencyDZD(situationSummary?.totalCredit || 0)}</p>
+                <p className="text-xl sm:text-2xl font-bold text-emerald-400">{formatCurrencyDZD(situationSummary?.totalCredit || 0)}</p>
               </div>
 
-              <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
+              <div className="bg-slate-900/60 p-4 sm:p-6 rounded-xl shadow-sm border border-white/\[0.06\]">
                 <p className="text-slate-500 text-xs uppercase font-bold mb-1">Total Achats (Période)</p>
-                <p className="text-xl sm:text-2xl font-bold text-blue-600">{formatCurrencyDZD(situationSummary?.totalDebit || 0)}</p>
+                <p className="text-xl sm:text-2xl font-bold text-sky-400">{formatCurrencyDZD(situationSummary?.totalDebit || 0)}</p>
                 <p className="text-xs text-slate-400 mt-1">Reste Période: {formatCurrencyDZD(situationSummary?.periodBalance || 0)}</p>
               </div>
             </div>
 
             {/* Situation Table */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden overflow-x-auto">
+            <div className="bg-slate-900/60 rounded-xl shadow-sm border border-white/\[0.06\] overflow-hidden overflow-x-auto">
               <table className="w-full text-sm text-left min-w-[800px]">
-                <thead className="bg-slate-50 text-slate-500 uppercase text-xs">
+                <thead className="bg-slate-900/40 text-slate-500 uppercase text-xs">
                   <tr>
                     <th className="px-4 py-3 border-b">Date</th>
                     <th className="px-4 py-3 border-b">Type</th>
@@ -557,24 +557,24 @@ export default function CustomerDetailPage() {
                     <tr><td colSpan={6} className="px-4 py-8 text-center text-slate-400">Aucune opération sur cette période.</td></tr>
                   ) : (
                     situationHistory.map((item) => (
-                      <tr key={`${item.type}-${item.id}`} className="hover:bg-slate-50">
-                        <td className="px-4 py-3 font-mono text-slate-600">{formatDate(item.date)}</td>
+                      <tr key={`${item.type}-${item.id}`} className="hover:bg-slate-900/40">
+                        <td className="px-4 py-3 font-mono text-slate-400">{formatDate(item.date)}</td>
                         <td className="px-4 py-3">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${item.type === 'VENTE' ? 'bg-blue-100 text-blue-700' :
-                            item.type.includes('VERSEMENT') ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${item.type === 'VENTE' ? 'bg-sky-500/10 text-sky-300' :
+                            item.type.includes('VERSEMENT') ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-800/50 text-slate-200'
                             }`}>
                             {item.type}
                           </span>
                         </td>
-                        <td className="px-4 py-3 font-medium text-slate-800">{item.reference}</td>
+                        <td className="px-4 py-3 font-medium text-slate-100">{item.reference}</td>
                         <td className="px-4 py-3 text-right">
                           {item.debit > 0 ? (
-                            <span className="font-bold text-slate-700">{formatCurrencyDZD(Number(item.debit))}</span>
+                            <span className="font-bold text-slate-200">{formatCurrencyDZD(Number(item.debit))}</span>
                           ) : '-'}
                         </td>
                         <td className="px-4 py-3 text-right">
                           {item.credit > 0 ? (
-                            <span className="font-bold text-green-600">{formatCurrencyDZD(Number(item.credit))}</span>
+                            <span className="font-bold text-emerald-400">{formatCurrencyDZD(Number(item.credit))}</span>
                           ) : '-'}
                         </td>
                         <td className="px-4 py-3 text-slate-500 text-xs">
@@ -584,11 +584,11 @@ export default function CustomerDetailPage() {
                     ))
                   )}
                 </tbody>
-                <tfoot className="bg-slate-50 font-bold text-slate-700">
+                <tfoot className="bg-slate-900/40 font-bold text-slate-200">
                   <tr>
                     <td colSpan={3} className="px-4 py-3 text-right uppercase text-xs">Totaux Période</td>
-                    <td className="px-4 py-3 text-right text-blue-700">{formatCurrencyDZD(situationSummary?.totalDebit || 0)}</td>
-                    <td className="px-4 py-3 text-right text-green-700">{formatCurrencyDZD(situationSummary?.totalCredit || 0)}</td>
+                    <td className="px-4 py-3 text-right text-sky-300">{formatCurrencyDZD(situationSummary?.totalDebit || 0)}</td>
+                    <td className="px-4 py-3 text-right text-emerald-400">{formatCurrencyDZD(situationSummary?.totalCredit || 0)}</td>
                     <td></td>
                   </tr>
                 </tfoot>

@@ -17,7 +17,7 @@ export default function MobileNav() {
         <span>Accueil</span>
       </Link>
       <Link href="/sales/pos" className={`flex flex-col items-center text-xs ${isActive('/sales/pos')}`}>
-        <div className="bg-gradient-to-br from-sky-500 to-teal-500 rounded-full p-2 -mt-6 border-4 border-slate-950 shadow-lg shadow-sky-500/20">
+        <div className="bg-gradient-to-br from-sky-500 to-teal-500 rounded-full p-2 -mt-6 border-4 border-slate-950 shadow-lg shadow-black/20 shadow-sky-500/20">
           <span className="text-white text-xl">🛒</span>
         </div>
         <span className="font-bold text-sky-400 mt-1">Vente</span>

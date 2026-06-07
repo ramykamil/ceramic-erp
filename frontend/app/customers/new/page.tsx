@@ -149,14 +149,14 @@ export default function NewCustomerPage() {
         {/* En-tête */}
         <div className="mb-6 flex justify-between items-center">
           <h1 className="text-3xl font-bold text-blue-800">Ajouter un Nouveau Client</h1>
-          <Link href="/customers" className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+          <Link href="/customers" className="text-sky-400 hover:text-blue-800 text-sm font-medium">
             ← Annuler (Retour Liste)
           </Link>
         </div>
 
         {/* Affichage Erreur API */}
         {apiError && (
-          <div className="mb-4 p-4 bg-red-100 text-red-700 border border-red-200 rounded-lg">
+          <div className="mb-4 p-4 bg-sky-500/10 text-sky-300 border border-sky-500/20 rounded-lg">
             <strong>Erreur:</strong> {apiError}
           </div>
         )}
@@ -166,113 +166,113 @@ export default function NewCustomerPage() {
           <div className="glassy-container p-6 sm:p-8 space-y-6">
 
             {/* Infos Principales */}
-            <div className="border-b border-slate-200/50 pb-6">
-              <h2 className="text-xl font-semibold text-slate-700 mb-4">Informations Principales</h2>
+            <div className="border-b border-white/[0.06]/50 pb-6">
+              <h2 className="text-xl font-semibold text-slate-200 mb-4">Informations Principales</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="customerCode" className="block text-sm font-medium text-slate-700 mb-1">Code Client *</label>
+                  <label htmlFor="customerCode" className="block text-sm font-medium text-slate-200 mb-1">Code Client *</label>
                   <input type="text" id="customerCode" name="customerCode" value={formData.customerCode} onChange={handleChange} required
-                    className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80" />
+                    className="w-full p-2 border border-white/[0.08] rounded-lg bg-slate-900/60 bg-opacity-80" />
                   <p className="text-xs text-slate-500 mt-1">Identifiant unique (ex: CUST-001).</p>
                 </div>
                 <div>
-                  <label htmlFor="customerName" className="block text-sm font-medium text-slate-700 mb-1">Nom Client *</label>
+                  <label htmlFor="customerName" className="block text-sm font-medium text-slate-200 mb-1">Nom Client *</label>
                   <input type="text" id="customerName" name="customerName" value={formData.customerName} onChange={handleChange} required
-                    className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80" />
+                    className="w-full p-2 border border-white/[0.08] rounded-lg bg-slate-900/60 bg-opacity-80" />
                 </div>
               </div>
             </div>
 
             {/* Infos Contact */}
-            <div className="border-b border-slate-200/50 pb-6">
-              <h2 className="text-xl font-semibold text-slate-700 mb-4">Contact</h2>
+            <div className="border-b border-white/[0.06]/50 pb-6">
+              <h2 className="text-xl font-semibold text-slate-200 mb-4">Contact</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-1">Téléphone</label>
+                  <label htmlFor="phone" className="block text-sm font-medium text-slate-200 mb-1">Téléphone</label>
                   <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange}
-                    className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80" />
+                    className="w-full p-2 border border-white/[0.08] rounded-lg bg-slate-900/60 bg-opacity-80" />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                  <label htmlFor="email" className="block text-sm font-medium text-slate-200 mb-1">Email</label>
                   <input type="email" id="email" name="email" value={formData.email} onChange={handleChange}
-                    className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80" />
+                    className="w-full p-2 border border-white/[0.08] rounded-lg bg-slate-900/60 bg-opacity-80" />
                 </div>
                 <div className="md:col-span-2">
-                  <label htmlFor="address" className="block text-sm font-medium text-slate-700 mb-1">Adresse</label>
+                  <label htmlFor="address" className="block text-sm font-medium text-slate-200 mb-1">Adresse</label>
                   <textarea id="address" name="address" value={formData.address} onChange={handleChange} rows={3}
-                    className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80" />
+                    className="w-full p-2 border border-white/[0.08] rounded-lg bg-slate-900/60 bg-opacity-80" />
                 </div>
               </div>
             </div>
 
             {/* Infos Financières (pour Wholesale) */}
-            <div className="border-b border-slate-200/50 pb-6">
-              <h2 className="text-xl font-semibold text-slate-700 mb-4">Détails Commerciaux</h2>
+            <div className="border-b border-white/[0.06]/50 pb-6">
+              <h2 className="text-xl font-semibold text-slate-200 mb-4">Détails Commerciaux</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="priceListId" className="block text-sm font-medium text-slate-700 mb-1">Liste de Prix par Défaut *</label>
+                  <label htmlFor="priceListId" className="block text-sm font-medium text-slate-200 mb-1">Liste de Prix par Défaut *</label>
                   <select id="priceListId" name="priceListId" value={formData.priceListId} onChange={handleChange} required
-                    className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80">
+                    className="w-full p-2 border border-white/[0.08] rounded-lg bg-slate-900/60 bg-opacity-80">
                     <option value="">-- Sélectionner --</option>
                     {priceLists.map(pl => <option key={pl.pricelistid} value={pl.pricelistid}>{pl.pricelistname}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label htmlFor="ancienSolde" className="block text-sm font-medium text-slate-700 mb-1">
+                  <label htmlFor="ancienSolde" className="block text-sm font-medium text-slate-200 mb-1">
                     Ancien Solde (DZD)
-                    <span className="text-xs text-blue-500 ml-1">(Initialise le solde courant)</span>
+                    <span className="text-xs text-sky-400 ml-1">(Initialise le solde courant)</span>
                   </label>
                   <input type="number" id="ancienSolde" name="ancienSolde" value={formData.ancienSolde} onChange={handleChange}
                     placeholder="0.00" step="0.01"
-                    className="w-full p-2 border border-blue-300 rounded-lg bg-blue-50 bg-opacity-80" />
+                    className="w-full p-2 border border-blue-300 rounded-lg bg-sky-500/10 bg-opacity-80" />
                 </div>
               </div>
             </div>
 
             {/* Informations Légales / Fiscales */}
             <div>
-              <h2 className="text-xl font-semibold text-slate-700 mb-4">Informations Légales / Fiscales</h2>
+              <h2 className="text-xl font-semibold text-slate-200 mb-4">Informations Légales / Fiscales</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="rc" className="block text-sm font-medium text-slate-700 mb-1">RC (Registre de Commerce)</label>
+                  <label htmlFor="rc" className="block text-sm font-medium text-slate-200 mb-1">RC (Registre de Commerce)</label>
                   <input type="text" id="rc" name="rc" value={formData.rc} onChange={handleChange}
                     placeholder="Ex: 04/00-0406435822"
-                    className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80" />
+                    className="w-full p-2 border border-white/[0.08] rounded-lg bg-slate-900/60 bg-opacity-80" />
                 </div>
                 <div>
-                  <label htmlFor="nif" className="block text-sm font-medium text-slate-700 mb-1">NIF (N° Identification Fiscale)</label>
+                  <label htmlFor="nif" className="block text-sm font-medium text-slate-200 mb-1">NIF (N° Identification Fiscale)</label>
                   <input type="text" id="nif" name="nif" value={formData.nif} onChange={handleChange}
                     placeholder="Ex: 002204040643550"
-                    className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80" />
+                    className="w-full p-2 border border-white/[0.08] rounded-lg bg-slate-900/60 bg-opacity-80" />
                 </div>
                 <div>
-                  <label htmlFor="ai" className="block text-sm font-medium text-slate-700 mb-1">AI (Article d'Imposition)</label>
+                  <label htmlFor="ai" className="block text-sm font-medium text-slate-200 mb-1">AI (Article d'Imposition)</label>
                   <input type="text" id="ai" name="ai" value={formData.ai} onChange={handleChange}
                     placeholder="Ex: 04010492431"
-                    className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80" />
+                    className="w-full p-2 border border-white/[0.08] rounded-lg bg-slate-900/60 bg-opacity-80" />
                 </div>
                 <div>
-                  <label htmlFor="nis" className="block text-sm font-medium text-slate-700 mb-1">NIS (N° Identification Statistique)</label>
+                  <label htmlFor="nis" className="block text-sm font-medium text-slate-200 mb-1">NIS (N° Identification Statistique)</label>
                   <input type="text" id="nis" name="nis" value={formData.nis} onChange={handleChange}
                     placeholder="Ex: 0024040406435"
-                    className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80" />
+                    className="w-full p-2 border border-white/[0.08] rounded-lg bg-slate-900/60 bg-opacity-80" />
                 </div>
                 <div className="md:col-span-2">
-                  <label htmlFor="rib" className="block text-sm font-medium text-slate-700 mb-1">RIB (Relevé d'Identité Bancaire)</label>
+                  <label htmlFor="rib" className="block text-sm font-medium text-slate-200 mb-1">RIB (Relevé d'Identité Bancaire)</label>
                   <input type="text" id="rib" name="rib" value={formData.rib} onChange={handleChange}
                     placeholder="Ex: 00012 00720 00123456789 53"
-                    className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80" />
+                    className="w-full p-2 border border-white/[0.08] rounded-lg bg-slate-900/60 bg-opacity-80" />
                 </div>
               </div>
             </div>
 
             {/* Boutons d'action */}
-            <div className="flex justify-end gap-4 border-t border-slate-200/50 pt-6">
-              <Link href="/customers" className="bg-slate-200 text-slate-700 hover:bg-slate-300 px-5 py-2 rounded-lg font-medium text-sm transition">
+            <div className="flex justify-end gap-4 border-t border-white/[0.06]/50 pt-6">
+              <Link href="/customers" className="bg-slate-200 text-slate-200 hover:bg-slate-300 px-5 py-2 rounded-lg font-medium text-sm transition">
                 Annuler
               </Link>
               <button type="submit" disabled={isSaving}
-                className="bg-blue-600 text-white hover:bg-blue-700 px-5 py-2 rounded-lg font-medium text-sm transition disabled:opacity-50">
+                className="bg-sky-600 text-white hover:bg-sky-700 px-5 py-2 rounded-lg font-medium text-sm transition disabled:opacity-50">
                 {isSaving ? 'Sauvegarde...' : 'Enregistrer Client'}
               </button>
             </div>

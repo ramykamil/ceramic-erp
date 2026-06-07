@@ -24,14 +24,14 @@ interface Delivery {
 // --- Helpers ---
 const getStatusBadge = (status: string) => {
     const classes = {
-        SCHEDULED: 'bg-blue-50 text-blue-700 border-blue-200',
+        SCHEDULED: 'bg-sky-500/10 text-sky-300 border-sky-500/20',
         PENDING: 'bg-amber-50 text-amber-700 border-amber-200',
         IN_TRANSIT: 'bg-cyan-50 text-cyan-700 border-cyan-200',
         DELIVERED: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-        CANCELLED: 'bg-red-50 text-red-700 border-red-200',
-        FAILED: 'bg-red-50 text-red-700 border-red-200',
+        CANCELLED: 'bg-sky-500/10 text-sky-300 border-sky-500/20',
+        FAILED: 'bg-sky-500/10 text-sky-300 border-sky-500/20',
     };
-    return classes[status as keyof typeof classes] || 'bg-slate-50 text-slate-700 border-slate-200';
+    return classes[status as keyof typeof classes] || 'bg-slate-900/40 text-slate-200 border-white/[0.06]';
 };
 
 const getStatusLabel = (status: string) => {
@@ -90,27 +90,27 @@ export default function LogisticsPage() {
     };
 
     return (
-        <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800">
+        <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-900/40 text-slate-100">
             <div className="max-w-7xl mx-auto">
 
                 {/* --- Header --- */}
                 <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold text-slate-800">Livraisons</h1>
+                        <h1 className="text-3xl font-bold text-slate-100">Livraisons</h1>
                         <p className="text-slate-500 text-sm mt-1">Suivi de la flotte et des expéditions</p>
                     </div>
 
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => router.push('/logistics/deliveries/new')}
-                            className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2"
+                            className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm shadow-black/10 flex items-center gap-2"
                         >
                             <span className="text-lg leading-none">+</span> Nouvelle Livraison
                         </button>
 
                         <Link
                             href="/"
-                            className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2.5 rounded-lg text-sm font-medium transition shadow-sm flex items-center gap-2"
+                            className="bg-slate-900/60 border border-white/[0.08] hover:bg-slate-900/40 text-slate-200 px-4 py-2.5 rounded-lg text-sm font-medium transition shadow-sm shadow-black/10 flex items-center gap-2"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
@@ -122,13 +122,13 @@ export default function LogisticsPage() {
 
                 {/* --- Error Display --- */}
                 {apiError && (
-                    <div className="mb-6 p-4 bg-red-50 text-red-700 border border-red-200 rounded-lg text-sm">
+                    <div className="mb-6 p-4 bg-sky-500/10 text-sky-300 border border-sky-500/20 rounded-lg text-sm">
                         <strong>Erreur:</strong> {apiError}
                     </div>
                 )}
 
                 {/* --- Table --- */}
-                <div className="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+                <div className="bg-slate-900/60 rounded-xl overflow-hidden border border-white/[0.06] shadow-sm shadow-black/10">
                     {isLoading ? (
                         <div className="text-center py-20">
                             <div className="inline-block w-8 h-8 border-4 border-cyan-200 border-t-cyan-600 rounded-full animate-spin mb-4"></div>
@@ -141,7 +141,7 @@ export default function LogisticsPage() {
                     ) : (
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm text-left">
-                                <thead className="text-xs text-slate-500 uppercase bg-slate-50 font-semibold border-b border-slate-100">
+                                <thead className="text-xs text-slate-500 uppercase bg-slate-900/40 font-semibold border-b border-slate-100">
                                     <tr>
                                         <th className="px-6 py-4">N° Livraison</th>
                                         <th className="px-6 py-4">Date</th>
@@ -153,17 +153,17 @@ export default function LogisticsPage() {
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
                                     {deliveries.map((d) => (
-                                        <tr key={d.deliveryid} className="hover:bg-slate-50 transition-colors duration-150">
-                                            <td className="px-6 py-4 font-mono text-slate-600 font-medium">
+                                        <tr key={d.deliveryid} className="hover:bg-slate-900/40 transition-colors duration-150">
+                                            <td className="px-6 py-4 font-mono text-slate-400 font-medium">
                                                 {d.deliverynumber || `#${d.deliveryid}`}
                                             </td>
-                                            <td className="px-6 py-4 text-slate-600">{formatDate(d.deliverydate)}</td>
+                                            <td className="px-6 py-4 text-slate-400">{formatDate(d.deliverydate)}</td>
                                             <td className="px-6 py-4">
-                                                <div className="font-medium text-slate-900">{d.customername || '—'}</div>
+                                                <div className="font-medium text-white">{d.customername || '—'}</div>
                                                 <div className="text-xs text-slate-400">{d.ordernumber}</div>
                                             </td>
                                             <td className="px-6 py-4">
-                                                <div className="text-slate-700">
+                                                <div className="text-slate-200">
                                                     {d.driverfirstname ? `${d.driverfirstname} ${d.driverlastname || ''}` : 'Non assigné'}
                                                 </div>
                                                 <div className="text-xs text-slate-400">
@@ -179,7 +179,7 @@ export default function LogisticsPage() {
                                                 <select
                                                     value={d.status}
                                                     onChange={(e) => handleStatusUpdate(d.deliveryid, e.target.value)}
-                                                    className="text-xs border border-slate-300 rounded-lg px-2 py-1 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
+                                                    className="text-xs border border-white/[0.08] rounded-lg px-2 py-1 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
                                                 >
                                                     <option value="SCHEDULED">Planifié</option>
                                                     <option value="PENDING">En Attente</option>

@@ -154,53 +154,53 @@ function EditCustomerForm() {
       <div className="glassy-container p-6 sm:p-8 space-y-6">
 
         {/* Infos Principales */}
-        <div className="border-b border-slate-200/50 pb-6">
-          <h2 className="text-xl font-semibold text-slate-700 mb-4">Informations Principales</h2>
+        <div className="border-b border-white/\[0.06\]/50 pb-6">
+          <h2 className="text-xl font-semibold text-slate-200 mb-4">Informations Principales</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="customerCode" className="block text-sm font-medium text-slate-700 mb-1">Code Client (Non modifiable)</label>
+              <label htmlFor="customerCode" className="block text-sm font-medium text-slate-200 mb-1">Code Client (Non modifiable)</label>
               <input type="text" id="customerCode" name="customerCode" value={formData.customerCode} disabled
-                className="w-full p-2 border border-slate-300 rounded-lg bg-slate-100 text-slate-500" />
+                className="w-full p-2 border border-white/\[0.08\] rounded-lg bg-slate-800/50 text-slate-500" />
             </div>
             <div>
-              <label htmlFor="customerName" className="block text-sm font-medium text-slate-700 mb-1">Nom Client *</label>
+              <label htmlFor="customerName" className="block text-sm font-medium text-slate-200 mb-1">Nom Client *</label>
               <input type="text" id="customerName" name="customerName" value={formData.customerName} onChange={handleChange} required
-                className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80" />
+                className="w-full p-2 border border-white/\[0.08\] rounded-lg bg-slate-900/60 bg-opacity-80" />
             </div>
           </div>
         </div>
 
         {/* Infos Contact */}
-        <div className="border-b border-slate-200/50 pb-6">
-          <h2 className="text-xl font-semibold text-slate-700 mb-4">Contact</h2>
+        <div className="border-b border-white/\[0.06\]/50 pb-6">
+          <h2 className="text-xl font-semibold text-slate-200 mb-4">Contact</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-1">Téléphone</label>
+              <label htmlFor="phone" className="block text-sm font-medium text-slate-200 mb-1">Téléphone</label>
               <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange}
-                className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80" />
+                className="w-full p-2 border border-white/\[0.08\] rounded-lg bg-slate-900/60 bg-opacity-80" />
             </div>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+              <label htmlFor="email" className="block text-sm font-medium text-slate-200 mb-1">Email</label>
               <input type="email" id="email" name="email" value={formData.email} onChange={handleChange}
-                className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80" />
+                className="w-full p-2 border border-white/\[0.08\] rounded-lg bg-slate-900/60 bg-opacity-80" />
             </div>
             <div className="md:col-span-2">
-              <label htmlFor="address" className="block text-sm font-medium text-slate-700 mb-1">Adresse</label>
+              <label htmlFor="address" className="block text-sm font-medium text-slate-200 mb-1">Adresse</label>
               <textarea id="address" name="address" value={formData.address} onChange={handleChange} rows={3}
-                className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80" />
+                className="w-full p-2 border border-white/\[0.08\] rounded-lg bg-slate-900/60 bg-opacity-80" />
             </div>
           </div>
         </div>
 
         {/* Infos Financières */}
         <div>
-          <h2 className="text-xl font-semibold text-slate-700 mb-4">Détails Commerciaux</h2>
+          <h2 className="text-xl font-semibold text-slate-200 mb-4">Détails Commerciaux</h2>
           {/* Grille modifiée pour 2 colonnes */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="priceListId" className="block text-sm font-medium text-slate-700 mb-1">Liste de Prix par Défaut *</label>
+              <label htmlFor="priceListId" className="block text-sm font-medium text-slate-200 mb-1">Liste de Prix par Défaut *</label>
               <select id="priceListId" name="priceListId" value={formData.priceListId} onChange={handleChange} required
-                className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80">
+                className="w-full p-2 border border-white/\[0.08\] rounded-lg bg-slate-900/60 bg-opacity-80">
                 <option value="">-- Sélectionner --</option>
                 {priceLists.map(pl => <option key={pl.pricelistid} value={pl.pricelistid}>{pl.pricelistname}</option>)}
               </select>
@@ -219,9 +219,9 @@ function EditCustomerForm() {
                 type="checkbox"
                 checked={formData.isActive}
                 onChange={handleChange}
-                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                className="h-4 w-4 rounded border-white/\[0.08\] text-sky-400 focus:ring-sky-500/30"
               />
-              <label htmlFor="isActive" className="ml-2 block text-sm text-slate-700">
+              <label htmlFor="isActive" className="ml-2 block text-sm text-slate-200">
                 Client Actif
               </label>
             </div>
@@ -229,15 +229,15 @@ function EditCustomerForm() {
         </div>
 
         {/* --- NOUVEAU: Modification Solde --- */}
-        <div className="border-t border-slate-200/50 pt-6">
-          <h2 className="text-xl font-semibold text-slate-700 mb-4">Solde & Comptabilité</h2>
+        <div className="border-t border-white/\[0.06\]/50 pt-6">
+          <h2 className="text-xl font-semibold text-slate-200 mb-4">Solde & Comptabilité</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="currentBalance" className="block text-sm font-medium text-slate-700 mb-1">Ancien Solde (DZD)</label>
+              <label htmlFor="currentBalance" className="block text-sm font-medium text-slate-200 mb-1">Ancien Solde (DZD)</label>
               <div className="relative">
                 <input type="number" step="0.01" id="currentBalance" name="currentBalance"
                   value={formData.currentBalance || ''} onChange={handleChange}
-                  className="w-full p-2 border border-slate-300 rounded-lg bg-orange-50" />
+                  className="w-full p-2 border border-white/\[0.08\] rounded-lg bg-orange-50" />
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                   <span className="text-slate-500 sm:text-sm">DZD</span>
                 </div>
@@ -248,12 +248,12 @@ function EditCustomerForm() {
         </div>
 
         {/* Boutons d'action */}
-        <div className="flex justify-end gap-4 border-t border-slate-200/50 pt-6">
-          <Link href="/customers" className="bg-slate-200 text-slate-700 hover:bg-slate-300 px-5 py-2 rounded-lg font-medium text-sm transition">
+        <div className="flex justify-end gap-4 border-t border-white/\[0.06\]/50 pt-6">
+          <Link href="/customers" className="bg-slate-200 text-slate-200 hover:bg-slate-300 px-5 py-2 rounded-lg font-medium text-sm transition">
             Annuler
           </Link>
           <button type="submit" disabled={isSaving}
-            className="bg-blue-600 text-white hover:bg-blue-700 px-5 py-2 rounded-lg font-medium text-sm transition disabled:opacity-50">
+            className="bg-sky-600 text-white hover:bg-sky-700 px-5 py-2 rounded-lg font-medium text-sm transition disabled:opacity-50">
             {isSaving ? 'Sauvegarde...' : 'Mettre à Jour Client'}
           </button>
         </div>
@@ -270,7 +270,7 @@ export default function EditCustomerPage() {
         {/* En-tête */}
         <div className="mb-6 flex justify-between items-center">
           <h1 className="text-3xl font-bold text-blue-800">Modifier Client</h1>
-          <Link href="/customers" className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+          <Link href="/customers" className="text-sky-400 hover:text-blue-800 text-sm font-medium">
             ← Retour à la Liste
           </Link>
         </div>

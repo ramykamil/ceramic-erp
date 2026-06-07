@@ -253,47 +253,47 @@ export default function OrderDetailsPage() {
     if (loading || !order) return <p className="p-10 text-center">Chargement...</p>;
 
     return (
-        <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800">
+        <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-900/40 text-slate-100">
             <div className="max-w-5xl mx-auto">
 
                 {/* Header */}
                 <div className="mb-6 flex justify-between items-start">
                     <div>
-                        <h1 className="text-3xl font-bold text-slate-800">Commande {order.ordernumber}</h1>
+                        <h1 className="text-3xl font-bold text-slate-100">Commande {order.ordernumber}</h1>
                         <p className="text-slate-500">Date: {formatDate(order.orderdate)}</p>
                     </div>
                     <div className="flex gap-2">
                         <button
                             onClick={openFactureModal}
-                            className="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 flex items-center gap-2"
+                            className="bg-emerald-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 flex items-center gap-2"
                         >
                             📄 Générer Facture
                         </button>
                         <button onClick={handlePrint} className="bg-purple-600 text-white px-4 py-2 rounded-lg shadow hover:bg-purple-700 flex items-center gap-2">
                             🖨️ Imprimer Reçu
                         </button>
-                        <Link href="/orders" className="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50">
+                        <Link href="/orders" className="bg-slate-900/60 border border-white/\[0.08\] text-slate-200 px-4 py-2 rounded-lg hover:bg-slate-900/40">
                             Retour
                         </Link>
                     </div>
                 </div>
 
                 {/* Status Bar */}
-                <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-6 flex items-center justify-between">
+                <div className="bg-slate-900/60 p-4 rounded-xl border border-white/\[0.06\] shadow-sm mb-6 flex items-center justify-between">
                     <div>
                         <span className="text-slate-500 text-sm mr-2">Statut actuel:</span>
-                        <span className="font-bold text-lg px-3 py-1 bg-slate-100 rounded">{order.status}</span>
+                        <span className="font-bold text-lg px-3 py-1 bg-slate-800/50 rounded">{order.status}</span>
                     </div>
                     <div className="flex gap-2">
                         {/* Workflow Buttons */}
                         {order.status === 'PENDING' && (
                             <>
-                                <button onClick={() => changeStatus('CONFIRMED')} className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">Confirmer</button>
-                                <button onClick={() => changeStatus('CANCELLED')} className="bg-red-50 text-red-600 px-3 py-1 rounded text-sm hover:bg-red-100 border border-red-200">Annuler</button>
+                                <button onClick={() => changeStatus('CONFIRMED')} className="bg-sky-600 text-white px-3 py-1 rounded text-sm hover:bg-sky-700">Confirmer</button>
+                                <button onClick={() => changeStatus('CANCELLED')} className="bg-sky-500/10 text-sky-400 px-3 py-1 rounded text-sm hover:bg-sky-500/10 border border-sky-500/20">Annuler</button>
                             </>
                         )}
                         {order.status === 'CONFIRMED' && (
-                            <button onClick={() => changeStatus('DELIVERED')} className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700">Marquer Livré</button>
+                            <button onClick={() => changeStatus('DELIVERED')} className="bg-emerald-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700">Marquer Livré</button>
                         )}
                     </div>
                 </div>
@@ -301,22 +301,22 @@ export default function OrderDetailsPage() {
                 {/* Content Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* Client Info */}
-                    <div className="md:col-span-1 bg-white p-6 rounded-xl border border-slate-200 shadow-sm h-fit">
-                        <h3 className="font-bold text-slate-700 mb-4 border-b pb-2">Client</h3>
+                    <div className="md:col-span-1 bg-slate-900/60 p-6 rounded-xl border border-white/\[0.06\] shadow-sm h-fit">
+                        <h3 className="font-bold text-slate-200 mb-4 border-b pb-2">Client</h3>
                         <p className="text-lg font-medium">{(order as any).retailclientname || order.customername}</p>
                         <p className="text-sm text-slate-500">{(order as any).retailclientname ? 'VENTE DÉTAIL' : order.customertype}</p>
 
                         {order.notes && (
-                            <div className="mt-4 p-3 bg-yellow-50 border border-yellow-100 rounded text-sm text-yellow-800">
+                            <div className="mt-4 p-3 bg-amber-500/10 border border-yellow-100 rounded text-sm text-amber-300">
                                 <strong>Notes:</strong><br />{order.notes}
                             </div>
                         )}
                     </div>
 
                     {/* Items Table */}
-                    <div className="md:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div className="md:col-span-2 bg-slate-900/60 rounded-xl border border-white/\[0.06\] shadow-sm overflow-hidden">
                         <table className="w-full text-sm text-left">
-                            <thead className="bg-slate-50 text-slate-500 font-semibold border-b">
+                            <thead className="bg-slate-900/40 text-slate-500 font-semibold border-b">
                                 <tr>
                                     <th className="px-4 py-3">Produit</th>
                                     <th className="px-4 py-3 text-right">Qté</th>
@@ -337,10 +337,10 @@ export default function OrderDetailsPage() {
                                     </tr>
                                 ))}
                             </tbody>
-                            <tfoot className="bg-slate-50 border-t">
+                            <tfoot className="bg-slate-900/40 border-t">
                                 <tr>
                                     <td colSpan={3} className="px-4 py-3 text-right font-bold">TOTAL</td>
-                                    <td className="px-4 py-3 text-right font-bold text-lg text-blue-600">{formatCurrency(order.totalamount)}</td>
+                                    <td className="px-4 py-3 text-right font-bold text-lg text-sky-400">{formatCurrency(order.totalamount)}</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -370,16 +370,16 @@ export default function OrderDetailsPage() {
             {/* Facture Modal */}
             {isFactureModalOpen && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
+                    <div className="bg-slate-900/60 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
                         {/* Modal Header */}
-                        <div className="p-4 border-b border-slate-200 flex justify-between items-center bg-green-50 rounded-t-2xl">
+                        <div className="p-4 border-b border-white/\[0.06\] flex justify-between items-center bg-emerald-500/10 rounded-t-2xl">
                             <div>
-                                <h2 className="text-xl font-bold text-green-800">📄 Générer Facture</h2>
-                                <p className="text-sm text-green-600">{factureNumber}</p>
+                                <h2 className="text-xl font-bold text-emerald-300">📄 Générer Facture</h2>
+                                <p className="text-sm text-emerald-400">{factureNumber}</p>
                             </div>
                             <button
                                 onClick={() => setIsFactureModalOpen(false)}
-                                className="text-slate-400 hover:text-slate-600 text-2xl"
+                                className="text-slate-400 hover:text-slate-400 text-2xl"
                             >
                                 ×
                             </button>
@@ -388,15 +388,15 @@ export default function OrderDetailsPage() {
                         {/* Modal Body */}
                         <div className="p-4 overflow-y-auto flex-1 space-y-4">
                             {/* Client Info */}
-                            <div className="bg-slate-50 p-3 rounded-lg">
+                            <div className="bg-slate-900/40 p-3 rounded-lg">
                                 <p className="text-sm text-slate-500">Client</p>
                                 <p className="font-bold">{(order as any).retailclientname || order.customername}</p>
                             </div>
 
                             {/* Editable Items Table */}
-                            <div className="border border-slate-200 rounded-lg overflow-hidden">
+                            <div className="border border-white/\[0.06\] rounded-lg overflow-hidden">
                                 <table className="w-full text-sm">
-                                    <thead className="bg-slate-100">
+                                    <thead className="bg-slate-800/50">
                                         <tr>
                                             <th className="px-3 py-2 text-left">Produit</th>
                                             <th className="px-3 py-2 text-center w-16">Pal</th>
@@ -413,7 +413,7 @@ export default function OrderDetailsPage() {
                                                     <div className="font-medium text-sm">{item.productName}</div>
                                                     <div className="text-xs text-slate-400">{item.productCode}</div>
                                                     {item.piecesPerCarton > 0 && (
-                                                        <div className="text-xs text-blue-500 mt-0.5">
+                                                        <div className="text-xs text-sky-400 mt-0.5">
                                                             {item.piecesPerCarton.toFixed(2)} /ctn • {item.cartonsPerPalette.toFixed(0)} ctn/pal
                                                         </div>
                                                     )}
@@ -424,7 +424,7 @@ export default function OrderDetailsPage() {
                                                         min="0"
                                                         value={item.palettes}
                                                         onChange={(e) => updateFactureItem(idx, 'palettes', Number(e.target.value))}
-                                                        className="w-full p-1 border border-slate-200 rounded text-center text-sm"
+                                                        className="w-full p-1 border border-white/\[0.06\] rounded text-center text-sm"
                                                         disabled={item.cartonsPerPalette === 0}
                                                     />
                                                 </td>
@@ -434,7 +434,7 @@ export default function OrderDetailsPage() {
                                                         min="0"
                                                         value={item.cartons}
                                                         onChange={(e) => updateFactureItem(idx, 'cartons', Number(e.target.value))}
-                                                        className="w-full p-1 border border-slate-200 rounded text-center text-sm"
+                                                        className="w-full p-1 border border-white/\[0.06\] rounded text-center text-sm"
                                                         disabled={item.piecesPerCarton === 0}
                                                     />
                                                 </td>
@@ -445,7 +445,7 @@ export default function OrderDetailsPage() {
                                                         step="0.01"
                                                         value={item.quantity}
                                                         onChange={(e) => updateFactureItem(idx, 'quantity', Number(e.target.value))}
-                                                        className="w-full p-1 border border-blue-300 rounded text-center text-sm bg-blue-50 font-medium"
+                                                        className="w-full p-1 border border-blue-300 rounded text-center text-sm bg-sky-500/10 font-medium"
                                                     />
                                                 </td>
                                                 <td className="px-1 py-2">
@@ -455,7 +455,7 @@ export default function OrderDetailsPage() {
                                                         step="0.01"
                                                         value={item.unitPrice}
                                                         onChange={(e) => updateFactureItem(idx, 'unitPrice', Number(e.target.value))}
-                                                        className="w-full p-1 border border-slate-200 rounded text-right text-sm"
+                                                        className="w-full p-1 border border-white/\[0.06\] rounded text-right text-sm"
                                                     />
                                                 </td>
                                                 <td className="px-3 py-2 text-right font-mono font-medium">
@@ -464,7 +464,7 @@ export default function OrderDetailsPage() {
                                             </tr>
                                         ))}
                                     </tbody>
-                                    <tfoot className="bg-slate-50">
+                                    <tfoot className="bg-slate-900/40">
                                         <tr>
                                             <td className="px-3 py-2 text-right text-xs text-slate-500">Totaux:</td>
                                             <td className="px-1 py-2 text-center text-xs font-medium">
@@ -477,7 +477,7 @@ export default function OrderDetailsPage() {
                                                 {(factureItems.reduce((sum, i) => sum + (Number(i.quantity) || 0), 0) || 0).toFixed(2)} m²
                                             </td>
                                             <td className="px-1 py-2"></td>
-                                            <td className="px-3 py-2 text-right font-mono font-bold text-blue-600">
+                                            <td className="px-3 py-2 text-right font-mono font-bold text-sky-400">
                                                 {formatCurrency(factureSubtotal)}
                                             </td>
                                         </tr>
@@ -486,7 +486,7 @@ export default function OrderDetailsPage() {
                             </div>
 
                             {/* Totals */}
-                            <div className="bg-slate-50 rounded-lg p-4 space-y-3">
+                            <div className="bg-slate-900/40 rounded-lg p-4 space-y-3">
                                 {/* TVA Toggle */}
                                 <div className="flex items-center justify-between">
                                     <label className="flex items-center gap-2">
@@ -494,7 +494,7 @@ export default function OrderDetailsPage() {
                                             type="checkbox"
                                             checked={factureTVA}
                                             onChange={(e) => setFactureTVA(e.target.checked)}
-                                            className="w-4 h-4 text-green-600"
+                                            className="w-4 h-4 text-emerald-400"
                                         />
                                         <span className="text-sm">Appliquer TVA (19%)</span>
                                     </label>
@@ -508,7 +508,7 @@ export default function OrderDetailsPage() {
                                         min="0"
                                         value={factureDiscount}
                                         onChange={(e) => setFactureDiscount(Number(e.target.value))}
-                                        className="w-32 p-1 border border-slate-300 rounded text-right"
+                                        className="w-32 p-1 border border-white/\[0.08\] rounded text-right"
                                     />
                                 </div>
 
@@ -521,36 +521,36 @@ export default function OrderDetailsPage() {
                                         <span className="font-mono">{formatCurrency(factureSubtotal)}</span>
                                     </div>
                                     {factureTVA && (
-                                        <div className="flex justify-between text-slate-600">
+                                        <div className="flex justify-between text-slate-400">
                                             <span>TVA (19%)</span>
                                             <span className="font-mono">{formatCurrency(factureTVAAmount)}</span>
                                         </div>
                                     )}
                                     {factureDiscount > 0 && (
-                                        <div className="flex justify-between text-red-600">
+                                        <div className="flex justify-between text-sky-400">
                                             <span>Remise</span>
                                             <span className="font-mono">-{formatCurrency(factureDiscount)}</span>
                                         </div>
                                     )}
                                     <div className="flex justify-between text-lg font-bold pt-2 border-t">
                                         <span>TOTAL TTC</span>
-                                        <span className="font-mono text-green-600">{formatCurrency(factureTotal)}</span>
+                                        <span className="font-mono text-emerald-400">{formatCurrency(factureTotal)}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         {/* Modal Footer */}
-                        <div className="p-4 border-t border-slate-200 bg-slate-50 rounded-b-2xl flex justify-end gap-2">
+                        <div className="p-4 border-t border-white/\[0.06\] bg-slate-900/40 rounded-b-2xl flex justify-end gap-2">
                             <button
                                 onClick={() => setIsFactureModalOpen(false)}
-                                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium"
+                                className="px-4 py-2 bg-slate-800/50 hover:bg-slate-200 text-slate-200 rounded-lg text-sm font-medium"
                             >
                                 Annuler
                             </button>
                             <button
                                 onClick={handlePrintFacture}
-                                className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium flex items-center gap-2"
+                                className="px-6 py-2 bg-emerald-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium flex items-center gap-2"
                             >
                                 🖨️ Imprimer Facture
                             </button>

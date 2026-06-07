@@ -155,24 +155,24 @@ export default function ReturnDetailsPage() {
     }, [returnData]);
 
     if (loading) return <div className="p-10 text-center">Chargement des détails du retour...</div>;
-    if (!returnData) return <div className="p-10 text-center text-red-500 font-bold">Retour introuvable.</div>;
+    if (!returnData) return <div className="p-10 text-center text-sky-400 font-bold">Retour introuvable.</div>;
 
     const statusColors: any = {
         PENDING: 'bg-amber-100 text-amber-800 border-amber-200',
         APPROVED: 'bg-emerald-100 text-emerald-800 border-emerald-200',
         REJECTED: 'bg-rose-100 text-rose-800 border-rose-200',
-        PROCESSED: 'bg-blue-100 text-blue-800 border-blue-200',
+        PROCESSED: 'bg-sky-500/10 text-blue-800 border-sky-500/20',
     };
 
     return (
-        <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800">
+        <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-900/40 text-slate-100">
             <div className="max-w-5xl mx-auto">
                 {/* Header */}
                 <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
                         <div className="flex items-center gap-3 mb-1">
-                            <h1 className="text-3xl font-black text-slate-800 uppercase tracking-tight">Retour {returnData.returnnumber}</h1>
-                            <span className={`text-xs font-black px-3 py-1 rounded-full border shadow-sm ${statusColors[returnData.status] || 'bg-slate-100'}`}>
+                            <h1 className="text-3xl font-black text-slate-100 uppercase tracking-tight">Retour {returnData.returnnumber}</h1>
+                            <span className={`text-xs font-black px-3 py-1 rounded-full border shadow-sm ${statusColors[returnData.status] || 'bg-slate-800/50'}`}>
                                 {returnData.status === 'PENDING' ? 'EN ATTENTE' : 
                                  returnData.status === 'APPROVED' ? 'APPROUVÉ' : 
                                  returnData.status === 'REJECTED' ? 'REJETÉ' : returnData.status}
@@ -183,7 +183,7 @@ export default function ReturnDetailsPage() {
                     <div className="flex gap-3">
                         <button 
                             onClick={handlePrint} 
-                            className="bg-white border-2 border-slate-200 text-slate-700 px-5 py-2.5 rounded-xl font-bold hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm"
+                            className="bg-slate-900/60 border-2 border-white/\[0.06\] text-slate-200 px-5 py-2.5 rounded-xl font-bold hover:bg-slate-900/40 transition-all flex items-center gap-2 shadow-sm"
                         >
                             🖨️ Bon de Retour
                         </button>
@@ -200,7 +200,7 @@ export default function ReturnDetailsPage() {
                     <div className="lg:col-span-1 space-y-6">
                         
                         {/* Status Actions Card */}
-                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <div className="bg-slate-900/60 p-6 rounded-2xl border border-white/\[0.06\] shadow-sm">
                              <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Actions de Flux</h3>
                              
                              {returnData.status === 'PENDING' ? (
@@ -215,7 +215,7 @@ export default function ReturnDetailsPage() {
                                     <button 
                                         disabled={isUpdating}
                                         onClick={() => changeStatus('REJECTED')} 
-                                        className="w-full bg-white border-2 border-rose-100 text-rose-600 py-3 rounded-xl font-bold hover:bg-rose-50 transition disabled:opacity-50"
+                                        className="w-full bg-slate-900/60 border-2 border-rose-100 text-rose-600 py-3 rounded-xl font-bold hover:bg-rose-50 transition disabled:opacity-50"
                                     >
                                         ❌ REJETER
                                     </button>
@@ -229,7 +229,7 @@ export default function ReturnDetailsPage() {
                                     </div>
                                 </div>
                              ) : (
-                                <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 text-center">
+                                <div className="p-4 bg-slate-900/40 rounded-xl border border-slate-100 text-center">
                                     <p className="text-slate-500 text-sm font-medium">Ce retour est déjà finalisé.</p>
                                     <p className="text-xs text-slate-400 mt-1">Statut final : <span className="font-bold">{returnData.status}</span></p>
                                 </div>
@@ -237,19 +237,19 @@ export default function ReturnDetailsPage() {
                         </div>
 
                         {/* Client Info Card */}
-                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
+                        <div className="bg-slate-900/60 p-6 rounded-2xl border border-white/\[0.06\] shadow-sm relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-4 opacity-5">
                                 <span className="text-6xl">👤</span>
                             </div>
                             <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Client / Émetteur</h3>
-                            <p className="text-xl font-black text-slate-800">{returnData.customername}</p>
+                            <p className="text-xl font-black text-slate-100">{returnData.customername}</p>
                             
                             <div className="mt-4 space-y-2">
-                                <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
+                                <div className="flex items-center gap-2 text-sm text-slate-400 font-medium">
                                     <span className="w-5 text-center opacity-70">📞</span>
                                     {returnData.customerphone || 'Non renseigné'}
                                 </div>
-                                <div className="flex items-start gap-2 text-sm text-slate-600 font-medium">
+                                <div className="flex items-start gap-2 text-sm text-slate-400 font-medium">
                                     <span className="w-5 text-center opacity-70 mt-0.5">📍</span>
                                     <span className="flex-1">{returnData.customeraddress || 'Adresse inconnue'}</span>
                                 </div>
@@ -271,10 +271,10 @@ export default function ReturnDetailsPage() {
 
                     {/* Right Column: Items Table */}
                     <div className="lg:col-span-2 space-y-6">
-                        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                            <div className="bg-slate-50 p-6 border-b border-slate-100 flex items-center justify-between">
+                        <div className="bg-slate-900/60 rounded-2xl border border-white/\[0.06\] shadow-sm overflow-hidden">
+                            <div className="bg-slate-900/40 p-6 border-b border-slate-100 flex items-center justify-between">
                                 <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest">Articles Concernés</h3>
-                                <span className="bg-white px-3 py-1 rounded-full border border-slate-200 text-xs font-bold text-slate-600 shadow-sm">
+                                <span className="bg-slate-900/60 px-3 py-1 rounded-full border border-white/\[0.06\] text-xs font-bold text-slate-400 shadow-sm">
                                     {returnData.items.length} produit{returnData.items.length > 1 ? 's' : ''}
                                 </span>
                             </div>
@@ -299,38 +299,38 @@ export default function ReturnDetailsPage() {
                                         const palettes = (cpp > 0 && cartons > 0) ? Math.floor(cartons / cpp) : 0;
 
                                         return (
-                                            <tr key={idx} className="hover:bg-slate-50/50 transition-all">
+                                            <tr key={idx} className="hover:bg-slate-900/40/50 transition-all">
                                                 <td className="px-6 py-5">
-                                                    <p className="font-bold text-slate-800 leading-tight">{item.productname}</p>
+                                                    <p className="font-bold text-slate-100 leading-tight">{item.productname}</p>
                                                     <p className="text-[10px] text-slate-400 font-mono mt-1">{item.productcode}</p>
                                                 </td>
                                                 <td className="px-6 py-5 text-center">
                                                     <div className="flex items-center justify-center gap-2">
                                                         <div className="flex flex-col items-center">
                                                             <span className="text-[9px] font-black text-slate-300 uppercase">Pal</span>
-                                                            <span className="text-xs font-bold text-slate-600">{palettes}</span>
+                                                            <span className="text-xs font-bold text-slate-400">{palettes}</span>
                                                         </div>
-                                                        <div className="h-4 w-px bg-slate-100"></div>
+                                                        <div className="h-4 w-px bg-slate-800/50"></div>
                                                         <div className="flex flex-col items-center">
                                                             <span className="text-[9px] font-black text-slate-300 uppercase">Ctn</span>
-                                                            <span className="text-xs font-bold text-slate-600">{cartons}</span>
+                                                            <span className="text-xs font-bold text-slate-400">{cartons}</span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-5 text-right font-black text-blue-600">
+                                                <td className="px-6 py-5 text-right font-black text-sky-400">
                                                     {item.quantity} <span className="text-[10px] text-slate-400 font-bold uppercase">{item.unitcode}</span>
                                                 </td>
                                                 <td className="px-6 py-5 text-right font-medium text-slate-500">
                                                     {formatCurrency(item.unitprice)}
                                                 </td>
-                                                <td className="px-6 py-5 text-right font-black text-slate-800">
+                                                <td className="px-6 py-5 text-right font-black text-slate-100">
                                                     {formatCurrency(item.linetotal)}
                                                 </td>
                                             </tr>
                                         );
                                     })}
                                 </tbody>
-                                <tfoot className="bg-slate-50/50 border-t border-slate-100">
+                                <tfoot className="bg-slate-900/40/50 border-t border-slate-100">
                                     <tr>
                                         <td colSpan={4} className="px-6 py-6 text-right text-xs font-black text-slate-400 uppercase tracking-widest">
                                             Total à Rembourser

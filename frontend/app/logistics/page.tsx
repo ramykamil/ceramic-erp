@@ -71,23 +71,23 @@ export default function LogisticsPage() {
     };
 
     return (
-        <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800">
+        <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-900/40 text-slate-100">
             <div className="max-w-7xl mx-auto">
                 {/* Header & Tabs */}
                 <div className="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <h1 className="text-3xl font-bold text-slate-800">Logistique</h1>
-                    <div className="flex bg-white rounded-lg p-1 border border-slate-200 shadow-sm">
+                    <h1 className="text-3xl font-bold text-slate-100">Logistique</h1>
+                    <div className="flex bg-slate-900/60 rounded-lg p-1 border border-white/[0.06] shadow-sm shadow-black/10">
                         {['DELIVERIES', 'DRIVERS', 'VEHICLES'].map((tab) => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab as any)}
-                                className={`px-4 py-2 text-sm font-medium rounded-md transition ${activeTab === tab ? 'bg-cyan-100 text-cyan-700' : 'text-slate-500 hover:text-slate-700'}`}
+                                className={`px-4 py-2 text-sm font-medium rounded-md transition ${activeTab === tab ? 'bg-cyan-100 text-cyan-700' : 'text-slate-500 hover:text-slate-200'}`}
                             >
                                 {tab === 'DELIVERIES' ? 'Livraisons' : tab === 'DRIVERS' ? 'Chauffeurs' : 'Véhicules'}
                             </button>
                         ))}
                     </div>
-                    <Link href="/" className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium shadow-sm">
+                    <Link href="/" className="bg-slate-900/60 border border-white/[0.08] hover:bg-slate-900/40 text-slate-200 px-4 py-2 rounded-lg text-sm font-medium shadow-sm shadow-black/10">
                         Retour
                     </Link>
                 </div>
@@ -95,30 +95,30 @@ export default function LogisticsPage() {
                 {/* Actions Bar */}
                 <div className="mb-6 flex justify-end">
                     {activeTab === 'DELIVERIES' && (
-                        <Link href="/logistics/new" className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm">
+                        <Link href="/logistics/new" className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm shadow-black/10">
                             + Nouvelle Livraison
                         </Link>
                     )}
                     {activeTab === 'DRIVERS' && (
-                        <button onClick={handleOpenDriverModal} className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm">
+                        <button onClick={handleOpenDriverModal} className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm shadow-black/10">
                             + Nouveau Chauffeur
                         </button>
                     )}
                     {activeTab === 'VEHICLES' && (
-                        <button onClick={() => setIsVehicleModalOpen(true)} className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm">
+                        <button onClick={() => setIsVehicleModalOpen(true)} className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm shadow-black/10">
                             + Nouveau Véhicule
                         </button>
                     )}
                 </div>
 
                 {/* Table Content */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 overflow-hidden">
                     {loading ? (
                         <p className="p-10 text-center text-slate-400">Chargement...</p>
                     ) : (
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm text-left">
-                                <thead className="bg-slate-50 text-slate-500 uppercase text-xs font-semibold border-b border-slate-100">
+                                <thead className="bg-slate-900/40 text-slate-500 uppercase text-xs font-semibold border-b border-slate-100">
                                     {activeTab === 'DELIVERIES' && (
                                         <tr><th className="px-6 py-3">N°</th><th className="px-6 py-3">Client</th><th className="px-6 py-3">Date</th><th className="px-6 py-3">Statut</th></tr>
                                     )}
@@ -131,13 +131,13 @@ export default function LogisticsPage() {
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
                                     {data.map((row: any, i) => (
-                                        <tr key={i} className="hover:bg-slate-50">
+                                        <tr key={i} className="hover:bg-slate-900/40">
                                             {activeTab === 'DELIVERIES' && (
                                                 <>
                                                     <td className="px-6 py-4 font-mono">{row.deliverynumber}</td>
                                                     <td className="px-6 py-4 font-medium">{row.customername}</td>
                                                     <td className="px-6 py-4">{formatDate(row.deliverydate)}</td>
-                                                    <td className="px-6 py-4"><span className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs">{row.status}</span></td>
+                                                    <td className="px-6 py-4"><span className="bg-sky-500/10 text-sky-300 px-2 py-1 rounded text-xs">{row.status}</span></td>
                                                 </>
                                             )}
                                             {activeTab === 'DRIVERS' && (
@@ -165,16 +165,16 @@ export default function LogisticsPage() {
                 {/* Vehicle Modal */}
                 {isVehicleModalOpen && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4">
-                        <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-xl">
+                        <div className="bg-slate-900/60 rounded-xl p-6 w-full max-w-md shadow-xl">
                             <h2 className="text-lg font-bold mb-4">Ajouter Véhicule</h2>
                             <form onSubmit={handleCreateVehicle} className="space-y-4">
-                                <input placeholder="Matricule" className="w-full p-2 border rounded" required value={newVehicle.vehicleNumber} onChange={e => setNewVehicle({ ...newVehicle, vehicleNumber: e.target.value })} />
-                                <select className="w-full p-2 border rounded" value={newVehicle.vehicleType} onChange={e => setNewVehicle({ ...newVehicle, vehicleType: e.target.value })}>
+                                <input placeholder="Matricule" className="w-full p-2 border border-slate-600/40 rounded" required value={newVehicle.vehicleNumber} onChange={e => setNewVehicle({ ...newVehicle, vehicleNumber: e.target.value })} />
+                                <select className="w-full p-2 border border-slate-600/40 rounded" value={newVehicle.vehicleType} onChange={e => setNewVehicle({ ...newVehicle, vehicleType: e.target.value })}>
                                     <option value="TRUCK">Camion</option><option value="VAN">Fourgon</option><option value="PICKUP">Pickup</option>
                                 </select>
-                                <input placeholder="Marque" className="w-full p-2 border rounded" value={newVehicle.make} onChange={e => setNewVehicle({ ...newVehicle, make: e.target.value })} />
+                                <input placeholder="Marque" className="w-full p-2 border border-slate-600/40 rounded" value={newVehicle.make} onChange={e => setNewVehicle({ ...newVehicle, make: e.target.value })} />
                                 <div className="flex justify-end gap-2 pt-4">
-                                    <button type="button" onClick={() => setIsVehicleModalOpen(false)} className="px-4 py-2 text-slate-600">Annuler</button>
+                                    <button type="button" onClick={() => setIsVehicleModalOpen(false)} className="px-4 py-2 text-slate-400">Annuler</button>
                                     <button type="submit" className="px-4 py-2 bg-cyan-600 text-white rounded">Ajouter</button>
                                 </div>
                             </form>
@@ -185,17 +185,17 @@ export default function LogisticsPage() {
                 {/* Driver Modal */}
                 {isDriverModalOpen && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4">
-                        <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-xl">
+                        <div className="bg-slate-900/60 rounded-xl p-6 w-full max-w-md shadow-xl">
                             <h2 className="text-lg font-bold mb-4">Ajouter Chauffeur</h2>
                             <p className="text-sm text-slate-500 mb-4">Sélectionnez un employé existant.</p>
                             <form onSubmit={handleCreateDriver} className="space-y-4">
-                                <select className="w-full p-2 border rounded" required value={newDriver.employeeId} onChange={e => setNewDriver({ ...newDriver, employeeId: e.target.value })}>
+                                <select className="w-full p-2 border border-slate-600/40 rounded" required value={newDriver.employeeId} onChange={e => setNewDriver({ ...newDriver, employeeId: e.target.value })}>
                                     <option value="">-- Choisir Employé --</option>
                                     {potentialDrivers.map(e => <option key={e.employeeid} value={e.employeeid}>{e.firstname} {e.lastname}</option>)}
                                 </select>
-                                <input placeholder="Numéro de Permis" className="w-full p-2 border rounded" required value={newDriver.licenseNumber} onChange={e => setNewDriver({ ...newDriver, licenseNumber: e.target.value })} />
+                                <input placeholder="Numéro de Permis" className="w-full p-2 border border-slate-600/40 rounded" required value={newDriver.licenseNumber} onChange={e => setNewDriver({ ...newDriver, licenseNumber: e.target.value })} />
                                 <div className="flex justify-end gap-2 pt-4">
-                                    <button type="button" onClick={() => setIsDriverModalOpen(false)} className="px-4 py-2 text-slate-600">Annuler</button>
+                                    <button type="button" onClick={() => setIsDriverModalOpen(false)} className="px-4 py-2 text-slate-400">Annuler</button>
                                     <button type="submit" className="px-4 py-2 bg-cyan-600 text-white rounded">Ajouter</button>
                                 </div>
                             </form>

@@ -44,17 +44,17 @@ export function ProductHistoryReturnsTab({
     <>
       {/* Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
-        <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-          <p className="text-xs text-orange-600 font-medium uppercase">Retours Achat</p>
-          <p className="text-2xl font-bold text-orange-700">{returnHistoryData.totals.totalPurchaseReturns}</p>
+        <div className="bg-orange-50 p-4 rounded-lg border border-orange-500/20">
+          <p className="text-xs text-orange-400 font-medium uppercase">Retours Achat</p>
+          <p className="text-2xl font-bold text-orange-400">{returnHistoryData.totals.totalPurchaseReturns}</p>
         </div>
-        <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-          <p className="text-xs text-orange-600 font-medium uppercase">Qté Achat</p>
-          <p className="text-2xl font-bold text-orange-700">{formatQty(returnHistoryData.totals.totalPurchaseReturnQty)}</p>
+        <div className="bg-orange-50 p-4 rounded-lg border border-orange-500/20">
+          <p className="text-xs text-orange-400 font-medium uppercase">Qté Achat</p>
+          <p className="text-2xl font-bold text-orange-400">{formatQty(returnHistoryData.totals.totalPurchaseReturnQty)}</p>
         </div>
-        <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-          <p className="text-xs text-orange-600 font-medium uppercase">Montant Achat</p>
-          <p className="text-2xl font-bold text-orange-700">{formatMoney(returnHistoryData.totals.totalPurchaseReturnAmount)}</p>
+        <div className="bg-orange-50 p-4 rounded-lg border border-orange-500/20">
+          <p className="text-xs text-orange-400 font-medium uppercase">Montant Achat</p>
+          <p className="text-2xl font-bold text-orange-400">{formatMoney(returnHistoryData.totals.totalPurchaseReturnAmount)}</p>
         </div>
         <div className="bg-rose-50 p-4 rounded-lg border border-rose-200">
           <p className="text-xs text-rose-600 font-medium uppercase">Retours Vente</p>
@@ -72,18 +72,18 @@ export function ProductHistoryReturnsTab({
 
       {/* Purchase Returns Section */}
       <div className="mb-8">
-        <h3 className="text-sm font-bold text-orange-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+        <h3 className="text-sm font-bold text-orange-400 uppercase tracking-wide mb-3 flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-orange-500"></span>
           Retours d&apos;Achat (Fournisseurs)
         </h3>
         {returnHistoryData.purchaseReturns.length === 0 ? (
-          <div className="text-center py-6 text-slate-400 bg-slate-50 rounded-lg">
+          <div className="text-center py-6 text-slate-400 bg-slate-900/40 rounded-lg">
             <p>Aucun retour d&apos;achat pour ce produit</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-orange-100 text-[10px] text-orange-700 uppercase sticky top-0 font-bold">
+              <thead className="bg-orange-500/10 text-[10px] text-orange-400 uppercase sticky top-0 font-bold">
                 <tr>
                   <th
                     className="p-3 text-center cursor-pointer hover:bg-orange-200"
@@ -133,18 +133,18 @@ export function ProductHistoryReturnsTab({
               <tbody className="divide-y divide-slate-100">
                 {sortedRetoursAchat.map((r: any, idx: number) => (
                   <tr key={`pr-${r.returnid}-${idx}`} className="hover:bg-orange-50/30">
-                    <td className="p-3 text-center text-orange-600 text-xs font-mono font-semibold">{r.returnnumber || '-'}</td>
-                    <td className="p-3 text-center text-slate-600 text-xs font-mono">{formatDate(r.returndate)}</td>
-                    <td className="p-3 font-medium text-slate-800">{r.suppliername}</td>
+                    <td className="p-3 text-center text-orange-400 text-xs font-mono font-semibold">{r.returnnumber || '-'}</td>
+                    <td className="p-3 text-center text-slate-400 text-xs font-mono">{formatDate(r.returndate)}</td>
+                    <td className="p-3 font-medium text-slate-100">{r.suppliername}</td>
                     <td className="p-3 text-center">
-                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700">
+                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-800/50 text-slate-200">
                         {r.createdby}
                       </span>
                     </td>
-                    <td className="p-3 text-right font-bold text-orange-600 font-mono">{formatQty(r.qty)}</td>
-                    <td className="p-3 text-right text-slate-600 font-mono">{formatMoney(r.unitprice)}</td>
-                    <td className="p-3 text-right font-bold text-slate-800 font-mono">{formatMoney(r.linetotal)}</td>
-                    <td className="p-3 text-slate-600 text-xs">{r.reason || '-'}</td>
+                    <td className="p-3 text-right font-bold text-orange-400 font-mono">{formatQty(r.qty)}</td>
+                    <td className="p-3 text-right text-slate-400 font-mono">{formatMoney(r.unitprice)}</td>
+                    <td className="p-3 text-right font-bold text-slate-100 font-mono">{formatMoney(r.linetotal)}</td>
+                    <td className="p-3 text-slate-400 text-xs">{r.reason || '-'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -160,7 +160,7 @@ export function ProductHistoryReturnsTab({
           Retours de Vente (Clients)
         </h3>
         {returnHistoryData.salesReturns.length === 0 ? (
-          <div className="text-center py-6 text-slate-400 bg-slate-50 rounded-lg">
+          <div className="text-center py-6 text-slate-400 bg-slate-900/40 rounded-lg">
             <p>Aucun retour de vente pour ce produit</p>
           </div>
         ) : (
@@ -217,17 +217,17 @@ export function ProductHistoryReturnsTab({
                 {sortedRetoursVente.map((r: any, idx: number) => (
                   <tr key={`sr-${r.returnid}-${idx}`} className="hover:bg-rose-50/30">
                     <td className="p-3 text-center text-rose-600 text-xs font-mono font-semibold">{r.returnnumber || '-'}</td>
-                    <td className="p-3 text-center text-slate-600 text-xs font-mono">{formatDate(r.returndate)}</td>
-                    <td className="p-3 font-medium text-slate-800">{r.customername}</td>
+                    <td className="p-3 text-center text-slate-400 text-xs font-mono">{formatDate(r.returndate)}</td>
+                    <td className="p-3 font-medium text-slate-100">{r.customername}</td>
                     <td className="p-3 text-center">
-                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700">
+                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-800/50 text-slate-200">
                         {r.createdby}
                       </span>
                     </td>
                     <td className="p-3 text-right font-bold text-rose-600 font-mono">{formatQty(r.qty)}</td>
-                    <td className="p-3 text-right text-slate-600 font-mono">{formatMoney(r.unitprice)}</td>
-                    <td className="p-3 text-right font-bold text-slate-800 font-mono">{formatMoney(r.linetotal)}</td>
-                    <td className="p-3 text-slate-600 text-xs">{r.reason || '-'}</td>
+                    <td className="p-3 text-right text-slate-400 font-mono">{formatMoney(r.unitprice)}</td>
+                    <td className="p-3 text-right font-bold text-slate-100 font-mono">{formatMoney(r.linetotal)}</td>
+                    <td className="p-3 text-slate-400 text-xs">{r.reason || '-'}</td>
                   </tr>
                 ))}
               </tbody>

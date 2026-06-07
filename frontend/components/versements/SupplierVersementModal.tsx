@@ -174,7 +174,7 @@ export default function SupplierVersementModal({ isOpen, onClose, onSave, editDa
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4">
+            <div className="bg-slate-900/60 rounded-xl shadow-2xl w-full max-w-lg mx-4">
                 {/* Header */}
                 <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-4 rounded-t-xl flex justify-between items-center">
                     <h2 className="text-lg font-bold">💰 Paiement Fournisseur</h2>
@@ -189,11 +189,11 @@ export default function SupplierVersementModal({ isOpen, onClose, onSave, editDa
                         <>
                             {/* Compte */}
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Compte</label>
+                                <label className="block text-sm font-medium text-slate-200 mb-1">Compte</label>
                                 <select
                                     value={accountId || ''}
                                     onChange={(e) => setAccountId(Number(e.target.value))}
-                                    className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-orange-500 focus:border-orange-500"
+                                    className="w-full border border-white/[0.08] rounded-lg px-3 py-2 focus:ring-orange-500 focus:border-orange-500"
                                 >
                                     <option value="">Sélectionner un compte...</option>
                                     {accounts.map(a => (
@@ -206,7 +206,7 @@ export default function SupplierVersementModal({ isOpen, onClose, onSave, editDa
 
                             {/* Fournisseur/Marque */}
                             <div className="relative">
-                                <label className="block text-sm font-medium text-slate-700 mb-1">
+                                <label className="block text-sm font-medium text-slate-200 mb-1">
                                     Fournisseur (Marque)
                                     <span className="ml-2 cursor-pointer" title="Rechercher">🔍</span>
                                 </label>
@@ -221,13 +221,13 @@ export default function SupplierVersementModal({ isOpen, onClose, onSave, editDa
                                         }}
                                         onFocus={() => setShowBrandDropdown(true)}
                                         placeholder="Rechercher une marque..."
-                                        className="flex-1 border border-slate-300 rounded-lg px-3 py-2 focus:ring-orange-500 focus:border-orange-500"
+                                        className="flex-1 border border-white/[0.08] rounded-lg px-3 py-2 focus:ring-orange-500 focus:border-orange-500"
                                     />
                                 </div>
 
                                 {/* Brand Dropdown */}
                                 {showBrandDropdown && filteredBrands.length > 0 && (
-                                    <div className="absolute z-10 w-full mt-1 bg-white border border-slate-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                                    <div className="absolute z-10 w-full mt-1 bg-slate-900/60 border border-white/[0.06] rounded-lg shadow-lg shadow-black/20 max-h-48 overflow-y-auto">
                                         {filteredBrands.slice(0, 10).map(b => (
                                             <div
                                                 key={b.brandid}
@@ -247,7 +247,7 @@ export default function SupplierVersementModal({ isOpen, onClose, onSave, editDa
 
                                 {/* Show supplier balance when selected */}
                                 {selectedBrand && selectedBrand.currentbalance !== undefined && (
-                                    <div className="mt-2 p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                                    <div className="mt-2 p-3 bg-orange-50 border border-orange-500/20 rounded-lg">
                                         <div className="text-sm text-orange-800">
                                             <strong>Solde Fournisseur:</strong> {formatCurrencyDZD(selectedBrand.currentbalance)}
                                         </div>
@@ -258,7 +258,7 @@ export default function SupplierVersementModal({ isOpen, onClose, onSave, editDa
                             {/* Date and Payment Mode */}
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Date</label>
+                                    <label className="block text-sm font-medium text-slate-200 mb-1">Date</label>
                                     <div className="w-full">
                                         <StandardDateInput
                                             value={versementDate}
@@ -267,11 +267,11 @@ export default function SupplierVersementModal({ isOpen, onClose, onSave, editDa
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Mode Règlement</label>
+                                    <label className="block text-sm font-medium text-slate-200 mb-1">Mode Règlement</label>
                                     <select
                                         value={paymentMode}
                                         onChange={(e) => setPaymentMode(e.target.value)}
-                                        className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-orange-500 focus:border-orange-500"
+                                        className="w-full border border-white/[0.08] rounded-lg px-3 py-2 focus:ring-orange-500 focus:border-orange-500"
                                     >
                                         <option value="ESPECES">Espèces</option>
                                         <option value="CHEQUE">Chèque</option>
@@ -282,7 +282,7 @@ export default function SupplierVersementModal({ isOpen, onClose, onSave, editDa
 
                             {/* Amount */}
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Montant</label>
+                                <label className="block text-sm font-medium text-slate-200 mb-1">Montant</label>
                                 <div className="relative">
                                     <input
                                         type="number"
@@ -290,7 +290,7 @@ export default function SupplierVersementModal({ isOpen, onClose, onSave, editDa
                                         value={amount}
                                         onChange={(e) => setAmount(e.target.value)}
                                         placeholder="0,00"
-                                        className="w-full border border-slate-300 rounded-lg px-3 py-2 pr-12 focus:ring-orange-500 focus:border-orange-500 text-lg font-bold"
+                                        className="w-full border border-white/[0.08] rounded-lg px-3 py-2 pr-12 focus:ring-orange-500 focus:border-orange-500 text-lg font-bold"
                                     />
                                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">DA</span>
                                 </div>
@@ -298,25 +298,25 @@ export default function SupplierVersementModal({ isOpen, onClose, onSave, editDa
 
                             {/* Motif */}
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Motif</label>
+                                <label className="block text-sm font-medium text-slate-200 mb-1">Motif</label>
                                 <input
                                     type="text"
                                     value={motif}
                                     onChange={(e) => setMotif(e.target.value)}
                                     placeholder="Ex: Paiement commande PO-2024-..."
-                                    className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-orange-500 focus:border-orange-500"
+                                    className="w-full border border-white/[0.08] rounded-lg px-3 py-2 focus:ring-orange-500 focus:border-orange-500"
                                 />
                             </div>
 
                             {/* Observation */}
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Observation</label>
+                                <label className="block text-sm font-medium text-slate-200 mb-1">Observation</label>
                                 <textarea
                                     value={observation}
                                     onChange={(e) => setObservation(e.target.value)}
                                     rows={2}
                                     placeholder="Notes ou observations..."
-                                    className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-orange-500 focus:border-orange-500 resize-none"
+                                    className="w-full border border-white/[0.08] rounded-lg px-3 py-2 focus:ring-orange-500 focus:border-orange-500 resize-none"
                                 />
                             </div>
                         </>
@@ -324,10 +324,10 @@ export default function SupplierVersementModal({ isOpen, onClose, onSave, editDa
                 </div>
 
                 {/* Footer */}
-                <div className="px-6 py-4 bg-slate-50 rounded-b-xl flex justify-end gap-3">
+                <div className="px-6 py-4 bg-slate-900/40 rounded-b-xl flex justify-end gap-3">
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium flex items-center gap-2"
+                        className="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg font-medium flex items-center gap-2"
                     >
                         ✕ Annuler
                     </button>

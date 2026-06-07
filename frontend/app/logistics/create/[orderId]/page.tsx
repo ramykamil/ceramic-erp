@@ -90,32 +90,32 @@ export default function CreateDeliveryPage({ params }: PageProps) {
     return (
         <div className="p-6 max-w-2xl mx-auto">
             <div className="mb-6">
-                <Link href="/orders" className="text-sm text-slate-500 hover:text-blue-600 mb-2 block">← Retour Commandes</Link>
+                <Link href="/orders" className="text-sm text-slate-500 hover:text-sky-400 mb-2 block">← Retour Commandes</Link>
                 <h1 className="text-3xl font-bold text-blue-900">Planifier une Livraison</h1>
                 <p className="text-slate-500">Pour la commande #{orderId}</p>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+            <div className="bg-slate-900/60 p-6 rounded-xl shadow-sm border border-white/\[0.06\]">
                 <form onSubmit={handleSubmit} className="space-y-6">
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Date de Livraison</label>
+                        <label className="block text-sm font-medium text-slate-200 mb-1">Date de Livraison</label>
                         <input
                             type="date"
                             required
                             value={formData.deliveryDate}
                             onChange={e => setFormData({ ...formData, deliveryDate: e.target.value })}
-                            className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full p-2 border border-white/\[0.08\] rounded-lg focus:ring-2 focus:ring-sky-500/30"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Véhicule</label>
+                        <label className="block text-sm font-medium text-slate-200 mb-1">Véhicule</label>
                         <select
                             required
                             value={formData.vehicleId}
                             onChange={e => setFormData({ ...formData, vehicleId: e.target.value })}
-                            className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full p-2 border border-white/\[0.08\] rounded-lg focus:ring-2 focus:ring-sky-500/30"
                         >
                             <option value="">-- Sélectionner un véhicule --</option>
                             {availableVehicles.map(v => (
@@ -128,12 +128,12 @@ export default function CreateDeliveryPage({ params }: PageProps) {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Chauffeur</label>
+                        <label className="block text-sm font-medium text-slate-200 mb-1">Chauffeur</label>
                         <select
                             required
                             value={formData.driverId}
                             onChange={e => setFormData({ ...formData, driverId: e.target.value })}
-                            className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full p-2 border border-white/\[0.08\] rounded-lg focus:ring-2 focus:ring-sky-500/30"
                         >
                             <option value="">-- Sélectionner un chauffeur --</option>
                             {availableDrivers.map(d => (
@@ -146,12 +146,12 @@ export default function CreateDeliveryPage({ params }: PageProps) {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Notes</label>
+                        <label className="block text-sm font-medium text-slate-200 mb-1">Notes</label>
                         <textarea
                             rows={3}
                             value={formData.notes}
                             onChange={e => setFormData({ ...formData, notes: e.target.value })}
-                            className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full p-2 border border-white/\[0.08\] rounded-lg focus:ring-2 focus:ring-sky-500/30"
                             placeholder="Instructions spéciales..."
                         />
                     </div>
@@ -160,14 +160,14 @@ export default function CreateDeliveryPage({ params }: PageProps) {
                         <button
                             type="button"
                             onClick={() => router.back()}
-                            className="px-5 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium"
+                            className="px-5 py-2 text-slate-400 hover:bg-slate-800/50 rounded-lg font-medium"
                         >
                             Annuler
                         </button>
                         <button
                             type="submit"
                             disabled={isSaving}
-                            className="px-5 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50"
+                            className="px-5 py-2 bg-sky-600 text-white rounded-lg font-medium hover:bg-sky-700 disabled:opacity-50"
                         >
                             {isSaving ? 'Création...' : 'Créer Livraison'}
                         </button>

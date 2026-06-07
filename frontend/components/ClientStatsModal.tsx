@@ -29,7 +29,7 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
 
     const getSortIcon = (config: any, key: string) => {
         if (config.key !== key) return <span className="opacity-30 ml-1 text-[10px]">↕</span>;
-        return config.direction === 'asc' ? <span className="ml-1 text-blue-600">▲</span> : <span className="ml-1 text-blue-600">▼</span>;
+        return config.direction === 'asc' ? <span className="ml-1 text-sky-400">▲</span> : <span className="ml-1 text-sky-400">▼</span>;
     };
 
     useEffect(() => {
@@ -73,17 +73,17 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-5xl flex flex-col max-h-[90vh] overflow-hidden">
+            <div className="bg-slate-900/60 rounded-xl shadow-2xl w-full max-w-5xl flex flex-col max-h-[90vh] overflow-hidden">
                 {/* Header */}
-                <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50">
+                <div className="flex items-center justify-between p-4 border-b border-white/[0.06] bg-slate-900/40">
                     <div>
-                        <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+                        <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2">
                             <span>👤</span> {client.nom || client.customername}
                         </h2>
                         <div className="flex gap-4 mt-1 text-xs text-slate-500 font-medium">
                             <span>Période: {formatDate(startDate)} - {formatDate(endDate)}</span>
                             {client.type && (
-                                <span className={client.type === 'WHOLESALE' ? 'text-blue-600' : 'text-green-600'}>
+                                <span className={client.type === 'WHOLESALE' ? 'text-sky-400' : 'text-emerald-400'}>
                                     Type: {client.type === 'WHOLESALE' ? 'Gros' : 'Détail'}
                                 </span>
                             )}
@@ -91,43 +91,43 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
                     </div>
                     <button
                         onClick={onClose}
-                        className="bg-slate-200 hover:bg-slate-300 text-slate-700 w-8 h-8 rounded-full flex items-center justify-center transition-colors"
+                        className="bg-slate-200 hover:bg-slate-300 text-slate-200 w-8 h-8 rounded-full flex items-center justify-center transition-colors"
                     >
                         ✕
                     </button>
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 overflow-y-auto p-4 bg-slate-50">
+                <div className="flex-1 overflow-y-auto p-4 bg-slate-900/40">
                     {/* KPI Summary (Mirrors the main table row) */}
                     <div className="grid grid-cols-3 gap-4 mb-6">
-                        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
+                        <div className="bg-slate-900/60 p-4 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 text-center">
                             <div className="text-sm font-medium text-slate-500 mb-1">Total Achats</div>
-                            <div className="text-xl font-bold text-slate-800">{formatDZD(client.total || salesData?.kpis?.total || 0)}</div>
+                            <div className="text-xl font-bold text-slate-100">{formatDZD(client.total || salesData?.kpis?.total || 0)}</div>
                         </div>
-                        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
+                        <div className="bg-slate-900/60 p-4 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 text-center">
                             <div className="text-sm font-medium text-slate-500 mb-1">Versements Période</div>
-                            <div className="text-xl font-bold text-green-600">{formatDZD(client.versement || salesData?.kpis?.versement || 0)}</div>
+                            <div className="text-xl font-bold text-emerald-400">{formatDZD(client.versement || salesData?.kpis?.versement || 0)}</div>
                         </div>
-                        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
+                        <div className="bg-slate-900/60 p-4 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 text-center">
                             <div className="text-sm font-medium text-slate-500 mb-1">Reste Période / Global</div>
-                            <div className="text-xl font-bold text-red-600">
+                            <div className="text-xl font-bold text-sky-400">
                                 {formatDZD(client.reste || salesData?.kpis?.reste || 0)}
                             </div>
                         </div>
                     </div>
 
                     {/* Tabs */}
-                    <div className="flex gap-2 border-b border-slate-200 mb-4 px-2">
+                    <div className="flex gap-2 border-b border-white/[0.06] mb-4 px-2">
                         <button
                             onClick={() => setActiveTab('achats')}
-                            className={`px-4 py-2 font-medium text-sm border-b-2 transition-colors ${activeTab === 'achats' ? 'border-blue-600 text-blue-700' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+                            className={`px-4 py-2 font-medium text-sm border-b-2 transition-colors ${activeTab === 'achats' ? 'border-blue-600 text-sky-300' : 'border-transparent text-slate-500 hover:text-slate-200'}`}
                         >
                             🛒 Commandes & Achats
                         </button>
                         <button
                             onClick={() => setActiveTab('versements')}
-                            className={`px-4 py-2 font-medium text-sm border-b-2 transition-colors ${activeTab === 'versements' ? 'border-green-600 text-green-700' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+                            className={`px-4 py-2 font-medium text-sm border-b-2 transition-colors ${activeTab === 'versements' ? 'border-green-600 text-emerald-400' : 'border-transparent text-slate-500 hover:text-slate-200'}`}
                         >
                             💸 Historique Versements
                         </button>
@@ -135,7 +135,7 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
 
                     {isLoading ? (
                         <div className="flex items-center justify-center p-12 text-slate-400">
-                            <div className="animate-spin w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full"></div>
+                            <div className="animate-spin w-8 h-8 border-4 border-sky-500/20 border-t-blue-600 rounded-full"></div>
                         </div>
                     ) : (
                         <div>
@@ -143,13 +143,13 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
                                 <div className="space-y-6">
                                     {/* Top Products */}
                                     {topProducts.length > 0 && (
-                                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                                            <div className="bg-slate-100 px-4 py-2 font-semibold text-slate-700 border-b border-slate-200">
+                                        <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 overflow-hidden">
+                                            <div className="bg-slate-800/50 px-4 py-2 font-semibold text-slate-200 border-b border-white/[0.06]">
                                                 Produits les plus achetés
                                             </div>
                                             <div className="overflow-x-auto">
                                                 <table className="w-full text-sm">
-                                                    <thead className="text-slate-500 bg-slate-50">
+                                                    <thead className="text-slate-500 bg-slate-900/40">
                                                         <tr>
                                                             <th className="p-2 pl-4 text-left font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortProducts('reference')}>Référence {getSortIcon(sortConfigProducts, 'reference')}</th>
                                                             <th className="p-2 text-left font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortProducts('designation')}>Désignation {getSortIcon(sortConfigProducts, 'designation')}</th>
@@ -161,12 +161,12 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
                                                     </thead>
                                                     <tbody className="divide-y divide-slate-100">
                                                         {sortedProducts.map((p, idx) => (
-                                                            <tr key={idx} className="hover:bg-slate-50 text-slate-700">
-                                                                <td className="p-2 pl-4 font-mono text-blue-600 text-xs">{p.reference}</td>
+                                                            <tr key={idx} className="hover:bg-slate-900/40 text-slate-200">
+                                                                <td className="p-2 pl-4 font-mono text-sky-400 text-xs">{p.reference}</td>
                                                                 <td className="p-2 font-medium">{p.designation}</td>
                                                                 <td className="p-2 text-right font-mono font-medium">{Math.round(p.qty_total)}</td>
-                                                                <td className="p-2 text-right font-mono text-orange-600">{Math.round(p.colis_total || 0)}</td>
-                                                                <td className="p-2 text-right font-mono text-indigo-600">{Math.round(p.pallets_total || 0)}</td>
+                                                                <td className="p-2 text-right font-mono text-orange-400">{Math.round(p.colis_total || 0)}</td>
+                                                                <td className="p-2 text-right font-mono text-indigo-400">{Math.round(p.pallets_total || 0)}</td>
                                                                 <td className="p-2 pr-4 text-right font-mono font-semibold">{formatDZD(p.total)}</td>
                                                             </tr>
                                                         ))}
@@ -177,13 +177,13 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
                                     )}
 
                                     {/* Recent Orders */}
-                                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                                        <div className="bg-slate-100 px-4 py-2 font-semibold text-slate-700 border-b border-slate-200">
+                                    <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 overflow-hidden">
+                                        <div className="bg-slate-800/50 px-4 py-2 font-semibold text-slate-200 border-b border-white/[0.06]">
                                             Historique des commandes
                                         </div>
                                         <div className="overflow-x-auto">
                                             <table className="w-full text-sm">
-                                                <thead className="text-slate-500 bg-slate-50">
+                                                <thead className="text-slate-500 bg-slate-900/40">
                                                     <tr>
                                                         <th className="p-2 pl-4 text-left font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortTransactions('numero')}>N° Bon {getSortIcon(sortConfigTransactions, 'numero')}</th>
                                                         <th className="p-2 text-left font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortTransactions('date')}>Date {getSortIcon(sortConfigTransactions, 'date')}</th>
@@ -195,7 +195,7 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
                                                     {sortedTransactions.length === 0 ? (
                                                         <tr><td colSpan={4} className="p-6 text-center text-slate-400">Aucune commande trouvée</td></tr>
                                                     ) : sortedTransactions.map((t: any, idx: number) => (
-                                                        <tr key={idx} className="hover:bg-slate-50 text-slate-700">
+                                                        <tr key={idx} className="hover:bg-slate-900/40 text-slate-200">
                                                             <td className="p-2 pl-4 font-mono font-medium">{t.numero}</td>
                                                             <td className="p-2">{formatDate(t.date)}</td>
                                                             <td className="p-2 text-slate-500">{t.heure || '-'}</td>
@@ -210,13 +210,13 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
                             )}
 
                             {activeTab === 'versements' && (
-                                <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                                    <div className="bg-green-50 px-4 py-2 font-semibold text-green-800 border-b border-green-100">
+                                <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 overflow-hidden">
+                                    <div className="bg-emerald-500/10 px-4 py-2 font-semibold text-emerald-300 border-b border-green-100">
                                         Liste des Versements
                                     </div>
                                     <div className="overflow-x-auto">
                                         <table className="w-full text-sm">
-                                            <thead className="text-slate-500 bg-slate-50">
+                                            <thead className="text-slate-500 bg-slate-900/40">
                                                 <tr>
                                                     <th className="p-2 pl-4 text-left font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortVersements('createdat')}>Date & Heure {getSortIcon(sortConfigVersements, 'createdat')}</th>
                                                     <th className="p-2 text-left font-medium cursor-pointer hover:bg-slate-200 transition-colors" onClick={() => handleSortVersements('accountname')}>Caisse {getSortIcon(sortConfigVersements, 'accountname')}</th>
@@ -228,7 +228,7 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
                                                 {sortedVersements.length === 0 ? (
                                                     <tr><td colSpan={4} className="p-6 text-center text-slate-400">Aucun versement trouvé pour cette période</td></tr>
                                                 ) : sortedVersements.map((v: any, idx: number) => (
-                                                    <tr key={idx} className="hover:bg-green-50/50 text-slate-700">
+                                                    <tr key={idx} className="hover:bg-emerald-500/10/50 text-slate-200">
                                                         <td className="p-2 pl-4">
                                                             <div>{formatDate(v.createdat)}</div>
                                                             <div className="text-[10px] text-slate-400">
@@ -237,7 +237,7 @@ export function ClientStatsModal({ client, startDate, endDate, onClose }: Client
                                                         </td>
                                                         <td className="p-2 font-medium">{v.accountname}</td>
                                                         <td className="p-2 text-xs italic text-slate-500">{v.motif || v.observation || '-'}</td>
-                                                        <td className="p-2 pr-4 text-right font-mono font-bold text-green-600">{formatDZD(v.amount)}</td>
+                                                        <td className="p-2 pr-4 text-right font-mono font-bold text-emerald-400">{formatDZD(v.amount)}</td>
                                                     </tr>
                                                 ))}
                                             </tbody>

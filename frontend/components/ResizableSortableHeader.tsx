@@ -80,17 +80,17 @@ export function ResizableSortableHeader({
         >
             <button
                 onClick={() => onSort(sortKey)}
-                className={`flex items-center gap-1 hover:text-slate-800 transition-colors w-full ${alignClass}`}
+                className={`flex items-center gap-1 hover:text-slate-100 transition-colors w-full ${alignClass}`}
             >
                 <span className="truncate">{label}</span>
-                <span className={`text-xs ${currentDirection ? 'text-blue-600' : 'text-slate-300'}`}>
+                <span className={`text-xs ${currentDirection ? 'text-sky-400' : 'text-slate-300'}`}>
                     {getSortIcon()}
                 </span>
             </button>
             {/* Resize handle */}
             <div
                 onMouseDown={handleMouseDown}
-                className={`absolute right-0 top-0 bottom-0 w-1.5 cursor-col-resize transition-colors ${isResizing ? 'bg-blue-500' : 'hover:bg-blue-300 bg-transparent'
+                className={`absolute right-0 top-0 bottom-0 w-1.5 cursor-col-resize transition-colors ${isResizing ? 'bg-sky-500' : 'hover:bg-blue-300 bg-transparent'
                     }`}
                 style={{ zIndex: 10 }}
                 title="Glisser pour redimensionner"
@@ -205,7 +205,7 @@ export function ResizableHeader({
             <div
                 onMouseDown={handleMouseDown}
                 onClick={(e) => e.stopPropagation()}
-                className={`absolute right-0 top-0 bottom-0 w-1.5 cursor-col-resize transition-colors ${isResizing ? 'bg-blue-500' : 'hover:bg-blue-300 bg-transparent'
+                className={`absolute right-0 top-0 bottom-0 w-1.5 cursor-col-resize transition-colors ${isResizing ? 'bg-sky-500' : 'hover:bg-blue-300 bg-transparent'
                     }`}
                 style={{ zIndex: 10 }}
             />

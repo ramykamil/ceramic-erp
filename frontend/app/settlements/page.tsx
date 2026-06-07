@@ -32,7 +32,7 @@ export default function SettlementsPage() {
 
     const getSortIcon = (key: string) => {
         if (sortConfig.key !== key) return <span className="opacity-30 ml-1 text-[10px]">↕</span>;
-        return sortConfig.direction === 'asc' ? <span className="ml-1 text-blue-600">▲</span> : <span className="ml-1 text-blue-600">▼</span>;
+        return sortConfig.direction === 'asc' ? <span className="ml-1 text-sky-400">▲</span> : <span className="ml-1 text-sky-400">▼</span>;
     };
 
     // Form State
@@ -124,28 +124,28 @@ export default function SettlementsPage() {
     };
 
     return (
-        <div className="p-6 min-h-screen bg-slate-50">
+        <div className="p-6 min-h-screen bg-slate-900/40">
             <div className="max-w-7xl mx-auto">
                 <div className="flex justify-between items-center mb-8">
                     <div>
-                        <Link href="/" className="text-sm text-slate-500 hover:text-blue-600 mb-2 block">← Retour Tableau de Bord</Link>
-                        <h1 className="text-3xl font-bold text-slate-800">Règlements Usines</h1>
-                        <p className="text-slate-600">Générez et suivez les paiements dus aux usines basés sur les ventes.</p>
+                        <Link href="/" className="text-sm text-slate-500 hover:text-sky-400 mb-2 block">← Retour Tableau de Bord</Link>
+                        <h1 className="text-3xl font-bold text-slate-100">Règlements Usines</h1>
+                        <p className="text-slate-400">Générez et suivez les paiements dus aux usines basés sur les ventes.</p>
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Left Panel: Generator Form */}
                     <div className="lg:col-span-1">
-                        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sticky top-6">
-                            <h2 className="text-xl font-semibold text-slate-800 mb-4">Nouveau Règlement</h2>
+                        <div className="bg-slate-900/60 rounded-xl shadow-sm shadow-black/10 border border-white/[0.06] p-6 sticky top-6">
+                            <h2 className="text-xl font-semibold text-slate-100 mb-4">Nouveau Règlement</h2>
                             <form onSubmit={handleGenerate} className="space-y-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Usine</label>
+                                    <label className="block text-sm font-medium text-slate-200 mb-1">Usine</label>
                                     <select
                                         value={selectedFactoryId}
                                         onChange={(e) => setSelectedFactoryId(Number(e.target.value))}
-                                        className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                        className="w-full p-2 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30"
                                         required
                                     >
                                         <option value="">-- Sélectionner --</option>
@@ -156,23 +156,23 @@ export default function SettlementsPage() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Date Début</label>
+                                    <label className="block text-sm font-medium text-slate-200 mb-1">Date Début</label>
                                     <input
                                         type="date"
                                         value={startDate}
                                         onChange={(e) => setStartDate(e.target.value)}
-                                        className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                        className="w-full p-2 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30"
                                         required
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Date Fin</label>
+                                    <label className="block text-sm font-medium text-slate-200 mb-1">Date Fin</label>
                                     <input
                                         type="date"
                                         value={endDate}
                                         onChange={(e) => setEndDate(e.target.value)}
-                                        className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                        className="w-full p-2 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-sky-500/30"
                                         required
                                     />
                                 </div>
@@ -180,7 +180,7 @@ export default function SettlementsPage() {
                                 <button
                                     type="submit"
                                     disabled={isGenerating || isLoading}
-                                    className="w-full bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 disabled:bg-slate-300 disabled:cursor-not-allowed font-semibold transition duration-200 mt-4"
+                                    className="w-full bg-sky-600 text-white py-2.5 rounded-lg hover:bg-sky-700 disabled:bg-slate-300 disabled:cursor-not-allowed font-semibold transition duration-200 mt-4"
                                 >
                                     {isGenerating ? 'Calcul en cours...' : 'Générer Règlement'}
                                 </button>
@@ -190,9 +190,9 @@ export default function SettlementsPage() {
 
                     {/* Right Panel: History List */}
                     <div className="lg:col-span-2">
-                        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                            <div className="p-6 border-b border-slate-200">
-                                <h2 className="text-xl font-semibold text-slate-800">Historique des Règlements</h2>
+                        <div className="bg-slate-900/60 rounded-xl shadow-sm shadow-black/10 border border-white/[0.06] overflow-hidden">
+                            <div className="p-6 border-b border-white/[0.06]">
+                                <h2 className="text-xl font-semibold text-slate-100">Historique des Règlements</h2>
                             </div>
 
                             {isLoading ? (
@@ -204,35 +204,35 @@ export default function SettlementsPage() {
                             ) : (
                                 <div className="overflow-x-auto">
                                     <table className="w-full text-left">
-                                        <thead className="bg-slate-50 border-b border-slate-200 uppercase text-[10px] font-bold tracking-wider">
+                                        <thead className="bg-slate-900/40 border-b border-white/[0.06] uppercase text-[10px] font-bold tracking-wider">
                                             <tr>
-                                                <th className="p-4 cursor-pointer hover:bg-slate-100" onClick={() => handleSort('createdat')}>Date Création {getSortIcon('createdat')}</th>
-                                                <th className="p-4 cursor-pointer hover:bg-slate-100" onClick={() => handleSort('factoryname')}>Usine {getSortIcon('factoryname')}</th>
-                                                <th className="p-4 cursor-pointer hover:bg-slate-100" onClick={() => handleSort('startdate')}>Période {getSortIcon('startdate')}</th>
-                                                <th className="p-4 text-right cursor-pointer hover:bg-slate-100" onClick={() => handleSort('totalamount')}>Montant {getSortIcon('totalamount')}</th>
-                                                <th className="p-4 text-center cursor-pointer hover:bg-slate-100" onClick={() => handleSort('status')}>Statut {getSortIcon('status')}</th>
+                                                <th className="p-4 cursor-pointer hover:bg-slate-800/50" onClick={() => handleSort('createdat')}>Date Création {getSortIcon('createdat')}</th>
+                                                <th className="p-4 cursor-pointer hover:bg-slate-800/50" onClick={() => handleSort('factoryname')}>Usine {getSortIcon('factoryname')}</th>
+                                                <th className="p-4 cursor-pointer hover:bg-slate-800/50" onClick={() => handleSort('startdate')}>Période {getSortIcon('startdate')}</th>
+                                                <th className="p-4 text-right cursor-pointer hover:bg-slate-800/50" onClick={() => handleSort('totalamount')}>Montant {getSortIcon('totalamount')}</th>
+                                                <th className="p-4 text-center cursor-pointer hover:bg-slate-800/50" onClick={() => handleSort('status')}>Statut {getSortIcon('status')}</th>
                                                 <th className="p-4 text-right">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-slate-100">
                                             {sortedSettlements.map((settlement) => (
-                                                <tr key={settlement.settlementid} className="hover:bg-slate-50">
-                                                    <td className="p-4 text-sm text-slate-600">
+                                                <tr key={settlement.settlementid} className="hover:bg-slate-900/40">
+                                                    <td className="p-4 text-sm text-slate-400">
                                                         {formatDate(settlement.createdat)}
                                                     </td>
-                                                    <td className="p-4 font-medium text-slate-800">
+                                                    <td className="p-4 font-medium text-slate-100">
                                                         {settlement.factoryname}
                                                     </td>
-                                                    <td className="p-4 text-sm text-slate-600">
+                                                    <td className="p-4 text-sm text-slate-400">
                                                         {formatDate(settlement.startdate)} - {formatDate(settlement.enddate)}
                                                     </td>
-                                                    <td className="p-4 text-right font-bold text-slate-800">
+                                                    <td className="p-4 text-right font-bold text-slate-100">
                                                         {formatCurrency(settlement.totalamount)}
                                                     </td>
                                                     <td className="p-4 text-center">
                                                         <span className={`px-2 py-1 rounded-full text-xs font-semibold ${settlement.status === 'PAID'
-                                                            ? 'bg-green-100 text-green-700'
-                                                            : 'bg-yellow-100 text-yellow-700'
+                                                            ? 'bg-emerald-500/10 text-emerald-400'
+                                                            : 'bg-amber-500/10 text-amber-400'
                                                             }`}>
                                                             {settlement.status === 'PAID' ? 'PAYÉ' : 'EN ATTENTE'}
                                                         </span>
@@ -241,7 +241,7 @@ export default function SettlementsPage() {
                                                         {settlement.status === 'PENDING' && (
                                                             <button
                                                                 onClick={() => handleMarkAsPaid(settlement.settlementid)}
-                                                                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                                                                className="text-sky-400 hover:text-blue-800 text-sm font-medium"
                                                             >
                                                                 Marquer Payé
                                                             </button>

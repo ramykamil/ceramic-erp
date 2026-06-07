@@ -218,27 +218,27 @@ export default function NewReturnPage() {
     if (loading) return <div className="p-10 text-center">Chargement...</div>;
 
     return (
-        <div className="min-h-screen bg-slate-50 p-4 sm:p-8">
+        <div className="min-h-screen bg-slate-900/40 p-4 sm:p-8">
             <div className="max-w-4xl mx-auto">
                 <div className="flex justify-between items-center mb-8">
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-800">Nouveau Retour de Vente</h1>
+                        <h1 className="text-2xl font-bold text-slate-100">Nouveau Retour de Vente</h1>
                         <p className="text-slate-500">Saisir les articles retournés par le client.</p>
                     </div>
-                    <Link href="/orders" className="text-slate-600 hover:text-slate-900 font-medium">← Retour aux Commandes</Link>
+                    <Link href="/orders" className="text-slate-400 hover:text-white font-medium">← Retour aux Commandes</Link>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Left: Client & Info */}
                     <div className="md:col-span-1 space-y-6">
-                        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                            <h2 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                                <span className="p-1.5 bg-blue-100 text-blue-600 rounded">👤</span> Client
+                        <div className="bg-slate-900/60 p-6 rounded-xl shadow-sm shadow-black/10 border border-white/[0.06]">
+                            <h2 className="font-bold text-slate-100 mb-4 flex items-center gap-2">
+                                <span className="p-1.5 bg-sky-500/10 text-sky-400 rounded">👤</span> Client
                             </h2>
 
-                            <div className="flex bg-slate-100 p-1 rounded-lg mb-4">
-                                <button onClick={() => setIsManualClient(false)} className={`flex-1 py-1.5 text-xs font-bold rounded-md transition ${!isManualClient ? 'bg-white shadow-sm' : 'text-slate-500'}`}>EXISTANT</button>
-                                <button onClick={() => setIsManualClient(true)} className={`flex-1 py-1.5 text-xs font-bold rounded-md transition ${isManualClient ? 'bg-white shadow-sm' : 'text-slate-500'}`}>MANUEL</button>
+                            <div className="flex bg-slate-800/50 p-1 rounded-lg mb-4">
+                                <button onClick={() => setIsManualClient(false)} className={`flex-1 py-1.5 text-xs font-bold rounded-md transition ${!isManualClient ? 'bg-slate-900/60 shadow-sm shadow-black/10' : 'text-slate-500'}`}>EXISTANT</button>
+                                <button onClick={() => setIsManualClient(true)} className={`flex-1 py-1.5 text-xs font-bold rounded-md transition ${isManualClient ? 'bg-slate-900/60 shadow-sm shadow-black/10' : 'text-slate-500'}`}>MANUEL</button>
                             </div>
 
                             {!isManualClient ? (
@@ -248,20 +248,20 @@ export default function NewReturnPage() {
                                         value={customerSearch}
                                         onChange={(e) => { setCustomerSearch(e.target.value); setIsCustomerDropdownOpen(true); }}
                                         placeholder="Rechercher client..."
-                                        className="w-full p-2 border border-slate-300 rounded-lg text-sm"
+                                        className="w-full p-2 border border-white/[0.08] rounded-lg text-sm"
                                     />
                                     {isCustomerDropdownOpen && filteredCustomers.length > 0 && (
-                                        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
+                                        <div className="absolute top-full left-0 right-0 mt-1 bg-slate-900/60 border border-white/[0.08] rounded-lg shadow-lg shadow-black/20 z-20 max-h-48 overflow-y-auto">
                                             {filteredCustomers.map(c => (
-                                                <div key={c.customerid} onClick={() => { setFormCustomerId(c.customerid); setCustomerSearch(c.customername); setIsCustomerDropdownOpen(false); }} className="p-2 hover:bg-blue-50 cursor-pointer text-sm border-b last:border-0">{c.customername}</div>
+                                                <div key={c.customerid} onClick={() => { setFormCustomerId(c.customerid); setCustomerSearch(c.customername); setIsCustomerDropdownOpen(false); }} className="p-2 hover:bg-sky-500/10 cursor-pointer text-sm border-b last:border-0">{c.customername}</div>
                                             ))}
                                         </div>
                                     )}
                                 </div>
                             ) : (
                                 <div className="space-y-3">
-                                    <input type="text" value={manualClientName} onChange={(e) => setManualClientName(e.target.value)} placeholder="Nom du client *" className="w-full p-2 border border-slate-300 rounded-lg text-sm" />
-                                    <input type="text" value={manualClientPhone} onChange={(e) => setManualClientPhone(e.target.value)} placeholder="Téléphone" className="w-full p-2 border border-slate-300 rounded-lg text-sm" />
+                                    <input type="text" value={manualClientName} onChange={(e) => setManualClientName(e.target.value)} placeholder="Nom du client *" className="w-full p-2 border border-white/[0.08] rounded-lg text-sm" />
+                                    <input type="text" value={manualClientPhone} onChange={(e) => setManualClientPhone(e.target.value)} placeholder="Téléphone" className="w-full p-2 border border-white/[0.08] rounded-lg text-sm" />
                                 </div>
                             )}
 
@@ -271,23 +271,23 @@ export default function NewReturnPage() {
                                     type="date"
                                     value={formDate}
                                     onChange={(e) => setFormDate(e.target.value)}
-                                    className="w-full p-2 border border-slate-300 rounded-lg text-sm font-bold text-blue-600"
+                                    className="w-full p-2 border border-white/[0.08] rounded-lg text-sm font-bold text-sky-400"
                                 />
                             </div>
 
                             <div className="mt-6">
                                 <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Raison du retour</label>
-                                <textarea value={formReason} onChange={(e) => setFormReason(e.target.value)} className="w-full p-2 border border-slate-300 rounded-lg text-sm h-20" placeholder="Ex: Casse, Surplus, Erreur..."></textarea>
+                                <textarea value={formReason} onChange={(e) => setFormReason(e.target.value)} className="w-full p-2 border border-white/[0.08] rounded-lg text-sm h-20" placeholder="Ex: Casse, Surplus, Erreur..."></textarea>
                             </div>
                         </div>
 
-                        <div className="bg-blue-600 p-6 rounded-xl shadow-lg text-white">
+                        <div className="bg-sky-600 p-6 rounded-xl shadow-lg shadow-black/20 text-white">
                             <p className="text-blue-100 text-xs font-bold uppercase mb-1">Total à Rembourser</p>
                             <h2 className="text-3xl font-black">{formatCurrency(formItems.reduce((s, i) => s + i.lineTotal, 0))}</h2>
                             <button
                                 onClick={handleSubmit}
                                 disabled={isSubmitting}
-                                className="w-full mt-6 bg-white text-blue-600 font-bold py-3 rounded-lg hover:bg-blue-50 transition shadow-md disabled:opacity-50"
+                                className="w-full mt-6 bg-slate-900/60 text-sky-400 font-bold py-3 rounded-lg hover:bg-sky-500/10 transition shadow-md shadow-black/20 disabled:opacity-50"
                             >
                                 {isSubmitting ? 'Traitement...' : 'VALIDER LE RETOUR'}
                             </button>
@@ -296,9 +296,9 @@ export default function NewReturnPage() {
 
                     {/* Right: Articles */}
                     <div className="md:col-span-2 space-y-6">
-                        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                            <h2 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                                <span className="p-1.5 bg-orange-100 text-orange-600 rounded">📦</span> Articles Retournés
+                        <div className="bg-slate-900/60 p-6 rounded-xl shadow-sm shadow-black/10 border border-white/[0.06]">
+                            <h2 className="font-bold text-slate-100 mb-4 flex items-center gap-2">
+                                <span className="p-1.5 bg-orange-500/10 text-orange-400 rounded">📦</span> Articles Retournés
                             </h2>
 
                             <div className="relative mb-6">
@@ -307,17 +307,17 @@ export default function NewReturnPage() {
                                     value={productSearch}
                                     onChange={(e) => setProductSearch(e.target.value)}
                                     placeholder="🔍 Ajouter un produit (Code ou Nom)..."
-                                    className="w-full p-3 border-2 border-slate-100 rounded-xl bg-slate-50 focus:bg-white focus:border-blue-400 transition"
+                                    className="w-full p-3 border-2 border-slate-100 rounded-xl bg-slate-900/40 focus:bg-slate-900/60 focus:border-blue-400 transition"
                                 />
                                 {filteredProducts.length > 0 && (
-                                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-300 rounded-xl shadow-xl z-30 max-h-60 overflow-y-auto">
+                                    <div className="absolute top-full left-0 right-0 mt-1 bg-slate-900/60 border border-white/[0.08] rounded-xl shadow-xl z-30 max-h-60 overflow-y-auto">
                                         {filteredProducts.map(p => (
-                                            <div key={p.productid} onClick={() => addProductToForm(p)} className="p-3 hover:bg-blue-50 cursor-pointer border-b last:border-0 flex justify-between items-center">
+                                            <div key={p.productid} onClick={() => addProductToForm(p)} className="p-3 hover:bg-sky-500/10 cursor-pointer border-b last:border-0 flex justify-between items-center">
                                                 <div>
-                                                    <p className="font-bold text-slate-800">{p.productname}</p>
+                                                    <p className="font-bold text-slate-100">{p.productname}</p>
                                                     <p className="text-xs text-slate-500">{p.productcode}</p>
                                                 </div>
-                                                <span className="text-blue-600 font-bold">+</span>
+                                                <span className="text-sky-400 font-bold">+</span>
                                             </div>
                                         ))}
                                     </div>
@@ -331,27 +331,27 @@ export default function NewReturnPage() {
                                     </div>
                                 ) : (
                                     formItems.map((item, idx) => (
-                                        <div key={idx} className="flex flex-col sm:flex-row gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200 relative group">
-                                            <button onClick={() => removeFormItem(idx)} className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs font-bold shadow-md opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">×</button>
+                                        <div key={idx} className="flex flex-col sm:flex-row gap-4 p-4 bg-slate-900/40 rounded-xl border border-white/[0.06] relative group">
+                                            <button onClick={() => removeFormItem(idx)} className="absolute -top-2 -right-2 w-6 h-6 bg-sky-500 text-white rounded-full text-xs font-bold shadow-md shadow-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">×</button>
 
                                             <div className="flex-1">
-                                                <p className="font-bold text-slate-800 text-sm">{item.productName}</p>
+                                                <p className="font-bold text-slate-100 text-sm">{item.productName}</p>
                                                 <p className="text-[10px] text-slate-400 font-mono">{item.productCode}</p>
-                                                <p className="text-[10px] text-blue-500 mt-1 font-bold">{item.piecesPerCarton} PCS/CTN • {item.cartonsPerPalette} CTN/PAL</p>
+                                                <p className="text-[10px] text-sky-400 mt-1 font-bold">{item.piecesPerCarton} PCS/CTN • {item.cartonsPerPalette} CTN/PAL</p>
                                             </div>
 
                                             <div className="flex gap-2 items-center">
                                                 <div className="w-16">
                                                     <label className="block text-[8px] font-black text-slate-400 uppercase text-center">Pal</label>
-                                                    <input type="number" value={item.palettes} onChange={(e) => updateFormItem(idx, 'palettes', Number(e.target.value))} className="w-full p-1 border border-slate-300 rounded text-center text-xs font-bold" />
+                                                    <input type="number" value={item.palettes} onChange={(e) => updateFormItem(idx, 'palettes', Number(e.target.value))} className="w-full p-1 border border-white/[0.08] rounded text-center text-xs font-bold" />
                                                 </div>
                                                 <div className="w-16">
                                                     <label className="block text-[8px] font-black text-slate-400 uppercase text-center">Ctn</label>
-                                                    <input type="number" value={item.cartons} onChange={(e) => updateFormItem(idx, 'cartons', Number(e.target.value))} className="w-full p-1 border border-slate-300 rounded text-center text-xs font-bold" />
+                                                    <input type="number" value={item.cartons} onChange={(e) => updateFormItem(idx, 'cartons', Number(e.target.value))} className="w-full p-1 border border-white/[0.08] rounded text-center text-xs font-bold" />
                                                 </div>
                                                 <div className="w-20">
                                                     <label className="block text-[8px] font-black text-slate-400 uppercase text-center">Pcs</label>
-                                                    <input type="number" value={item.quantity} onChange={(e) => updateFormItem(idx, 'quantity', Number(e.target.value))} className="w-full p-1 border border-blue-300 rounded text-center text-xs font-black text-blue-600" />
+                                                    <input type="number" value={item.quantity} onChange={(e) => updateFormItem(idx, 'quantity', Number(e.target.value))} className="w-full p-1 border border-blue-300 rounded text-center text-xs font-black text-sky-400" />
                                                 </div>
                                                 <div className="w-24">
                                                     <label className="block text-[8px] font-black text-slate-400 uppercase text-center">Prix U.</label>
@@ -359,14 +359,14 @@ export default function NewReturnPage() {
                                                         type="number" 
                                                         value={item.unitPrice} 
                                                         onChange={(e) => updateFormItem(idx, 'unitPrice', Number(e.target.value))} 
-                                                        className="w-full p-1 border border-slate-300 rounded text-center text-xs font-bold text-emerald-600" 
+                                                        className="w-full p-1 border border-white/[0.08] rounded text-center text-xs font-bold text-emerald-600" 
                                                     />
                                                 </div>
                                             </div>
 
                                             <div className="w-24 text-right self-center">
                                                 <p className="text-[10px] text-slate-400">Total</p>
-                                                <p className="text-sm font-bold text-slate-800">{formatCurrency(item.lineTotal)}</p>
+                                                <p className="text-sm font-bold text-slate-100">{formatCurrency(item.lineTotal)}</p>
                                             </div>
                                         </div>
                                     ))

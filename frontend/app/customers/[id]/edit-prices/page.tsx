@@ -173,7 +173,7 @@ export default function BulkPriceEditorPage() {
         {/* En-tête */}
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-blue-800">Éditeur de Prix en Masse</h1>
-          <p className="text-slate-600 text-lg mt-1">
+          <p className="text-slate-400 text-lg mt-1">
             Pour le client : <span className="font-semibold">{customer?.customername || '...'}</span>
           </p>
         </div>
@@ -183,18 +183,18 @@ export default function BulkPriceEditorPage() {
            <input
                 type="text"
                 placeholder="Filtrer produits par nom ou code..."
-                className="w-full md:w-1/2 p-2 border border-slate-300 rounded-lg bg-white bg-opacity-70"
+                className="w-full md:w-1/2 p-2 border border-white/\[0.08\] rounded-lg bg-slate-900/60 bg-opacity-70"
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
             />
             <div className="flex gap-3">
-                <Link href={`/customers/${customerId}`} className="bg-slate-200 text-slate-700 hover:bg-slate-300 px-4 py-2 rounded-lg font-medium text-sm transition">
+                <Link href={`/customers/${customerId}`} className="bg-slate-200 text-slate-200 hover:bg-slate-300 px-4 py-2 rounded-lg font-medium text-sm transition">
                     Annuler
                 </Link>
                  <button
                     onClick={handleSave}
                     disabled={isSaving}
-                    className="bg-green-600 text-white hover:bg-green-700 px-4 py-2 rounded-lg font-medium text-sm transition disabled:opacity-50 inline-flex items-center gap-2"
+                    className="bg-emerald-600 text-white hover:bg-green-700 px-4 py-2 rounded-lg font-medium text-sm transition disabled:opacity-50 inline-flex items-center gap-2"
                 >
                     <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v4.59L7.3 9.7a.75.75 0 00-1.1 1.02l3.25 3.5a.75.75 0 001.1 0l3.25-3.5a.75.75 0 10-1.1-1.02l-1.95 2.1V6.75z" clipRule="evenodd" /></svg>
                     {isSaving ? 'Sauvegarde...' : 'Enregistrer les Prix'}
@@ -204,7 +204,7 @@ export default function BulkPriceEditorPage() {
 
         {/* Affichage Erreur API */}
         {apiError && (
-          <div className="mb-4 p-4 bg-red-100 text-red-700 border border-red-200 rounded-lg">
+          <div className="mb-4 p-4 bg-sky-500/10 text-sky-300 border border-sky-500/20 rounded-lg">
             <strong>Erreur:</strong> {apiError}
           </div>
         )}
@@ -212,8 +212,8 @@ export default function BulkPriceEditorPage() {
         {/* Tableau Éditeur de Prix */}
         <div className="glassy-container overflow-hidden">
             <div className="overflow-y-auto max-h-[70vh]"> {/* Makes only the table body scrollable */}
-              <table className="w-full text-sm text-left text-slate-600">
-                <thead className="text-xs text-slate-700 uppercase bg-slate-100 font-semibold sticky top-0">
+              <table className="w-full text-sm text-left text-slate-400">
+                <thead className="text-xs text-slate-200 uppercase bg-slate-800/50 font-semibold sticky top-0">
                   <tr>
                     <th scope="col" className="px-6 py-3 w-1/3">Produit</th>
                     <th scope="col" className="px-6 py-3 w-1/4">Code</th>
@@ -221,10 +221,10 @@ export default function BulkPriceEditorPage() {
                     <th scope="col" className="px-6 py-3 w-1/3 text-center">Prix Spécifique (DZD)</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200">
+                <tbody className="divide-y divide-white/\[0.06\]">
                   {filteredRows.map((row) => (
-                    <tr key={row.productId} className="hover:bg-blue-50/50">
-                      <td className="px-6 py-2 font-medium text-slate-900">{row.productName}</td>
+                    <tr key={row.productId} className="hover:bg-sky-500/10/50">
+                      <td className="px-6 py-2 font-medium text-white">{row.productName}</td>
                       <td className="px-6 py-2 font-mono">{row.productCode}</td>
                       <td className="px-6 py-2 text-right text-slate-500">{formatCurrencyDZD(row.basePrice)}</td>
                       <td className="px-6 py-2">
@@ -235,7 +235,7 @@ export default function BulkPriceEditorPage() {
                           placeholder="Par défaut"
                           min="0"
                           step="0.01"
-                          className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white bg-opacity-80 text-right font-medium"
+                          className="w-full p-2 border border-white/\[0.08\] rounded-lg focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition bg-slate-900/60 bg-opacity-80 text-right font-medium"
                         />
                       </td>
                     </tr>

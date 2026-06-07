@@ -136,24 +136,24 @@ export default function EmployeesPage() {
     const departments = Array.from(new Set(employees.map(e => e.department).filter(Boolean)));
 
     return (
-        <div className="h-screen flex flex-col bg-slate-50 text-slate-800 overflow-hidden">
+        <div className="h-screen flex flex-col bg-slate-900/40 text-slate-100 overflow-hidden">
             <div className="flex flex-col h-full max-w-[1600px] mx-auto w-full p-4">
 
                 {/* HEADER */}
                 <div className="mb-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 flex-shrink-0">
                     <div>
-                        <h1 className="text-2xl md:text-3xl font-bold text-slate-800">👨‍💼 Gestion des Employés</h1>
+                        <h1 className="text-2xl md:text-3xl font-bold text-slate-100">👨‍💼 Gestion des Employés</h1>
                         <p className="text-slate-500 text-sm mt-1">
                             {employees.length} employés • {departments.length} départements
                         </p>
                     </div>
                     <div className="flex gap-3">
-                        <Link href="/" className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2.5 rounded-lg text-sm font-medium transition shadow-sm">
+                        <Link href="/" className="bg-slate-900/60 border border-white/[0.08] hover:bg-slate-900/40 text-slate-200 px-4 py-2.5 rounded-lg text-sm font-medium transition shadow-sm shadow-black/10">
                             ← Retour
                         </Link>
                         <button
                             onClick={openNewForm}
-                            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-lg font-medium shadow-sm flex items-center gap-2"
+                            className="bg-emerald-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-lg font-medium shadow-sm shadow-black/10 flex items-center gap-2"
                         >
                             + Nouvel Employé
                         </button>
@@ -162,39 +162,39 @@ export default function EmployeesPage() {
 
                 {/* STATS CARDS */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 flex-shrink-0">
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
+                    <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 p-4">
                         <div className="text-sm text-slate-500">Total Employés</div>
-                        <div className="text-2xl font-bold text-slate-800">{employees.length}</div>
+                        <div className="text-2xl font-bold text-slate-100">{employees.length}</div>
                     </div>
-                    <div className="bg-blue-50 rounded-xl border border-blue-200 shadow-sm p-4">
-                        <div className="text-sm text-blue-600">Départements</div>
-                        <div className="text-2xl font-bold text-blue-700">{departments.length}</div>
+                    <div className="bg-sky-500/10 rounded-xl border border-sky-500/20 shadow-sm shadow-black/10 p-4">
+                        <div className="text-sm text-sky-400">Départements</div>
+                        <div className="text-2xl font-bold text-sky-300">{departments.length}</div>
                     </div>
-                    <div className="bg-green-50 rounded-xl border border-green-200 shadow-sm p-4">
-                        <div className="text-sm text-green-600">Masse Salariale</div>
-                        <div className="text-xl font-bold text-green-700">{formatMoney(totalSalary)}</div>
+                    <div className="bg-emerald-500/10 rounded-xl border border-emerald-500/20 shadow-sm shadow-black/10 p-4">
+                        <div className="text-sm text-emerald-400">Masse Salariale</div>
+                        <div className="text-xl font-bold text-emerald-400">{formatMoney(totalSalary)}</div>
                     </div>
-                    <div className="bg-purple-50 rounded-xl border border-purple-200 shadow-sm p-4">
-                        <div className="text-sm text-purple-600">Salaire Moyen</div>
-                        <div className="text-xl font-bold text-purple-700">
+                    <div className="bg-violet-500/10 rounded-xl border border-violet-500/20 shadow-sm shadow-black/10 p-4">
+                        <div className="text-sm text-violet-400">Salaire Moyen</div>
+                        <div className="text-xl font-bold text-violet-400">
                             {employees.length > 0 ? formatMoney(totalSalary / employees.length) : '-'}
                         </div>
                     </div>
                 </div>
 
                 {/* SEARCH BAR */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-3 mb-4 flex-shrink-0">
+                <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 p-3 mb-4 flex-shrink-0">
                     <input
                         type="text"
                         placeholder="🔍 Rechercher (Nom, Code, Département, Poste)..."
                         value={searchQuery}
                         onChange={e => setSearchQuery(e.target.value)}
-                        className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-sky-500/30 focus:border-transparent"
                     />
                 </div>
 
                 {/* TABLE */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex-1 flex flex-col min-h-0">
+                <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 overflow-hidden flex-1 flex flex-col min-h-0">
                     <div className="overflow-auto flex-1">
                         <table className="w-full text-sm">
                             <thead className="bg-slate-700 text-white text-xs uppercase sticky top-0 font-bold">
@@ -223,27 +223,27 @@ export default function EmployeesPage() {
                                     </tr>
                                 ) : (
                                     sortedEmployees.map((emp, i) => (
-                                        <tr key={emp.employeeid} className={`hover:bg-blue-50 transition ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}>
-                                            <td className="p-3 font-mono text-slate-600">{emp.employeecode}</td>
-                                            <td className="p-3 font-medium text-slate-800">
+                                        <tr key={emp.employeeid} className={`hover:bg-sky-500/10 transition ${i % 2 === 0 ? 'bg-slate-900/60' : 'bg-slate-900/40'}`}>
+                                            <td className="p-3 font-mono text-slate-400">{emp.employeecode}</td>
+                                            <td className="p-3 font-medium text-slate-100">
                                                 {emp.firstname} {emp.lastname}
                                             </td>
-                                            <td className="p-3 text-slate-600">{emp.position || '-'}</td>
+                                            <td className="p-3 text-slate-400">{emp.position || '-'}</td>
                                             <td className="p-3">
                                                 {emp.department ? (
-                                                    <span className="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                                                    <span className="px-2 py-1 text-xs font-medium rounded-full bg-sky-500/10 text-blue-800">
                                                         {emp.department}
                                                     </span>
                                                 ) : '-'}
                                             </td>
-                                            <td className="p-3 text-slate-600">{emp.email || '-'}</td>
-                                            <td className="p-3 text-right font-mono font-bold text-green-700 bg-green-50/50">
+                                            <td className="p-3 text-slate-400">{emp.email || '-'}</td>
+                                            <td className="p-3 text-right font-mono font-bold text-emerald-400 bg-emerald-500/10/50">
                                                 {formatMoney(emp.basicsalary)}
                                             </td>
                                             <td className="p-3 text-center">
                                                 <button
                                                     onClick={() => handleEdit(emp)}
-                                                    className="text-blue-600 hover:text-blue-800 hover:bg-blue-100 p-1.5 rounded transition"
+                                                    className="text-sky-400 hover:text-blue-800 hover:bg-sky-500/10 p-1.5 rounded transition"
                                                     title="Modifier"
                                                 >
                                                     ✏️
@@ -260,12 +260,12 @@ export default function EmployeesPage() {
                 {/* FORM MODAL */}
                 {showForm && (
                     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-                        <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-                            <div className="p-5 border-b border-slate-100 flex justify-between items-center sticky top-0 bg-white">
-                                <h2 className="text-lg font-bold text-slate-800">
+                        <div className="bg-slate-900/60 rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+                            <div className="p-5 border-b border-slate-100 flex justify-between items-center sticky top-0 bg-slate-900/60">
+                                <h2 className="text-lg font-bold text-slate-100">
                                     {editingEmployee ? '✏️ Modifier Employé' : '➕ Nouvel Employé'}
                                 </h2>
-                                <button onClick={() => setShowForm(false)} className="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
+                                <button onClick={() => setShowForm(false)} className="text-slate-400 hover:text-slate-400 text-2xl">&times;</button>
                             </div>
                             <form onSubmit={handleSubmit} className="p-6 space-y-4">
                                 <div>
@@ -273,7 +273,7 @@ export default function EmployeesPage() {
                                     <input
                                         type="text"
                                         required
-                                        className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                                        className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
                                         placeholder="EMP-001"
                                         value={formData.EmployeeCode}
                                         onChange={(e) => setFormData({ ...formData, EmployeeCode: e.target.value })}
@@ -286,7 +286,7 @@ export default function EmployeesPage() {
                                         <input
                                             type="text"
                                             required
-                                            className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                                            className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
                                             value={formData.FirstName}
                                             onChange={(e) => setFormData({ ...formData, FirstName: e.target.value })}
                                         />
@@ -296,7 +296,7 @@ export default function EmployeesPage() {
                                         <input
                                             type="text"
                                             required
-                                            className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                                            className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
                                             value={formData.LastName}
                                             onChange={(e) => setFormData({ ...formData, LastName: e.target.value })}
                                         />
@@ -307,7 +307,7 @@ export default function EmployeesPage() {
                                         <label className="block text-xs font-medium text-slate-500 uppercase mb-1">Poste</label>
                                         <input
                                             type="text"
-                                            className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                                            className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
                                             placeholder="Vendeur, Chauffeur..."
                                             value={formData.Position}
                                             onChange={(e) => setFormData({ ...formData, Position: e.target.value })}
@@ -317,7 +317,7 @@ export default function EmployeesPage() {
                                         <label className="block text-xs font-medium text-slate-500 uppercase mb-1">Département</label>
                                         <input
                                             type="text"
-                                            className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                                            className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
                                             placeholder="Ventes, Logistique..."
                                             value={formData.Department}
                                             onChange={(e) => setFormData({ ...formData, Department: e.target.value })}
@@ -329,7 +329,7 @@ export default function EmployeesPage() {
                                         <label className="block text-xs font-medium text-slate-500 uppercase mb-1">Email</label>
                                         <input
                                             type="email"
-                                            className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                                            className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
                                             value={formData.Email}
                                             onChange={(e) => setFormData({ ...formData, Email: e.target.value })}
                                         />
@@ -338,7 +338,7 @@ export default function EmployeesPage() {
                                         <label className="block text-xs font-medium text-slate-500 uppercase mb-1">Téléphone</label>
                                         <input
                                             type="tel"
-                                            className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                                            className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
                                             placeholder="07XXXXXXXX"
                                             value={formData.Phone}
                                             onChange={(e) => setFormData({ ...formData, Phone: e.target.value })}
@@ -350,7 +350,7 @@ export default function EmployeesPage() {
                                     <input
                                         type="number"
                                         step="1000"
-                                        className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                                        className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
                                         placeholder="45000"
                                         value={formData.BasicSalary || ''}
                                         onChange={(e) => setFormData({ ...formData, BasicSalary: parseFloat(e.target.value) || 0 })}
@@ -360,13 +360,13 @@ export default function EmployeesPage() {
                                     <button
                                         type="button"
                                         onClick={() => setShowForm(false)}
-                                        className="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-lg font-medium text-sm"
+                                        className="bg-slate-900/60 border border-white/[0.08] text-slate-200 hover:bg-slate-900/40 px-4 py-2 rounded-lg font-medium text-sm"
                                     >
                                         Annuler
                                     </button>
                                     <button
                                         type="submit"
-                                        className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-lg font-medium text-sm"
+                                        className="bg-sky-600 text-white hover:bg-sky-700 px-4 py-2 rounded-lg font-medium text-sm"
                                     >
                                         {editingEmployee ? 'Mettre à jour' : 'Créer'}
                                     </button>

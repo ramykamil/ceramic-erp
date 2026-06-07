@@ -31,17 +31,17 @@ export function SortableTableHeader({
 
     const getSortIcon = () => {
         if (currentDirection === 'asc') {
-            return <span className="ml-1 text-blue-600">▲</span>;
+            return <span className="ml-1 text-sky-400">▲</span>;
         }
         if (currentDirection === 'desc') {
-            return <span className="ml-1 text-blue-600">▼</span>;
+            return <span className="ml-1 text-sky-400">▼</span>;
         }
         return <span className="ml-1 text-slate-300 group-hover:text-slate-400">⇅</span>;
     };
 
     return (
         <th
-            className={`px-6 py-4 cursor-pointer select-none group hover:bg-slate-100 transition ${alignClass} ${className}`}
+            className={`px-6 py-4 cursor-pointer select-none group hover:bg-slate-800/50 transition ${alignClass} ${className}`}
             onClick={() => onSort(sortKey)}
         >
             <span className="inline-flex items-center">

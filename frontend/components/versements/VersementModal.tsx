@@ -180,7 +180,7 @@ export default function VersementModal({ isOpen, onClose, onSave, editData }: Ve
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4">
+            <div className="bg-slate-900/60 rounded-xl shadow-2xl w-full max-w-lg mx-4">
                 {/* Header */}
                 <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-4 rounded-t-xl flex justify-between items-center">
                     <h2 className="text-lg font-bold">Fiche Versement</h2>
@@ -195,11 +195,11 @@ export default function VersementModal({ isOpen, onClose, onSave, editData }: Ve
                         <>
                             {/* Compte */}
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Compte</label>
+                                <label className="block text-sm font-medium text-slate-200 mb-1">Compte</label>
                                 <select
                                     value={accountId || ''}
                                     onChange={(e) => setAccountId(Number(e.target.value))}
-                                    className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                                    className="w-full border border-white/[0.08] rounded-lg px-3 py-2 focus:ring-sky-500/30 focus:border-sky-500"
                                 >
                                     <option value="">Sélectionner un compte...</option>
                                     {accounts.map(a => (
@@ -212,7 +212,7 @@ export default function VersementModal({ isOpen, onClose, onSave, editData }: Ve
 
                             {/* Tiers (Client) */}
                             <div className="relative">
-                                <label className="block text-sm font-medium text-slate-700 mb-1">
+                                <label className="block text-sm font-medium text-slate-200 mb-1">
                                     Tiers (Client)
                                     <span className="ml-2 cursor-pointer" title="Rechercher">🔍</span>
                                 </label>
@@ -227,18 +227,18 @@ export default function VersementModal({ isOpen, onClose, onSave, editData }: Ve
                                         }}
                                         onFocus={() => setShowCustomerDropdown(true)}
                                         placeholder="Rechercher un client..."
-                                        className="flex-1 border border-slate-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                                        className="flex-1 border border-white/[0.08] rounded-lg px-3 py-2 focus:ring-sky-500/30 focus:border-sky-500"
                                     />
                                 </div>
 
                                 {/* Customer Dropdown */}
                                 {showCustomerDropdown && filteredCustomers.length > 0 && (
-                                    <div className="absolute z-10 w-full mt-1 bg-white border border-slate-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                                    <div className="absolute z-10 w-full mt-1 bg-slate-900/60 border border-white/[0.06] rounded-lg shadow-lg shadow-black/20 max-h-48 overflow-y-auto">
                                         {filteredCustomers.slice(0, 10).map(c => (
                                             <div
                                                 key={c.customerid}
                                                 onClick={() => handleCustomerSelect(c)}
-                                                className="px-3 py-2 hover:bg-blue-50 cursor-pointer border-b border-slate-100 last:border-0"
+                                                className="px-3 py-2 hover:bg-sky-500/10 cursor-pointer border-b border-slate-100 last:border-0"
                                             >
                                                 <div className="font-medium">{c.customername}</div>
                                                 <div className="text-xs text-slate-500">
@@ -262,7 +262,7 @@ export default function VersementModal({ isOpen, onClose, onSave, editData }: Ve
                             {/* Date and Payment Mode */}
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Date</label>
+                                    <label className="block text-sm font-medium text-slate-200 mb-1">Date</label>
                                     <div className="w-full">
                                         <StandardDateInput
                                             value={versementDate}
@@ -271,11 +271,11 @@ export default function VersementModal({ isOpen, onClose, onSave, editData }: Ve
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Mode Règlement</label>
+                                    <label className="block text-sm font-medium text-slate-200 mb-1">Mode Règlement</label>
                                     <select
                                         value={paymentMode}
                                         onChange={(e) => setPaymentMode(e.target.value)}
-                                        className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                                        className="w-full border border-white/[0.08] rounded-lg px-3 py-2 focus:ring-sky-500/30 focus:border-sky-500"
                                     >
                                         <option value="ESPECES">Espèces</option>
                                         <option value="CHEQUE">Chèque</option>
@@ -288,7 +288,7 @@ export default function VersementModal({ isOpen, onClose, onSave, editData }: Ve
                             {/* Amount and Type */}
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Montant</label>
+                                    <label className="block text-sm font-medium text-slate-200 mb-1">Montant</label>
                                     <div className="relative">
                                         <input
                                             type="number"
@@ -296,15 +296,15 @@ export default function VersementModal({ isOpen, onClose, onSave, editData }: Ve
                                             value={amount}
                                             onChange={(e) => setAmount(e.target.value)}
                                             placeholder="0,00"
-                                            className="w-full border border-slate-300 rounded-lg px-3 py-2 pr-12 focus:ring-blue-500 focus:border-blue-500"
+                                            className="w-full border border-white/[0.08] rounded-lg px-3 py-2 pr-12 focus:ring-sky-500/30 focus:border-sky-500"
                                         />
                                         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">DA</span>
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
+                                    <label className="block text-sm font-medium text-slate-200 mb-1">Type</label>
                                     <select
-                                        className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                                        className="w-full border border-white/[0.08] rounded-lg px-3 py-2 focus:ring-sky-500/30 focus:border-sky-500"
                                         defaultValue="Standard"
                                     >
                                         <option value="Standard">Standard</option>
@@ -320,20 +320,20 @@ export default function VersementModal({ isOpen, onClose, onSave, editData }: Ve
                                     id="isPaid"
                                     checked={isPaid}
                                     onChange={(e) => setIsPaid(e.target.checked)}
-                                    className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
+                                    className="w-4 h-4 text-sky-400 border-white/[0.08] rounded focus:ring-sky-500/30"
                                 />
-                                <label htmlFor="isPaid" className="text-sm text-slate-700">Payé</label>
+                                <label htmlFor="isPaid" className="text-sm text-slate-200">Payé</label>
                             </div>
 
                             {/* Observation */}
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Observation</label>
+                                <label className="block text-sm font-medium text-slate-200 mb-1">Observation</label>
                                 <textarea
                                     value={observation}
                                     onChange={(e) => setObservation(e.target.value)}
                                     rows={3}
                                     placeholder="Notes ou observations..."
-                                    className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                                    className="w-full border border-white/[0.08] rounded-lg px-3 py-2 focus:ring-sky-500/30 focus:border-sky-500 resize-none"
                                 />
                             </div>
                         </>
@@ -341,17 +341,17 @@ export default function VersementModal({ isOpen, onClose, onSave, editData }: Ve
                 </div>
 
                 {/* Footer */}
-                <div className="px-6 py-4 bg-slate-50 rounded-b-xl flex justify-end gap-3">
+                <div className="px-6 py-4 bg-slate-900/40 rounded-b-xl flex justify-end gap-3">
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium flex items-center gap-2"
+                        className="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg font-medium flex items-center gap-2"
                     >
                         ✕ Annuler
                     </button>
                     <button
                         onClick={handleSubmit}
                         disabled={isSaving || isLoading}
-                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium flex items-center gap-2 disabled:opacity-50"
+                        className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium flex items-center gap-2 disabled:opacity-50"
                     >
                         {isSaving ? 'Enregistrement...' : '✓ Valider'}
                     </button>

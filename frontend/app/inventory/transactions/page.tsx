@@ -41,12 +41,12 @@ const formatQuantityChange = (qty: number | null | undefined, type: string): str
 // Fonction pour obtenir les classes de badge
 const getTypeBadge = (type: string): string => {
   const typeClasses = {
-    IN: 'bg-green-100 text-green-800 border border-green-200',
-    OUT: 'bg-red-100 text-red-800 border border-red-200',
-    TRANSFER: 'bg-blue-100 text-blue-800 border border-blue-200',
-    ADJUSTMENT: 'bg-yellow-100 text-yellow-800 border border-yellow-200',
+    IN: 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/20',
+    OUT: 'bg-sky-500/10 text-sky-300 border border-sky-500/20',
+    TRANSFER: 'bg-sky-500/10 text-blue-800 border border-sky-500/20',
+    ADJUSTMENT: 'bg-amber-500/10 text-amber-300 border border-amber-500/20',
   };
-  return typeClasses[type as keyof typeof typeClasses] || 'bg-gray-100 text-gray-800 border border-gray-200';
+  return typeClasses[type as keyof typeof typeClasses] || 'bg-slate-800/50 text-slate-100 border border-white/[0.06]';
 };
 
 function InventoryTransactionsContent() {
@@ -122,20 +122,20 @@ function InventoryTransactionsContent() {
         <div className="mb-6 flex flex-wrap justify-between items-center gap-4">
           <h1 className="text-3xl font-bold text-blue-800">Historique des Transactions de Stock</h1>
           <div>
-            <Link href="/inventory" className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+            <Link href="/inventory" className="text-sky-400 hover:text-blue-800 text-sm font-medium">
               ← Retour aux Niveaux de Stock
             </Link>
           </div>
         </div>
 
         {apiError && (
-          <div className="mb-4 p-4 bg-red-100 text-red-700 border border-red-200 rounded-lg">
+          <div className="mb-4 p-4 bg-sky-500/10 text-sky-300 border border-sky-500/20 rounded-lg">
             <strong>Erreur:</strong> {apiError}
           </div>
         )}
 
         {/* Date Quick Filter */}
-        <div className="mb-4 p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
+        <div className="mb-4 p-3 bg-slate-900/60 rounded-lg border border-white/[0.06] shadow-sm shadow-black/10">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <p className="text-xs text-slate-500 mb-2 font-medium">📅 Filtrer par date:</p>
@@ -158,20 +158,20 @@ function InventoryTransactionsContent() {
         <form onSubmit={handleFilterSubmit} className="mb-6 glassy-container p-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
             <div className="md:col-span-2">
-              <label htmlFor="search" className="block text-sm font-medium text-slate-700 mb-1">Recherche Produit</label>
+              <label htmlFor="search" className="block text-sm font-medium text-slate-200 mb-1">Recherche Produit</label>
               <input
                 type="text"
                 id="search"
                 placeholder="Par nom ou code produit..."
-                className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80"
+                className="w-full p-2 border border-white/[0.08] rounded-lg bg-slate-900/60 bg-opacity-80"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
             <div>
-              <label htmlFor="transactionType" className="block text-sm font-medium text-slate-700 mb-1">Type Transaction</label>
+              <label htmlFor="transactionType" className="block text-sm font-medium text-slate-200 mb-1">Type Transaction</label>
               <select id="transactionType" value={transactionType} onChange={(e) => setTransactionType(e.target.value)}
-                className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80">
+                className="w-full p-2 border border-white/[0.08] rounded-lg bg-slate-900/60 bg-opacity-80">
                 <option value="">Tous Types</option>
                 <option value="IN">Entrée (IN)</option>
                 <option value="OUT">Sortie (OUT)</option>
@@ -180,37 +180,37 @@ function InventoryTransactionsContent() {
               </select>
             </div>
             <div className="flex gap-2">
-              <button type="submit" className="flex-1 bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-lg font-medium text-sm transition">
+              <button type="submit" className="flex-1 bg-sky-600 text-white hover:bg-sky-700 px-4 py-2 rounded-lg font-medium text-sm transition">
                 Filtrer
               </button>
-              <button type="button" onClick={handleResetFilters} className="flex-1 bg-slate-200 text-slate-700 hover:bg-slate-300 px-4 py-2 rounded-lg font-medium text-sm transition">
+              <button type="button" onClick={handleResetFilters} className="flex-1 bg-slate-200 text-slate-200 hover:bg-slate-300 px-4 py-2 rounded-lg font-medium text-sm transition">
                 Effacer
               </button>
             </div>
 
             <div className="md:col-span-2">
-              <label htmlFor="dateFrom" className="block text-sm font-medium text-slate-700 mb-1">Date Début</label>
+              <label htmlFor="dateFrom" className="block text-sm font-medium text-slate-200 mb-1">Date Début</label>
               <input
                 type="date"
                 id="dateFrom"
-                className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80"
+                className="w-full p-2 border border-white/[0.08] rounded-lg bg-slate-900/60 bg-opacity-80"
                 value={dateFrom}
                 onChange={(e) => setDateFrom(e.target.value)}
               />
             </div>
             <div className="md:col-span-2">
-              <label htmlFor="dateTo" className="block text-sm font-medium text-slate-700 mb-1">Date Fin</label>
+              <label htmlFor="dateTo" className="block text-sm font-medium text-slate-200 mb-1">Date Fin</label>
               <input
                 type="date"
                 id="dateTo"
-                className="w-full p-2 border border-slate-300 rounded-lg bg-white bg-opacity-80"
+                className="w-full p-2 border border-white/[0.08] rounded-lg bg-slate-900/60 bg-opacity-80"
                 value={dateTo}
                 onChange={(e) => setDateTo(e.target.value)}
               />
             </div>
           </div>
           {(initialProductId || initialWarehouseId) && (
-            <div className="mt-3 text-sm text-slate-600">
+            <div className="mt-3 text-sm text-slate-400">
               <p>Filtre initial appliqué :
                 {initialProductId && <span> Produit ID: {initialProductId} </span>}
                 {initialWarehouseId && <span> Entrepôt ID: {initialWarehouseId} </span>}
@@ -227,8 +227,8 @@ function InventoryTransactionsContent() {
             <p className="text-center py-12 text-slate-500">Aucune transaction trouvée pour ces filtres.</p>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-sm text-left text-slate-600">
-                <thead className="text-xs text-slate-700 uppercase bg-slate-100 font-semibold sticky top-0">
+              <table className="w-full text-sm text-left text-slate-400">
+                <thead className="text-xs text-slate-200 uppercase bg-slate-800/50 font-semibold sticky top-0">
                   <tr>
                     <th scope="col" className="px-4 py-4">Date / Heure</th>
                     <th scope="col" className="px-4 py-4">Produit</th>
@@ -241,7 +241,7 @@ function InventoryTransactionsContent() {
                     <th scope="col" className="px-4 py-4">Utilisateur</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200">
+                <tbody className="divide-y divide-white/[0.06]">
                   {transactions.map((tx) => {
                     const qty = Math.abs(Number(tx.quantity)) || 0;
                     const piecesPerCarton = Number(tx.qteparcolis) || 0;
@@ -253,10 +253,10 @@ function InventoryTransactionsContent() {
                     const palettes = cartonsPerPalette > 0 ? (cartonsNum / cartonsPerPalette).toFixed(2) : '-';
 
                     return (
-                      <tr key={tx.transactionid} className="hover:bg-blue-50/50">
+                      <tr key={tx.transactionid} className="hover:bg-sky-500/10/50">
                         <td className="px-4 py-3 whitespace-nowrap">{formatDate(tx.createdat)}</td>
                         <td className="px-4 py-3">
-                          <div className="font-medium text-slate-900">{tx.productname}</div>
+                          <div className="font-medium text-white">{tx.productname}</div>
                           <div className="text-xs text-slate-500 font-mono">{tx.productcode}</div>
                           {(piecesPerCarton > 0 || cartonsPerPalette > 0) && (
                             <div className="text-[10px] text-slate-400 mt-0.5">
@@ -278,8 +278,8 @@ function InventoryTransactionsContent() {
                           )}
                         </td>
                         <td className={`px-4 py-3 text-right font-medium whitespace-nowrap ${(tx.transactiontype === 'IN' || (tx.transactiontype === 'ADJUSTMENT' && tx.quantity >= 0))
-                          ? 'text-green-600'
-                          : 'text-red-600'
+                          ? 'text-emerald-400'
+                          : 'text-sky-400'
                           }`}>
                           {formatQuantityChange(tx.quantity, tx.transactiontype)}
                         </td>

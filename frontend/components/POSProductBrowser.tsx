@@ -45,10 +45,10 @@ export function POSProductBrowser({
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-6">
-      <div className="w-full max-w-5xl h-full max-h-[85vh] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden">
-        <div className="p-6 border-b flex justify-between items-center bg-slate-50">
-          <h2 className="text-2xl font-black text-slate-800">Catalogue Produits</h2>
-          <button onClick={onClose} className="text-3xl text-slate-400 hover:text-slate-600">
+      <div className="w-full max-w-5xl h-full max-h-[85vh] bg-slate-900/60 rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+        <div className="p-6 border-b flex justify-between items-center bg-slate-900/40">
+          <h2 className="text-2xl font-black text-slate-100">Catalogue Produits</h2>
+          <button onClick={onClose} className="text-3xl text-slate-400 hover:text-slate-400">
             &times;
           </button>
         </div>
@@ -58,13 +58,13 @@ export function POSProductBrowser({
             placeholder="🔍 Rechercher par nom, code, marque..."
             value={browserSearch}
             onChange={(e) => setBrowserSearch(e.target.value)}
-            className="w-full p-5 bg-slate-50 border-2 border-slate-200 rounded-2xl text-lg font-bold"
+            className="w-full p-5 bg-slate-900/40 border-2 border-white/[0.06] rounded-2xl text-lg font-bold"
             autoFocus
           />
         </div>
         <div className="flex-1 overflow-auto p-4">
           <table className="w-full text-left">
-            <thead className="sticky top-0 bg-white border-b py-4">
+            <thead className="sticky top-0 bg-slate-900/60 border-b py-4">
               <tr className="text-[10px] text-slate-400 font-black uppercase tracking-widest">
                 <th className="px-4 py-3">Produit</th>
                 <th className="px-4 py-3">Famille / Marque</th>
@@ -78,17 +78,17 @@ export function POSProductBrowser({
                 <tr
                   key={p.productid}
                   {...getRowProps(idx)}
-                  className={getRowClass(idx, 'hover:bg-slate-50 transition-colors group cursor-pointer')}
+                  className={getRowClass(idx, 'hover:bg-slate-900/40 transition-colors group cursor-pointer')}
                   onClick={() => setSelectedIndex(idx)}
                 >
                   <td className="px-4 py-4">
-                    <div className="font-bold text-slate-800">{p.productname}</div>
+                    <div className="font-bold text-slate-100">{p.productname}</div>
                     <div className="text-[10px] text-slate-500">{p.productcode}</div>
                   </td>
                   <td className="px-4 py-4 text-xs font-bold text-slate-400 uppercase">
                     {p.famille || p.brandname}
                   </td>
-                  <td className="px-4 py-4 text-right font-black text-green-600">
+                  <td className="px-4 py-4 text-right font-black text-emerald-400">
                     {formatCurrency(p.prixvente || p.baseprice)}
                   </td>
                   <td className="px-4 py-4 text-right font-mono font-bold text-slate-500">

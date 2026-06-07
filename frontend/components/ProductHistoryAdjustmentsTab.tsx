@@ -42,9 +42,9 @@ export function ProductHistoryAdjustmentsTab({
           <p className="text-xs text-emerald-600 font-medium uppercase">Quantité Ajoutée</p>
           <p className="text-2xl font-bold text-emerald-700">+{formatQty(adjustmentHistoryData.totals.totalAdded)}</p>
         </div>
-        <div className="bg-red-50 p-4 rounded-lg border border-red-200">
-          <p className="text-xs text-red-600 font-medium uppercase">Quantité Retirée</p>
-          <p className="text-2xl font-bold text-red-700">-{formatQty(adjustmentHistoryData.totals.totalRemoved)}</p>
+        <div className="bg-sky-500/10 p-4 rounded-lg border border-sky-500/20">
+          <p className="text-xs text-sky-400 font-medium uppercase">Quantité Retirée</p>
+          <p className="text-2xl font-bold text-sky-300">-{formatQty(adjustmentHistoryData.totals.totalRemoved)}</p>
         </div>
       </div>
       {adjustmentHistoryData.adjustments.length === 0 ? (
@@ -82,17 +82,17 @@ export function ProductHistoryAdjustmentsTab({
                 const qty = parseFloat(adj.quantity);
                 return (
                   <tr key={adj.transactionid} className="hover:bg-amber-50/20">
-                    <td className="p-3 text-center text-slate-600 font-mono">{formatDate(adj.createdat, true)}</td>
-                    <td className="p-3 font-medium text-slate-800">{adj.createdbyuser || '-'}</td>
+                    <td className="p-3 text-center text-slate-400 font-mono">{formatDate(adj.createdat, true)}</td>
+                    <td className="p-3 font-medium text-slate-100">{adj.createdbyuser || '-'}</td>
                     <td
                       className={`p-3 text-right font-bold font-mono ${
-                        qty > 0 ? 'text-emerald-600 bg-emerald-50/30' : 'text-red-600 bg-red-50/30'
+                        qty > 0 ? 'text-emerald-600 bg-emerald-50/30' : 'text-sky-400 bg-sky-500/10/30'
                       }`}
                     >
                       {qty > 0 ? '+' : ''}
                       {formatQty(qty)}
                     </td>
-                    <td className="p-3 text-slate-600 text-xs">{adj.notes || '-'}</td>
+                    <td className="p-3 text-slate-400 text-xs">{adj.notes || '-'}</td>
                   </tr>
                 );
               })}

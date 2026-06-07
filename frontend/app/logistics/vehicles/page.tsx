@@ -109,11 +109,11 @@ export default function VehiclesPage() {
             <div className="flex justify-between items-center mb-6">
                 <div>
                     <Link href="/logistics" className="text-sm text-blue-100 hover:text-white mb-2 block">← Retour Logistique</Link>
-                    <h1 className="text-3xl font-bold text-white drop-shadow-md">Gestion des Véhicules</h1>
+                    <h1 className="text-3xl font-bold text-white drop-shadow-md shadow-black/20">Gestion des Véhicules</h1>
                 </div>
                 <button
                     onClick={() => handleOpenModal()}
-                    className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm shadow-lg px-4 py-2 rounded-lg transition"
+                    className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm shadow-lg shadow-black/20 px-4 py-2 rounded-lg transition"
                 >
                     + Nouveau Véhicule
                 </button>
@@ -122,38 +122,38 @@ export default function VehiclesPage() {
             {isLoading ? (
                 <p className="text-center text-slate-500 py-8">Chargement...</p>
             ) : (
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div className="bg-slate-900/60 rounded-xl shadow-sm shadow-black/10 border border-white/[0.06] overflow-hidden">
                     <table className="w-full text-left">
-                        <thead className="bg-slate-50 border-b border-slate-200">
+                        <thead className="bg-slate-900/40 border-b border-white/[0.06]">
                             <tr>
-                                <th className="p-4 font-semibold text-slate-700">N° Véhicule</th>
-                                <th className="p-4 font-semibold text-slate-700">Immatriculation</th>
-                                <th className="p-4 font-semibold text-slate-700">Type</th>
-                                <th className="p-4 font-semibold text-slate-700">Marque</th>
-                                <th className="p-4 font-semibold text-slate-700">Modèle</th>
-                                <th className="p-4 font-semibold text-slate-700">Capacité (kg)</th>
-                                <th className="p-4 font-semibold text-slate-700 text-right">Actions</th>
+                                <th className="p-4 font-semibold text-slate-200">N° Véhicule</th>
+                                <th className="p-4 font-semibold text-slate-200">Immatriculation</th>
+                                <th className="p-4 font-semibold text-slate-200">Type</th>
+                                <th className="p-4 font-semibold text-slate-200">Marque</th>
+                                <th className="p-4 font-semibold text-slate-200">Modèle</th>
+                                <th className="p-4 font-semibold text-slate-200">Capacité (kg)</th>
+                                <th className="p-4 font-semibold text-slate-200 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                             {vehicles.map((vehicle) => (
-                                <tr key={vehicle.vehicleid} className="hover:bg-slate-50">
-                                    <td className="p-4 font-medium text-slate-900">{vehicle.vehiclenumber}</td>
-                                    <td className="p-4 text-slate-600">{vehicle.registrationnumber}</td>
-                                    <td className="p-4 text-slate-600">{vehicle.vehicletype}</td>
-                                    <td className="p-4 text-slate-600">{vehicle.make}</td>
-                                    <td className="p-4 text-slate-600">{vehicle.model}</td>
-                                    <td className="p-4 text-slate-600">{vehicle.capacity}</td>
+                                <tr key={vehicle.vehicleid} className="hover:bg-slate-900/40">
+                                    <td className="p-4 font-medium text-white">{vehicle.vehiclenumber}</td>
+                                    <td className="p-4 text-slate-400">{vehicle.registrationnumber}</td>
+                                    <td className="p-4 text-slate-400">{vehicle.vehicletype}</td>
+                                    <td className="p-4 text-slate-400">{vehicle.make}</td>
+                                    <td className="p-4 text-slate-400">{vehicle.model}</td>
+                                    <td className="p-4 text-slate-400">{vehicle.capacity}</td>
                                     <td className="p-4 text-right space-x-2">
                                         <button
                                             onClick={() => handleOpenModal(vehicle)}
-                                            className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                                            className="text-sky-400 hover:text-blue-800 text-sm font-medium"
                                         >
                                             Modifier
                                         </button>
                                         <button
                                             onClick={() => handleDelete(vehicle.vehicleid)}
-                                            className="text-red-600 hover:text-red-800 text-sm font-medium"
+                                            className="text-sky-400 hover:text-sky-300 text-sm font-medium"
                                         >
                                             Supprimer
                                         </button>
@@ -174,37 +174,37 @@ export default function VehiclesPage() {
 
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
-                        <h2 className="text-xl font-bold text-slate-800 mb-4">
+                    <div className="bg-slate-900/60 rounded-xl shadow-xl w-full max-w-md p-6">
+                        <h2 className="text-xl font-bold text-slate-100 mb-4">
                             {editingVehicle ? 'Modifier Véhicule' : 'Nouveau Véhicule'}
                         </h2>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">N° Véhicule</label>
+                                <label className="block text-sm font-medium text-slate-200 mb-1">N° Véhicule</label>
                                 <input
                                     type="text"
                                     required
                                     value={formData.vehicleNumber}
                                     onChange={e => setFormData({ ...formData, vehicleNumber: e.target.value })}
-                                    className="w-full p-2 border border-slate-300 rounded-lg"
+                                    className="w-full p-2 border border-white/[0.08] rounded-lg"
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Immatriculation</label>
+                                <label className="block text-sm font-medium text-slate-200 mb-1">Immatriculation</label>
                                 <input
                                     type="text"
                                     required
                                     value={formData.registrationNumber}
                                     onChange={e => setFormData({ ...formData, registrationNumber: e.target.value })}
-                                    className="w-full p-2 border border-slate-300 rounded-lg"
+                                    className="w-full p-2 border border-white/[0.08] rounded-lg"
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
+                                <label className="block text-sm font-medium text-slate-200 mb-1">Type</label>
                                 <select
                                     value={formData.vehicleType}
                                     onChange={e => setFormData({ ...formData, vehicleType: e.target.value })}
-                                    className="w-full p-2 border border-slate-300 rounded-lg"
+                                    className="w-full p-2 border border-white/[0.08] rounded-lg"
                                 >
                                     <option value="TRUCK">Camion</option>
                                     <option value="VAN">Fourgon</option>
@@ -212,46 +212,46 @@ export default function VehiclesPage() {
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Marque</label>
+                                <label className="block text-sm font-medium text-slate-200 mb-1">Marque</label>
                                 <input
                                     type="text"
                                     required
                                     value={formData.make}
                                     onChange={e => setFormData({ ...formData, make: e.target.value })}
-                                    className="w-full p-2 border border-slate-300 rounded-lg"
+                                    className="w-full p-2 border border-white/[0.08] rounded-lg"
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Modèle</label>
+                                <label className="block text-sm font-medium text-slate-200 mb-1">Modèle</label>
                                 <input
                                     type="text"
                                     required
                                     value={formData.model}
                                     onChange={e => setFormData({ ...formData, model: e.target.value })}
-                                    className="w-full p-2 border border-slate-300 rounded-lg"
+                                    className="w-full p-2 border border-white/[0.08] rounded-lg"
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Capacité (kg)</label>
+                                <label className="block text-sm font-medium text-slate-200 mb-1">Capacité (kg)</label>
                                 <input
                                     type="number"
                                     required
                                     value={formData.capacity}
                                     onChange={e => setFormData({ ...formData, capacity: e.target.value })}
-                                    className="w-full p-2 border border-slate-300 rounded-lg"
+                                    className="w-full p-2 border border-white/[0.08] rounded-lg"
                                 />
                             </div>
                             <div className="flex justify-end gap-3 mt-6">
                                 <button
                                     type="button"
                                     onClick={() => setIsModalOpen(false)}
-                                    className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg"
+                                    className="px-4 py-2 text-slate-400 hover:bg-slate-800/50 rounded-lg"
                                 >
                                     Annuler
                                 </button>
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                                    className="px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700"
                                 >
                                     Enregistrer
                                 </button>

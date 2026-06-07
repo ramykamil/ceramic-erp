@@ -180,17 +180,17 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden max-h-[90vh] flex flex-col"
+      <div className="w-full max-w-5xl bg-slate-900/60 rounded-2xl shadow-2xl border border-white/[0.06] overflow-hidden max-h-[90vh] flex flex-col"
            style={{ animation: 'fadeIn 0.2s ease-out' }}>
 
         {/* Header */}
         <div className="px-6 py-4 border-b border-slate-100 bg-gradient-to-r from-indigo-50 to-purple-50 flex justify-between items-center shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-lg shadow-md">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-lg shadow-md shadow-black/20">
               📥
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-800">Synchronisation du Catalogue</h2>
+              <h2 className="text-lg font-bold text-slate-100">Synchronisation du Catalogue</h2>
               <p className="text-xs text-slate-500">
                 {step === 'upload' && 'Importez un fichier Excel pour synchroniser votre catalogue'}
                 {step === 'analyzing' && 'Analyse en cours...'}
@@ -200,7 +200,7 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
               </p>
             </div>
           </div>
-          <button onClick={handleClose} className="text-slate-400 hover:text-slate-600 text-2xl leading-none p-1 hover:bg-slate-100 rounded-lg transition">&times;</button>
+          <button onClick={handleClose} className="text-slate-400 hover:text-slate-400 text-2xl leading-none p-1 hover:bg-slate-800/50 rounded-lg transition">&times;</button>
         </div>
 
         {/* Body */}
@@ -208,7 +208,7 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
 
           {/* Error banner */}
           {error && (
-            <div className="mb-4 p-3 bg-red-50 text-red-700 border border-red-200 rounded-xl text-sm flex items-start gap-2">
+            <div className="mb-4 p-3 bg-sky-500/10 text-sky-300 border border-sky-500/20 rounded-xl text-sm flex items-start gap-2">
               <span className="shrink-0">❌</span>
               <span>{error}</span>
             </div>
@@ -224,9 +224,9 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
                 className={`border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all ${
-                  isDragOver ? 'border-indigo-400 bg-indigo-50 scale-[1.01]' :
-                  file ? 'border-green-400 bg-green-50' :
-                  'border-slate-300 hover:border-indigo-300 hover:bg-slate-50'
+                  isDragOver ? 'border-indigo-400 bg-indigo-500/100/10 scale-[1.01]' :
+                  file ? 'border-green-400 bg-emerald-500/10' :
+                  'border-white/[0.08] hover:border-indigo-300 hover:bg-slate-900/40'
                 }`}
               >
                 <input
@@ -239,11 +239,11 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
                 {file ? (
                   <div>
                     <div className="text-4xl mb-3">✅</div>
-                    <p className="text-lg font-semibold text-green-700">{file.name}</p>
-                    <p className="text-sm text-green-600 mt-1">{(file.size / 1024).toFixed(1)} KB — Prêt pour l'analyse</p>
+                    <p className="text-lg font-semibold text-emerald-400">{file.name}</p>
+                    <p className="text-sm text-emerald-400 mt-1">{(file.size / 1024).toFixed(1)} KB — Prêt pour l'analyse</p>
                     <button
                       onClick={(e) => { e.stopPropagation(); setFile(null); }}
-                      className="mt-3 text-sm text-red-500 hover:text-red-700 underline"
+                      className="mt-3 text-sm text-sky-400 hover:text-sky-300 underline"
                     >
                       Changer de fichier
                     </button>
@@ -251,7 +251,7 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
                 ) : (
                   <div>
                     <div className="text-5xl mb-3">📄</div>
-                    <p className="text-lg font-semibold text-slate-700">Glissez votre fichier Excel ici</p>
+                    <p className="text-lg font-semibold text-slate-200">Glissez votre fichier Excel ici</p>
                     <p className="text-sm text-slate-500 mt-1">ou cliquez pour sélectionner un fichier</p>
                     <p className="text-xs text-slate-400 mt-3">Formats acceptés: .xls, .xlsx</p>
                   </div>
@@ -259,9 +259,9 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
               </div>
 
               {/* Info box */}
-              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+              <div className="bg-sky-500/10 border border-sky-500/20 rounded-xl p-4">
                 <p className="text-sm font-medium text-blue-800 mb-2">💡 Comment ça marche ?</p>
-                <ul className="text-xs text-blue-700 space-y-1">
+                <ul className="text-xs text-sky-300 space-y-1">
                   <li>1. Le fichier est analysé et comparé avec votre catalogue actuel</li>
                   <li>2. Vous voyez un rapport détaillé des changements avant toute modification</li>
                   <li>3. Nouveaux produits, mises à jour de quantités, et produits à supprimer</li>
@@ -275,7 +275,7 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
           {step === 'analyzing' && (
             <div className="flex flex-col items-center justify-center py-16">
               <div className="w-16 h-16 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mb-6"></div>
-              <p className="text-lg font-semibold text-slate-700">Analyse en cours...</p>
+              <p className="text-lg font-semibold text-slate-200">Analyse en cours...</p>
               <p className="text-sm text-slate-500 mt-2">Comparaison du fichier Excel avec votre catalogue</p>
             </div>
           )}
@@ -289,17 +289,17 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
                   <p className="text-3xl font-bold text-emerald-600">{analysisResult.summary.newCount}</p>
                   <p className="text-xs font-medium text-emerald-700 mt-1">Nouveaux Produits</p>
                 </div>
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 text-center">
-                  <p className="text-3xl font-bold text-blue-600">{analysisResult.summary.updatedCount}</p>
-                  <p className="text-xs font-medium text-blue-700 mt-1">Produits Modifiés</p>
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-sky-500/20 rounded-xl p-4 text-center">
+                  <p className="text-3xl font-bold text-sky-400">{analysisResult.summary.updatedCount}</p>
+                  <p className="text-xs font-medium text-sky-300 mt-1">Produits Modifiés</p>
                 </div>
-                <div className="bg-gradient-to-br from-slate-50 to-gray-50 border border-slate-200 rounded-xl p-4 text-center">
+                <div className="bg-gradient-to-br from-slate-50 to-gray-50 border border-white/[0.06] rounded-xl p-4 text-center">
                   <p className="text-3xl font-bold text-slate-500">{analysisResult.summary.unchangedCount}</p>
-                  <p className="text-xs font-medium text-slate-600 mt-1">Inchangés</p>
+                  <p className="text-xs font-medium text-slate-400 mt-1">Inchangés</p>
                 </div>
-                <div className="bg-gradient-to-br from-red-50 to-rose-50 border border-red-200 rounded-xl p-4 text-center">
-                  <p className="text-3xl font-bold text-red-600">{analysisResult.summary.removedCount}</p>
-                  <p className="text-xs font-medium text-red-700 mt-1">À Supprimer</p>
+                <div className="bg-gradient-to-br from-red-50 to-rose-50 border border-sky-500/20 rounded-xl p-4 text-center">
+                  <p className="text-3xl font-bold text-sky-400">{analysisResult.summary.removedCount}</p>
+                  <p className="text-xs font-medium text-sky-300 mt-1">À Supprimer</p>
                 </div>
               </div>
 
@@ -317,11 +317,11 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
               )}
 
               {/* Tabs */}
-              <div className="flex border-b border-slate-200">
+              <div className="flex border-b border-white/[0.06]">
                 <button
                   onClick={() => setActiveTab('new')}
                   className={`px-4 py-2.5 text-sm font-medium border-b-2 transition ${
-                    activeTab === 'new' ? 'border-emerald-500 text-emerald-700 bg-emerald-50/50' : 'border-transparent text-slate-500 hover:text-slate-700'
+                    activeTab === 'new' ? 'border-emerald-500 text-emerald-700 bg-emerald-50/50' : 'border-transparent text-slate-500 hover:text-slate-200'
                   }`}
                 >
                   🟢 Nouveaux ({analysisResult.summary.newCount})
@@ -329,7 +329,7 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
                 <button
                   onClick={() => setActiveTab('updated')}
                   className={`px-4 py-2.5 text-sm font-medium border-b-2 transition ${
-                    activeTab === 'updated' ? 'border-blue-500 text-blue-700 bg-blue-50/50' : 'border-transparent text-slate-500 hover:text-slate-700'
+                    activeTab === 'updated' ? 'border-blue-500 text-sky-300 bg-sky-500/10/50' : 'border-transparent text-slate-500 hover:text-slate-200'
                   }`}
                 >
                   🔵 Modifiés ({analysisResult.summary.updatedCount})
@@ -337,7 +337,7 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
                 <button
                   onClick={() => setActiveTab('removed')}
                   className={`px-4 py-2.5 text-sm font-medium border-b-2 transition ${
-                    activeTab === 'removed' ? 'border-red-500 text-red-700 bg-red-50/50' : 'border-transparent text-slate-500 hover:text-slate-700'
+                    activeTab === 'removed' ? 'border-sky-500 text-sky-300 bg-sky-500/10/50' : 'border-transparent text-slate-500 hover:text-slate-200'
                   }`}
                 >
                   🔴 Supprimés ({analysisResult.summary.removedCount})
@@ -345,7 +345,7 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
               </div>
 
               {/* Tab Content */}
-              <div className="max-h-[40vh] overflow-auto rounded-xl border border-slate-200">
+              <div className="max-h-[40vh] overflow-auto rounded-xl border border-white/[0.06]">
 
                 {/* NEW PRODUCTS TABLE */}
                 {activeTab === 'new' && (
@@ -365,13 +365,13 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
                       <tbody>
                         {analysisResult.newProducts.map((p, i) => (
                           <tr key={i} className="border-t border-slate-100 hover:bg-emerald-50/30">
-                            <td className="p-3 font-medium text-slate-800">{p.productName}</td>
-                            <td className="p-3 text-slate-600">{p.brandName}</td>
-                            <td className="p-3 text-right text-slate-700">{fmtPrice(p.basePrice)}</td>
-                            <td className="p-3 text-right text-slate-700">{fmtPrice(p.purchasePrice)}</td>
+                            <td className="p-3 font-medium text-slate-100">{p.productName}</td>
+                            <td className="p-3 text-slate-400">{p.brandName}</td>
+                            <td className="p-3 text-right text-slate-200">{fmtPrice(p.basePrice)}</td>
+                            <td className="p-3 text-right text-slate-200">{fmtPrice(p.purchasePrice)}</td>
                             <td className="p-3 text-right font-semibold text-emerald-700">{fmt(p.quantity)}</td>
-                            <td className="p-3 text-right text-slate-600">{fmt(p.qteParColis)}</td>
-                            <td className="p-3 text-right text-slate-600">{fmt(p.qteColisParPalette)}</td>
+                            <td className="p-3 text-right text-slate-400">{fmt(p.qteParColis)}</td>
+                            <td className="p-3 text-right text-slate-400">{fmt(p.qteColisParPalette)}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -385,23 +385,23 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
                 {activeTab === 'updated' && (
                   analysisResult.updatedProducts.length > 0 ? (
                     <table className="w-full text-sm">
-                      <thead className="bg-blue-50 sticky top-0">
+                      <thead className="bg-sky-500/10 sticky top-0">
                         <tr>
-                          <th className="text-left p-3 text-xs font-semibold text-blue-700">Produit</th>
-                          <th className="text-right p-3 text-xs font-semibold text-blue-700">Quantité</th>
-                          <th className="text-right p-3 text-xs font-semibold text-blue-700">Prix Vente</th>
-                          <th className="text-right p-3 text-xs font-semibold text-blue-700">Prix Achat</th>
+                          <th className="text-left p-3 text-xs font-semibold text-sky-300">Produit</th>
+                          <th className="text-right p-3 text-xs font-semibold text-sky-300">Quantité</th>
+                          <th className="text-right p-3 text-xs font-semibold text-sky-300">Prix Vente</th>
+                          <th className="text-right p-3 text-xs font-semibold text-sky-300">Prix Achat</th>
                         </tr>
                       </thead>
                       <tbody>
                         {analysisResult.updatedProducts.map((p, i) => (
-                          <tr key={i} className="border-t border-slate-100 hover:bg-blue-50/30">
-                            <td className="p-3 font-medium text-slate-800">{p.productName}</td>
+                          <tr key={i} className="border-t border-slate-100 hover:bg-sky-500/10/30">
+                            <td className="p-3 font-medium text-slate-100">{p.productName}</td>
                             <td className="p-3 text-right">
                               {p.qtyChanged ? (
                                 <span>
                                   <span className="text-slate-400 line-through mr-1">{fmt(p.currentQty)}</span>
-                                  <span className="text-blue-700 font-bold">→ {fmt(p.quantity)}</span>
+                                  <span className="text-sky-300 font-bold">→ {fmt(p.quantity)}</span>
                                 </span>
                               ) : (
                                 <span className="text-slate-500">{fmt(p.quantity)}</span>
@@ -411,7 +411,7 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
                               {p.basePriceChanged ? (
                                 <span>
                                   <span className="text-slate-400 line-through mr-1">{fmt(p.currentBasePrice)}</span>
-                                  <span className="text-blue-700 font-bold">→ {fmt(p.basePrice)}</span>
+                                  <span className="text-sky-300 font-bold">→ {fmt(p.basePrice)}</span>
                                 </span>
                               ) : (
                                 <span className="text-slate-500">{fmtPrice(p.basePrice)}</span>
@@ -421,7 +421,7 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
                               {p.purchasePriceChanged ? (
                                 <span>
                                   <span className="text-slate-400 line-through mr-1">{fmt(p.currentPurchasePrice)}</span>
-                                  <span className="text-blue-700 font-bold">→ {fmt(p.purchasePrice)}</span>
+                                  <span className="text-sky-300 font-bold">→ {fmt(p.purchasePrice)}</span>
                                 </span>
                               ) : (
                                 <span className="text-slate-500">{fmtPrice(p.purchasePrice)}</span>
@@ -440,29 +440,29 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
                 {activeTab === 'removed' && (
                   analysisResult.removedProducts.length > 0 ? (
                     <table className="w-full text-sm">
-                      <thead className="bg-red-50 sticky top-0">
+                      <thead className="bg-sky-500/10 sticky top-0">
                         <tr>
-                          <th className="text-left p-3 text-xs font-semibold text-red-700">Produit</th>
-                          <th className="text-left p-3 text-xs font-semibold text-red-700">Marque</th>
-                          <th className="text-right p-3 text-xs font-semibold text-red-700">Stock Actuel</th>
-                          <th className="text-right p-3 text-xs font-semibold text-red-700">Prix Vente</th>
-                          <th className="text-center p-3 text-xs font-semibold text-red-700">Statut</th>
+                          <th className="text-left p-3 text-xs font-semibold text-sky-300">Produit</th>
+                          <th className="text-left p-3 text-xs font-semibold text-sky-300">Marque</th>
+                          <th className="text-right p-3 text-xs font-semibold text-sky-300">Stock Actuel</th>
+                          <th className="text-right p-3 text-xs font-semibold text-sky-300">Prix Vente</th>
+                          <th className="text-center p-3 text-xs font-semibold text-sky-300">Statut</th>
                         </tr>
                       </thead>
                       <tbody>
                         {analysisResult.removedProducts.map((p, i) => (
-                          <tr key={i} className={`border-t border-slate-100 hover:bg-red-50/30 ${p.hasPendingOrders ? 'bg-amber-50/50' : ''}`}>
-                            <td className="p-3 font-medium text-slate-800">{p.productName}</td>
-                            <td className="p-3 text-slate-600">{p.brandName}</td>
-                            <td className="p-3 text-right text-slate-700">{fmt(p.currentQty)}</td>
-                            <td className="p-3 text-right text-slate-700">{fmtPrice(p.currentBasePrice)}</td>
+                          <tr key={i} className={`border-t border-slate-100 hover:bg-sky-500/10/30 ${p.hasPendingOrders ? 'bg-amber-50/50' : ''}`}>
+                            <td className="p-3 font-medium text-slate-100">{p.productName}</td>
+                            <td className="p-3 text-slate-400">{p.brandName}</td>
+                            <td className="p-3 text-right text-slate-200">{fmt(p.currentQty)}</td>
+                            <td className="p-3 text-right text-slate-200">{fmtPrice(p.currentBasePrice)}</td>
                             <td className="p-3 text-center">
                               {p.hasPendingOrders ? (
                                 <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
                                   ⚠️ {p.pendingOrderCount} cmd
                                 </span>
                               ) : (
-                                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">
+                                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-sky-500/10 text-sky-300">
                                   Sera supprimé
                                 </span>
                               )}
@@ -482,8 +482,8 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
           {/* ============ STEP 4: EXECUTING ============ */}
           {step === 'executing' && (
             <div className="flex flex-col items-center justify-center py-16">
-              <div className="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin mb-6"></div>
-              <p className="text-lg font-semibold text-slate-700">Synchronisation en cours...</p>
+              <div className="w-16 h-16 border-4 border-violet-500/20 border-t-purple-600 rounded-full animate-spin mb-6"></div>
+              <p className="text-lg font-semibold text-slate-200">Synchronisation en cours...</p>
               <p className="text-sm text-slate-500 mt-2">Veuillez ne pas fermer cette fenêtre</p>
               <div className="mt-4 flex gap-2 text-xs text-slate-400">
                 <span>Création des nouveaux produits</span>
@@ -500,7 +500,7 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
             <div className="space-y-4">
               <div className="text-center py-6">
                 <div className="text-5xl mb-4">🎉</div>
-                <p className="text-xl font-bold text-slate-800">Synchronisation terminée !</p>
+                <p className="text-xl font-bold text-slate-100">Synchronisation terminée !</p>
               </div>
 
               <div className="grid grid-cols-3 gap-3">
@@ -508,13 +508,13 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
                   <p className="text-3xl font-bold text-emerald-600">{executionResult.created}</p>
                   <p className="text-xs font-medium text-emerald-700">Produits Créés</p>
                 </div>
-                <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
-                  <p className="text-3xl font-bold text-blue-600">{executionResult.updated}</p>
-                  <p className="text-xs font-medium text-blue-700">Produits Mis à Jour</p>
+                <div className="bg-sky-500/10 border border-sky-500/20 rounded-xl p-4 text-center">
+                  <p className="text-3xl font-bold text-sky-400">{executionResult.updated}</p>
+                  <p className="text-xs font-medium text-sky-300">Produits Mis à Jour</p>
                 </div>
-                <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-center">
-                  <p className="text-3xl font-bold text-red-600">{executionResult.removed}</p>
-                  <p className="text-xs font-medium text-red-700">Produits Supprimés</p>
+                <div className="bg-sky-500/10 border border-sky-500/20 rounded-xl p-4 text-center">
+                  <p className="text-3xl font-bold text-sky-400">{executionResult.removed}</p>
+                  <p className="text-xs font-medium text-sky-300">Produits Supprimés</p>
                 </div>
               </div>
 
@@ -535,7 +535,7 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-slate-100 bg-slate-50 flex justify-between items-center shrink-0">
+        <div className="px-6 py-4 border-t border-slate-100 bg-slate-900/40 flex justify-between items-center shrink-0">
           <div className="text-xs text-slate-400">
             {step === 'preview' && analysisResult && (
               <span>
@@ -546,13 +546,13 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
           <div className="flex gap-3">
             {step === 'upload' && (
               <>
-                <button onClick={handleClose} className="px-4 py-2.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 rounded-xl font-medium text-sm transition shadow-sm">
+                <button onClick={handleClose} className="px-4 py-2.5 bg-slate-900/60 border border-white/[0.08] text-slate-200 hover:bg-slate-900/40 rounded-xl font-medium text-sm transition shadow-sm shadow-black/10">
                   Annuler
                 </button>
                 <button
                   onClick={handleAnalyze}
                   disabled={!file}
-                  className="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 rounded-xl font-medium text-sm transition shadow-md disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 rounded-xl font-medium text-sm transition shadow-md shadow-black/20 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   🔍 Analyser le fichier
                 </button>
@@ -561,13 +561,13 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
 
             {step === 'preview' && (
               <>
-                <button onClick={() => { resetModal(); }} className="px-4 py-2.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 rounded-xl font-medium text-sm transition shadow-sm">
+                <button onClick={() => { resetModal(); }} className="px-4 py-2.5 bg-slate-900/60 border border-white/[0.08] text-slate-200 hover:bg-slate-900/40 rounded-xl font-medium text-sm transition shadow-sm shadow-black/10">
                   ← Recommencer
                 </button>
                 <button
                   onClick={handleExecute}
                   disabled={analysisResult?.summary.newCount === 0 && analysisResult?.summary.updatedCount === 0 && analysisResult?.summary.removedCount === 0}
-                  className="px-6 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 text-white hover:from-green-700 hover:to-emerald-700 rounded-xl font-medium text-sm transition shadow-md disabled:opacity-40 flex items-center gap-2"
+                  className="px-6 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 text-white hover:from-green-700 hover:to-emerald-700 rounded-xl font-medium text-sm transition shadow-md shadow-black/20 disabled:opacity-40 flex items-center gap-2"
                 >
                   ✅ Confirmer et Synchroniser
                 </button>
@@ -577,7 +577,7 @@ export default function CatalogueSyncModal({ isOpen, onClose, onComplete }: Cata
             {step === 'done' && (
               <button
                 onClick={() => { handleClose(); onComplete(); }}
-                className="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 rounded-xl font-medium text-sm transition shadow-md flex items-center gap-2"
+                className="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 rounded-xl font-medium text-sm transition shadow-md shadow-black/20 flex items-center gap-2"
               >
                 ✓ Fermer et Rafraîchir
               </button>

@@ -112,7 +112,7 @@ export default function SupplierVersementsSection() {
     return (
         <div className="space-y-4">
             {/* Filter Bar */}
-            <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
+            <div className="p-3 bg-slate-900/60 rounded-lg border border-white/[0.06] shadow-sm shadow-black/10">
                 <div className="flex flex-wrap items-center justify-between gap-4">
                     <div>
                         <p className="text-xs text-slate-500 mb-2 font-medium">📅 Filtrer par date:</p>
@@ -124,7 +124,7 @@ export default function SupplierVersementsSection() {
                     </div>
                     <button
                         onClick={handleAdd}
-                        className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 shadow-sm"
+                        className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 shadow-sm shadow-black/10"
                     >
                         + Ajouter un Paiement
                     </button>
@@ -141,7 +141,7 @@ export default function SupplierVersementsSection() {
                         <input
                             type="text"
                             placeholder="Rechercher par fournisseur, motif..."
-                            className="block w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg leading-5 bg-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                            className="block w-full pl-10 pr-3 py-2 border border-white/[0.08] rounded-lg leading-5 bg-slate-900/60 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
@@ -150,7 +150,7 @@ export default function SupplierVersementsSection() {
             </div>
 
             {/* Versements Table */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="bg-slate-900/60 rounded-xl shadow-sm shadow-black/10 border border-white/[0.06] overflow-hidden">
                 {isLoading ? (
                     <p className="p-10 text-center text-slate-500">Chargement...</p>
                 ) : versements.length === 0 ? (
@@ -158,7 +158,7 @@ export default function SupplierVersementsSection() {
                 ) : (
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm text-left">
-                            <thead className="bg-slate-50 text-slate-500 uppercase text-xs font-semibold border-b border-slate-100">
+                            <thead className="bg-slate-900/40 text-slate-500 uppercase text-xs font-semibold border-b border-slate-100">
                                 <tr>
                                     <th className="px-4 py-3">Compte</th>
                                     <th className="px-4 py-3">Fournisseur</th>
@@ -173,14 +173,14 @@ export default function SupplierVersementsSection() {
                             </thead>
                             <tbody className="divide-y divide-slate-100">
                                 {versements.map((v) => (
-                                    <tr key={v.transactionid} className="hover:bg-slate-50 transition">
-                                        <td className="px-4 py-3 text-orange-600 font-medium">{v.accountname}</td>
+                                    <tr key={v.transactionid} className="hover:bg-slate-900/40 transition">
+                                        <td className="px-4 py-3 text-orange-400 font-medium">{v.accountname}</td>
                                         <td className="px-4 py-3 font-medium">{v.suppliername || v.tiers}</td>
-                                        <td className="px-4 py-3 text-slate-600">{v.motif || '-'}</td>
+                                        <td className="px-4 py-3 text-slate-400">{v.motif || '-'}</td>
                                         <td className="px-4 py-3 text-slate-500">{formatDate(v.createdat)}</td>
-                                        <td className="px-4 py-3 text-right font-bold text-orange-600">{formatCurrencyDZD(v.amount)}</td>
+                                        <td className="px-4 py-3 text-right font-bold text-orange-400">{formatCurrencyDZD(v.amount)}</td>
                                         <td className="px-4 py-3">
-                                            <span className="px-2 py-1 bg-orange-100 text-orange-800 rounded-full text-xs">
+                                            <span className="px-2 py-1 bg-orange-500/10 text-orange-800 rounded-full text-xs">
                                                 {getPaymentModeLabel(v.paymentmode)}
                                             </span>
                                         </td>
@@ -192,14 +192,14 @@ export default function SupplierVersementsSection() {
                                             <div className="flex gap-1 justify-center">
                                                 <button
                                                     onClick={() => handleEdit(v)}
-                                                    className="p-1.5 rounded hover:bg-orange-50 text-orange-600 hover:text-orange-700 transition"
+                                                    className="p-1.5 rounded hover:bg-orange-50 text-orange-400 hover:text-orange-400 transition"
                                                     title="Modifier"
                                                 >
                                                     ✎
                                                 </button>
                                                 <button
                                                     onClick={() => handleDelete(v)}
-                                                    className="p-1.5 rounded hover:bg-red-50 text-red-600 hover:text-red-700 transition"
+                                                    className="p-1.5 rounded hover:bg-sky-500/10 text-sky-400 hover:text-sky-300 transition"
                                                     title="Supprimer"
                                                 >
                                                     🗑️
@@ -217,7 +217,7 @@ export default function SupplierVersementsSection() {
             {/* Total Footer */}
             {!isLoading && versements.length > 0 && (
                 <div className="flex justify-center">
-                    <div className="bg-orange-500 text-white px-6 py-3 rounded-lg shadow-lg">
+                    <div className="bg-orange-500 text-white px-6 py-3 rounded-lg shadow-lg shadow-black/20">
                         <div className="text-2xl font-bold text-center">{formatCurrencyDZD(totalVersement)}</div>
                         <div className="text-sm text-center opacity-90">Total Paiements Fournisseurs</div>
                     </div>

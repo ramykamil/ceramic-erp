@@ -92,7 +92,7 @@ export function UserFilter({
             <select
                 value={selectedUserId}
                 onChange={(e) => handleChange(e.target.value)}
-                className="px-3 py-1.5 text-sm border border-slate-300 rounded-lg bg-white text-slate-800 min-w-[150px]"
+                className="px-3 py-1.5 text-sm border border-white/[0.08] rounded-lg bg-slate-900/60 text-slate-100 min-w-[150px]"
             >
                 <option value="">Tous les utilisateurs</option>
                 {users.map((u: any) => {

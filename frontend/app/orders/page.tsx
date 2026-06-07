@@ -35,13 +35,13 @@ const formatCurrencyDZD = (amount: number) => new Intl.NumberFormat('fr-DZ', { s
 const getStatusBadge = (status: string) => {
   const classes = {
     PENDING: 'bg-amber-100 text-amber-800',
-    CONFIRMED: 'bg-red-100 text-brand-primary',
-    PROCESSING: 'bg-purple-100 text-purple-800',
-    SHIPPED: 'bg-indigo-100 text-indigo-800',
+    CONFIRMED: 'bg-sky-500/10 text-brand-primary',
+    PROCESSING: 'bg-violet-500/10 text-purple-800',
+    SHIPPED: 'bg-indigo-500/100/100/10 text-indigo-800',
     DELIVERED: 'bg-emerald-100 text-emerald-800',
-    CANCELLED: 'bg-red-100 text-red-800',
+    CANCELLED: 'bg-sky-500/10 text-sky-300',
   };
-  return classes[status as keyof typeof classes] || 'bg-gray-100 text-gray-800';
+  return classes[status as keyof typeof classes] || 'bg-slate-800/50 text-slate-100';
 };
 
 function OrdersListContent() {
@@ -278,17 +278,17 @@ function OrdersListContent() {
   return (
     <div 
       ref={containerRef}
-      className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800 outline-none"
+      className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-900/40 text-slate-100 outline-none"
     >
       <div className="max-w-[1600px] mx-auto">
 
         {/* Main Section Tabs */}
-        <div className="mb-6 flex border-b border-slate-300">
+        <div className="mb-6 flex border-b border-white/[0.08]">
           <button
             onClick={() => setMainSection('COMMANDES')}
             className={`px-6 py-3 font-medium text-sm border-b-2 -mb-px transition ${mainSection === 'COMMANDES'
-              ? 'border-brand-primary text-brand-primary bg-white'
-              : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+              ? 'border-brand-primary text-brand-primary bg-slate-900/60'
+              : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/[0.08]'
               }`}
           >
             📦 Commandes
@@ -296,8 +296,8 @@ function OrdersListContent() {
           <button
             onClick={() => setMainSection('VERSEMENTS')}
             className={`px-6 py-3 font-medium text-sm border-b-2 -mb-px transition ${mainSection === 'VERSEMENTS'
-              ? 'border-brand-primary text-brand-primary bg-white'
-              : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+              ? 'border-brand-primary text-brand-primary bg-slate-900/60'
+              : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/[0.08]'
               }`}
           >
             💵 Versements
@@ -312,7 +312,7 @@ function OrdersListContent() {
             {/* Header */}
             <div className="mb-6 flex justify-between items-center">
               <div>
-                <h1 className="text-3xl font-bold text-slate-800">Commandes</h1>
+                <h1 className="text-3xl font-bold text-slate-100">Commandes</h1>
                 <p className="text-slate-500 text-sm mt-1">Historique des ventes</p>
               </div>
               <div className="flex gap-2">
@@ -332,7 +332,7 @@ function OrdersListContent() {
                       'Commandes'
                     );
                   }}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-lg font-medium text-xs flex items-center gap-1 shadow-sm"
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-lg font-medium text-xs flex items-center gap-1 shadow-sm shadow-black/10"
                   title="Exporter Excel"
                 >
                   📄
@@ -340,15 +340,15 @@ function OrdersListContent() {
                 <Link href="/sales/pos" className="btn-glassy px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2">
                   + Nouvelle Vente
                 </Link>
-                <Link href="/sales/returns/new" className="bg-orange-600/90 backdrop-blur-md text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-orange-700 flex items-center gap-2 shadow-sm transition-all border border-white/10">
+                <Link href="/sales/returns/new" className="bg-orange-600/90 backdrop-blur-md text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-orange-700 flex items-center gap-2 shadow-sm shadow-black/10 transition-all border border-white/10">
                   ↩ Nouveau Retour
                 </Link>
-                <Link href="/" className="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm hover:bg-slate-50">Retour</Link>
+                <Link href="/" className="bg-slate-900/60 border border-white/[0.08] text-slate-200 px-4 py-2 rounded-lg text-sm hover:bg-slate-900/40">Retour</Link>
               </div>
             </div>
 
             {/* Date Quick Filter */}
-            <div className="mb-4 p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
+            <div className="mb-4 p-3 bg-slate-900/60 rounded-lg border border-white/[0.06] shadow-sm shadow-black/10">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <p className="text-xs text-slate-500 mb-2 font-medium">📅 Filtrer par date:</p>
@@ -368,7 +368,7 @@ function OrdersListContent() {
                 <div className="flex items-center gap-2 border-l pl-4">
                   <span className="text-xs text-slate-500 font-medium">Affichage:</span>
                   <select
-                    className="border border-slate-300 rounded-md text-sm py-1 px-2 focus:ring-brand-primary/40 focus:border-brand-primary bg-slate-50 font-bold"
+                    className="border border-white/[0.08] rounded-md text-sm py-1 px-2 focus:ring-brand-primary/40 focus:border-brand-primary bg-slate-900/40 font-bold"
                     value={recordTypeFilter}
                     onChange={(e) => setRecordTypeFilter(e.target.value as any)}
                   >
@@ -381,7 +381,7 @@ function OrdersListContent() {
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-slate-500 font-medium">Type Vente:</span>
                   <select
-                    className="border border-slate-300 rounded-md text-sm py-1 px-2 focus:ring-brand-primary/40 focus:border-brand-primary"
+                    className="border border-white/[0.08] rounded-md text-sm py-1 px-2 focus:ring-brand-primary/40 focus:border-brand-primary"
                     value={orderTypeFilter}
                     onChange={(e) => setOrderTypeFilter(e.target.value)}
                   >
@@ -403,7 +403,7 @@ function OrdersListContent() {
                   <input
                     type="text"
                     placeholder="Rechercher par N° Commande ou Client..."
-                    className="block w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg leading-5 bg-white placeholder-slate-500 focus:outline-none focus:placeholder-slate-400 focus:ring-1 focus:ring-brand-primary focus:border-brand-primary sm:text-sm transition duration-150 ease-in-out"
+                    className="block w-full pl-10 pr-3 py-2 border border-white/[0.08] rounded-lg leading-5 bg-slate-900/60 placeholder-slate-500 focus:outline-none focus:placeholder-slate-400 focus:ring-1 focus:ring-brand-primary focus:border-brand-primary sm:text-sm transition duration-150 ease-in-out"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -418,8 +418,8 @@ function OrdersListContent() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition ${activeTab === tab.id
-                    ? 'bg-slate-800 text-white shadow-md'
-                    : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
+                    ? 'bg-slate-800 text-white shadow-md shadow-black/20'
+                    : 'bg-slate-900/60 text-slate-400 border border-white/[0.06] hover:bg-slate-800/50'
                     }`}
                 >
                   {tab.label}
@@ -431,7 +431,7 @@ function OrdersListContent() {
             </div>
 
             {/* Table */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="bg-slate-900/60 rounded-xl shadow-sm shadow-black/10 border border-white/[0.06] overflow-hidden">
               {isLoading ? (
                 <p className="p-10 text-center text-slate-500">Chargement...</p>
               ) : filteredRecords.length === 0 ? (
@@ -439,7 +439,7 @@ function OrdersListContent() {
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-[11px] text-left" style={{ tableLayout: 'fixed' }}>
-                    <thead className="bg-slate-50 text-slate-500 uppercase text-xs font-semibold border-b border-slate-100">
+                    <thead className="bg-slate-900/40 text-slate-500 uppercase text-xs font-semibold border-b border-slate-100">
                       <tr>
                         <th style={{ width: 80 }} className="px-2 py-2 text-center">Type</th>
                         <ResizableSortableHeader label="Référence" sortKey="number" currentDirection={getSortDirection('number' as keyof UnifiedRow)} onSort={(k) => handleSort(k as keyof UnifiedRow)} width={widths.ordernumber} onResize={handleResize} />
@@ -458,23 +458,23 @@ function OrdersListContent() {
                         <tr 
                           key={`${record.recordType}-${record.id}`} 
                           {...getRowProps(idx)}
-                          className={getRowClass(idx, "hover:bg-slate-50 transition cursor-pointer")}
+                          className={getRowClass(idx, "hover:bg-slate-900/40 transition cursor-pointer")}
                         >
                           <td className="px-2 py-2 text-center">
-                            <span className={`text-[10px] px-1.5 py-0.5 rounded font-black ${record.recordType === 'ORDER' ? 'bg-red-100 text-brand-primary' : 'bg-orange-100 text-orange-700'}`}>
+                            <span className={`text-[10px] px-1.5 py-0.5 rounded font-black ${record.recordType === 'ORDER' ? 'bg-sky-500/10 text-brand-primary' : 'bg-orange-500/10 text-orange-400'}`}>
                               {record.recordType === 'ORDER' ? 'VENTE' : 'RETOUR'}
                             </span>
                           </td>
                           <td className="px-2 py-2 font-mono font-medium whitespace-nowrap" style={{ width: widths.ordernumber }}>{record.number}</td>
                           <td className="px-2 py-2 truncate" style={{ width: widths.customername }}>{record.retailClientName || record.customerName || 'Passager'}</td>
                           <td className="px-2 py-2 text-slate-500" style={{ width: widths.orderdate }}>{formatDate(record.date)}</td>
-                          <td className={`px-2 py-2 text-right font-bold ${record.totalAmount < 0 ? 'text-orange-600' : ''}`} style={{ width: widths.totalamount }}>
+                          <td className={`px-2 py-2 text-right font-bold ${record.totalAmount < 0 ? 'text-orange-400' : ''}`} style={{ width: widths.totalamount }}>
                             {formatCurrencyDZD(parseFloat(String(record.totalAmount)) || 0)}
                           </td>
-                          <td className="px-2 py-2 text-right text-green-600 font-medium" style={{ width: widths.versement }}>{formatCurrencyDZD(parseFloat(String(record.paymentAmount)) || 0)}</td>
+                          <td className="px-2 py-2 text-right text-emerald-400 font-medium" style={{ width: widths.versement }}>{formatCurrencyDZD(parseFloat(String(record.paymentAmount)) || 0)}</td>
                           {userRole === 'ADMIN' && (
                             <td className="px-2 py-2 text-right font-medium" style={{ width: widths.benefice }}>
-                              <span className={(parseFloat(String(record.benefice)) || 0) >= 0 ? 'text-emerald-600' : 'text-red-600'}>
+                              <span className={(parseFloat(String(record.benefice)) || 0) >= 0 ? 'text-emerald-600' : 'text-sky-400'}>
                                 {formatCurrencyDZD(parseFloat(String(record.benefice)) || 0)}
                               </span>
                             </td>
@@ -484,33 +484,33 @@ function OrdersListContent() {
                               {record.status}
                             </span>
                           </td>
-                          <td className="px-2 py-2 text-slate-600 text-[10px] truncate" style={{ width: widths.salespersonname }}>
+                          <td className="px-2 py-2 text-slate-400 text-[10px] truncate" style={{ width: widths.salespersonname }}>
                             {record.salesPerson || '-'}
                             {record.orderType && <div className="text-[8px] opacity-50 uppercase">{record.orderType}</div>}
                           </td>
                           <td className="px-2 py-2 text-center flex gap-1 justify-center items-center" style={{ width: 140 }}>
                             {record.recordType === 'ORDER' ? (
                               <>
-                                <div className="flex gap-1 mr-2 border-r border-slate-200 pr-2">
-                                  <a href={`/orders/print/${record.id}?type=TICKET`} target="_blank" className="p-1.5 rounded hover:bg-slate-100 text-slate-600"><span className="text-xs font-bold">🎫</span></a>
-                                  <a href={`/orders/print/${record.id}?type=DELIVERY_NOTE`} target="_blank" className="p-1.5 rounded hover:bg-red-50 text-red-600"><span className="text-xs font-bold">BL</span></a>
+                                <div className="flex gap-1 mr-2 border-r border-white/[0.06] pr-2">
+                                  <a href={`/orders/print/${record.id}?type=TICKET`} target="_blank" className="p-1.5 rounded hover:bg-slate-800/50 text-slate-400"><span className="text-xs font-bold">🎫</span></a>
+                                  <a href={`/orders/print/${record.id}?type=DELIVERY_NOTE`} target="_blank" className="p-1.5 rounded hover:bg-sky-500/10 text-sky-400"><span className="text-xs font-bold">BL</span></a>
                                 </div>
-                                <Link href={`/orders/${record.id}`} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded" title="Détails">👁</Link>
+                                <Link href={`/orders/${record.id}`} className="p-1.5 text-sky-400 hover:bg-sky-500/10 rounded" title="Détails">👁</Link>
                                 {record.status === 'PENDING' && (
-                                  <button onClick={() => handleConfirm(record.id)} className="p-1.5 text-green-600 hover:bg-green-50 rounded" title="Confirmer">✓</button>
+                                  <button onClick={() => handleConfirm(record.id)} className="p-1.5 text-emerald-400 hover:bg-emerald-500/10 rounded" title="Confirmer">✓</button>
                                 )}
-                                <Link href={`/sales/pos?editOrderId=${record.id}`} className="p-1.5 text-brand-primary hover:bg-red-50 rounded" title="Modifier">✎</Link>
-                                <button onClick={() => handleDelete(record.id, 'ORDER')} className="p-1.5 text-red-600 hover:bg-red-50 rounded" title="Supprimer">×</button>
+                                <Link href={`/sales/pos?editOrderId=${record.id}`} className="p-1.5 text-brand-primary hover:bg-sky-500/10 rounded" title="Modifier">✎</Link>
+                                <button onClick={() => handleDelete(record.id, 'ORDER')} className="p-1.5 text-sky-400 hover:bg-sky-500/10 rounded" title="Supprimer">×</button>
                               </>
                             ) : (
                               <>
-                                <div className="flex gap-1 mr-3 border-r border-slate-200 pr-3">
-                                  <a href={`/sales/returns/print/${record.id}`} target="_blank" className="p-1.5 rounded hover:bg-orange-50 text-orange-600" title="Imprimer Bon de Retour">
+                                <div className="flex gap-1 mr-3 border-r border-white/[0.06] pr-3">
+                                  <a href={`/sales/returns/print/${record.id}`} target="_blank" className="p-1.5 rounded hover:bg-orange-50 text-orange-400" title="Imprimer Bon de Retour">
                                     <span className="text-xs font-bold">📄</span>
                                   </a>
                                 </div>
-                                <Link href={`/sales/returns/${record.id}`} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded" title="Détails">👁</Link>
-                                <button onClick={() => handleDelete(record.id, 'RETURN')} className="p-1.5 text-red-600 hover:bg-red-50 rounded" title="Supprimer Retour">×</button>
+                                <Link href={`/sales/returns/${record.id}`} className="p-1.5 text-sky-400 hover:bg-sky-500/10 rounded" title="Détails">👁</Link>
+                                <button onClick={() => handleDelete(record.id, 'RETURN')} className="p-1.5 text-sky-400 hover:bg-sky-500/10 rounded" title="Supprimer Retour">×</button>
                               </>
                             )}
                           </td>
@@ -524,59 +524,59 @@ function OrdersListContent() {
 
             {/* Totals Footer - hidden for retail users */}
             {!isLoading && filteredRecords.length > 0 && userRole === 'ADMIN' && (
-              <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-slate-300 shadow-lg z-40 px-4 py-3">
+              <div className="fixed bottom-0 left-0 right-0 bg-slate-900/60 border-t-2 border-white/[0.08] shadow-lg shadow-black/20 z-40 px-4 py-3">
                 <div className="max-w-[1600px] mx-auto">
                   {/* Filtered Totals Row */}
                   <div className="flex flex-wrap items-center justify-center gap-3 mb-2">
                     <span className="text-xs text-slate-500 font-medium uppercase">Sélection:</span>
-                    <div className="flex items-center gap-1 px-3 py-1.5 bg-brand-primary text-white rounded-lg shadow-sm">
+                    <div className="flex items-center gap-1 px-3 py-1.5 bg-brand-primary text-white rounded-lg shadow-sm shadow-black/10">
                       <span className="text-xs font-medium">Total Net</span>
                       <span className="font-bold text-sm ml-1">
                         {formatCurrencyDZD(filteredRecords.reduce((sum, r) => sum + (parseFloat(String(r.totalAmount)) || 0), 0))}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 px-3 py-1.5 bg-green-600 text-white rounded-lg shadow-sm">
+                    <div className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 text-white rounded-lg shadow-sm shadow-black/10">
                       <span className="text-xs font-medium">Versement</span>
                       <span className="font-bold text-sm ml-1">
                         {formatCurrencyDZD(filteredRecords.reduce((sum, r) => sum + (parseFloat(String(r.paymentAmount)) || 0), 0))}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 text-white rounded-lg shadow-sm">
+                    <div className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 text-white rounded-lg shadow-sm shadow-black/10">
                       <span className="text-xs font-medium">Bénéfice</span>
                       <span className="font-bold text-sm ml-1">
                         {formatCurrencyDZD(filteredRecords.reduce((sum, r) => sum + (parseFloat(String(r.benefice)) || 0), 0))}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 px-3 py-1.5 bg-orange-600 text-white rounded-lg shadow-sm">
+                    <div className="flex items-center gap-1 px-3 py-1.5 bg-orange-600 text-white rounded-lg shadow-sm shadow-black/10">
                       <span className="text-xs font-medium">Retours</span>
                       <span className="font-bold text-sm ml-1">{filteredRecords.filter(r => r.recordType === 'RETURN').length}</span>
                     </div>
-                    <div className="flex items-center gap-1 px-3 py-1.5 bg-slate-700 text-white rounded-lg shadow-sm">
+                    <div className="flex items-center gap-1 px-3 py-1.5 bg-slate-700 text-white rounded-lg shadow-sm shadow-black/10">
                       <span className="text-xs font-medium">Éléments</span>
                       <span className="font-bold text-sm ml-1">{filteredRecords.length}</span>
                     </div>
                   </div>
 
                   {/* Overall Totals Row (all records) */}
-                  <div className="flex flex-wrap items-center justify-center gap-3 pt-2 border-t border-slate-200">
+                  <div className="flex flex-wrap items-center justify-center gap-3 pt-2 border-t border-white/[0.06]">
                     <span className="text-xs text-slate-400 font-medium uppercase">Total Général:</span>
-                    <div className="flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-lg border border-blue-200">
+                    <div className="flex items-center gap-1 px-3 py-1 bg-sky-500/10 text-blue-800 rounded-lg border border-sky-500/20">
                       <span className="text-xs font-medium">CA Net</span>
                       <span className="font-bold text-sm ml-1">
                         {formatCurrencyDZD(records.reduce((sum, r) => sum + (parseFloat(String(r.totalAmount)) || 0), 0))}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-800 rounded-lg border border-green-200">
+                    <div className="flex items-center gap-1 px-3 py-1 bg-emerald-500/10 text-emerald-300 rounded-lg border border-emerald-500/20">
                       <span className="text-xs font-medium">Encaissement</span>
                       <span className="font-bold text-sm ml-1">
                         {formatCurrencyDZD(records.reduce((sum, r) => sum + (parseFloat(String(r.paymentAmount)) || 0), 0))}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 px-3 py-1 bg-orange-100 text-orange-800 rounded-lg border border-orange-200">
+                    <div className="flex items-center gap-1 px-3 py-1 bg-orange-500/10 text-orange-800 rounded-lg border border-orange-500/20">
                       <span className="text-xs font-medium">Total Retours</span>
                       <span className="font-bold text-sm ml-1">{records.filter(r => r.recordType === 'RETURN').length}</span>
                     </div>
-                    <div className="flex items-center gap-1 px-3 py-1 bg-slate-100 text-slate-700 rounded-lg border border-slate-200">
+                    <div className="flex items-center gap-1 px-3 py-1 bg-slate-800/50 text-slate-200 rounded-lg border border-white/[0.06]">
                       <span className="text-xs font-medium">Vol. Transactions</span>
                       <span className="font-bold text-sm ml-1">{records.length}</span>
                     </div>

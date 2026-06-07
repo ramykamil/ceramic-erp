@@ -89,10 +89,10 @@ export default function ProductCreateModal({ isOpen, brands, units, warehouses, 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      <div className="w-full max-w-lg bg-white rounded-xl shadow-2xl max-h-[90vh] overflow-y-auto">
-        <div className="p-5 border-b border-slate-100 flex justify-between items-center sticky top-0 bg-white z-10">
-          <h2 className="text-lg font-bold text-slate-800">➕ Nouveau Produit</h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
+      <div className="w-full max-w-lg bg-slate-900/60 rounded-xl shadow-2xl max-h-[90vh] overflow-y-auto">
+        <div className="p-5 border-b border-slate-100 flex justify-between items-center sticky top-0 bg-slate-900/60 z-10">
+          <h2 className="text-lg font-bold text-slate-100">➕ Nouveau Produit</h2>
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-400 text-2xl">&times;</button>
         </div>
         <div className="p-6 space-y-4">
           <div className="grid grid-cols-2 gap-4">
@@ -102,7 +102,7 @@ export default function ProductCreateModal({ isOpen, brands, units, warehouses, 
                 type="text"
                 value={newProduct.productcode}
                 onChange={e => setNewProduct({ ...newProduct, productcode: e.target.value })}
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
                 placeholder="Ex: PRD-001"
               />
             </div>
@@ -111,7 +111,7 @@ export default function ProductCreateModal({ isOpen, brands, units, warehouses, 
               <select
                 value={newProduct.brandid || ''}
                 onChange={e => setNewProduct({ ...newProduct, brandid: Number(e.target.value) })}
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
               >
                 <option value="0">-- Aucune --</option>
                 {brands.map(b => (
@@ -126,7 +126,7 @@ export default function ProductCreateModal({ isOpen, brands, units, warehouses, 
               type="text"
               value={newProduct.productname}
               onChange={e => setNewProduct({ ...newProduct, productname: e.target.value })}
-              className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+              className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
               placeholder="Ex: CARRELAGE GRIS 60x60"
             />
           </div>
@@ -137,7 +137,7 @@ export default function ProductCreateModal({ isOpen, brands, units, warehouses, 
               <select
                 value={newProduct.choix}
                 onChange={e => setNewProduct({ ...newProduct, choix: e.target.value })}
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
               >
                 <option value="">--</option>
                 <option value="1er Choix">1er Choix</option>
@@ -150,7 +150,7 @@ export default function ProductCreateModal({ isOpen, brands, units, warehouses, 
               <select
                 value={newProduct.primaryunitid || ''}
                 onChange={e => setNewProduct({ ...newProduct, primaryunitid: Number(e.target.value) })}
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
               >
                 <option value="">-- Sélectionner --</option>
                 {units.map(u => (
@@ -167,7 +167,7 @@ export default function ProductCreateModal({ isOpen, brands, units, warehouses, 
                 onWheel={(e) => e.currentTarget.blur()}
                 value={newProduct.prixvente || ''}
                 onChange={e => setNewProduct({ ...newProduct, prixvente: Number(e.target.value) })}
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
                 placeholder="0.00"
               />
             </div>
@@ -178,7 +178,7 @@ export default function ProductCreateModal({ isOpen, brands, units, warehouses, 
                 onWheel={(e) => e.currentTarget.blur()}
                 value={newProduct.prixachat || ''}
                 onChange={e => setNewProduct({ ...newProduct, prixachat: Number(e.target.value) })}
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
                 placeholder="0.00"
               />
             </div>
@@ -189,14 +189,14 @@ export default function ProductCreateModal({ isOpen, brands, units, warehouses, 
               type="text"
               value={newProduct.calibre}
               onChange={e => setNewProduct({ ...newProduct, calibre: e.target.value })}
-              className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+              className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
               placeholder="Ex: C1, 01"
             />
           </div>
 
           {/* Packaging Section */}
-          <div className="border-t border-slate-200 pt-4 mt-4">
-            <h3 className="text-sm font-bold text-slate-700 mb-3">📦 Emballage</h3>
+          <div className="border-t border-white/[0.06] pt-4 mt-4">
+            <h3 className="text-sm font-bold text-slate-200 mb-3">📦 Emballage</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-medium text-slate-500 uppercase mb-1">Qté par Colis (pcs ou m²)</label>
@@ -206,7 +206,7 @@ export default function ProductCreateModal({ isOpen, brands, units, warehouses, 
                   step="0.01"
                   value={newProduct.qteparcolis ?? ''}
                   onChange={e => setNewProduct({ ...newProduct, qteparcolis: Number(e.target.value) })}
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                  className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
                   placeholder="Ex: 1.44"
                 />
               </div>
@@ -217,7 +217,7 @@ export default function ProductCreateModal({ isOpen, brands, units, warehouses, 
                   onWheel={(e) => e.currentTarget.blur()}
                   value={newProduct.qtecolisparpalette ?? ''}
                   onChange={e => setNewProduct({ ...newProduct, qtecolisparpalette: Number(e.target.value) })}
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+                  className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
                   placeholder="Ex: 48"
                 />
               </div>
@@ -225,12 +225,12 @@ export default function ProductCreateModal({ isOpen, brands, units, warehouses, 
           </div>
 
           {/* Warehouse Selection */}
-          <div className="border-t border-slate-200 pt-4 mt-4">
-            <h3 className="text-sm font-bold text-slate-700 mb-3">🏭 Entrepôt Initial *</h3>
+          <div className="border-t border-white/[0.06] pt-4 mt-4">
+            <h3 className="text-sm font-bold text-slate-200 mb-3">🏭 Entrepôt Initial *</h3>
             <select
               value={newProduct.warehouseid || ''}
               onChange={e => setNewProduct({ ...newProduct, warehouseid: Number(e.target.value) })}
-              className="w-full p-2.5 border border-slate-300 rounded-lg text-sm"
+              className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm"
               required
             >
               <option value="">-- Sélectionner l'entrepôt --</option>
@@ -241,18 +241,18 @@ export default function ProductCreateModal({ isOpen, brands, units, warehouses, 
             <p className="text-xs text-slate-400 mt-1">Le produit sera créé uniquement dans cet entrepôt</p>
           </div>
         </div>
-        <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3 sticky bottom-0 font-medium text-sm">
+        <div className="p-4 bg-slate-900/40 border-t border-slate-100 flex justify-end gap-3 sticky bottom-0 font-medium text-sm">
           <button
             onClick={onClose}
             disabled={isSaving}
-            className="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-lg"
+            className="bg-slate-900/60 border border-white/[0.08] text-slate-200 hover:bg-slate-900/40 px-4 py-2 rounded-lg"
           >
             Annuler
           </button>
           <button
             onClick={handleCreateProduct}
             disabled={isSaving}
-            className="bg-green-600 text-white hover:bg-green-700 px-4 py-2 rounded-lg disabled:opacity-50"
+            className="bg-emerald-600 text-white hover:bg-green-700 px-4 py-2 rounded-lg disabled:opacity-50"
           >
             {isSaving ? 'Création...' : 'Créer Produit'}
           </button>

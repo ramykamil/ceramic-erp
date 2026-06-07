@@ -102,18 +102,18 @@ const isIncomeType = (type: string): boolean => {
 
 const getTransactionTypeBadge = (type: string): string => {
     const badges: Record<string, string> = {
-        'VENTE': 'bg-green-100 text-green-700 border-green-200',
+        'VENTE': 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
         'ENCAISSEMENT': 'bg-emerald-100 text-emerald-700 border-emerald-200',
-        'VERSEMENT': 'bg-blue-100 text-blue-700 border-blue-200',
+        'VERSEMENT': 'bg-sky-500/10 text-sky-300 border-sky-500/20',
         'RETOUR_ACHAT': 'bg-teal-100 text-teal-700 border-teal-200',
-        'ACHAT': 'bg-red-100 text-red-700 border-red-200',
-        'DECAISSEMENT': 'bg-orange-100 text-orange-700 border-orange-200',
-        'PAIEMENT': 'bg-purple-100 text-purple-700 border-purple-200',
+        'ACHAT': 'bg-sky-500/10 text-sky-300 border-sky-500/20',
+        'DECAISSEMENT': 'bg-orange-500/10 text-orange-400 border-orange-500/20',
+        'PAIEMENT': 'bg-violet-500/10 text-violet-400 border-violet-500/20',
         'RETOUR_VENTE': 'bg-amber-100 text-amber-700 border-amber-200',
-        'CHARGE': 'bg-slate-100 text-slate-700 border-slate-200',
-        'TRANSFERT': 'bg-indigo-100 text-indigo-700 border-indigo-200',
+        'CHARGE': 'bg-slate-800/50 text-slate-200 border-white/[0.06]',
+        'TRANSFERT': 'bg-indigo-500/100/100/10 text-indigo-400 border-indigo-200',
     };
-    return badges[type] || 'bg-slate-100 text-slate-600 border-slate-200';
+    return badges[type] || 'bg-slate-800/50 text-slate-400 border-white/[0.06]';
 };
 
 // --- Add Transaction Modal ---
@@ -237,16 +237,16 @@ function AddTransactionModal({ isOpen, onClose, onSave, accounts, customers, bra
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-            <div className="w-full max-w-xl bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden">
+            <div className="w-full max-w-xl bg-slate-900/60 rounded-xl shadow-2xl border border-white/[0.06] overflow-hidden">
                 <form onSubmit={handleSubmit}>
-                    <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-                        <h2 className="text-lg font-bold text-slate-800">Ajouter une opération</h2>
-                        <button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
+                    <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-900/40">
+                        <h2 className="text-lg font-bold text-slate-100">Ajouter une opération</h2>
+                        <button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-400 text-2xl leading-none">&times;</button>
                     </div>
 
                     <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[70vh] overflow-y-auto">
                         {error && (
-                            <div className="md:col-span-2 p-3 bg-red-50 text-red-700 border border-red-200 rounded-lg text-sm">
+                            <div className="md:col-span-2 p-3 bg-sky-500/10 text-sky-300 border border-sky-500/20 rounded-lg text-sm">
                                 <strong>Erreur:</strong> {error}
                             </div>
                         )}
@@ -254,7 +254,7 @@ function AddTransactionModal({ isOpen, onClose, onSave, accounts, customers, bra
                         <div>
                             <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Compte *</label>
                             <select value={accountId} onChange={(e) => setAccountId(Number(e.target.value))} required
-                                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-slate-800">
+                                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-sky-500/30 focus:border-transparent bg-slate-900/60 text-slate-100">
                                 {accounts.map(acc => (
                                     <option key={acc.accountid} value={acc.accountid}>{acc.accountname}</option>
                                 ))}
@@ -264,7 +264,7 @@ function AddTransactionModal({ isOpen, onClose, onSave, accounts, customers, bra
                         <div>
                             <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Type *</label>
                             <select value={transactionType} onChange={(e) => setTransactionType(e.target.value)} required
-                                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-slate-800">
+                                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-sky-500/30 focus:border-transparent bg-slate-900/60 text-slate-100">
                                 <optgroup label="💰 Recettes">
                                     {transactionTypes.filter(t => t.group === 'Recettes').map(t => (
                                         <option key={t.value} value={t.value}>{t.label}</option>
@@ -282,7 +282,7 @@ function AddTransactionModal({ isOpen, onClose, onSave, accounts, customers, bra
                             <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Montant *</label>
                             <input type="number" value={amount} onChange={(e) => setAmount(Number(e.target.value))} required step="0.01" min="0"
                                 placeholder="0.00"
-                                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-slate-800 text-right font-mono" />
+                                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-sky-500/30 focus:border-transparent bg-slate-900/60 text-slate-100 text-right font-mono" />
                         </div>
 
                         {/* Client Selection for Versement/Encaissement */}
@@ -290,7 +290,7 @@ function AddTransactionModal({ isOpen, onClose, onSave, accounts, customers, bra
                             <div>
                                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Client</label>
                                 <select value={customerId} onChange={(e) => setCustomerId(Number(e.target.value))}
-                                    className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-slate-800">
+                                    className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-sky-500/30 focus:border-transparent bg-slate-900/60 text-slate-100">
                                     <option value="">-- Sélectionner Client --</option>
                                     {customers.map(c => (
                                         <option key={c.customerid} value={c.customerid}>
@@ -299,7 +299,7 @@ function AddTransactionModal({ isOpen, onClose, onSave, accounts, customers, bra
                                     ))}
                                 </select>
                                 {selectedCustomer && selectedCustomer.currentbalance > 0 && (
-                                    <p className="mt-1 text-xs text-red-600">
+                                    <p className="mt-1 text-xs text-sky-400">
                                         ⚠️ Solde impayé: {formatCurrency(selectedCustomer.currentbalance)}
                                     </p>
                                 )}
@@ -311,7 +311,7 @@ function AddTransactionModal({ isOpen, onClose, onSave, accounts, customers, bra
                             <div>
                                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Fournisseur</label>
                                 <select value={supplierId} onChange={(e) => setSupplierId(e.target.value)}
-                                    className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-slate-800">
+                                    className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-sky-500/30 focus:border-transparent bg-slate-900/60 text-slate-100">
                                     <option value="">-- Sélectionner Fournisseur --</option>
                                     <optgroup label="Marques">
                                         {brands.map(b => (
@@ -335,21 +335,21 @@ function AddTransactionModal({ isOpen, onClose, onSave, accounts, customers, bra
                             <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Tiers (Client/Fournisseur)</label>
                             <input type="text" value={tiers} onChange={(e) => setTiers(e.target.value)}
                                 placeholder="Nom du client ou fournisseur"
-                                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-slate-800" />
+                                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-sky-500/30 focus:border-transparent bg-slate-900/60 text-slate-100" />
                         </div>
 
                         <div className="md:col-span-2">
                             <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Motif / Référence</label>
                             <input type="text" value={motif} onChange={(e) => setMotif(e.target.value)}
                                 placeholder="Ex: Vente N° 1201, Versement sur compte"
-                                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-slate-800" />
+                                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-sky-500/30 focus:border-transparent bg-slate-900/60 text-slate-100" />
                         </div>
 
                         {transactionType === 'CHARGE' && (
                             <div className="md:col-span-2">
                                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Type de Charge</label>
                                 <select value={chargeType} onChange={(e) => setChargeType(e.target.value)}
-                                    className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-slate-800">
+                                    className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-sky-500/30 focus:border-transparent bg-slate-900/60 text-slate-100">
                                     <option value="">-- Sélectionner --</option>
                                     <option value="LOYER">Loyer</option>
                                     <option value="ELECTRICITE">Électricité</option>
@@ -365,17 +365,17 @@ function AddTransactionModal({ isOpen, onClose, onSave, accounts, customers, bra
                         <div className="md:col-span-2">
                             <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Notes</label>
                             <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2}
-                                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-slate-800 resize-none" />
+                                className="w-full p-2.5 border border-white/[0.08] rounded-lg text-sm focus:ring-2 focus:ring-sky-500/30 focus:border-transparent bg-slate-900/60 text-slate-100 resize-none" />
                         </div>
                     </div>
 
-                    <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3">
+                    <div className="p-4 bg-slate-900/40 border-t border-slate-100 flex justify-end gap-3">
                         <button type="button" onClick={onClose} disabled={isSaving}
-                            className="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm">
+                            className="bg-slate-900/60 border border-white/[0.08] text-slate-200 hover:bg-slate-900/40 px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm shadow-black/10">
                             Annuler
                         </button>
                         <button type="submit" disabled={isSaving}
-                            className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2">
+                            className="bg-sky-600 text-white hover:bg-sky-700 px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm shadow-black/10 flex items-center gap-2">
                             {isSaving ? 'Enregistrement...' : 'Enregistrer'}
                         </button>
                     </div>
@@ -502,63 +502,63 @@ function AccountListModal({ isOpen, onClose, accounts, onRefresh }: AccountListM
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-            <div className="w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden">
-                <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-                    <h2 className="text-lg font-bold text-slate-800">Liste des comptes</h2>
-                    <button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
+            <div className="w-full max-w-2xl bg-slate-900/60 rounded-xl shadow-2xl border border-white/[0.06] overflow-hidden">
+                <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-900/40">
+                    <h2 className="text-lg font-bold text-slate-100">Liste des comptes</h2>
+                    <button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-400 text-2xl leading-none">&times;</button>
                 </div>
 
                 <div className="p-4 border-b border-slate-100 flex flex-wrap gap-2">
                     <button onClick={() => { if (selectedAccountId) handleSetDefault(selectedAccountId); }}
                         disabled={!selectedAccountId}
-                        className="px-3 py-1.5 text-xs font-medium rounded-lg bg-white border border-slate-200 hover:bg-slate-100 disabled:opacity-50 flex items-center gap-1 text-slate-700">
+                        className="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-900/60 border border-white/[0.06] hover:bg-slate-800/50 disabled:opacity-50 flex items-center gap-1 text-slate-200">
                         📍 Par Defaut
                     </button>
                     <button onClick={() => setShowNewForm(true)}
-                        className="px-3 py-1.5 text-xs font-medium rounded-lg bg-green-600 text-white hover:bg-green-700 flex items-center gap-1">
+                        className="px-3 py-1.5 text-xs font-medium rounded-lg bg-emerald-600 text-white hover:bg-green-700 flex items-center gap-1">
                         ➕ Nouveau
                     </button>
                     <button onClick={() => { if (selectedAccountId) handleDelete(selectedAccountId); }}
                         disabled={!selectedAccountId}
-                        className="px-3 py-1.5 text-xs font-medium rounded-lg bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 flex items-center gap-1">
+                        className="px-3 py-1.5 text-xs font-medium rounded-lg bg-sky-600 text-white hover:bg-sky-700 disabled:opacity-50 flex items-center gap-1">
                         ❌ Supprimer
                     </button>
                     <button onClick={() => setShowTransferForm(true)}
-                        className="px-3 py-1.5 text-xs font-medium rounded-lg bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-1">
+                        className="px-3 py-1.5 text-xs font-medium rounded-lg bg-sky-600 text-white hover:bg-sky-700 flex items-center gap-1">
                         ↔️ Transfert
                     </button>
                 </div>
 
                 {error && (
-                    <div className="mx-4 mt-4 p-3 bg-red-50 text-red-700 border border-red-200 rounded-lg text-sm">
+                    <div className="mx-4 mt-4 p-3 bg-sky-500/10 text-sky-300 border border-sky-500/20 rounded-lg text-sm">
                         {error}
                     </div>
                 )}
 
                 {showNewForm && (
-                    <div className="p-4 bg-blue-50 border-b border-blue-100">
+                    <div className="p-4 bg-sky-500/10 border-b border-blue-100">
                         <div className="flex gap-3 items-end">
                             <div className="flex-1">
                                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Nom du compte *</label>
                                 <input type="text" value={newAccountName} onChange={(e) => setNewAccountName(e.target.value)}
-                                    placeholder="Ex: CAISSE SECONDAIRE" className="w-full p-2 border border-slate-300 rounded-lg text-sm" />
+                                    placeholder="Ex: CAISSE SECONDAIRE" className="w-full p-2 border border-white/[0.08] rounded-lg text-sm" />
                             </div>
                             <button onClick={handleCreateAccount} disabled={isCreating}
-                                className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 disabled:opacity-50">
+                                className="px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 disabled:opacity-50">
                                 {isCreating ? '...' : 'Créer'}
                             </button>
-                            <button onClick={() => setShowNewForm(false)} className="px-3 py-2 bg-slate-200 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-300">✕</button>
+                            <button onClick={() => setShowNewForm(false)} className="px-3 py-2 bg-slate-200 text-slate-200 rounded-lg text-sm font-medium hover:bg-slate-300">✕</button>
                         </div>
                     </div>
                 )}
 
                 {showTransferForm && (
-                    <div className="p-4 bg-purple-50 border-b border-purple-100">
+                    <div className="p-4 bg-violet-500/10 border-b border-purple-100">
                         <div className="grid grid-cols-4 gap-3 items-end">
                             <div>
                                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">De *</label>
                                 <select value={transferFromId} onChange={(e) => setTransferFromId(Number(e.target.value))}
-                                    className="w-full p-2 border border-slate-300 rounded-lg text-sm">
+                                    className="w-full p-2 border border-white/[0.08] rounded-lg text-sm">
                                     <option value="">--</option>
                                     {accounts.map(a => <option key={a.accountid} value={a.accountid}>{a.accountname}</option>)}
                                 </select>
@@ -566,7 +566,7 @@ function AccountListModal({ isOpen, onClose, accounts, onRefresh }: AccountListM
                             <div>
                                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Vers *</label>
                                 <select value={transferToId} onChange={(e) => setTransferToId(Number(e.target.value))}
-                                    className="w-full p-2 border border-slate-300 rounded-lg text-sm">
+                                    className="w-full p-2 border border-white/[0.08] rounded-lg text-sm">
                                     <option value="">--</option>
                                     {accounts.map(a => <option key={a.accountid} value={a.accountid}>{a.accountname}</option>)}
                                 </select>
@@ -574,14 +574,14 @@ function AccountListModal({ isOpen, onClose, accounts, onRefresh }: AccountListM
                             <div>
                                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Montant *</label>
                                 <input type="number" value={transferAmount} onChange={(e) => setTransferAmount(Number(e.target.value))}
-                                    placeholder="0.00" step="0.01" min="0" className="w-full p-2 border border-slate-300 rounded-lg text-sm text-right font-mono" />
+                                    placeholder="0.00" step="0.01" min="0" className="w-full p-2 border border-white/[0.08] rounded-lg text-sm text-right font-mono" />
                             </div>
                             <div className="flex gap-2">
                                 <button onClick={handleTransfer} disabled={isTransferring}
                                     className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 disabled:opacity-50">
                                     {isTransferring ? '...' : 'Transférer'}
                                 </button>
-                                <button onClick={() => setShowTransferForm(false)} className="px-3 py-2 bg-slate-200 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-300">✕</button>
+                                <button onClick={() => setShowTransferForm(false)} className="px-3 py-2 bg-slate-200 text-slate-200 rounded-lg text-sm font-medium hover:bg-slate-300">✕</button>
                             </div>
                         </div>
                     </div>
@@ -589,7 +589,7 @@ function AccountListModal({ isOpen, onClose, accounts, onRefresh }: AccountListM
 
                 <div className="max-h-[400px] overflow-y-auto">
                     <table className="w-full text-sm">
-                        <thead className="bg-slate-50 text-xs text-slate-500 uppercase sticky top-0 border-b border-slate-100">
+                        <thead className="bg-slate-900/40 text-xs text-slate-500 uppercase sticky top-0 border-b border-slate-100">
                             <tr>
                                 <th className="px-4 py-3 text-left w-10"></th>
                                 <th className="px-4 py-3 text-left">Description</th>
@@ -599,25 +599,25 @@ function AccountListModal({ isOpen, onClose, accounts, onRefresh }: AccountListM
                         <tbody className="divide-y divide-slate-100">
                             {accounts.map(account => (
                                 <tr key={account.accountid} onClick={() => setSelectedAccountId(account.accountid)}
-                                    className={`cursor-pointer hover:bg-slate-50 transition ${selectedAccountId === account.accountid ? 'bg-blue-50' : ''}`}>
+                                    className={`cursor-pointer hover:bg-slate-900/40 transition ${selectedAccountId === account.accountid ? 'bg-sky-500/10' : ''}`}>
                                     <td className="px-4 py-3">
                                         <input type="radio" name="selectedAccount" checked={selectedAccountId === account.accountid}
-                                            onChange={() => setSelectedAccountId(account.accountid)} className="w-4 h-4 text-blue-600" />
+                                            onChange={() => setSelectedAccountId(account.accountid)} className="w-4 h-4 text-sky-400" />
                                     </td>
                                     <td className="px-4 py-3">
-                                        <div className="font-medium text-slate-800">{account.accountname}</div>
-                                        {account.isdefault && <span className="text-xs text-blue-600 font-medium">★ Par défaut</span>}
+                                        <div className="font-medium text-slate-100">{account.accountname}</div>
+                                        {account.isdefault && <span className="text-xs text-sky-400 font-medium">★ Par défaut</span>}
                                     </td>
-                                    <td className="px-4 py-3 text-right font-mono font-bold text-slate-700">{formatCurrency(account.balance)}</td>
+                                    <td className="px-4 py-3 text-right font-mono font-bold text-slate-200">{formatCurrency(account.balance)}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
 
-                <div className="p-4 bg-slate-50 border-t border-slate-100">
-                    <div className="text-sm text-slate-600">
-                        Compte par défaut : <span className="font-semibold text-slate-800">{defaultAccount?.accountname || 'Aucun'}</span>
+                <div className="p-4 bg-slate-900/40 border-t border-slate-100">
+                    <div className="text-sm text-slate-400">
+                        Compte par défaut : <span className="font-semibold text-slate-100">{defaultAccount?.accountname || 'Aucun'}</span>
                     </div>
                 </div>
             </div>
@@ -740,14 +740,14 @@ export default function AccountingPage() {
     return (
         <div 
             ref={containerRef}
-            className="min-h-screen bg-slate-50 p-3 sm:p-4 lg:p-6 text-slate-800 outline-none"
+            className="min-h-screen bg-slate-900/40 p-3 sm:p-4 lg:p-6 text-slate-100 outline-none"
         >
             <div className="max-w-[1600px] mx-auto">
 
                 {/* === HEADER === */}
                 <div className="mb-4 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                     <div>
-                        <h1 className="text-xl md:text-2xl font-bold text-slate-800">Caisse</h1>
+                        <h1 className="text-xl md:text-2xl font-bold text-slate-100">Caisse</h1>
                         <p className="text-slate-500 text-xs mt-0.5">Gestion des transactions et comptes de caisse</p>
                     </div>
 
@@ -761,7 +761,7 @@ export default function AccountingPage() {
                     />
 
                     {/* Manual Date Range Filter */}
-                    <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-lg border border-slate-200 shadow-sm">
+                    <div className="flex items-center gap-2 bg-slate-900/60 px-3 py-2 rounded-lg border border-white/[0.06] shadow-sm shadow-black/10">
                         <span className="text-xs text-slate-500 font-medium">Dates</span>
                         <StandardDateInput
                             value={startDate}
@@ -772,38 +772,38 @@ export default function AccountingPage() {
                             value={endDate}
                             onChange={(val) => setEndDate(val)}
                         />
-                        <button onClick={handleRefresh} className="p-1.5 hover:bg-slate-100 rounded text-slate-600" title="Actualiser">🔄</button>
+                        <button onClick={handleRefresh} className="p-1.5 hover:bg-slate-800/50 rounded text-slate-400" title="Actualiser">🔄</button>
                     </div>
 
-                    <Link href="/" className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium shadow-sm flex items-center gap-1.5">
+                    <Link href="/" className="bg-slate-900/60 border border-white/[0.08] hover:bg-slate-900/40 text-slate-200 px-3 py-2 rounded-lg text-sm font-medium shadow-sm shadow-black/10 flex items-center gap-1.5">
                         ← Retour
                     </Link>
                 </div>
 
                 {/* === BALANCE CARDS === */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-4">
+                    <div className="bg-slate-900/60 rounded-lg border border-white/[0.06] shadow-sm shadow-black/10 p-4">
                         <div className="text-xs text-slate-500 uppercase font-medium">Solde antérieur</div>
-                        <div className="text-xl font-bold text-slate-700 font-mono mt-1">{formatCurrency(previousBalance)}</div>
+                        <div className="text-xl font-bold text-slate-200 font-mono mt-1">{formatCurrency(previousBalance)}</div>
                     </div>
-                    <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-4">
+                    <div className="bg-slate-900/60 rounded-lg border border-white/[0.06] shadow-sm shadow-black/10 p-4">
                         <div className="text-xs text-slate-500 uppercase font-medium">Mouvement période</div>
-                        <div className={`text-xl font-bold font-mono mt-1 ${(currentBalance - previousBalance) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        <div className={`text-xl font-bold font-mono mt-1 ${(currentBalance - previousBalance) >= 0 ? 'text-emerald-400' : 'text-sky-400'}`}>
                             {(currentBalance - previousBalance) >= 0 ? '+' : ''}{formatCurrency(currentBalance - previousBalance)}
                         </div>
                     </div>
-                    <div className="bg-gradient-to-r from-brand-primary to-red-500 rounded-lg shadow-sm p-4 text-white">
+                    <div className="bg-gradient-to-r from-brand-primary to-red-500 rounded-lg shadow-sm shadow-black/10 p-4 text-white">
                         <div className="text-xs text-white/80 uppercase font-medium">Solde actuel</div>
                         <div className="text-2xl font-bold font-mono mt-1">{formatCurrency(currentBalance)}</div>
                     </div>
                 </div>
 
                 {/* === FILTERS & ACTIONS === */}
-                <div className="mb-4 flex flex-wrap items-center gap-3 p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
+                <div className="mb-4 flex flex-wrap items-center gap-3 p-3 bg-slate-900/60 rounded-lg border border-white/[0.06] shadow-sm shadow-black/10">
                     <div>
                         <label className="block text-xs text-slate-500 mb-1">Compte</label>
                         <select value={selectedAccountId} onChange={(e) => setSelectedAccountId(e.target.value ? Number(e.target.value) : '')}
-                            className="border border-slate-300 text-slate-700 rounded-lg px-3 py-2 text-sm min-w-[150px]">
+                            className="border border-white/[0.08] text-slate-200 rounded-lg px-3 py-2 text-sm min-w-[150px]">
                             <option value="">Tous</option>
                             {accounts.map(acc => <option key={acc.accountid} value={acc.accountid}>{acc.accountname}</option>)}
                         </select>
@@ -811,7 +811,7 @@ export default function AccountingPage() {
                     <div>
                         <label className="block text-xs text-slate-500 mb-1">Type</label>
                         <select value={selectedType} onChange={(e) => setSelectedType(e.target.value)}
-                            className="border border-slate-300 text-slate-700 rounded-lg px-3 py-2 text-sm min-w-[120px]">
+                            className="border border-white/[0.08] text-slate-200 rounded-lg px-3 py-2 text-sm min-w-[120px]">
                             <option value="">Tous</option>
                             <option value="VENTE">Vente</option>
                             <option value="VERSEMENT">Versement</option>
@@ -828,12 +828,12 @@ export default function AccountingPage() {
                     <div className="flex-1"></div>
 
                     <button onClick={() => setIsAccountListOpen(true)}
-                        className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2">
+                        className="bg-slate-900/60 border border-white/[0.08] hover:bg-slate-900/40 text-slate-200 px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-sm shadow-black/10 flex items-center gap-2">
                         📋 Comptes
                     </button>
 
                     <button onClick={() => setIsAddModalOpen(true)}
-                        className="bg-brand-primary hover:bg-brand-primary-dark text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-lg flex items-center gap-2">
+                        className="bg-brand-primary hover:bg-brand-primary-dark text-white px-4 py-2.5 rounded-lg font-medium text-sm transition shadow-lg shadow-black/20 flex items-center gap-2">
                         ➕ Ajouter opération
                     </button>
 
@@ -841,16 +841,16 @@ export default function AccountingPage() {
 
                 {/* === ERROR === */}
                 {apiError && (
-                    <div className="mb-4 p-3 bg-red-50 text-red-700 border border-red-200 rounded-lg text-sm">
+                    <div className="mb-4 p-3 bg-sky-500/10 text-sky-300 border border-sky-500/20 rounded-lg text-sm">
                         <strong>Erreur:</strong> {apiError}
                     </div>
                 )}
 
                 {/* === TRANSACTIONS TABLE === */}
-                <div className="bg-white rounded-lg overflow-hidden border border-slate-200 shadow-sm mb-4">
+                <div className="bg-slate-900/60 rounded-lg overflow-hidden border border-white/[0.06] shadow-sm shadow-black/10 mb-4">
                     {isLoading ? (
                         <div className="text-center py-16">
-                            <div className="inline-block w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+                            <div className="inline-block w-8 h-8 border-4 border-sky-500/20 border-t-blue-600 rounded-full animate-spin mb-4"></div>
                             <p className="text-slate-500">Chargement...</p>
                         </div>
                     ) : transactions.length === 0 ? (
@@ -874,27 +874,27 @@ export default function AccountingPage() {
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
                                     {sortedData.map((tx, idx) => (
-                                        <tr key={tx.transactionid} {...getRowProps(idx)} className={getRowClass(idx, "hover:bg-slate-50 transition-colors cursor-pointer")}>
+                                        <tr key={tx.transactionid} {...getRowProps(idx)} className={getRowClass(idx, "hover:bg-slate-900/40 transition-colors cursor-pointer")}>
                                             <td className="px-3 py-2.5">
-                                                <div className="font-medium text-slate-800">{tx.tiers || '-'}</div>
+                                                <div className="font-medium text-slate-100">{tx.tiers || '-'}</div>
                                                 <span className={`inline-block mt-0.5 px-2 py-0.5 rounded text-xs font-medium border ${getTransactionTypeBadge(tx.transactiontype)}`}>
                                                     {getTransactionTypeLabel(tx.transactiontype)}
                                                 </span>
                                             </td>
-                                            <td className="px-3 py-2.5 text-slate-600">{tx.motif || '-'}</td>
+                                            <td className="px-3 py-2.5 text-slate-400">{tx.motif || '-'}</td>
                                             <td className="px-3 py-2.5 text-right font-mono">
                                                 {isIncomeType(tx.transactiontype) ? (
-                                                    <span className="text-green-600 font-semibold">{formatCurrency(tx.amount)}</span>
+                                                    <span className="text-emerald-400 font-semibold">{formatCurrency(tx.amount)}</span>
                                                 ) : <span className="text-slate-300">-</span>}
                                             </td>
                                             <td className="px-3 py-2.5 text-right font-mono">
                                                 {!isIncomeType(tx.transactiontype) ? (
-                                                    <span className="text-red-600 font-semibold">{formatCurrency(tx.amount)}</span>
+                                                    <span className="text-sky-400 font-semibold">{formatCurrency(tx.amount)}</span>
                                                 ) : <span className="text-slate-300">-</span>}
                                             </td>
-                                            <td className="px-3 py-2.5 text-slate-600 text-xs">{tx.accountname}</td>
+                                            <td className="px-3 py-2.5 text-slate-400 text-xs">{tx.accountname}</td>
                                             <td className="px-3 py-2.5 text-slate-500 text-xs">{tx.createdbyname || '-'}</td>
-                                            <td className="px-3 py-2.5 text-slate-600">{formatDate(tx.createdat)}</td>
+                                            <td className="px-3 py-2.5 text-slate-400">{formatDate(tx.createdat)}</td>
                                             <td className="px-3 py-2.5 text-slate-500">{formatTime(tx.createdat)}</td>
                                         </tr>
                                     ))}
@@ -906,25 +906,25 @@ export default function AccountingPage() {
 
                 {/* === SUMMARY FOOTER === */}
                 {summary && (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-white rounded-lg border border-slate-200 shadow-sm">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-slate-900/60 rounded-lg border border-white/[0.06] shadow-sm shadow-black/10">
                         {/* Sales */}
                         <div className="space-y-2">
                             <div className="text-xs font-bold text-slate-500 uppercase mb-2">Ventes</div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-slate-500">Total Vente:</span>
-                                <span className="font-mono text-green-600">{formatCurrency(summary.totalVente)}</span>
+                                <span className="font-mono text-emerald-400">{formatCurrency(summary.totalVente)}</span>
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-slate-500">Retour Vente:</span>
-                                <span className="font-mono text-red-500">{formatCurrency(summary.retourVente)}</span>
+                                <span className="font-mono text-sky-400">{formatCurrency(summary.retourVente)}</span>
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-slate-500">Versements:</span>
-                                <span className="font-mono text-blue-600">{formatCurrency(summary.versements)}</span>
+                                <span className="font-mono text-sky-400">{formatCurrency(summary.versements)}</span>
                             </div>
-                            <div className="flex justify-between text-sm pt-2 border-t border-slate-200">
-                                <span className="font-semibold text-slate-700">TOTAL VENTE</span>
-                                <span className="font-mono text-green-600 font-bold">{formatCurrency(summary.totalVenteNet)}</span>
+                            <div className="flex justify-between text-sm pt-2 border-t border-white/[0.06]">
+                                <span className="font-semibold text-slate-200">TOTAL VENTE</span>
+                                <span className="font-mono text-emerald-400 font-bold">{formatCurrency(summary.totalVenteNet)}</span>
                             </div>
                         </div>
 
@@ -933,7 +933,7 @@ export default function AccountingPage() {
                             <div className="text-xs font-bold text-slate-500 uppercase mb-2">Achats</div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-slate-500">Total Achat:</span>
-                                <span className="font-mono text-red-600">{formatCurrency(summary.totalAchat)}</span>
+                                <span className="font-mono text-sky-400">{formatCurrency(summary.totalAchat)}</span>
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-slate-500">Retour Achat:</span>
@@ -941,11 +941,11 @@ export default function AccountingPage() {
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-slate-500">Paiement:</span>
-                                <span className="font-mono text-purple-600">{formatCurrency(summary.paiement)}</span>
+                                <span className="font-mono text-violet-400">{formatCurrency(summary.paiement)}</span>
                             </div>
-                            <div className="flex justify-between text-sm pt-2 border-t border-slate-200">
-                                <span className="font-semibold text-slate-700">TOTAL ACHAT</span>
-                                <span className="font-mono text-red-600 font-bold">{formatCurrency(summary.totalAchatNet)}</span>
+                            <div className="flex justify-between text-sm pt-2 border-t border-white/[0.06]">
+                                <span className="font-semibold text-slate-200">TOTAL ACHAT</span>
+                                <span className="font-mono text-sky-400 font-bold">{formatCurrency(summary.totalAchatNet)}</span>
                             </div>
                         </div>
 
@@ -954,7 +954,7 @@ export default function AccountingPage() {
                             <div className="text-xs font-bold text-slate-500 uppercase mb-2">Charges</div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-slate-500">Charges:</span>
-                                <span className="font-mono text-orange-600">{formatCurrency(summary.charges)}</span>
+                                <span className="font-mono text-orange-400">{formatCurrency(summary.charges)}</span>
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-slate-500">Encaissement:</span>
@@ -962,11 +962,11 @@ export default function AccountingPage() {
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-slate-500">Décaissement:</span>
-                                <span className="font-mono text-red-500">{formatCurrency(summary.decaissement)}</span>
+                                <span className="font-mono text-sky-400">{formatCurrency(summary.decaissement)}</span>
                             </div>
-                            <div className="flex justify-between text-sm pt-2 border-t border-slate-200">
-                                <span className="font-semibold text-slate-700">TOTAL CHARGE</span>
-                                <span className="font-mono text-orange-600 font-bold">{formatCurrency(summary.totalCharges)}</span>
+                            <div className="flex justify-between text-sm pt-2 border-t border-white/[0.06]">
+                                <span className="font-semibold text-slate-200">TOTAL CHARGE</span>
+                                <span className="font-mono text-orange-400 font-bold">{formatCurrency(summary.totalCharges)}</span>
                             </div>
                         </div>
                     </div>

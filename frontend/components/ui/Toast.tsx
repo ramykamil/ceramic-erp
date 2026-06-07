@@ -40,9 +40,9 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
                 {toasts.map((toast) => (
                     <div
                         key={toast.id}
-                        className={`pointer-events-auto px-4 py-3 rounded-lg shadow-lg text-white text-sm font-medium transition-all transform translate-y-0 opacity-100 flex items-center gap-2 min-w-[300px] ${toast.type === 'success' ? 'bg-green-600' :
-                                toast.type === 'error' ? 'bg-red-600' :
-                                    'bg-blue-600'
+                        className={`pointer-events-auto px-4 py-3 rounded-lg shadow-lg shadow-black/20 text-white text-sm font-medium transition-all transform translate-y-0 opacity-100 flex items-center gap-2 min-w-[300px] ${toast.type === 'success' ? 'bg-emerald-600' :
+                                toast.type === 'error' ? 'bg-sky-600' :
+                                    'bg-sky-600'
                             }`}
                     >
                         <span className="flex-1">{toast.message}</span>

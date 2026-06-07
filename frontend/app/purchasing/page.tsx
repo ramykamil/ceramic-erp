@@ -77,12 +77,12 @@ const formatCurrencyDZD = (amount: number | null | undefined): string => {
 const getStatusBadge = (status: string): string => {
   const statusClasses = {
     PENDING: 'bg-amber-50 text-amber-700 border border-amber-200',
-    APPROVED: 'bg-blue-50 text-blue-700 border border-blue-200',
+    APPROVED: 'bg-sky-500/10 text-sky-300 border border-sky-500/20',
     RECEIVED: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
-    PARTIAL: 'bg-purple-50 text-purple-700 border border-purple-200',
-    CANCELLED: 'bg-red-50 text-red-700 border border-red-200',
+    PARTIAL: 'bg-violet-500/10 text-violet-400 border border-violet-500/20',
+    CANCELLED: 'bg-sky-500/10 text-sky-300 border border-sky-500/20',
   };
-  return statusClasses[status as keyof typeof statusClasses] || 'bg-slate-50 text-slate-700 border border-slate-200';
+  return statusClasses[status as keyof typeof statusClasses] || 'bg-slate-900/40 text-slate-200 border border-white/[0.06]';
 };
 
 const getReturnStatusLabel = (status: string): string => {
@@ -366,14 +366,14 @@ export default function PurchaseOrdersListPage() {
   return (
     <div 
       ref={containerRef}
-      className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-50 text-slate-800 outline-none"
+      className="p-4 sm:p-6 lg:p-8 min-h-screen bg-slate-900/40 text-slate-100 outline-none"
     >
       <div className="max-w-7xl mx-auto">
 
         {/* --- Header --- */}
         <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-slate-800">Réception des Achats</h1>
+            <h1 className="text-3xl font-bold text-slate-100">Réception des Achats</h1>
             <p className="text-slate-500 text-sm mt-1">Gérer les commandes fournisseurs et les réceptions</p>
           </div>
 
@@ -399,7 +399,7 @@ export default function PurchaseOrdersListPage() {
                   'Achats'
                 );
               }}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-lg font-medium text-sm shadow-sm flex items-center gap-2"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-lg font-medium text-sm shadow-sm shadow-black/10 flex items-center gap-2"
             >
               📄 Excel
             </button>
@@ -415,7 +415,7 @@ export default function PurchaseOrdersListPage() {
             {/* Historique Button */}
             <Link
               href="/purchasing/history"
-              className="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition shadow-sm flex items-center gap-2"
+              className="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition shadow-sm shadow-black/10 flex items-center gap-2"
             >
               📊 Historique
             </Link>
@@ -423,7 +423,7 @@ export default function PurchaseOrdersListPage() {
             {/* Nouveau Retour Button */}
             <Link
               href="/purchasing/returns/new"
-              className="bg-orange-600/90 backdrop-blur-md text-white px-4 py-2.5 rounded-lg text-sm font-bold transition shadow-sm flex items-center gap-2 border border-white/10"
+              className="bg-orange-600/90 backdrop-blur-md text-white px-4 py-2.5 rounded-lg text-sm font-bold transition shadow-sm shadow-black/10 flex items-center gap-2 border border-white/10"
             >
               ↩️ Nouveau Retour
             </Link>
@@ -431,7 +431,7 @@ export default function PurchaseOrdersListPage() {
             {/* Retour Button (Clean Light Style) */}
             <Link
               href="/"
-              className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2.5 rounded-lg text-sm font-medium transition shadow-sm flex items-center gap-2"
+              className="bg-slate-900/60 border border-white/[0.08] hover:bg-slate-900/40 text-slate-200 px-4 py-2.5 rounded-lg text-sm font-medium transition shadow-sm shadow-black/10 flex items-center gap-2"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
@@ -442,13 +442,13 @@ export default function PurchaseOrdersListPage() {
         </div>
 
         {/* --- Tab Navigation --- */}
-        <div className="mb-6 border-b border-slate-200">
+        <div className="mb-6 border-b border-white/[0.06]">
           <nav className="flex gap-2">
             <button
               onClick={() => setActiveTab('commandes')}
               className={`px-4 py-2.5 text-sm font-medium rounded-t-lg border-b-2 transition-colors ${activeTab === 'commandes'
                 ? 'border-brand-primary text-brand-primary bg-sky-50/50'
-                : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:bg-slate-900/40'
                 }`}
             >
               📦 Commandes
@@ -456,8 +456,8 @@ export default function PurchaseOrdersListPage() {
             <button
               onClick={() => setActiveTab('versements')}
               className={`px-4 py-2.5 text-sm font-medium rounded-t-lg border-b-2 transition-colors ${activeTab === 'versements'
-                ? 'border-orange-500 text-orange-600 bg-orange-50'
-                : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                ? 'border-orange-500 text-orange-400 bg-orange-50'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:bg-slate-900/40'
                 }`}
             >
               💰 Versements Fournisseurs
@@ -467,7 +467,7 @@ export default function PurchaseOrdersListPage() {
 
         {/* --- Error Display --- */}
         {apiError && activeTab === 'commandes' && (
-          <div className="mb-6 p-4 bg-red-50 text-red-700 border border-red-200 rounded-lg text-sm">
+          <div className="mb-6 p-4 bg-sky-500/10 text-sky-300 border border-sky-500/20 rounded-lg text-sm">
             <strong>Erreur:</strong> {apiError}
           </div>
         )}
@@ -481,7 +481,7 @@ export default function PurchaseOrdersListPage() {
         {activeTab === 'commandes' && (
           <>
             {/* --- Filter Bar --- */}
-            <div className="mb-6 bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-4">
+            <div className="mb-6 bg-slate-900/60 p-4 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 space-y-4">
 
               {/* Top Row: Date & User & Status */}
               <div className="flex flex-wrap items-center justify-between gap-4">
@@ -512,7 +512,7 @@ export default function PurchaseOrdersListPage() {
                   <input
                     type="text"
                     placeholder="N° Bon ou Usine/Fournisseur..."
-                    className="block w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg leading-5 bg-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-brand-primary focus:border-brand-primary sm:text-sm text-slate-700"
+                    className="block w-full pl-10 pr-3 py-2 border border-white/[0.08] rounded-lg leading-5 bg-slate-900/60 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-brand-primary focus:border-brand-primary sm:text-sm text-slate-200"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -520,12 +520,12 @@ export default function PurchaseOrdersListPage() {
 
                 {/* Type Select (Achats / Retours) */}
                 <div className="flex items-center gap-2">
-                  <label htmlFor="typeFilter" className="text-sm font-medium text-slate-700 whitespace-nowrap">Type:</label>
+                  <label htmlFor="typeFilter" className="text-sm font-medium text-slate-200 whitespace-nowrap">Type:</label>
                   <select
                     id="typeFilter"
                     value={typeFilter}
                     onChange={(e) => setTypeFilter(e.target.value as '' | 'order' | 'return')}
-                    className="w-40 p-2 border border-slate-300 rounded-lg text-sm text-slate-700 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+                    className="w-40 p-2 border border-white/[0.08] rounded-lg text-sm text-slate-200 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                   >
                     <option value="">Tous</option>
                     <option value="order">📦 Achats</option>
@@ -535,12 +535,12 @@ export default function PurchaseOrdersListPage() {
 
                 {/* Status Select */}
                 <div className="flex items-center gap-2">
-                  <label htmlFor="statusFilter" className="text-sm font-medium text-slate-700 whitespace-nowrap">Statut:</label>
+                  <label htmlFor="statusFilter" className="text-sm font-medium text-slate-200 whitespace-nowrap">Statut:</label>
                   <select
                     id="statusFilter"
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="w-40 p-2 border border-slate-300 rounded-lg text-sm text-slate-700 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+                    className="w-40 p-2 border border-white/[0.08] rounded-lg text-sm text-slate-200 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                   >
                     <option value="">Tous</option>
                     <option value="PENDING">En Attente</option>
@@ -554,7 +554,7 @@ export default function PurchaseOrdersListPage() {
             </div>
 
             {/* --- Data Table Container --- */}
-            <div className="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+            <div className="bg-slate-900/60 rounded-xl overflow-hidden border border-white/[0.06] shadow-sm shadow-black/10">
               {isLoading ? (
                 <div className="text-center py-20">
                   <div className="inline-block w-8 h-8 border-4 border-brand-primary/20 border-t-brand-primary rounded-full animate-spin mb-4"></div>
@@ -567,7 +567,7 @@ export default function PurchaseOrdersListPage() {
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm text-left" style={{ tableLayout: 'fixed' }}>
-                    <thead className="text-xs text-slate-500 uppercase bg-slate-50 font-semibold border-b border-slate-100">
+                    <thead className="text-xs text-slate-500 uppercase bg-slate-900/40 font-semibold border-b border-slate-100">
                       <tr>
                         <ResizableSortableHeader
                           label="Numéro"
@@ -644,7 +644,7 @@ export default function PurchaseOrdersListPage() {
                           align="center"
                           className="px-4 py-3"
                         />
-                        <th scope="col" className="px-4 py-3 text-center font-bold text-[10px] uppercase tracking-wider text-slate-500 bg-slate-50 border-b border-slate-100" style={{ width: widths.actions }}>Actions</th>
+                        <th scope="col" className="px-4 py-3 text-center font-bold text-[10px] uppercase tracking-wider text-slate-500 bg-slate-900/40 border-b border-slate-100" style={{ width: widths.actions }}>Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
@@ -665,19 +665,19 @@ export default function PurchaseOrdersListPage() {
                                     ↩ Retour
                                   </span>
                                 )}
-                                <span className={isReturn ? 'text-orange-700' : 'text-slate-500'}>{row.ponumber}</span>
+                                <span className={isReturn ? 'text-orange-400' : 'text-slate-500'}>{row.ponumber}</span>
                               </div>
                             </td>
-                            <td className={`px-4 py-3 font-medium truncate ${isReturn ? 'text-orange-800' : 'text-slate-900'}`}>{row.factoryname}</td>
-                            <td className="px-4 py-3 text-slate-600 text-xs truncate">{isReturn ? '—' : row.warehousename}</td>
+                            <td className={`px-4 py-3 font-medium truncate ${isReturn ? 'text-orange-800' : 'text-white'}`}>{row.factoryname}</td>
+                            <td className="px-4 py-3 text-slate-400 text-xs truncate">{isReturn ? '—' : row.warehousename}</td>
                             <td className="px-4 py-3 text-slate-500 text-xs">{formatDate(row.orderdate)}</td>
-                            <td className={`px-4 py-3 text-right font-bold ${isReturn ? 'text-orange-700' : 'text-slate-800'}`}>
+                            <td className={`px-4 py-3 text-right font-bold ${isReturn ? 'text-orange-400' : 'text-slate-100'}`}>
                               {isReturn ? '-' : ''}{formatCurrencyDZD(row.totalamount)}
                             </td>
-                            <td className="px-4 py-3 text-right font-medium text-green-600">
+                            <td className="px-4 py-3 text-right font-medium text-emerald-400">
                               {isReturn ? '—' : formatCurrencyDZD(row.amountpaid)}
                             </td>
-                            <td className="px-4 py-3 text-slate-600 text-xs truncate">{row.createdbyname || '-'}</td>
+                            <td className="px-4 py-3 text-slate-400 text-xs truncate">{row.createdbyname || '-'}</td>
                             <td className="px-4 py-3 text-center">
                               {isReturn ? (
                                 <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusBadge(row.status)}`}>
@@ -695,7 +695,7 @@ export default function PurchaseOrdersListPage() {
                                 <>
                                   <Link
                                     href={`/purchasing/returns/${row.returnid}`}
-                                    className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-3 py-1.5 rounded transition font-medium text-xs inline-flex items-center gap-1"
+                                    className="text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 px-3 py-1.5 rounded transition font-medium text-xs inline-flex items-center gap-1"
                                     title="Voir les détails du retour"
                                   >
                                     👁 Voir
@@ -711,7 +711,7 @@ export default function PurchaseOrdersListPage() {
                                       </button>
                                       <button
                                         onClick={() => handleDeleteReturn(row.returnid!)}
-                                        className="text-red-600 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded transition font-medium text-xs inline-flex items-center gap-1 ml-2"
+                                        className="text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 px-3 py-1.5 rounded transition font-medium text-xs inline-flex items-center gap-1 ml-2"
                                         title="Supprimer le retour"
                                       >
                                         🗑️
@@ -724,7 +724,7 @@ export default function PurchaseOrdersListPage() {
                                 <>
                                   <Link
                                     href={`/purchasing/${row.purchaseorderid}`}
-                                    className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-3 py-1.5 rounded transition font-medium text-xs inline-flex items-center gap-1"
+                                    className="text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 px-3 py-1.5 rounded transition font-medium text-xs inline-flex items-center gap-1"
                                     title="Voir les détails"
                                   >
                                     👁 Voir
@@ -755,7 +755,7 @@ export default function PurchaseOrdersListPage() {
                                   {(row.status === 'PENDING' || row.status === 'APPROVED' || row.status === 'PARTIAL' || row.status === 'RECEIVED') && (
                                     <Link
                                       href={`/purchasing/edit/${row.purchaseorderid}`}
-                                      className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-3 py-1.5 rounded transition font-medium text-xs inline-flex items-center gap-1 ml-2"
+                                      className="text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 px-3 py-1.5 rounded transition font-medium text-xs inline-flex items-center gap-1 ml-2"
                                       title="Modifier"
                                     >
                                       ✏️
@@ -781,7 +781,7 @@ export default function PurchaseOrdersListPage() {
                                           alert(e.message);
                                         }
                                       }}
-                                      className="text-red-600 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded transition font-medium text-xs inline-flex items-center gap-1 ml-2"
+                                      className="text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 px-3 py-1.5 rounded transition font-medium text-xs inline-flex items-center gap-1 ml-2"
                                       title="Supprimer"
                                     >
                                       🗑️
@@ -804,73 +804,73 @@ export default function PurchaseOrdersListPage() {
               const filteredOrders = filteredUnifiedRows.filter(r => r._type === 'order');
               const filteredReturns = filteredUnifiedRows.filter(r => r._type === 'return');
               return (
-              <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-slate-300 shadow-lg z-40 px-4 py-3">
+              <div className="fixed bottom-0 left-0 right-0 bg-slate-900/60 border-t-2 border-white/[0.08] shadow-lg shadow-black/20 z-40 px-4 py-3">
                 <div className="max-w-7xl mx-auto">
                   {/* Filtered Totals Row */}
                   <div className="flex flex-wrap items-center justify-center gap-3 mb-2">
                     <span className="text-xs text-slate-500 font-medium uppercase">Sélection:</span>
-                    <div className="flex items-center gap-1 px-3 py-1.5 bg-blue-600 text-white rounded-lg shadow-sm">
+                    <div className="flex items-center gap-1 px-3 py-1.5 bg-sky-600 text-white rounded-lg shadow-sm shadow-black/10">
                       <span className="text-xs font-medium">Total Achats</span>
                       <span className="font-bold text-sm ml-1">
                         {formatCurrencyDZD(filteredOrders.reduce((sum, po) => sum + (parseFloat(String(po.totalamount)) || 0), 0))}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 px-3 py-1.5 bg-green-600 text-white rounded-lg shadow-sm">
+                    <div className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 text-white rounded-lg shadow-sm shadow-black/10">
                       <span className="text-xs font-medium">Versement</span>
                       <span className="font-bold text-sm ml-1">
                         {formatCurrencyDZD(filteredOrders.reduce((sum, po) => sum + (parseFloat(String(po.amountpaid)) || 0), 0))}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 px-3 py-1.5 bg-red-600 text-white rounded-lg shadow-sm">
+                    <div className="flex items-center gap-1 px-3 py-1.5 bg-sky-600 text-white rounded-lg shadow-sm shadow-black/10">
                       <span className="text-xs font-medium">Reste</span>
                       <span className="font-bold text-sm ml-1">
                         {formatCurrencyDZD(filteredOrders.reduce((sum, po) => sum + ((parseFloat(String(po.totalamount)) || 0) - (parseFloat(String(po.amountpaid)) || 0)), 0))}
                       </span>
                     </div>
                     {filteredReturns.length > 0 && (
-                      <div className="flex items-center gap-1 px-3 py-1.5 bg-orange-500 text-white rounded-lg shadow-sm">
+                      <div className="flex items-center gap-1 px-3 py-1.5 bg-orange-500 text-white rounded-lg shadow-sm shadow-black/10">
                         <span className="text-xs font-medium">↩ Retours ({filteredReturns.length})</span>
                         <span className="font-bold text-sm ml-1">
                           -{formatCurrencyDZD(filteredReturns.reduce((sum, r) => sum + (parseFloat(String(r.totalamount)) || 0), 0))}
                         </span>
                       </div>
                     )}
-                    <div className="flex items-center gap-1 px-3 py-1.5 bg-slate-700 text-white rounded-lg shadow-sm">
+                    <div className="flex items-center gap-1 px-3 py-1.5 bg-slate-700 text-white rounded-lg shadow-sm shadow-black/10">
                       <span className="text-xs font-medium">Achats</span>
                       <span className="font-bold text-sm ml-1">{filteredOrders.length}</span>
                     </div>
                   </div>
 
                   {/* Overall Totals Row (all purchase orders) */}
-                  <div className="flex flex-wrap items-center justify-center gap-3 pt-2 border-t border-slate-200">
+                  <div className="flex flex-wrap items-center justify-center gap-3 pt-2 border-t border-white/[0.06]">
                     <span className="text-xs text-slate-400 font-medium uppercase">Total Général:</span>
-                    <div className="flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-lg border border-blue-200">
+                    <div className="flex items-center gap-1 px-3 py-1 bg-sky-500/10 text-blue-800 rounded-lg border border-sky-500/20">
                       <span className="text-xs font-medium">Total</span>
                       <span className="font-bold text-sm ml-1">
                         {formatCurrencyDZD(purchaseOrders.reduce((sum, po) => sum + (parseFloat(String(po.totalamount)) || 0), 0))}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-800 rounded-lg border border-green-200">
+                    <div className="flex items-center gap-1 px-3 py-1 bg-emerald-500/10 text-emerald-300 rounded-lg border border-emerald-500/20">
                       <span className="text-xs font-medium">Versement</span>
                       <span className="font-bold text-sm ml-1">
                         {formatCurrencyDZD(purchaseOrders.reduce((sum, po) => sum + (parseFloat(String(po.amountpaid)) || 0), 0))}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-800 rounded-lg border border-red-200">
+                    <div className="flex items-center gap-1 px-3 py-1 bg-sky-500/10 text-sky-300 rounded-lg border border-sky-500/20">
                       <span className="text-xs font-medium">Reste</span>
                       <span className="font-bold text-sm ml-1">
                         {formatCurrencyDZD(purchaseOrders.reduce((sum, po) => sum + ((parseFloat(String(po.totalamount)) || 0) - (parseFloat(String(po.amountpaid)) || 0)), 0))}
                       </span>
                     </div>
                     {purchaseReturns.length > 0 && (
-                      <div className="flex items-center gap-1 px-3 py-1 bg-orange-100 text-orange-800 rounded-lg border border-orange-200">
+                      <div className="flex items-center gap-1 px-3 py-1 bg-orange-500/10 text-orange-800 rounded-lg border border-orange-500/20">
                         <span className="text-xs font-medium">↩ Retours ({purchaseReturns.length})</span>
                         <span className="font-bold text-sm ml-1">
                           -{formatCurrencyDZD(purchaseReturns.reduce((sum, r) => sum + (parseFloat(String(r.totalamount)) || 0), 0))}
                         </span>
                       </div>
                     )}
-                    <div className="flex items-center gap-1 px-3 py-1 bg-slate-100 text-slate-700 rounded-lg border border-slate-200">
+                    <div className="flex items-center gap-1 px-3 py-1 bg-slate-800/50 text-slate-200 rounded-lg border border-white/[0.06]">
                       <span className="text-xs font-medium">Achats</span>
                       <span className="font-bold text-sm ml-1">{purchaseOrders.length}</span>
                     </div>

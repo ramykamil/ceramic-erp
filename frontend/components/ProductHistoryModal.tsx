@@ -60,7 +60,7 @@ export default function ProductHistoryModal({ isOpen, productId, onClose }: Prod
 
   const getModalSortIcon = (config: any, key: string) => {
     if (config.key !== key) return <span className="opacity-30 ml-1">↕</span>;
-    return config.direction === 'asc' ? <span className="ml-1 text-blue-600">▲</span> : <span className="ml-1 text-blue-600">▼</span>;
+    return config.direction === 'asc' ? <span className="ml-1 text-sky-400">▲</span> : <span className="ml-1 text-sky-400">▼</span>;
   };
 
   const loadAllHistory = async (prodId: number, startDate?: string, endDate?: string) => {
@@ -136,27 +136,27 @@ export default function ProductHistoryModal({ isOpen, productId, onClose }: Prod
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      <div className="w-full max-w-6xl bg-white rounded-xl shadow-2xl max-h-[90vh] flex flex-col">
+      <div className="w-full max-w-6xl bg-slate-900/60 rounded-xl shadow-2xl max-h-[90vh] flex flex-col">
         <div className="p-5 border-b border-slate-100 flex justify-between items-center">
           <div>
-            <h2 className="text-lg font-bold text-slate-800">📊 Historique Produit</h2>
+            <h2 className="text-lg font-bold text-slate-100">📊 Historique Produit</h2>
             {productInfo && (
               <p className="text-sm text-slate-500 mt-1">
                 {productInfo.productcode} - {productInfo.productname}
               </p>
             )}
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-400 text-2xl">&times;</button>
         </div>
 
         {/* Tabs + Date Filter */}
-        <div className="flex items-center justify-between border-b border-slate-200 px-5 flex-wrap gap-2">
+        <div className="flex items-center justify-between border-b border-white/[0.06] px-5 flex-wrap gap-2">
           <div className="flex">
             <button
               onClick={() => setHistoryTab('ventes')}
               className={`px-4 py-3 text-sm font-semibold border-b-2 transition-colors ${historyTab === 'ventes'
                 ? 'border-emerald-500 text-emerald-700 bg-emerald-50/50'
-                : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/[0.08]'
                 }`}
             >
               📊 Historique des Ventes
@@ -164,8 +164,8 @@ export default function ProductHistoryModal({ isOpen, productId, onClose }: Prod
             <button
               onClick={() => setHistoryTab('achats')}
               className={`px-4 py-3 text-sm font-semibold border-b-2 transition-colors ${historyTab === 'achats'
-                ? 'border-orange-500 text-orange-700 bg-orange-50/50'
-                : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                ? 'border-orange-500 text-orange-400 bg-orange-50/50'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/[0.08]'
                 }`}
             >
               🛒 Historique des Achats
@@ -174,7 +174,7 @@ export default function ProductHistoryModal({ isOpen, productId, onClose }: Prod
               onClick={() => setHistoryTab('ajustements')}
               className={`px-4 py-3 text-sm font-semibold border-b-2 transition-colors ${historyTab === 'ajustements'
                 ? 'border-amber-500 text-amber-700 bg-amber-50/50'
-                : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/[0.08]'
                 }`}
             >
               ⚡ Ajustements
@@ -183,7 +183,7 @@ export default function ProductHistoryModal({ isOpen, productId, onClose }: Prod
               onClick={() => setHistoryTab('retours')}
               className={`px-4 py-3 text-sm font-semibold border-b-2 transition-colors ${historyTab === 'retours'
                 ? 'border-rose-500 text-rose-700 bg-rose-50/50'
-                : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/[0.08]'
                 }`}
             >
               ↩️ Retours
@@ -199,9 +199,9 @@ export default function ProductHistoryModal({ isOpen, productId, onClose }: Prod
               value={historyEndDate}
               onChange={(val) => setHistoryEndDate(val)}
             />
-            <button onClick={() => { if (productId) loadAllHistory(productId, historyStartDate || undefined, historyEndDate || undefined); }} className="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-blue-700">Filtrer</button>
+            <button onClick={() => { if (productId) loadAllHistory(productId, historyStartDate || undefined, historyEndDate || undefined); }} className="bg-sky-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-sky-700">Filtrer</button>
             {(historyStartDate || historyEndDate) && (
-              <button onClick={() => { setHistoryStartDate(''); setHistoryEndDate(''); if (productId) loadAllHistory(productId); }} className="text-slate-400 hover:text-red-500 text-xs">✕</button>
+              <button onClick={() => { setHistoryStartDate(''); setHistoryEndDate(''); if (productId) loadAllHistory(productId); }} className="text-slate-400 hover:text-sky-400 text-xs">✕</button>
             )}
           </div>
         </div>
@@ -258,8 +258,8 @@ export default function ProductHistoryModal({ isOpen, productId, onClose }: Prod
             />
           )}
         </div>
-        <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-end">
-          <button onClick={onClose} className="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-lg font-medium text-sm">Fermer</button>
+        <div className="p-4 bg-slate-900/40 border-t border-slate-100 flex justify-end">
+          <button onClick={onClose} className="bg-slate-900/60 border border-white/[0.08] text-slate-200 hover:bg-slate-900/40 px-4 py-2 rounded-lg font-medium text-sm">Fermer</button>
         </div>
       </div>
     </div>

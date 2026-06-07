@@ -134,7 +134,7 @@ export function ResizableHeader({ columnKey, width, minWidth = 50, onResize, chi
             {/* Resize handle */}
             <div
                 onMouseDown={handleMouseDown}
-                className={`absolute right-0 top-0 bottom-0 w-1 cursor-col-resize hover:bg-blue-400 transition-colors ${isResizing ? 'bg-blue-500' : 'bg-transparent'}`}
+                className={`absolute right-0 top-0 bottom-0 w-1 cursor-col-resize hover:bg-blue-400 transition-colors ${isResizing ? 'bg-sky-500' : 'bg-transparent'}`}
                 style={{ zIndex: 10 }}
             />
         </th>
