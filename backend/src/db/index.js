@@ -109,10 +109,5 @@ function isPostgreSQL() {
 }
 
 module.exports = {
-    ...db,
-    convertPlaceholders,
-    getReturningClause,
-    isSQLite,
-    isPostgreSQL,
-    dbType
+    ...db
 };

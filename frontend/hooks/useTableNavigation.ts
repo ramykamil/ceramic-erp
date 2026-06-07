@@ -110,5 +110,3 @@ export function useTableNavigation({ rowCount, onAction, enabled = true }: UseTa
         isSelected: (index: number) => selectedIndex === index
     };
 }
-
-export default useTableNavigation;

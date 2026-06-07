@@ -1,57 +1,7 @@
 const pool = require('../../../config/database');
 const accountingService = require('../services/accounting.service');
 const auditService = require('../../../services/audit.service');
-
-/**
- * Helper: Parse dimensions (e.g. "60x60") => m2
- */
-const parseDimensions = (str) => {
-    if (!str) return 0;
-    const match = str.match(/(\d{2,3})\s*[xX*\/]\s*(\d{2,3})/);
-    if (match) {
-        return (parseInt(match[1]) * parseInt(match[2])) / 10000;
-    }
-    return 0;
-};
-
-/**
- * Helper: Convert a quantity in a specific unit to the stock unit (SQM or PCS)
- */
-const convertToStockUnit = (quantity, unitCode, productInfo) => {
-    const q = parseFloat(quantity) || 0;
-    const primaryUnitCode = productInfo.primaryunitcode;
-    const sqmPerPiece = parseDimensions(productInfo.size || productInfo.productname);
-    const qteParColis = parseFloat(productInfo.qteparcolis) || 0;
-    const cartonsPerPalette = parseFloat(productInfo.qtecolisparpalette) || 0;
-
-    if (!unitCode || !primaryUnitCode || unitCode === primaryUnitCode) return q;
-
-    let piecesQty = q;
-
-    // 1. Convert from current unit to PCS (Base)
-    if (unitCode === 'SQM' && sqmPerPiece > 0) {
-        piecesQty = q / sqmPerPiece;
-    } else if (unitCode === 'CARTON' || unitCode === 'CRT' || unitCode === 'COLIS') {
-        piecesQty = qteParColis > 0 ? q * qteParColis : q;
-    } else if (unitCode === 'PALETTE' || unitCode === 'PAL') {
-        piecesQty = q * (qteParColis || 1) * (cartonsPerPalette || 1);
-    }
-
-    // 2. Convert from PCS (Base) to primaryUnit
-    if (primaryUnitCode === 'SQM') {
-        if ((unitCode === 'CARTON' || unitCode === 'CRT' || unitCode === 'COLIS') && qteParColis > 0 && sqmPerPiece > 0) {
-            const isMultiple = Math.abs(qteParColis / sqmPerPiece - Math.round(qteParColis / sqmPerPiece)) < 0.01;
-            if (!isMultiple) return q * qteParColis;
-        }
-        return sqmPerPiece > 0 ? piecesQty * sqmPerPiece : piecesQty;
-    }
-
-    if (primaryUnitCode === 'CARTON' || primaryUnitCode === 'CRT' || primaryUnitCode === 'COLIS') {
-        return qteParColis > 0 ? piecesQty / qteParColis : piecesQty;
-    }
-
-    return piecesQty;
-};
+const { convertToStockUnit } = require('../utils/unitConverter');
 
 /**
  * Get all Purchase Orders

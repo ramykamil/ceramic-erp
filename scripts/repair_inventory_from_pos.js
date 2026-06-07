@@ -1,50 +1,5 @@
 const pool = require('../backend/src/config/database');
-
-const parseDimensions = (str) => {
-    if (!str) return 0;
-    const match = str.match(/(\d{2,3})[xX*\/](\d{2,3})/);
-    if (match) {
-        return (parseInt(match[1]) * parseInt(match[2])) / 10000;
-    }
-    return 0;
-};
-
-const convertToStockUnit = (quantity, unitCode, productInfo) => {
-    const qty = parseFloat(quantity) || 0;
-    const uCode = (unitCode || '').toUpperCase();
-    const primaryUnitCode = (productInfo.primaryunitcode || '').toUpperCase();
-    const sqmPerPiece = parseDimensions(productInfo.size || productInfo.productname);
-    const piecesPerBox = parseFloat(productInfo.qteparcolis) || 0;
-    const boxesPerPallet = parseFloat(productInfo.qtecolisparpalette) || 0;
-
-    const isTileProduct = sqmPerPiece > 0;
-    const isReceivingInSQM = ['SQM', 'M2', 'M²'].includes(uCode);
-    const isReceivingInPCS = ['PCS', 'PIECE', 'PIÈCE'].includes(uCode);
-
-    if (isTileProduct) {
-        if (isReceivingInSQM) return qty;
-        if (isReceivingInPCS) return qty * sqmPerPiece;
-        if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(uCode)) {
-            const pcs = piecesPerBox > 0 ? qty * piecesPerBox : qty;
-            return pcs * sqmPerPiece;
-        }
-        if (['PALLET', 'PALETTE', 'PAL'].includes(uCode)) {
-            const boxes = boxesPerPallet > 0 ? qty * boxesPerPallet : qty;
-            const pcs = piecesPerBox > 0 ? boxes * piecesPerBox : boxes;
-            return pcs * sqmPerPiece;
-        }
-        return qty;
-    } else {
-        if (isReceivingInPCS || uCode === primaryUnitCode) return qty;
-        if (['BOX', 'CARTON', 'CRT', 'CTN'].includes(uCode) && piecesPerBox > 0) {
-            return qty * piecesPerBox;
-        }
-        if (['PALLET', 'PALETTE', 'PAL'].includes(uCode) && boxesPerPallet > 0 && piecesPerBox > 0) {
-            return qty * boxesPerPallet * piecesPerBox;
-        }
-        return qty;
-    }
-};
+const { convertToStockUnit } = require('../backend/src/api/v1/utils/unitConverter');
 
 async function repair() {
     console.log('--- Starting Inventory Repair ---');

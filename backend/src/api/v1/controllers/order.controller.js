@@ -2,17 +2,9 @@ const pool = require('../../../config/database');
 const pricingService = require('../services/pricing.service');
 const accountingService = require('../services/accounting.service');
 const auditService = require('../../../services/audit.service');
+const { parseSqmPerPiece, convertUnitToInventory } = require('../utils/unitConverter');
 
 // ===== UNIT CONVERSION HELPERS =====
-const parseSqmPerPiece = (str) => {
-  if (!str) return 0;
-  const match = str.match(/(\d{2,3})\s*[xX*\/]\s*(\d{2,3})/);
-  if (match) {
-    return (parseInt(match[1]) * parseInt(match[2])) / 10000; // cm*cm / 10000 = m2
-  }
-  return 0;
-};
-
 /**
  * Helper to identify service items (Transport, Fiche) that don't track physical stock
  */
@@ -21,46 +13,6 @@ const isServiceItem = (name) => {
   return n.includes('transport') || n.includes('fiche');
 };
 
-const convertUnitToInventory = (qty, cartUnitCode, primaryUnitCode, sqmPerPiece, productName, qteParColis = 0, cartonsPerPalette = 0) => {
-  const q = parseFloat(qty) || 0;
-  if (!cartUnitCode || !primaryUnitCode || cartUnitCode === primaryUnitCode) return q;
-
-  // Normalization logic: if qteParColis is decimal (e.g. 1.44), it's often M2 per carton.
-  // We need to determine if we should treat it as Pieces or SQM.
-  // If cartUnit is CARTON and primary is SQM, and qteParColis is 1.44, then 1 CARTON = 1.44 SQM.
-  
-  let piecesQty = q;
-  
-  // 1. Convert from cartUnit to PCS (Base)
-  if (cartUnitCode === 'SQM' && sqmPerPiece > 0) {
-    piecesQty = q / sqmPerPiece;
-  } else if (cartUnitCode === 'CARTON' || cartUnitCode === 'CRT' || cartUnitCode === 'COLIS') {
-    piecesQty = qteParColis > 0 ? q * qteParColis : q;
-    // If qteParColis was actually SQM, piecesQty is now SQM. We'll handle that in step 2.
-  } else if (cartUnitCode === 'PALETTE' || cartUnitCode === 'PAL') {
-    piecesQty = q * (qteParColis || 1) * (cartonsPerPalette || 1);
-  }
-
-  // 2. Convert from PCS (Base) to primaryUnit
-  // Special case: if cartUnit was CARTON and qteParColis was effectively the SQM count, 
-  // and primary unit is SQM, we might already have the SQM count.
-  
-  if (primaryUnitCode === 'SQM') {
-    if ((cartUnitCode === 'CARTON' || cartUnitCode === 'CRT' || cartUnitCode === 'COLIS') && qteParColis > 0 && sqmPerPiece > 0) {
-      // If qteParColis is a multiple of sqmPerPiece, it's likely Pieces.
-      // If it's NOT a multiple (e.g. 1.44 and 0.2025), it's likely already SQM.
-      const isMultiple = Math.abs(qteParColis / sqmPerPiece - Math.round(qteParColis / sqmPerPiece)) < 0.01;
-      if (!isMultiple) return q * qteParColis; // Return SQM directly
-    }
-    return sqmPerPiece > 0 ? piecesQty * sqmPerPiece : piecesQty;
-  }
-  
-  if (primaryUnitCode === 'CARTON' || primaryUnitCode === 'CRT' || primaryUnitCode === 'COLIS') {
-    return qteParColis > 0 ? piecesQty / qteParColis : piecesQty;
-  }
-
-  return piecesQty; // PCS
-};
 // ===================================
 // ===== INVENTORY VALIDATION HELPER =====
 /**

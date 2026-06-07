@@ -6,19 +6,7 @@ const pool = require('./config/database');
 const PORT = config.port;
 const HOST = '0.0.0.0'; // Bind to all network interfaces for LAN access
 
-// Get local network IP
-const getNetworkIP = () => {
-  const os = require('os');
-  const interfaces = os.networkInterfaces();
-  for (const name of Object.keys(interfaces)) {
-    for (const iface of interfaces[name]) {
-      if (iface.family === 'IPv4' && !iface.internal) {
-        return iface.address;
-      }
-    }
-  }
-  return 'localhost';
-};
+const { getNetworkIP } = require('./api/v1/utils/network');
 
 // Test database connection before starting server
 async function startServer() {

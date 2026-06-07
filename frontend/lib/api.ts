@@ -127,7 +127,7 @@ interface Settlement {
   createdat: string;
 }
 
-export interface SituationItem {
+interface SituationItem {
   id: number;
   date: string;
   reference: string;
@@ -139,7 +139,7 @@ export interface SituationItem {
   paymentmethod: string | null;
 }
 
-export interface SituationSummary {
+interface SituationSummary {
   totalDebit: number;
   totalCredit: number;
   periodBalance: number;
@@ -1321,5 +1321,5 @@ class ApiClient {
   }
 }
 
-export const api = new ApiClient(API_BASE_URL);
+const api = new ApiClient(API_BASE_URL);
 export default api;

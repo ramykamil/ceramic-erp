@@ -25,18 +25,7 @@ const PORT = config.port || 5000;
 const FRONTEND_PORT = process.env.FRONTEND_PORT || 3000;
 const HOST = '0.0.0.0';
 
-// Get local network IP
-const getNetworkIP = () => {
-    const interfaces = os.networkInterfaces();
-    for (const name of Object.keys(interfaces)) {
-        for (const iface of interfaces[name]) {
-            if (iface.family === 'IPv4' && !iface.internal) {
-                return iface.address;
-            }
-        }
-    }
-    return 'localhost';
-};
+const { getNetworkIP } = require('./api/v1/utils/network');
 
 // ============================================
 // MIDDLEWARE SETUP

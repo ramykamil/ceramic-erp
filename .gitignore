@@ -5,3 +5,4 @@ node_modules
 backend/uploads
 *.log
 .DS_Store
+.fallow/

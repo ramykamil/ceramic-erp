@@ -51,5 +51,3 @@ export function SortableTableHeader({
         </th>
     );
 }
-
-export default SortableTableHeader;

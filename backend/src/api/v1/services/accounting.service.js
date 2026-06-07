@@ -243,7 +243,6 @@ async function recordPurchaseReturnTransaction(params, client = null) {
 }
 
 module.exports = {
-    getDefaultAccountId,
     recordSaleTransaction,
     recordPaymentTransaction,
     recordPurchaseTransaction,

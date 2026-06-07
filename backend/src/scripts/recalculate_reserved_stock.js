@@ -1,5 +1,6 @@
 const { Pool } = require('pg');
 const path = require('path');
+const { parseSqmPerPiece, convertUnitToInventory } = require('../api/v1/utils/unitConverter');
 // Removed dotenv to prevent environment variable interference
 
 const pool = new Pool({
@@ -8,42 +9,6 @@ const pool = new Pool({
 });
 
 console.log('Pool configured with connection string. Target user:', 'postgres.ugvioyruqoafvsqvnwiy');
-
-const parseSqmPerPiece = (str) => {
-  if (!str) return 0;
-  const match = str.match(/(\d{2,3})\s*[xX*\/]\s*(\d{2,3})/);
-  if (match) {
-    return (parseInt(match[1]) * parseInt(match[2])) / 10000;
-  }
-  return 0;
-};
-
-const convertUnitToInventory = (qty, cartUnitCode, primaryUnitCode, sqmPerPiece, qteParColis = 0, cartonsPerPalette = 0) => {
-  const q = parseFloat(qty) || 0;
-  if (!cartUnitCode || !primaryUnitCode || cartUnitCode === primaryUnitCode) return q;
-
-  let piecesQty = q;
-  if (cartUnitCode === 'SQM' && sqmPerPiece > 0) {
-    piecesQty = q / sqmPerPiece;
-  } else if (cartUnitCode === 'CARTON' || cartUnitCode === 'CRT' || cartUnitCode === 'COLIS') {
-    piecesQty = qteParColis > 0 ? q * qteParColis : q;
-  } else if (cartUnitCode === 'PALETTE' || cartUnitCode === 'PAL') {
-    piecesQty = q * (qteParColis || 1) * (cartonsPerPalette || 1);
-  }
-
-  if (primaryUnitCode === 'SQM') {
-    if ((cartUnitCode === 'CARTON' || cartUnitCode === 'CRT' || cartUnitCode === 'COLIS') && qteParColis > 0 && sqmPerPiece > 0) {
-      const isMultiple = Math.abs(qteParColis / sqmPerPiece - Math.round(qteParColis / sqmPerPiece)) < 0.01;
-      if (!isMultiple) return q * qteParColis;
-    }
-    return sqmPerPiece > 0 ? piecesQty * sqmPerPiece : piecesQty;
-  }
-  
-  if (primaryUnitCode === 'CARTON' || primaryUnitCode === 'CRT' || primaryUnitCode === 'COLIS') {
-    return qteParColis > 0 ? piecesQty / qteParColis : piecesQty;
-  }
-  return piecesQty;
-};
 
 async function reconcile() {
   const client = await pool.connect();

@@ -201,13 +201,10 @@ process.on('SIGTERM', () => {
 });
 
 module.exports = {
-    getDatabase,
     closeDatabase,
-    saveDatabase,
     query,
     queryOne,
     exec,
     transaction,
-    initializeDatabase,
-    dbPath
+    initializeDatabase
 };

@@ -12,26 +12,21 @@ import { ResizableHeader, useColumnWidths } from '@/components/ResizableSortable
 import { useTableNavigation } from '@/hooks/useTableNavigation';
 import { useSortableTable } from '@/hooks/useSortableTable';
 import { StandardDateInput } from '@/components/DateQuickFilter';
+import { POSCustomerModal } from '@/components/POSCustomerModal';
+import { POSManualProductModal } from '@/components/POSManualProductModal';
+import { POSProductBrowser } from '@/components/POSProductBrowser';
+import { POSCartTable } from '@/components/POSCartTable';
+
+// Hook and shared helpers
+import {
+  usePOSCart,
+  Product,
+  OrderItem,
+  parseSqmPerPiece,
+  normalizePackaging,
+} from '@/hooks/usePOSCart';
 
 // --- Interfaces ---
-interface Product {
-  productid: number;
-  productcode: string;
-  productname: string;
-  baseprice: number;
-  prixvente?: number;
-  prixachat?: number;
-  brandname: string;
-  famille?: string;
-  totalqty: number;
-  nbpalette: number;
-  nbcolis: number;
-  derivedpiecespercolis: number;
-  derivedcolisperpalette: number;
-  primaryunitid?: number;
-  primaryunitcode?: string;
-}
-
 interface Customer {
   customerid: number;
   customercode?: string;
@@ -47,28 +42,6 @@ interface InventoryItem {
   palletcount: number;
   coliscount: number;
   quantityonhand: number;
-}
-
-interface OrderItem {
-  rowId: string; // Unique ID for duplicate line-item support
-  productId: number;
-  productCode: string;
-  productName: string;
-  brandName: string;
-  stockQty: number;
-  stockPalettes: number;
-  stockCartons: number;
-  piecesPerCarton: number;
-  cartonsPerPalette: number;
-  sqmPerPiece: number;
-  palettes: number;
-  cartons: number;
-  quantity: number;
-  unitId: number;
-  unitPrice: number;
-  priceSource: string;
-  lineTotal: number;
-  purchasePrice?: number;
 }
 
 // --- Helper ---
@@ -87,70 +60,6 @@ const getPriceSourceBadge = (source: string) => {
     NOT_FOUND: 'bg-red-100 text-red-700',
   };
   return badges[source] || badges.BASE;
-};
-
-// --- Tile Dimension Parser ---
-const parseSqmPerPiece = (productName: string): number => {
-  const match = productName.match(/(\d+)\s*[\/xX×]\s*(\d+)/);
-  if (match) {
-    const width = parseInt(match[1]) / 100;
-    const height = parseInt(match[2]) / 100;
-    return width * height;
-  }
-  return 0;
-};
-
-const convertToSqm = (pieces: number, sqmPerPiece: number): number => {
-  if (sqmPerPiece <= 0) return 0;
-  return pieces * sqmPerPiece;
-};
-
-const convertToPieces = (sqm: number, sqmPerPiece: number): number => {
-  if (sqmPerPiece <= 0) return 0;
-  return sqm / sqmPerPiece;
-};
-
-const normalizePackaging = (productName: string, rawPiecesPerCarton: number, initialSqmPerPiece: number) => {
-  let piecesPerCarton = rawPiecesPerCarton;
-  let sqmPerPiece = initialSqmPerPiece;
-
-  if (sqmPerPiece > 0 && rawPiecesPerCarton > 0 && rawPiecesPerCarton % 1 !== 0) {
-    const calculatedPieces = Math.round(rawPiecesPerCarton / sqmPerPiece);
-    if (Math.abs(calculatedPieces * sqmPerPiece - rawPiecesPerCarton) < 0.05) {
-      piecesPerCarton = calculatedPieces;
-      sqmPerPiece = rawPiecesPerCarton / calculatedPieces;
-    }
-  }
-  return { piecesPerCarton, sqmPerPiece };
-};
-
-const convertQuantity = (
-  value: number,
-  fromUnit: string,
-  toUnit: string,
-  sqmPerPiece: number,
-  piecesPerCarton: number
-): number => {
-  if (fromUnit === toUnit) return value;
-  let pcsQty: number;
-  if (fromUnit === 'PCS') {
-    pcsQty = value;
-  } else if (fromUnit === 'SQM') {
-    pcsQty = sqmPerPiece > 0 ? value / sqmPerPiece : value;
-  } else if (fromUnit === 'CARTON' || fromUnit === 'CRT') {
-    pcsQty = piecesPerCarton > 0 ? value * piecesPerCarton : value;
-  } else {
-    pcsQty = value;
-  }
-
-  if (toUnit === 'PCS') {
-    return pcsQty;
-  } else if (toUnit === 'SQM') {
-    return sqmPerPiece > 0 ? pcsQty * sqmPerPiece : pcsQty;
-  } else if (toUnit === 'CARTON' || toUnit === 'CRT') {
-    return piecesPerCarton > 0 ? pcsQty / piecesPerCarton : pcsQty;
-  }
-  return value;
 };
 
 // --- Smart Number Input ---
@@ -246,7 +155,6 @@ function POSContent() {
   const [originalOrderState, setOriginalOrderState] = useState<{ status: string, totalAmount: number, paymentAmount: number } | null>(null);
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [cart, setCart] = useState<OrderItem[]>([]);
 
   const [driverId, setDriverId] = useState<string>('');
   const [vehicleId, setVehicleId] = useState<string>('');
@@ -281,31 +189,50 @@ function POSContent() {
   // --- End server-side search state ---
 
   const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
-  const [newCustomerName, setNewCustomerName] = useState('');
-  const [newCustomerType, setNewCustomerType] = useState<'RETAIL' | 'WHOLESALE'>('WHOLESALE');
-  const [newCustomerPhone, setNewCustomerPhone] = useState('');
-  const [newCustomerAddress, setNewCustomerAddress] = useState('');
-  const [isCreatingCustomer, setIsCreatingCustomer] = useState(false);
-
   const [isProductBrowserOpen, setIsProductBrowserOpen] = useState(false);
   const [browserSearch, setBrowserSearch] = useState('');
-
   const [isManualProductOpen, setIsManualProductOpen] = useState(false);
-  const [manualProductName, setManualProductName] = useState('');
-  const [manualProductQty, setManualProductQty] = useState(1);
-  const [manualProductPrice, setManualProductPrice] = useState(0);
-  const [manualProductBrand, setManualProductBrand] = useState('');
-  const [manualProductColis, setManualProductColis] = useState(0);
-  const [manualProductPalettes, setManualProductPalettes] = useState(0);
+
+  const [userName, setUserName] = useState<string>('');
+  const [userRole, setUserRole] = useState<string>('');
+  const [isRetailMode, setIsRetailMode] = useState(false);
+  const [retailClientName, setRetailClientName] = useState('');
+  const [employerName, setEmployerName] = useState('');
+  const [customerSearchQuery, setCustomerSearchQuery] = useState('');
+  const [activeMobileTab, setActiveMobileTab] = useState<'CLIENT' | 'CART' | 'PAYMENT'>('CART');
+
+  const {
+    cart,
+    setCart,
+    addToCart: originalAddToCart,
+    updateItem,
+    removeItem,
+    loadOrder,
+    totalHT,
+    totalNet,
+    reste,
+  } = usePOSCart({
+    selectedCustomerId,
+    isRetailMode,
+    appSettings,
+    units,
+    deliveryCost,
+    discount,
+    timber,
+    payment,
+  });
+
+  const addToCart = async (product: Product) => {
+    await originalAddToCart(product);
+    setSearchQuery('');
+  };
 
   const selectedCustomer = useMemo(() => customers.find(c => c.customerid === selectedCustomerId), [selectedCustomerId, customers]);
 
   const filteredBrowserProducts = useMemo(() => {
-    // If user is searching in browser modal and server results are available, use those
     if (browserSearch && browserSearch.length >= 2 && browserSearchResults.length > 0) {
       return browserSearchResults;
     }
-    // Otherwise filter the pre-loaded 200 products (instant browsing)
     return products.filter(p => 
       !browserSearch || 
       p.productname.toLowerCase().includes(browserSearch.toLowerCase()) || 
@@ -351,14 +278,6 @@ function POSContent() {
     if (config.key !== key) return <span className="opacity-30 ml-1 text-[8px]">↕</span>;
     return config.direction === 'asc' ? <span className="ml-1 text-blue-400">▲</span> : <span className="ml-1 text-blue-400">▼</span>;
   };
-
-  const [userName, setUserName] = useState<string>('');
-  const [userRole, setUserRole] = useState<string>('');
-  const [isRetailMode, setIsRetailMode] = useState(false);
-  const [retailClientName, setRetailClientName] = useState('');
-  const [employerName, setEmployerName] = useState('');
-  const [customerSearchQuery, setCustomerSearchQuery] = useState('');
-  const [activeMobileTab, setActiveMobileTab] = useState<'CLIENT' | 'CART' | 'PAYMENT'>('CART');
 
   const handlePrint = useReactToPrint({
     content: () => printRef.current,
@@ -451,7 +370,7 @@ function POSContent() {
   }, []);
 
   useEffect(() => {
-    // 1. Ensure "MANUAL" product exists or create it (Self-healing)
+    // Ensure "MANUAL" product exists or create it (Self-healing)
     if (!manualProductId && !isCreatingManual.current && units.length > 0) {
       isCreatingManual.current = true;
       (async () => {
@@ -470,7 +389,6 @@ function POSContent() {
           }
         } catch (e: any) {
            console.error("POS: Manual Product Init Failed", e);
-           // Fallback: Try one more search in case backend response was weird
            const searchRes = await api.getProducts({ search: 'MANUAL' });
            const found = (searchRes.data as any[]).find((p: any) => p.productcode?.toUpperCase() === 'MANUAL');
            if (found) setManualProductId(found.productid);
@@ -489,7 +407,6 @@ function POSContent() {
           if (res.success && res.data) {
             const order = res.data as any;
 
-            // Fetch any products not in the pre-loaded batch so we have their stock data
             const missingIds = order.items
               .map((item: any) => Number(item.productid))
               .filter((id: number) => !products.find(x => Number(x.productid) === id));
@@ -504,38 +421,8 @@ function POSContent() {
               } catch (e) { console.error('Failed to fetch missing products:', e); }
             }
 
-            const items: OrderItem[] = order.items.map((item: any) => {
-              const p = allProducts.find(x => Number(x.productid) === Number(item.productid));
-              // Use backend item data as primary source (backend joins Products + Brands tables),
-              // fall back to pre-loaded product array only if backend data is missing.
-              const rawPiecesPerColis = parseFloat(item.qteparcolis) || p?.derivedpiecespercolis || 0;
-              const rawColisPerPalette = parseFloat(item.qtecolisparpalette) || p?.derivedcolisperpalette || 0;
-              const { piecesPerCarton, sqmPerPiece } = normalizePackaging(item.productname, rawPiecesPerColis, parseSqmPerPiece(item.productname));
-              const currentUnit = units.find(u => u.unitid === item.unitid)?.unitcode || 'PCS';
+            loadOrder(order.items, allProducts);
 
-              let palettes = Number(item.palletcount) || 0;
-              let cartons = Number(item.coliscount) || 0;
-
-              // SELF-HEALING: If counts are zero in DB but we have packaging data, recalculate them
-              if (palettes === 0 && cartons === 0 && (piecesPerCarton > 0 || rawColisPerPalette > 0)) {
-                let pieces = Number(item.quantity);
-                if (currentUnit === 'SQM' && sqmPerPiece > 0) pieces = Number(item.quantity) / sqmPerPiece;
-                else if ((currentUnit === 'CARTON' || currentUnit === 'CRT') && piecesPerCarton > 0) pieces = Number(item.quantity) * piecesPerCarton;
-                cartons = Number((piecesPerCarton > 0 ? pieces / piecesPerCarton : pieces).toFixed(2));
-                palettes = Number((rawColisPerPalette > 0 ? cartons / rawColisPerPalette : 0).toFixed(2));
-              }
-
-              return {
-                rowId: crypto.randomUUID(), productId: Number(item.productid), productCode: item.productcode, productName: item.productname,
-                brandName: item.brandname || p?.famille || p?.brandname || '', 
-                stockQty: p?.totalqty || 0, stockPalettes: p?.nbpalette || 0, stockCartons: p?.nbcolis || 0,
-                piecesPerCarton, cartonsPerPalette: rawColisPerPalette, sqmPerPiece,
-                palettes, cartons, quantity: Number(item.quantity),
-                unitId: item.unitid, unitPrice: Number(item.unitprice), lineTotal: Number(item.linetotal),
-                purchasePrice: Number(item.costprice) || Number(p?.prixachat) || 0
-              };
-            });
-            setCart(items);
             const comptoir = customers.find(c => c.customercode === 'COMPTOIR');
             if (order.customerid === comptoir?.customerid && order.retailclientname) {
               setSelectedCustomerId(''); setCustomerSearchQuery(order.retailclientname);
@@ -554,7 +441,7 @@ function POSContent() {
       }
     };
     load();
-  }, [editOrderId, products, customers, units, loadedEditId]);
+  }, [editOrderId, products, customers, units, loadedEditId, loadOrder]);
 
   useEffect(() => {
     if (selectedCustomerId) {
@@ -575,91 +462,6 @@ function POSContent() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [cart, selectedCustomerId, isSubmitting, isCustomerModalOpen]);
-
-  const addToCart = async (product: Product) => {
-    let defaultUnit = units.find(u => u.unitcode === 'PCS')?.unitid || units[0]?.unitid;
-    const isInteger = Math.abs(product.derivedpiecespercolis - Math.round(product.derivedpiecespercolis)) < 0.01;
-    if (product.derivedpiecespercolis > 0) {
-      defaultUnit = isInteger ? units.find(u => u.unitcode === 'PCS')?.unitid || defaultUnit : units.find(u => u.unitid === 1 /* SQM ID? */ || u.unitcode === 'SQM')?.unitid || defaultUnit;
-    }
-    const { piecesPerCarton, sqmPerPiece } = normalizePackaging(product.productname, product.derivedpiecespercolis || 0, parseSqmPerPiece(product.productname));
-    let unitPrice = Number(product.prixvente) || Number(product.baseprice) || 0;
-    let priceSource = 'BASE';
-
-    if (selectedCustomerId) {
-      try {
-        const pRes = await api.getCustomerProductPrice(selectedCustomerId as number, product.productid);
-        if (pRes.success && pRes.data) {
-          unitPrice = (pRes.data as any).recommendedPrice || unitPrice;
-          priceSource = (pRes.data as any).priceSource || 'BASE';
-        }
-      } catch (e) { console.error(e); }
-    }
-
-    if (priceSource === 'BASE') {
-      const purchase = Number(product.prixachat) || 0;
-      const margin = isRetailMode ? Number(appSettings.retailmargin) : Number(appSettings.wholesalemargin);
-      const type = isRetailMode ? appSettings.retailmargintype : appSettings.wholesalemargintype;
-      if (purchase > 0 && margin > 0) {
-        unitPrice = type === 'AMOUNT' ? purchase + margin : purchase * (1 + margin / 100);
-        priceSource = isRetailMode ? 'MARGE_DETAIL' : 'MARGE_GROS';
-      }
-    }
-
-    setCart([...cart, {
-      rowId: crypto.randomUUID(), productId: product.productid, productCode: product.productcode, productName: product.productname,
-      brandName: product.famille || product.brandname || '', stockQty: product.totalqty || 0, stockPalettes: product.nbpalette || 0, stockCartons: product.nbcolis || 0,
-      piecesPerCarton, cartonsPerPalette: product.derivedcolisperpalette || 0, sqmPerPiece,
-      palettes: 0, cartons: 0, quantity: 1, unitId: defaultUnit, unitPrice, priceSource, lineTotal: unitPrice,
-      purchasePrice: Number(product.prixachat) || 0
-    }]);
-    setSearchQuery('');
-  };
-
-  const updateItem = (rowId: string, field: keyof OrderItem, value: any) => {
-    const newCart = [...cart];
-    const idx = newCart.findIndex(i => i.rowId === rowId);
-    if (idx === -1) return;
-    const item = newCart[idx];
-
-    if (field === 'unitId') {
-      const oldCode = units.find(u => u.unitid === item.unitId)?.unitcode || 'PCS';
-      const newCode = units.find(u => u.unitid === Number(value))?.unitcode || 'PCS';
-      item.quantity = Number(convertQuantity(item.quantity, oldCode, newCode, item.sqmPerPiece, item.piecesPerCarton).toFixed(2));
-      item.unitId = Number(value);
-    } else {
-      (item as any)[field] = value;
-    }
-
-    const currentUnit = units.find(u => u.unitid === item.unitId)?.unitcode || 'PCS';
-    if (field === 'quantity' || field === 'unitId') {
-      let pieces = item.quantity;
-      if (currentUnit === 'SQM' && item.sqmPerPiece > 0) pieces = item.quantity / item.sqmPerPiece;
-      else if ((currentUnit === 'CARTON' || currentUnit === 'CRT') && item.piecesPerCarton > 0) pieces = item.quantity * item.piecesPerCarton;
-      item.cartons = Number((item.piecesPerCarton > 0 ? pieces / item.piecesPerCarton : pieces).toFixed(2));
-      item.palettes = Number((item.cartonsPerPalette > 0 ? item.cartons / item.cartonsPerPalette : 0).toFixed(2));
-    } else if (field === 'cartons') {
-      let pieces = item.cartons * item.piecesPerCarton;
-      if (currentUnit === 'SQM' && item.sqmPerPiece > 0) item.quantity = pieces * item.sqmPerPiece;
-      else if (currentUnit === 'CARTON' || currentUnit === 'CRT') item.quantity = item.cartons;
-      else item.quantity = pieces;
-      item.palettes = Number((item.cartonsPerPalette > 0 ? item.cartons / item.cartonsPerPalette : 0).toFixed(2));
-    } else if (field === 'palettes') {
-      item.cartons = item.palettes * item.cartonsPerPalette;
-      let pieces = item.cartons * item.piecesPerCarton;
-      if (currentUnit === 'SQM' && item.sqmPerPiece > 0) item.quantity = pieces * item.sqmPerPiece;
-      else if (currentUnit === 'CARTON' || currentUnit === 'CRT') item.quantity = item.cartons;
-      else item.quantity = pieces;
-    }
-    item.lineTotal = item.quantity * item.unitPrice;
-    setCart(newCart);
-  };
-
-  const removeItem = (rowId: string) => setCart(cart.filter(i => i.rowId !== rowId));
-
-  const totalHT = cart.reduce((sum, i) => sum + Number(i.lineTotal), 0);
-  const totalNet = totalHT + Number(deliveryCost) - Number(discount) + Number(timber);
-  const reste = totalNet - payment;
 
   // --- Server-side product search with debounce ---
   useEffect(() => {
@@ -711,56 +513,6 @@ function POSContent() {
     }, 300);
     return () => { if (browserSearchTimerRef.current) clearTimeout(browserSearchTimerRef.current); };
   }, [browserSearch]);
-
-  const handleCreateCustomer = async () => {
-    setIsCreatingCustomer(true);
-    try {
-      const res = await api.createCustomer({ customerCode: `C$-${Date.now()}`, customerName: newCustomerName, customerType: newCustomerType, phone: newCustomerPhone, address: newCustomerAddress, ancienSolde: 0 });
-      if (res.success) {
-        setCustomers([...customers, res.data as Customer]);
-        setSelectedCustomerId((res.data as Customer).customerid); setIsCustomerModalOpen(false);
-      }
-    } catch (e) { console.error(e); } finally { setIsCreatingCustomer(false); }
-  };
-
-  const handleAddManualProduct = async () => {
-    if (!manualProductId) {
-      alert("Erreur: Le produit manuel n'est pas encore initialisé. Veuillez patienter une seconde ou rafraîchir la page.");
-      return;
-    }
-
-    const defaultUnit = units.find(u => u.unitcode === 'PCS') || units[0];
-
-    // Add to cart
-    setCart([...cart, {
-      rowId: crypto.randomUUID(), 
-      productId: manualProductId, 
-      productCode: 'MANUAL', 
-      productName: manualProductName || 'Produit Manuel',
-      brandName: manualProductBrand || 'Manual', 
-      stockQty: 0, 
-      stockPalettes: 0, 
-      stockCartons: 0, 
-      piecesPerCarton: 0, 
-      cartonsPerPalette: 0,
-      sqmPerPiece: parseSqmPerPiece(manualProductName), 
-      palettes: Number(manualProductPalettes) || 0, 
-      cartons: Number(manualProductColis) || 0, 
-      quantity: Number(manualProductQty) || 1, 
-      unitId: defaultUnit?.unitid || 1,
-      unitPrice: Number(manualProductPrice) || 0, 
-      priceSource: 'MANUEL', 
-      lineTotal: (Number(manualProductQty) || 1) * (Number(manualProductPrice) || 0)
-    }]);
-
-    // 4. Reset and close
-    setIsManualProductOpen(false);
-    setManualProductName('');
-    setManualProductQty(1);
-    setManualProductPrice(0);
-    setManualProductColis(0);
-    setManualProductPalettes(0);
-  };
 
   const handleValidateSale = async () => {
     if (isSubmitting || cart.length === 0) return;
@@ -877,7 +629,7 @@ function POSContent() {
 
             {/* ROW 2: Product Search (Full Width) & Tools */}
             <div className="flex flex-col lg:flex-row gap-3 items-center">
-              {/* 3. Search & Scanner Dock (NOW FLEX-1 IN NEW ROW) */}
+              {/* 3. Search & Scanner Dock */}
               <div className="flex-1 relative">
                  <input 
                   type="text" 
@@ -922,210 +674,27 @@ function POSContent() {
 
         {/* MIDDLE SECTION: Shopping Cart (Full Width Center) */}
         <div className={`flex-1 flex flex-col min-w-0 bg-slate-100 relative overflow-hidden ${activeMobileTab === 'CART' ? 'flex' : 'hidden lg:flex'}`}>
-
-          {/* Table Container - This is the dynamic scaling part */}
-    <div className="flex-1 p-1 overflow-hidden flex flex-col">
-      <div className="flex-1 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
-        <div className="flex-1 flex flex-col min-h-0" style={{ scrollbarGutter: 'stable' }}>
-                {/* Desktop Table View */}
-                <div className="hidden lg:block overflow-auto flex-1 custom-scrollbar">
-                  <table className="border-separate border-spacing-0" style={{ minWidth: '680px', width: '100%' }}> 
-                    <thead className="sticky top-0 bg-slate-800 text-white z-20">
-                      <tr className="text-[9px] font-black uppercase tracking-wider">
-                        <ResizableHeader columnKey="designation" width={cartWidths.designation} onResize={handleCartResize} onClick={() => handleCartSort('productName')} className="px-2 py-0.5 text-left cursor-pointer hover:bg-slate-700">Désignation {getSortIcon(cartSortConfig, 'productName')}</ResizableHeader>
-                        <ResizableHeader columnKey="marque" width={cartWidths.marque} onResize={handleCartResize} onClick={() => handleCartSort('brandName')} className="px-1.5 py-0.5 text-left cursor-pointer hover:bg-slate-700">Marque {getSortIcon(cartSortConfig, 'brandName')}</ResizableHeader>
-                        <ResizableHeader columnKey="stock" width={cartWidths.stock} onResize={handleCartResize} onClick={() => handleCartSort('stockQty')} className="px-1.5 py-0.5 text-right cursor-pointer hover:bg-slate-700">Stock {getSortIcon(cartSortConfig, 'stockQty')}</ResizableHeader>
-                        <ResizableHeader columnKey="palettes" width={cartWidths.palettes} onResize={handleCartResize} onClick={() => handleCartSort('palettes')} className="px-1.5 py-0.5 text-center bg-indigo-900/30 cursor-pointer hover:bg-indigo-900/50">Pals {getSortIcon(cartSortConfig, 'palettes')}</ResizableHeader>
-                        <ResizableHeader columnKey="cartons" width={cartWidths.cartons} onResize={handleCartResize} onClick={() => handleCartSort('cartons')} className="px-1.5 py-0.5 text-center bg-indigo-900/30 cursor-pointer hover:bg-indigo-900/50">Ctns {getSortIcon(cartSortConfig, 'cartons')}</ResizableHeader>
-                        <ResizableHeader columnKey="quantity" width={cartWidths.quantity} onResize={handleCartResize} onClick={() => handleCartSort('quantity')} className="px-2 py-0.5 text-center bg-red-900/30 cursor-pointer hover:bg-red-900/50">Quantité {getSortIcon(cartSortConfig, 'quantity')}</ResizableHeader>
-                        <ResizableHeader columnKey="unite" width={cartWidths.unite} onResize={handleCartResize} className="px-1.5 py-0.5 text-center">Unité</ResizableHeader>
-                        <ResizableHeader columnKey="prixunit" width={cartWidths.prixunit} onResize={handleCartResize} onClick={() => handleCartSort('unitPrice')} className="px-1.5 py-0.5 text-right cursor-pointer hover:bg-slate-700">Prix Unit {getSortIcon(cartSortConfig, 'unitPrice')}</ResizableHeader>
-                        <ResizableHeader columnKey="src" width={cartWidths.src} onResize={handleCartResize} className="px-1.5 py-0.5 text-center">Src</ResizableHeader>
-                        <ResizableHeader columnKey="totalligne" width={cartWidths.totalligne} onResize={handleCartResize} onClick={() => handleCartSort('lineTotal')} className="px-2 py-0.5 text-right cursor-pointer hover:bg-slate-700">Total {getSortIcon(cartSortConfig, 'lineTotal')}</ResizableHeader>
-                        <th className="w-10 px-1 py-0.5"></th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 text-xs">
-                      {sortedCart.map((item, idx) => {
-                        const isTransport = item.productName.toUpperCase().includes('TRANSPORT');
-                        return (
-                        <tr 
-                          key={item.rowId} 
-                           {...getCartRowProps(idx)}
-                          className={getCartRowClass(idx, `group transition-all duration-200 pos-row-compact cursor-pointer ${isTransport ? 'bg-amber-100/80 hover:bg-amber-200/90 border-b-2 border-amber-300 text-amber-900 shadow-[inset_0_1px_2px_rgba(0,0,0,0.05)]' : 'hover:bg-slate-50 border-b border-slate-100'}`)}
-                          onClick={() => setCartSelectedIndex(idx)}
-                        >
-                          <td className="px-2 py-0.5 text-slate-700 min-w-0 flex-none overflow-hidden" style={{ width: cartWidths.designation }}>
-                            <div className="font-bold text-[11px] truncate w-full leading-tight" title={item.productName}>{item.productName}</div>
-                            {(item.piecesPerCarton > 0 || item.cartonsPerPalette > 0) && (
-                              <div className="text-[8px] text-slate-400 font-medium tracking-tight truncate w-full leading-none">
-                                {Number(item.piecesPerCarton) > 0 && `${Number(item.piecesPerCarton).toFixed(2)} / Colis`}
-                                {Number(item.cartonsPerPalette) > 0 && ` • ${Number(item.cartonsPerPalette).toFixed(0)} Colis / Pal`}
-                              </div>
-                            )}
-                          </td>
-                          <td className="px-1.5 py-0.5 text-slate-500 text-[9px] uppercase flex-none overflow-hidden" style={{ width: cartWidths.marque }}>
-                            <div className="truncate w-full">{item.brandName}</div>
-                          </td>
-                          <td className="px-1.5 py-0.5 text-right font-mono text-[9px] text-slate-400 flex-none overflow-hidden" style={{ width: cartWidths.stock }}>
-                            {parseFloat(item.stockQty.toString()).toLocaleString()}
-                          </td>
-                          <td className="px-1.5 py-0.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.palettes }}>
-                            <SmartNumberInput value={item.palettes} onChange={val => updateItem(item.rowId, 'palettes', val)} className="w-full text-center p-0.5 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-xs shadow-inner" />
-                          </td>
-                          <td className="px-1.5 py-0.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.cartons }}>
-                            <SmartNumberInput value={item.cartons} onChange={val => updateItem(item.rowId, 'cartons', val)} className="w-full text-center p-0.5 border border-slate-200 rounded font-bold text-indigo-700 bg-indigo-50/30 text-xs shadow-inner" />
-                          </td>
-                          <td className="px-2 py-0.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.quantity }}>
-                            <SmartNumberInput value={item.quantity} onChange={val => updateItem(item.rowId, 'quantity', val)} className="w-full text-center p-0.5 border-2 border-red-200 rounded font-bold text-red-700 bg-red-50 text-xs shadow-sm" />
-                          </td>
-                          <td className="px-1.5 py-0.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.unite }}>
-                            <select value={item.unitId} onChange={e => updateItem(item.rowId, 'unitId', Number(e.target.value))} className="w-full p-0.5 border border-slate-200 rounded text-[10px] bg-white hover:border-slate-400 transition-colors">
-                              {units.filter(u => u.unitcode !== 'BOX').map(u => <option key={u.unitid} value={u.unitid}>{u.unitcode}</option>)}
-                            </select>
-                          </td>
-                          <td className="px-1.5 py-0.5 text-right flex-none overflow-hidden" style={{ width: cartWidths.prixunit }}>
-                            <SmartNumberInput value={item.unitPrice} onChange={val => updateItem(item.rowId, 'unitPrice', val)} className={`w-full text-right p-0.5 border rounded font-mono text-xs shadow-inner ${item.purchasePrice && item.unitPrice < item.purchasePrice ? 'border-red-500 text-red-600 bg-red-50' : 'border-slate-200'}`} />
-                          </td>
-                          <td className="px-1.5 py-0.5 text-center flex-none overflow-hidden" style={{ width: cartWidths.src }}>
-                            <span className={`text-[8px] px-1 py-0.5 rounded-full font-bold ${getPriceSourceBadge(item.priceSource)}`}>{item.priceSource}</span>
-                          </td>
-                          <td className="px-2 py-0.5 text-right font-bold text-slate-800 text-[11px] flex-none overflow-hidden" style={{ width: cartWidths.totalligne }}>
-                            {formatCurrency(item.lineTotal)}
-                          </td>
-                          <td className="px-1 py-0.5 text-center w-10 flex-none overflow-hidden">
-                            <button onClick={() => removeItem(item.rowId)} className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-700 transition-all text-xl">&times;</button>
-                          </td>
-                        </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* Cart Totals Strip */}
-                {cart.length > 0 && (
-                  <div className="hidden lg:flex flex-none bg-slate-800 text-white px-3 py-2 gap-4 items-center justify-end text-[11px] font-bold">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-slate-400 uppercase tracking-wider">Palettes:</span>
-                      <span className="text-indigo-300 font-mono text-sm">{cart.reduce((sum, i) => sum + (Number(i.palettes) || 0), 0).toFixed(1)}</span>
-                    </div>
-                    <div className="w-px h-4 bg-slate-600"></div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-slate-400 uppercase tracking-wider">Colis:</span>
-                      <span className="text-indigo-300 font-mono text-sm">{cart.reduce((sum, i) => sum + (Number(i.cartons) || 0), 0).toFixed(1)}</span>
-                    </div>
-                    <div className="w-px h-4 bg-slate-600"></div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-slate-400 uppercase tracking-wider">Qté:</span>
-                      <span className="text-red-300 font-mono text-sm">{cart.reduce((sum, i) => sum + (Number(i.quantity) || 0), 0).toFixed(2)}</span>
-                    </div>
-                    <div className="w-px h-4 bg-slate-600"></div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-slate-400 uppercase tracking-wider">Total:</span>
-                      <span className="text-green-300 font-mono text-sm">{formatCurrency(totalHT)}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 ml-2 bg-slate-700 px-2 py-1 rounded-lg">
-                      <span className="text-slate-400 uppercase tracking-wider">Lignes:</span>
-                      <span className="text-white font-mono">{cart.length}</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* Mobile Cards View */}
-                <div className="lg:hidden flex-1 overflow-auto p-2 pb-44 space-y-3 custom-scrollbar bg-slate-50">
-                  {cart.map((item) => {
-                    const isTransport = item.productName.toUpperCase().includes('TRANSPORT');
-                    return (
-                    <div key={item.rowId} className={`rounded-2xl border p-4 space-y-4 ${isTransport ? 'bg-amber-50 border-2 border-amber-300 shadow-lg shadow-amber-900/5' : 'bg-white border-slate-200 shadow-sm'}`}>
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-black text-slate-800 leading-tight truncate">{item.productName}</h4>
-                          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{item.brandName || 'SANS MARQUE'}</p>
-                        </div>
-                        <button onClick={() => removeItem(item.rowId)} className="p-2 text-red-400 hover:bg-red-50 rounded-full transition-colors">&times;</button>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-1">
-                          <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Quantité</label>
-                          <div className="flex items-center gap-2">
-                             <SmartNumberInput 
-                               value={item.quantity} 
-                               onChange={val => updateItem(item.rowId, 'quantity', val)} 
-                               className="w-full text-center p-3 border-2 border-red-200 rounded-xl font-black text-red-700 bg-red-50 text-xl" 
-                             />
-                             <select value={item.unitId} onChange={e => updateItem(item.rowId, 'unitId', Number(e.target.value))} className="p-3 border border-slate-200 rounded-xl text-xs bg-slate-50 font-bold">
-                                {units.filter(u => u.unitcode !== 'BOX').map(u => <option key={u.unitid} value={u.unitid}>{u.unitcode}</option>)}
-                             </select>
-                          </div>
-                        </div>
-                        <div className="space-y-1">
-                           <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Prix Unitaire</label>
-                           <SmartNumberInput 
-                             value={item.unitPrice} 
-                             onChange={val => updateItem(item.rowId, 'unitPrice', val)} 
-                             className="w-full text-right p-3 border border-slate-200 rounded-xl font-bold bg-slate-50 text-lg" 
-                           />
-                        </div>
-                      </div>
-
-                      {(item.piecesPerCarton > 0 || item.cartonsPerPalette > 0) && (
-                        <div className="bg-indigo-50/50 rounded-xl p-3 grid grid-cols-2 gap-4">
-                          <div className="space-y-1">
-                            <label className="text-[9px] font-bold text-indigo-400 uppercase tracking-wider">Cartons (Ctns)</label>
-                            <SmartNumberInput value={item.cartons} onChange={val => updateItem(item.rowId, 'cartons', val)} className="w-full text-center p-2 border border-indigo-100 rounded-lg font-bold text-indigo-700 bg-white" />
-                          </div>
-                          <div className="space-y-1">
-                            <label className="text-[9px] font-bold text-indigo-400 uppercase tracking-wider">Palettes (Pals)</label>
-                            <SmartNumberInput value={item.palettes} onChange={val => updateItem(item.rowId, 'palettes', val)} className="w-full text-center p-2 border border-indigo-100 rounded-lg font-bold text-indigo-700 bg-white" />
-                          </div>
-                        </div>
-                      )}
-
-                      <div className="pt-3 border-t border-slate-100 flex justify-between items-center">
-                        <span className={`text-[10px] px-2 py-1 rounded-full font-bold ${getPriceSourceBadge(item.priceSource)}`}>{item.priceSource}</span>
-                        <div className="text-right">
-                          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Total Ligne</p>
-                          <p className="text-xl font-black text-slate-900 leading-none">{formatCurrency(item.lineTotal)}</p>
-                        </div>
-                      </div>
-                    </div>
-                    );
-                  })}
-                  {cart.length === 0 && (
-                    <div className="py-20 text-center text-slate-300">
-                      <div className="text-6xl mb-4">🛒</div>
-                      <p className="font-bold uppercase tracking-widest leading-normal">Le panier est vide</p>
-                    </div>
-                  )}
-                  
-                  {/* Mobile Quick Summary Bar (Sticky above Nav) */}
-                  {cart.length > 0 && activeMobileTab !== 'PAYMENT' && (
-                    <div className="lg:hidden fixed bottom-20 left-0 right-0 bg-slate-800 text-white p-3 flex justify-between items-center z-40 animate-in slide-in-from-bottom duration-300">
-                      <div className="flex gap-4 items-center">
-                        <div className="flex flex-col">
-                          <span className="text-[10px] text-slate-400 font-black uppercase">Total</span>
-                          <span className="text-lg font-black font-mono">{formatCurrency(totalNet)}</span>
-                        </div>
-                        <div className="h-6 w-px bg-slate-700"></div>
-                        <div className="flex flex-col">
-                          <span className="text-[10px] text-slate-400 font-black uppercase">Items</span>
-                          <span className="text-lg font-black font-mono">{cart.length}</span>
-                        </div>
-                      </div>
-                      <button 
-                        onClick={() => setActiveMobileTab('PAYMENT')}
-                        className="btn-glassy px-6 py-2 rounded-xl font-black text-xs uppercase tracking-wider active:scale-95 transition-transform"
-                      >
-                        Paiement →
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
+          <POSCartTable
+            cart={cart}
+            sortedCart={sortedCart}
+            cartWidths={cartWidths}
+            handleCartResize={handleCartResize}
+            handleCartSort={handleCartSort}
+            cartSortConfig={cartSortConfig}
+            getCartRowProps={getCartRowProps}
+            getCartRowClass={getCartRowClass}
+            setCartSelectedIndex={setCartSelectedIndex}
+            units={units}
+            updateItem={updateItem}
+            removeItem={removeItem}
+            activeMobileTab={activeMobileTab}
+            setActiveMobileTab={setActiveMobileTab}
+            totalHT={totalHT}
+            totalNet={totalNet}
+            formatCurrency={formatCurrency}
+            getPriceSourceBadge={getPriceSourceBadge}
+            getSortIcon={getSortIcon}
+          />
         </div>
 
         {/* BOTTOM SECTION: Summary & Checkout Dashboard (Full Width Bottom) */}
@@ -1203,113 +772,61 @@ function POSContent() {
 
       {/* Modals & Hidden Elements */}
       <Suspense fallback={null}>
-        {isCustomerModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm">
-            <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden p-6 scale-in">
-              <h2 className="text-xl font-bold mb-6 text-slate-800 border-b pb-4">Nouveau Client</h2>
-              <div className="space-y-4">
-                <input type="text" placeholder="Nom complet..." value={newCustomerName} onChange={e => setNewCustomerName(e.target.value)} className="w-full p-4 bg-slate-50 border rounded-xl" />
-                <select value={newCustomerType} onChange={e => setNewCustomerType(e.target.value as any)} className="w-full p-4 bg-slate-50 border rounded-xl">
-                  <option value="WHOLESALE">Grossiste / Revendeur</option>
-                  <option value="RETAIL">Détaillant / Client de passage</option>
-                </select>
-                <input type="tel" placeholder="Téléphone..." value={newCustomerPhone} onChange={e => setNewCustomerPhone(e.target.value)} className="w-full p-4 bg-slate-50 border rounded-xl" />
-                <div className="flex gap-3 pt-4">
-                  <button onClick={() => setIsCustomerModalOpen(false)} className="flex-1 py-4 text-slate-500 font-bold hover:text-slate-700 transition-colors">Annuler</button>
-                  <button onClick={handleCreateCustomer} disabled={isCreatingCustomer} className="flex-1 py-4 btn-glassy rounded-xl font-bold">CRÉER</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        <POSCustomerModal
+          isOpen={isCustomerModalOpen}
+          onClose={() => setIsCustomerModalOpen(false)}
+          onCreateSuccess={(newCustomer) => {
+            setCustomers([...customers, newCustomer]);
+            setSelectedCustomerId(newCustomer.customerid);
+          }}
+        />
 
-        {isManualProductOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm">
-             <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden p-6">
-              <h2 className="text-xl font-bold mb-6 text-orange-600 border-b pb-4">Produit Manuel</h2>
-              <div className="space-y-4">
-                <input type="text" placeholder="Désignation..." value={manualProductName} onChange={e => setManualProductName(e.target.value)} className="w-full p-4 bg-slate-50 border rounded-xl" />
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Qté</label>
-                    <input type="number" placeholder="Qté" value={manualProductQty} onChange={e => setManualProductQty(Number(e.target.value))} className="w-full p-4 bg-slate-50 border rounded-xl" />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Prix</label>
-                    <input type="number" placeholder="Prix" value={manualProductPrice} onChange={e => setManualProductPrice(Number(e.target.value))} className="w-full p-4 bg-slate-50 border rounded-xl" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Colis</label>
-                    <input type="number" placeholder="Colis" value={manualProductColis} onChange={e => setManualProductColis(Number(e.target.value))} className="w-full p-4 bg-slate-50 border rounded-xl" />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Palettes</label>
-                    <input type="number" placeholder="Palettes" value={manualProductPalettes} onChange={e => setManualProductPalettes(Number(e.target.value))} className="w-full p-4 bg-slate-50 border rounded-xl" />
-                  </div>
-                </div>
-                <div className="flex gap-3 pt-4">
-                  <button onClick={() => setIsManualProductOpen(false)} className="flex-1 py-4 text-slate-500 font-bold">Annuler</button>
-                  <button onClick={handleAddManualProduct} className="flex-1 py-4 bg-amber-500 text-white rounded-xl font-bold uppercase tracking-wider">Ajouter</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        <POSManualProductModal
+          isOpen={isManualProductOpen}
+          onClose={() => setIsManualProductOpen(false)}
+          onAdd={({ name, qty, price, colis, palettes }) => {
+            if (!manualProductId) {
+              alert("Erreur: Le produit manuel n'est pas encore initialisé. Veuillez patienter une seconde ou rafraîchir la page.");
+              return;
+            }
+            const defaultUnit = units.find(u => u.unitcode === 'PCS') || units[0];
+            setCart([...cart, {
+              rowId: crypto.randomUUID(),
+              productId: manualProductId,
+              productCode: 'MANUAL',
+              productName: name || 'Produit Manuel',
+              brandName: 'Manual',
+              stockQty: 0,
+              stockPalettes: 0,
+              stockCartons: 0,
+              piecesPerCarton: 0,
+              cartonsPerPalette: 0,
+              sqmPerPiece: parseSqmPerPiece(name),
+              palettes: Number(palettes) || 0,
+              cartons: Number(colis) || 0,
+              quantity: Number(qty) || 1,
+              unitId: defaultUnit?.unitid || 1,
+              unitPrice: Number(price) || 0,
+              priceSource: 'MANUEL',
+              lineTotal: (Number(qty) || 1) * (Number(price) || 0),
+              purchasePrice: 0
+            }]);
+            setIsManualProductOpen(false);
+          }}
+        />
 
-        {isProductBrowserOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-6">
-            <div className="w-full max-w-5xl h-full max-h-[85vh] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden">
-              <div className="p-6 border-b flex justify-between items-center bg-slate-50">
-                <h2 className="text-2xl font-black text-slate-800">Catalogue Produits</h2>
-                <button onClick={() => setIsProductBrowserOpen(false)} className="text-3xl text-slate-400 hover:text-slate-600">&times;</button>
-              </div>
-              <div className="p-6 border-b">
-                <input type="text" placeholder="🔍 Rechercher par nom, code, marque..." value={browserSearch} onChange={e => setBrowserSearch(e.target.value)} className="w-full p-5 bg-slate-50 border-2 border-slate-200 rounded-2xl text-lg font-bold" autoFocus />
-              </div>
-              <div className="flex-1 overflow-auto p-4">
-                <table className="w-full text-left">
-                  <thead className="sticky top-0 bg-white border-b py-4">
-                    <tr className="text-[10px] text-slate-400 font-black uppercase tracking-widest">
-                      <th className="px-4 py-3">Produit</th>
-                      <th className="px-4 py-3">Famille / Marque</th>
-                      <th className="px-4 py-3 text-right">Prix</th>
-                      <th className="px-4 py-3 text-right">Dispo</th>
-                      <th className="px-4 py-3 text-center">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y">
-                    {filteredBrowserProducts.map((p, idx) => (
-                      <tr 
-                        key={p.productid} 
-                        {...getRowProps(idx)}
-                        className={getRowClass(idx, "hover:bg-slate-50 transition-colors group cursor-pointer")}
-                        onClick={() => setSelectedIndex(idx)}
-                      >
-                        <td className="px-4 py-4">
-                          <div className="font-bold text-slate-800">{p.productname}</div>
-                          <div className="text-[10px] text-slate-500">{p.productcode}</div>
-                        </td>
-                        <td className="px-4 py-4 text-xs font-bold text-slate-400 uppercase">{p.famille || p.brandname}</td>
-                        <td className="px-4 py-4 text-right font-black text-green-600">{formatCurrency(p.prixvente || p.baseprice)}</td>
-                        <td className="px-4 py-4 text-right font-mono font-bold text-slate-500">{p.totalqty}</td>
-                        <td className="px-4 py-4 text-center">
-                          <button 
-                            onClick={(e) => { e.stopPropagation(); addToCart(p); }} 
-                            className="px-6 py-2 bg-slate-800 text-white rounded-full text-[10px] font-black hover:bg-brand-primary transition-colors"
-                          >
-                            AJOUTER
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        )}
+        <POSProductBrowser
+          isOpen={isProductBrowserOpen}
+          onClose={() => setIsProductBrowserOpen(false)}
+          browserSearch={browserSearch}
+          setBrowserSearch={setBrowserSearch}
+          filteredBrowserProducts={filteredBrowserProducts}
+          getRowProps={getRowProps}
+          getRowClass={getRowClass}
+          setSelectedIndex={setSelectedIndex}
+          addToCart={addToCart}
+          formatCurrency={formatCurrency}
+        />
       </Suspense>
 
       <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>

@@ -1,0 +1,2398 @@
+﻿node.exe : npm warn exec The following package was not found and will be installed: fallow@2.89.0
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn exec T...: fallow@2.89.0:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[2m   0.016406200s[0m [33m WARN[0m node_modules directory not found. Run `npm install` / `pnpm install` first for 
+accurate results.
+
+Γûá Metrics: dead files 70.3% (289 of 411) ┬╖ dead exports 20.1% (67 of 333) ┬╖ MI 80.4 (moderate) ┬╖ 1 churn hotspot
+  411 files analyzed
+  56 entry points detected (50 plugin, 6 package.json)
+  57 refactoring targets ΓÇö start with backend/verification_scan.js (complexity)
+
+ΓöÇΓöÇ Dead Code 
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+  Note: 92% of unused files are under backend/ ΓÇö consider adding it to ignorePatterns or using --production 
+(analyzes only production entry points) ΓÇö https://docs.fallow.tools/explanations/dead-code#unused-files
+ΓöÇΓöÇ Unused Code ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+ΓùÅ Unused files (289)
+  backend/src/  25 files
+  backend/scripts/  20 files
+  backend/api/  3 files
+  backend/add_brand.js/  1 file
+  backend/add_brandid_migration.js/  1 file
+  backend/add_costprice_column.js/  1 file
+  backend/add_po_delivery_cost.js/  1 file
+  backend/add_supplier_balance_columns.js/  1 file
+  backend/add_supplier_initial_balance.js/  1 file
+  backend/apply_excel_fixes.js/  1 file
+  ... and 215 more directories (--format json for full list)
+  Files not reachable from any entry point ΓÇö https://docs.fallow.tools/explanations/dead-code#unused-files
+  To suppress a directory: add to ignorePatterns in .fallowrc.json
+
+ΓùÅ Unused exports (23)
+  desktop-app\server.js (6)
+    :214 startBackend
+    :215 startFrontend
+    :218 checkPort
+    :219 waitForPort
+    :220 checkHealth
+    ... and 1 more (--format json for full list)
+  backend\src\config\config.js (2)
+    :7 database
+    :20 upload
+  frontend\components\SortableTableHeader.tsx (2)
+    :18 SortableTableHeader
+    :55 default
+  backend\src\api\v1\middleware\auth.middleware.js
+    :164 requirePermission
+  backend\src\api\v1\services\accounting.service.js
+    :246 getDefaultAccountId
+  desktop-app\tray.js
+    :124 updateTrayStatus
+  desktop-app\utils\network.js
+    :69 getAllLocalIPs
+  frontend\components\DateQuickFilter.tsx
+    :231 default
+  frontend\components\UserFilter.tsx
+    :122 default
+  frontend\components\print\ReceiptTemplate.tsx
+    :57 ReceiptTemplate
+  ... and 6 more in 6 files (--format json for full list)
+  Exported symbols with no known consumers ΓÇö https://docs.fallow.tools/explanations/dead-code#unused-exports
+  To auto-fix: fallow fix --dry-run
+  To suppress: // fallow-ignore-next-line unused-exports
+  (42 more in files already reported as unused)
+
+ΓùÅ Unused type exports (2)
+  frontend\lib\api.ts (2)
+    :130 SituationItem
+    :142 SituationSummary
+  Type exports with no known consumers ΓÇö https://docs.fallow.tools/explanations/dead-code#unused-types
+
+ΓöÇΓöÇ Dependencies ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+ΓùÅ Unresolved imports (64)
+  backend\api\v1\routes\index.js (25)
+    :6 ../middleware/auth.middleware
+    :6 ../middleware/auth.middleware
+    :8 ../controllers/product.controller
+    :9 ../controllers/pricing.controller
+    :10 ../controllers/factory.controller
+    ... and 20 more (--format json for full list)
+  deployment_pack\backend\src\api\v1\routes\index.js (25)
+    :6 ../middleware/auth.middleware
+    :6 ../middleware/auth.middleware
+    :9 ../controllers/pricing.controller
+    :10 ../controllers/factory.controller
+    :11 ../controllers/customer.controller
+    ... and 20 more (--format json for full list)
+  deployment_pack\frontend\app\products\page.tsx (8)
+    :4 @/lib/api
+    :5 @/hooks/useSortableTable
+    :5 @/hooks/useSortableTable
+    :8 @/components/ResizableSortableHeader
+    :8 @/components/ResizableSortableHeader
+    ... and 3 more (--format json for full list)
+  backend\api\v1\controllers\customer.controller.js (2)
+    :1 ../../../config/database
+    :2 ../../../services/audit.service
+  backend\api\v1\controllers\settings.controller.js
+    :1 ../../../config/database
+  backend\src\api\v1\controllers\settings.controller.js
+    :94 ../../services/backup.service
+  deployment_pack\backend\src\api\v1\controllers\product.controller.js
+    :1 ../../../config/database
+  tmp\find_king.js
+    :2 ./backend/src/config/database
+  Import paths that could not be resolved ΓÇö check for missing packages or broken paths. Framework-specific imports may need a plugin: https://docs.fallow.tools/plugins ΓÇö https://docs.fallow.tools/explanations/dead-code#unresolved-imports
+  To suppress: // fallow-ignore-next-line unresolved-imports
+
+Γ£ù 289 files ┬╖ 23 exports ┬╖ 2 types ┬╖ 64 unresolved imports (0.17s)
+
+ΓöÇΓöÇ Duplication 
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+ΓùÅ Duplicates (360 clone groups)
+
+    933 lines  2 instances  dup:2752ea6f
+    frontend/app/purchasing/edit/[id]/page.tsx:36-890
+    frontend/app/purchasing/new/page.tsx:35-967
+
+    714 lines  2 instances  dup:94b6ed71
+    frontend/app/purchasing/[id]/page.tsx:48-350
+    frontend/app/purchasing/receive/[id]/page.tsx:97-810
+
+    525 lines  2 instances  dup:fa5140b0
+    frontend/app/purchasing/returns/new/page.tsx:45-569
+    frontend/app/sales/returns/new/page.tsx:38-381
+
+    443 lines  2 instances  dup:935ae5c2
+    backend/api/v1/controllers/customer.controller.js:51-399
+    backend/src/api/v1/controllers/customer.controller.js:80-522
+
+    415 lines  5 instances  dup:2012b281
+    backend/apply_excel_fixes.js:1-154
+    backend/compare_quantities.js:1-130
+    backend/investigate_issue1.js:1-268
+    backend/investigate_issue1_deep.js:1-202
+    backend/verify_inventory_2days.js:1-415
+
+    299 lines  2 instances  dup:28e05887
+    backend/investigate_colmar.js:1-91
+    backend/investigate_qty_discrepancy.js:1-299
+
+    266 lines  2 instances  dup:ebcd1b9f
+    backend/find_affected_units.js:1-31
+    backend/investigate_marabella.js:1-266
+
+    236 lines  4 instances  dup:3b35b892
+    backend/compare_dbs.js:1-73
+    backend/full_compare.js:1-236
+    backend/sync_all_to_cloud.js:1-172
+    backend/sync_to_cloud.js:1-115
+
+    230 lines  3 instances  dup:1ec44d73
+    backend/api/v1/controllers/customer.controller.js:43-90
+    backend/src/api/v1/controllers/goodsReceipt.controller.js:37-266
+    backend/src/api/v1/controllers/purchaseOrder.controller.js:120-188
+
+    230 lines  2 instances  dup:ed2adb48
+    backend/src/api/v1/controllers/goodsReceipt.controller.js:37-266
+    backend/src/api/v1/controllers/purchaseOrder.controller.js:120-188
+
+  ... and 350 more clone groups
+  Identical code blocks detected via suffix-array analysis ΓÇö https://docs.fallow.tools/explanations/duplication#clone-groups
+
+ΓùÅ Clone families (54 with multiple groups)
+
+  2 groups, 28 lines across UPDATE_SCHEMA_MARGIN_V2.js, backend/src/scripts/update_margin_types.js
+    ΓåÆ Extract shared function (15 lines) from UPDATE_SCHEMA_MARGIN_V2.js, update_margin_types.js
+    ΓåÆ Extract shared function (13 lines) from UPDATE_SCHEMA_MARGIN_V2.js, update_margin_types.js
+
+  2 groups, 31 lines across backend/add_brandid_migration.js, backend/add_po_delivery_cost.js
+    ΓåÆ Extract shared function (15 lines) from add_brandid_migration.js, add_po_delivery_cost.js
+    ΓåÆ Extract shared function (16 lines) from add_brandid_migration.js, add_po_delivery_cost.js
+
+  2 groups, 479 lines across backend/api/v1/controllers/customer.controller.js, backend/src/api/v1/controllers/customer.controller.js
+    ΓåÆ Extract 2 shared clone groups (479 lines) from customer.controller.js, customer.controller.js into a shared directory
+
+  6 groups, 186 lines across backend/api/v1/controllers/settings.controller.js, backend/src/api/v1/controllers/settings.controller.js
+    ΓåÆ Extract 6 shared clone groups (186 lines) from settings.controller.js, settings.controller.js into a shared directory
+
+  2 groups, 33 lines across backend/api/v1/routes/index.js, backend/src/api/v1/routes/index.js
+    ΓåÆ Extract shared function (21 lines) from index.js, index.js
+    ΓåÆ Extract shared function (12 lines) from index.js, index.js
+
+  10 groups, 144 lines across backend/api/v1/routes/index.js, backend/src/api/v1/routes/index.js, deployment_pack/backend/src/api/v1/routes/index.js
+    ΓåÆ Extract 10 shared clone groups (144 lines) from index.js, index.js, index.js into a shared directory
+
+  2 groups, 241 lines across backend/api/v1/routes/index.js, deployment_pack/backend/src/api/v1/routes/index.js
+    ΓåÆ Extract 2 shared clone groups (241 lines) from index.js, index.js into a shared directory
+
+  2 groups, 50 lines across backend/apply_excel_fixes.js, backend/compare_quantities.js
+    ΓåÆ Extract 2 shared clone groups (50 lines) from apply_excel_fixes.js, compare_quantities.js into backend
+
+  2 groups, 138 lines across backend/apply_fixes_direct.js, backend/apply_fixes_from_file.js
+    ΓåÆ Extract 2 shared clone groups (138 lines) from apply_fixes_direct.js, apply_fixes_from_file.js into backend
+
+  2 groups, 41 lines across backend/compare_quantities.js, backend/generate_proof_excel.js
+    ΓåÆ Extract shared function (30 lines) from compare_quantities.js, generate_proof_excel.js
+    ΓåÆ Extract shared function (11 lines) from compare_quantities.js, generate_proof_excel.js
+
+  ... and 44 more families
+
+  Groups of related clones across the same files ΓÇö https://docs.fallow.tools/explanations/duplication#clone-families
+
+Γ£ù 21,587 lines (33.0%) duplicated across 220 files (0.20s)
+
+ΓöÇΓöÇ Complexity 
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+Γûá Metrics: 66,686 LOC ┬╖ dead files 70.3% ┬╖ dead exports 20.1% ┬╖ avg cyclomatic 3.4 ┬╖ p90 cyclomatic 7 ┬╖ maintainability 80.4 (moderate) ┬╖ 1 churn hotspot (since 6 months)
+
+  Function size: 75% low ┬╖ 9% medium ┬╖ 7% high ┬╖ 9% very high  (1-15 / 16-30 / 31-60 / >60 LOC)
+  Parameters:    95% low ┬╖ 5% medium ┬╖ 0% high ┬╖ 0% very high  (0-2 / 3-4 / 5-6 / >=7 params)
+
+ΓùÅ Large functions (10 shown, 274 total)
+  frontend\app\products\page.tsx
+    :40 ProductsPage  1665 lines
+  frontend\app\sales\pos\page.tsx
+    :206 POSContent  1145 lines
+  frontend\app\settings\page.tsx
+    :48 SettingsPage  987 lines
+  deployment_pack\frontend\app\products\page.tsx
+    :34 ProductsPage  911 lines
+  frontend\app\purchasing\new\page.tsx
+    :101 CreatePurchaseOrderPage  867 lines
+  frontend\components\print\StandardDocument.tsx
+    :157 StandardDocument  861 lines
+  frontend\app\purchasing\page.tsx
+    :98 PurchaseOrdersListPage  795 lines
+  frontend\app\purchasing\edit\[id]\page.tsx
+    :100 EditPurchaseOrderPage  791 lines
+  frontend\app\purchasing\receive\[id]\page.tsx
+    :121 ReceivePurchaseOrderPage  690 lines
+  frontend\app\inventory\quick-stock\page.tsx
+    :29 QuickStockPage  625 lines
+  Functions exceeding 60 lines of code (very high risk): https://docs.fallow.tools/explanations/health#unit-size
+  use --top 274 to see all
+
+ΓùÅ High complexity functions (508)
+  CRAP scores are estimated from export references; run `fallow health --coverage <coverage-final.json>` for exact scores.
+  frontend/app/products/page.tsx
+    :40 ProductsPage CRITICAL
+          96 cyclomatic   89 cognitive  1665 lines
+         9312.0 CRAP
+  frontend/components/print/StandardDocument.tsx
+    :157 StandardDocument CRITICAL
+          77 cyclomatic   78 cognitive  861 lines
+         6006.0 CRAP
+  backend/final_cleanup.js
+    :50 finalCleanup CRITICAL
+          74 cyclomatic  145 cognitive  292 lines
+         5550.0 CRAP
+  backend/verify_inventory_2days.js
+    :26 main CRITICAL
+          66 cyclomatic   98 cognitive  390 lines
+         4422.0 CRAP
+  backend/src/api/v1/controllers/order.controller.js
+    :1053 updateOrder CRITICAL
+          64 cyclomatic   65 cognitive  251 lines
+         4160.0 CRAP
+  backend/correct_inventory.js
+    :10 correctInventory CRITICAL
+          57 cyclomatic   99 cognitive  237 lines
+         3306.0 CRAP
+  backend/src/api/v1/controllers/purchaseOrder.controller.js
+    :781 updatePurchaseOrder CRITICAL
+          57 cyclomatic  117 cognitive  335 lines
+         3306.0 CRAP
+  backend/src/api/v1/controllers/catalogueSync.controller.js
+    :49 analyzeCatalogueSync CRITICAL
+          52 cyclomatic   67 cognitive  267 lines
+         2756.0 CRAP
+  frontend/app/settings/page.tsx
+    :48 SettingsPage CRITICAL
+          51 cyclomatic   46 cognitive  987 lines
+         2652.0 CRAP
+  backend/full_inventory_reset.js
+    :34 main CRITICAL
+          50 cyclomatic   75 cognitive  205 lines
+         2550.0 CRAP
+  backend/verification_scan.js
+    :36 verificationScan CRITICAL
+          50 cyclomatic  103 cognitive  118 lines
+         2550.0 CRAP
+  backend/investigate_marabella.js
+    :9 findAffectedProducts CRITICAL
+          46 cyclomatic   61 cognitive  264 lines
+         2162.0 CRAP
+  backend/deep_cleanup.js
+    :14 cleanupAllDuplicates CRITICAL
+          45 cyclomatic  110 cognitive  261 lines
+         2070.0 CRAP
+  backend/investigate_issue1.js
+    :22 main CRITICAL
+          44 cyclomatic   64 cognitive  247 lines
+         1980.0 CRAP
+  backend/investigate_issue1_deep.js
+    :23 main CRITICAL
+          44 cyclomatic   63 cognitive  180 lines
+         1980.0 CRAP
+  backend/src/api/v1/controllers/purchaseOrder.controller.js
+    :193 createPurchaseOrder CRITICAL
+          44 cyclomatic   47 cognitive  293 lines
+         1980.0 CRAP
+  frontend/app/purchasing/new/page.tsx
+    :215 addToCart CRITICAL
+          42 cyclomatic   35 cognitive  160 lines
+         1806.0 CRAP
+  frontend/app/sales/pos/page.tsx
+    :206 POSContent CRITICAL
+          42 cyclomatic   35 cognitive  1145 lines
+         1806.0 CRAP
+  backend/src/api/v1/controllers/order.controller.js
+    :415 createOrder CRITICAL
+          41 cyclomatic   50 cognitive  207 lines
+         1722.0 CRAP
+  frontend/app/purchasing/edit/[id]/page.tsx
+    :441 updateCartItem CRITICAL
+          41 cyclomatic   63 cognitive  120 lines
+         1722.0 CRAP
+  frontend/app/purchasing/new/page.tsx
+    :382 updateCartItem CRITICAL
+          41 cyclomatic   63 cognitive  138 lines
+         1722.0 CRAP
+  frontend/app/customers/[id]/page.tsx
+    :63 CustomerDetailPage CRITICAL
+          39 cyclomatic   24 cognitive  541 lines
+         1560.0 CRAP
+  frontend/components/CatalogueSyncModal.tsx
+    :80 CatalogueSyncModal CRITICAL
+          38 cyclomatic   31 cognitive  511 lines
+         1482.0 CRAP
+  frontend/app/purchasing/edit/[id]/page.tsx
+    :360 addToCart CRITICAL
+          36 cyclomatic   29 cognitive   74 lines
+         1332.0 CRAP
+  frontend/app/sales/pos/page.tsx
+    :507 items CRITICAL
+          36 cyclomatic   23 cognitive   31 lines
+         1332.0 CRAP
+  backend/client_solde_report.js
+    :20 main CRITICAL
+          35 cyclomatic   49 cognitive  184 lines
+         1260.0 CRAP
+  backend/final_duplicate_scan.js
+    :81 finalScan CRITICAL
+          35 cyclomatic   50 cognitive  161 lines
+         1260.0 CRAP
+  backend/full_compare.js
+    :19 fullCompare CRITICAL
+          34 cyclomatic   45 cognitive  218 lines
+         1190.0 CRAP
+  frontend/app/sales/pos/page.tsx
+    :579 addToCart CRITICAL
+          34 cyclomatic   37 cognitive   39 lines
+         1190.0 CRAP
+  backend/import_missing_products.js
+    :21 importMissingProducts CRITICAL
+          32 cyclomatic   50 cognitive  188 lines
+         1056.0 CRAP
+  backend/src/api/v1/controllers/goodsReceipt.controller.js
+    :62 createGoodsReceipt CRITICAL
+          31 cyclomatic   29 cognitive  205 lines
+         992.0 CRAP
+  backend/find_duplicates.js
+    :8 findDuplicates CRITICAL
+          30 cyclomatic   42 cognitive  149 lines
+         930.0 CRAP
+  backend/fix_missing_inventory.js
+    :10 fixMissingInventory CRITICAL
+          30 cyclomatic   50 cognitive  169 lines
+         930.0 CRAP
+  backend/src/api/v1/controllers/order.controller.js
+    :626 addOrderItem CRITICAL
+          30 cyclomatic   28 cognitive  167 lines
+         930.0 CRAP
+  backend/src/api/v1/controllers/purchaseOrder.controller.js
+    :20 convertToStockUnit CRITICAL
+          30 cyclomatic   30 cognitive   35 lines
+         930.0 CRAP
+  backend/src/api/v1/controllers/purchaseReturns.controller.js
+    :233 updatePurchaseReturnStatus CRITICAL
+          30 cyclomatic   32 cognitive  145 lines
+         930.0 CRAP
+  frontend/app/purchasing/receive/[id]/page.tsx
+    :500 <arrow> CRITICAL
+          29 cyclomatic   25 cognitive   68 lines
+         870.0 CRAP
+  frontend/app/sales/pos/page.tsx
+    :619 updateItem CRITICAL
+          29 cyclomatic   34 cognitive   38 lines
+         870.0 CRAP
+  scripts/sync_inventory.js
+    :7 syncInventory CRITICAL
+          29 cyclomatic   43 cognitive  117 lines
+         870.0 CRAP
+  backend/fix_all_gr_inventory.js
+    :17 fixAllGRInventory CRITICAL
+          28 cyclomatic   55 cognitive  182 lines
+         812.0 CRAP
+  backend/src/api/v1/controllers/order.controller.js
+    :881 finalizeOrder CRITICAL
+          28 cyclomatic   25 cognitive  162 lines
+         812.0 CRAP
+  backend/src/api/v1/controllers/purchaseOrder.controller.js
+    :1117 deletePurchaseOrder CRITICAL
+          28 cyclomatic   41 cognitive  180 lines
+         812.0 CRAP
+  deployment_pack/frontend/app/products/page.tsx
+    :34 ProductsPage CRITICAL
+          28 cyclomatic   25 cognitive  911 lines
+         812.0 CRAP
+  frontend/app/products/form/page.tsx
+    :80 <arrow> CRITICAL
+          28 cyclomatic   28 cognitive   24 lines
+         812.0 CRAP
+  backend/src/api/v1/controllers/order.controller.js
+    :24 convertUnitToInventory CRITICAL
+          27 cyclomatic   27 cognitive   40 lines
+         756.0 CRAP
+  backend/src/scripts/recalculate_reserved_stock.js
+    :21 convertUnitToInventory CRITICAL
+          27 cyclomatic   27 cognitive   26 lines
+         756.0 CRAP
+  backend/check_duplicate_orders.js
+    :10 checkOrderHistory CRITICAL
+          26 cyclomatic   33 cognitive  128 lines
+         702.0 CRAP
+  backend/correct_live_inventory_v3.js
+    :19 fixInventory CRITICAL
+          26 cyclomatic   42 cognitive  114 lines
+         702.0 CRAP
+  backend/src/api/v1/controllers/product.controller.js
+    :556 adjustProductQuantity CRITICAL
+          26 cyclomatic   30 cognitive  104 lines
+         702.0 CRAP
+  backend/src/api/v1/controllers/returns.controller.js
+    :262 updateReturnStatus CRITICAL
+          26 cyclomatic   27 cognitive  157 lines
+         702.0 CRAP
+  frontend/app/sales/pos/page.tsx
+    :485 load CRITICAL
+          26 cyclomatic   36 cognitive   71 lines
+         702.0 CRAP
+  backend/compare_quantities.js
+    :12 main CRITICAL
+          25 cyclomatic   35 cognitive  119 lines
+         650.0 CRAP
+  backend/fix_gr_transactions.js
+    :26 main CRITICAL
+          25 cyclomatic   40 cognitive   95 lines
+         650.0 CRAP
+  backend/src/api/v1/controllers/inventory.controller.js
+    :240 <arrow> CRITICAL
+          25 cyclomatic   28 cognitive  159 lines
+         650.0 CRAP
+  frontend/app/purchasing/page.tsx
+    :651 <arrow> CRITICAL
+          25 cyclomatic   29 cognitive  145 lines
+         650.0 CRAP
+  frontend/app/sales/pos/page.tsx
+    :395 getPrintData CRITICAL
+          25 cyclomatic   11 cognitive   28 lines
+         650.0 CRAP
+  frontend/app/settings/page.tsx
+    :864 <arrow> CRITICAL
+          25 cyclomatic   26 cognitive   25 lines
+         650.0 CRAP
+  frontend/components/ClientStatsModal.tsx
+    :16 ClientStatsModal CRITICAL
+          25 cyclomatic   18 cognitive  239 lines
+         650.0 CRAP
+  frontend/components/print/StandardDocument.tsx
+    :77 numberToFrenchWords CRITICAL
+          25 cyclomatic   51 cognitive   79 lines
+         650.0 CRAP
+  backend/investigate_qty_discrepancy.js
+    :9 investigate CRITICAL
+          24 cyclomatic   36 cognitive  297 lines
+         600.0 CRAP
+  backend/src/api/v1/controllers/accounting.controller.js
+    :229 createCashTransaction CRITICAL
+          24 cyclomatic   28 cognitive  103 lines
+         600.0 CRAP
+  frontend/app/customers/[id]/edit/page.tsx
+    :61 <arrow> CRITICAL
+          24 cyclomatic   19 cognitive   28 lines
+         600.0 CRAP
+  frontend/app/purchasing/[id]/page.tsx
+    :267 <arrow> CRITICAL
+          24 cyclomatic   22 cognitive   55 lines
+         600.0 CRAP
+  frontend/app/purchasing/edit/[id]/page.tsx
+    :244 loadedItems CRITICAL
+          24 cyclomatic   22 cognitive   75 lines
+         600.0 CRAP
+  frontend/app/purchasing/history/page.tsx
+    :90 PurchaseHistoryPage CRITICAL
+          24 cyclomatic   53 cognitive  437 lines
+         600.0 CRAP
+  backend/compare_purchase_prices.js
+    :100 comparePrices CRITICAL
+          23 cyclomatic   26 cognitive   68 lines
+         552.0 CRAP
+  backend/correct_live_inventory_v2.js
+    :19 fixInventory CRITICAL
+          23 cyclomatic   39 cognitive  113 lines
+         552.0 CRAP
+  backend/deep_duplicate_scan.js
+    :28 deepDuplicateCheck CRITICAL
+          23 cyclomatic   27 cognitive  104 lines
+         552.0 CRAP
+  backend/src/api/v1/controllers/product.controller.js
+    :14 getProducts CRITICAL
+          23 cyclomatic   25 cognitive  178 lines
+         552.0 CRAP
+  frontend/app/accounting/page.tsx
+    :629 AccountingPage CRITICAL
+          23 cyclomatic   51 cognitive  367 lines
+         552.0 CRAP
+  frontend/hooks/useSortableTable.ts
+    :59 sorted CRITICAL
+          23 cyclomatic   25 cognitive   62 lines
+         552.0 CRAP
+  backend/apply_excel_fixes.js
+    :12 applyExcelFixes CRITICAL
+          22 cyclomatic   27 cognitive  143 lines
+         506.0 CRAP
+  backend/apply_fixes_smart.js
+    :18 fixAffectedProductsSmart CRITICAL
+          22 cyclomatic   39 cognitive  133 lines
+         506.0 CRAP
+  backend/fix_gr_inventory.js
+    :19 fixGRInventory CRITICAL
+          22 cyclomatic   32 cognitive  179 lines
+         506.0 CRAP
+  backend/investigate_sweet_noble.js
+    :9 investigateSweetNoble CRITICAL
+          22 cyclomatic   26 cognitive   90 lines
+         506.0 CRAP
+  backend/src/api/v1/controllers/product.controller.js
+    :242 createProduct CRITICAL
+          22 cyclomatic   22 cognitive  100 lines
+         506.0 CRAP
+  frontend/app/purchasing/edit/[id]/page.tsx
+    :157 loadData CRITICAL
+          22 cyclomatic   23 cognitive  172 lines
+         506.0 CRAP
+  scripts/repair_inventory_from_pos.js
+    :12 convertToStockUnit CRITICAL
+          22 cyclomatic   34 cognitive   36 lines
+         506.0 CRAP
+  backend/src/api/v1/controllers/inventory.controller.js
+    :176 adjustStock CRITICAL
+          21 cyclomatic   21 cognitive   51 lines
+         462.0 CRAP
+  frontend/app/inventory/transactions/page.tsx
+    :245 <arrow> CRITICAL
+          21 cyclomatic   19 cognitive   48 lines
+         462.0 CRAP
+  frontend/app/products/page.tsx
+    :435 loadSalesHistory CRITICAL
+          21 cyclomatic   19 cognitive   51 lines
+         462.0 CRAP
+  frontend/app/purchasing/[id]/page.tsx
+    :97 items CRITICAL
+          21 cyclomatic   20 cognitive   42 lines
+         462.0 CRAP
+  frontend/app/reports/page.tsx
+    :25 ReportsPage CRITICAL
+          21 cyclomatic   19 cognitive  398 lines
+         462.0 CRAP
+  backend/apply_fixes_from_file.js
+    :19 fixAffectedProducts CRITICAL
+          20 cyclomatic   31 cognitive  107 lines
+         420.0 CRAP
+  backend/src/api/v1/controllers/product.controller.js
+    :348 updateProduct CRITICAL
+          20 cyclomatic   20 cognitive   48 lines
+         420.0 CRAP
+  backend/src/api/v1/controllers/returns.controller.js
+    :182 createReturn CRITICAL
+          20 cyclomatic   19 cognitive   75 lines
+         420.0 CRAP
+  frontend/app/orders/page.tsx
+    :178 fetchData CRITICAL
+          20 cyclomatic   25 cognitive   84 lines
+         420.0 CRAP
+  scripts/master_sync_v2.js
+    :7 masterSyncV2 CRITICAL
+          20 cyclomatic   40 cognitive  150 lines
+         420.0 CRAP
+  frontend/app/purchasing/receive/[id]/page.tsx
+    :219 <arrow> CRITICAL
+          20 cyclomatic   13 cognitive   40 lines
+         420.0 CRAP
+  backend/correct_final_v4.js
+    :18 fixInventory CRITICAL
+          19 cyclomatic   33 cognitive  117 lines
+         380.0 CRAP
+  backend/src/api/v1/controllers/accounting.controller.js
+    :814 deleteCashTransaction CRITICAL
+          19 cyclomatic   24 cognitive   78 lines
+         380.0 CRAP
+  backend/src/api/v1/controllers/auth.controller.js
+    :9 login CRITICAL
+          19 cyclomatic   27 cognitive  101 lines
+         380.0 CRAP
+  backend/src/api/v1/controllers/inventory.controller.js
+    :22 getInventoryLevels CRITICAL
+          19 cyclomatic   17 cognitive   97 lines
+         380.0 CRAP
+    :399 <arrow> CRITICAL
+          19 cyclomatic   23 cognitive  167 lines
+         380.0 CRAP
+  frontend/app/inventory/page.tsx
+    :610 InventoryLevelsContent CRITICAL
+          19 cyclomatic   19 cognitive  483 lines
+         380.0 CRAP
+  backend/cleanup_duplicates.js
+    :69 cleanupDuplicates CRITICAL
+          18 cyclomatic   28 cognitive  137 lines
+         342.0 CRAP
+  backend/sync_all_to_cloud.js
+    :19 syncAll CRITICAL
+          18 cyclomatic   23 cognitive  154 lines
+         342.0 CRAP
+  frontend/app/customers/new/page.tsx
+    :96 handleSubmit CRITICAL
+          18 cyclomatic   20 cognitive   45 lines
+         342.0 CRAP
+  backend/src/api/v1/controllers/order.controller.js
+    :1364 deleteOrder CRITICAL
+          18 cyclomatic   15 cognitive   76 lines
+         342.0 CRAP
+  backend/apply_fixes_direct.js
+    :18 fixAffectedProducts CRITICAL
+          17 cyclomatic   28 cognitive  109 lines
+         306.0 CRAP
+  backend/check_remaining_mismatches.js
+    :16 checkRemaining CRITICAL
+          17 cyclomatic   19 cognitive   89 lines
+         306.0 CRAP
+  backend/restore_inventory.js
+    :49 main CRITICAL
+          17 cyclomatic   31 cognitive  108 lines
+         306.0 CRAP
+  backend/src/api/v1/controllers/accounting.controller.js
+    :720 updateCashTransaction CRITICAL
+          17 cyclomatic   21 cognitive   90 lines
+         306.0 CRAP
+  backend/src/api/v1/controllers/catalogueSync.controller.js
+    :322 executeCatalogueSync CRITICAL
+          17 cyclomatic   17 cognitive  172 lines
+         306.0 CRAP
+  backend/src/api/v1/controllers/order.controller.js
+    :143 deductOrderInventory CRITICAL
+          17 cyclomatic   27 cognitive   68 lines
+         306.0 CRAP
+  frontend/components/print/StandardDocument.tsx
+    :782 <arrow> CRITICAL
+          17 cyclomatic   17 cognitive   30 lines
+         306.0 CRAP
+  scripts/master_sync_inventory.js
+    :7 masterSync CRITICAL
+          17 cyclomatic   34 cognitive  138 lines
+         306.0 CRAP
+  frontend/app/inventory/quick-stock/page.tsx
+    :29 QuickStockPage CRITICAL
+          17 cyclomatic   15 cognitive  625 lines
+         306.0 CRAP
+  frontend/app/orders/print/[id]/page.tsx
+    :115 finalDocumentData CRITICAL
+          17 cyclomatic   14 cognitive   31 lines
+         306.0 CRAP
+  backend/src/scripts/find_duplicates.js
+    :4 findDuplicates CRITICAL
+          16 cyclomatic   29 cognitive   80 lines
+         272.0 CRAP
+  frontend/app/purchasing/new/page.tsx
+    :528 handleSubmit CRITICAL
+          16 cyclomatic   19 cognitive   68 lines
+         272.0 CRAP
+  frontend/components/print/StandardDocument.tsx
+    :84 convertChunk CRITICAL
+          16 cyclomatic   32 cognitive   23 lines
+         272.0 CRAP
+  scripts/final_master_sync.js
+    :7 finalMasterSync CRITICAL
+          16 cyclomatic   34 cognitive  123 lines
+         272.0 CRAP
+  backend/src/api/v1/controllers/reports.controller.js
+    :129 getFinancialsReport CRITICAL
+          16 cyclomatic   11 cognitive   74 lines
+         272.0 CRAP
+  frontend/app/page.tsx
+    :164 DashboardHomePage CRITICAL
+          16 cyclomatic   15 cognitive  364 lines
+         272.0 CRAP
+  frontend/hooks/useTableNavigation.ts
+    :50 handleKeyDown CRITICAL
+          16 cyclomatic   11 cognitive   33 lines
+         272.0 CRAP
+  frontend/app/inventory/page.tsx
+    :74 StockAdjustmentModal CRITICAL
+          16 cyclomatic   12 cognitive  430 lines
+         272.0 CRAP
+  frontend/app/orders/page.tsx
+    :457 <arrow> CRITICAL
+          16 cyclomatic   14 cognitive   62 lines
+         272.0 CRAP
+  frontend/app/orders/[id]/page.tsx
+    :29 OrderDetailsPage CRITICAL
+          16 cyclomatic   15 cognitive  535 lines
+         272.0 CRAP
+  backend/src/api/v1/middleware/auth.middleware.js
+    :19 <arrow> CRITICAL
+          16 cyclomatic   15 cognitive   59 lines
+         272.0 CRAP
+  backend/compare_purchase_prices.js
+    :43 extractExcelPrices CRITICAL
+          15 cyclomatic   24 cognitive   56 lines
+         240.0 CRAP
+  backend/fix_all_inventory.js
+    :9 fixAllInventory CRITICAL
+          15 cyclomatic   21 cognitive  160 lines
+         240.0 CRAP
+  backend/fix_remaining_issues.js
+    :26 main CRITICAL
+          15 cyclomatic   25 cognitive  100 lines
+         240.0 CRAP
+  backend/force_sync_all.js
+    :16 forceSync CRITICAL
+          15 cyclomatic   17 cognitive  100 lines
+         240.0 CRAP
+  backend/generate_proof_excel.js
+    :11 main CRITICAL
+          15 cyclomatic   19 cognitive  120 lines
+         240.0 CRAP
+  backend/investigate_issue2_3.js
+    :17 main CRITICAL
+          15 cyclomatic   21 cognitive  175 lines
+         240.0 CRAP
+  backend/investigate_missing.js
+    :20 investigateMissing CRITICAL
+          15 cyclomatic   33 cognitive   98 lines
+         240.0 CRAP
+  backend/merge_cloud_dupes.js
+    :20 mergeDuplicates CRITICAL
+          15 cyclomatic   19 cognitive   96 lines
+         240.0 CRAP
+  frontend/app/products/form/page.tsx
+    :126 handleSubmit CRITICAL
+          15 cyclomatic   20 cognitive   44 lines
+         240.0 CRAP
+  backend/src/scripts/seedDatabase.js
+    :4 seedDatabase CRITICAL
+          15 cyclomatic   10 cognitive  205 lines
+         240.0 CRAP
+  backend/test_converter.js
+    :1 convertUnitToInventory CRITICAL
+          15 cyclomatic   13 cognitive   22 lines
+         240.0 CRAP
+  backend/direct_upload.js
+    :9 uploadProducts CRITICAL
+          14 cyclomatic   17 cognitive   81 lines
+         210.0 CRAP
+  backend/global_inventory_reset.js
+    :11 reconcile CRITICAL
+          14 cyclomatic   21 cognitive  115 lines
+         210.0 CRAP
+  backend/phase1_import.js
+    :13 importMasterList CRITICAL
+          14 cyclomatic   21 cognitive   87 lines
+         210.0 CRAP
+  frontend/app/accounting/page.tsx
+    :186 handleSubmit CRITICAL
+          14 cyclomatic   16 cognitive   35 lines
+         210.0 CRAP
+  frontend/app/sales/pos/page.tsx
+    :127 convertQuantity CRITICAL
+          14 cyclomatic   18 cognitive   28 lines
+         210.0 CRAP
+  frontend/app/sales/returns/[id]/page.tsx
+    :45 ReturnDetailsPage CRITICAL
+          14 cyclomatic   16 cognitive  317 lines
+         210.0 CRAP
+  frontend/app/products/page.tsx
+    :708 <arrow> CRITICAL
+          14 cyclomatic    8 cognitive   60 lines
+         210.0 CRAP
+  backend/src/api/v1/controllers/reports.controller.js
+    :15 getSalesReport CRITICAL
+          14 cyclomatic   12 cognitive  107 lines
+         210.0 CRAP
+    :488 getDashboardSummary CRITICAL
+          14 cyclomatic    7 cognitive  128 lines
+         210.0 CRAP
+  frontend/app/purchasing/receive/[id]/page.tsx
+    :121 ReceivePurchaseOrderPage CRITICAL
+          14 cyclomatic   13 cognitive  690 lines
+         210.0 CRAP
+  backend/fix_reserved_stock.js
+    :29 convertUnitToInventory CRITICAL
+          14 cyclomatic   12 cognitive   20 lines
+         210.0 CRAP
+  frontend/app/purchasing/page.tsx
+    :98 PurchaseOrdersListPage CRITICAL
+          14 cyclomatic   10 cognitive  795 lines
+         210.0 CRAP
+  frontend/app/inventory/transactions/page.tsx
+    :69 fetchTransactions CRITICAL
+          14 cyclomatic   15 cognitive   32 lines
+         210.0 CRAP
+  backend/test_arizona.js
+    :7 convertUnitToInventory CRITICAL
+          14 cyclomatic   12 cognitive   20 lines
+         210.0 CRAP
+  backend/compare_new_excel.js
+    :6 compareInventory CRITICAL
+          13 cyclomatic   17 cognitive   90 lines
+         182.0 CRAP
+  backend/src/api/v1/controllers/order.controller.js
+    :70 checkOrderStock CRITICAL
+          13 cyclomatic   16 cognitive   68 lines
+         182.0 CRAP
+  frontend/app/products/page.tsx
+    :211 loadProducts CRITICAL
+          13 cyclomatic   16 cognitive   43 lines
+         182.0 CRAP
+  frontend/app/purchasing/edit/[id]/page.tsx
+    :569 handleUpdate CRITICAL
+          13 cyclomatic   16 cognitive   64 lines
+         182.0 CRAP
+  scripts/recheck_inventory.js
+    :5 recheckInventory CRITICAL
+          13 cyclomatic   30 cognitive  120 lines
+         182.0 CRAP
+  scripts/repair_inventory_from_pos.js
+    :49 repair CRITICAL
+          13 cyclomatic   23 cognitive  105 lines
+         182.0 CRAP
+  backend/src/api/v1/controllers/accounting.controller.js
+    :336 getCashSummary CRITICAL
+          13 cyclomatic   11 cognitive  112 lines
+         182.0 CRAP
+    :452 createCashTransfer CRITICAL
+          13 cyclomatic   10 cognitive   91 lines
+         182.0 CRAP
+  backend/src/api/v1/controllers/inventory.controller.js
+    :120 getInventoryTransactions CRITICAL
+          13 cyclomatic   11 cognitive   55 lines
+         182.0 CRAP
+  frontend/app/sales/pos/page.tsx
+    :726 handleAddManualProduct CRITICAL
+          13 cyclomatic   11 cognitive   38 lines
+         182.0 CRAP
+  backend/src/api/v1/controllers/brand.controller.js
+    :60 updateBrand CRITICAL
+          13 cyclomatic   11 cognitive   63 lines
+         182.0 CRAP
+  backend/src/api/v1/controllers/returns.controller.js
+    :8 getReturns CRITICAL
+          13 cyclomatic   11 cognitive   97 lines
+         182.0 CRAP
+  frontend/app/customers/[id]/page.tsx
+    :105 fetchData CRITICAL
+          13 cyclomatic   13 cognitive   27 lines
+         182.0 CRAP
+  frontend/app/purchasing/history/page.tsx
+    :118 fetchData CRITICAL
+          13 cyclomatic   13 cognitive   49 lines
+         182.0 CRAP
+  backend/src/api/v1/controllers/order.controller.js
+    :219 getOrders CRITICAL
+          13 cyclomatic   13 cognitive  112 lines
+         182.0 CRAP
+  scripts/analyze_duplicates.js
+    :15 <arrow> CRITICAL
+          13 cyclomatic    6 cognitive   17 lines
+         182.0 CRAP
+  deployment_pack/backend/src/api/v1/controllers/product.controller.js
+    :182 updateProduct CRITICAL
+          13 cyclomatic   11 cognitive   29 lines
+         182.0 CRAP
+  frontend/app/orders/page.tsx
+    :47 OrdersListContent CRITICAL
+          13 cyclomatic   11 cognitive  551 lines
+         182.0 CRAP
+  frontend/components/ClientStatsModal.tsx
+    :39 loadData CRITICAL
+          13 cyclomatic   13 cognitive   28 lines
+         182.0 CRAP
+  frontend/app/customers/[id]/edit/page.tsx
+    :106 handleSubmit CRITICAL
+          13 cyclomatic   15 cognitive   41 lines
+         182.0 CRAP
+  backend/force_delete_duplicates.js
+    :6 forceDeleteOldProducts CRITICAL
+          12 cyclomatic   18 cognitive  120 lines
+         156.0 CRAP
+  backend/recalc_inventory_packaging.js
+    :14 recalculate CRITICAL
+          12 cyclomatic   15 cognitive   61 lines
+         156.0 CRAP
+  frontend/app/products/page.tsx
+    :187 loadFilters CRITICAL
+          12 cyclomatic   11 cognitive   23 lines
+         156.0 CRAP
+  backend/src/api/v1/controllers/product.controller.js
+    :664 getProductPurchaseHistory CRITICAL
+          12 cyclomatic   11 cognitive  147 lines
+         156.0 CRAP
+  backend/src/api/v1/controllers/accounting.controller.js
+    :382 <arrow> CRITICAL
+          12 cyclomatic    2 cognitive   15 lines
+         156.0 CRAP
+    :610 getClientVersements CRITICAL
+          12 cyclomatic   10 cognitive  106 lines
+         156.0 CRAP
+  frontend/app/sales/returns/new/page.tsx
+    :55 NewReturnPage CRITICAL
+          12 cyclomatic   10 cognitive  327 lines
+         156.0 CRAP
+  backend/test_po_deletion.js
+    :4 runTest CRITICAL
+          12 cyclomatic   13 cognitive  126 lines
+         156.0 CRAP
+  backend/generate_final_cleanup_report.js
+    :50 main CRITICAL
+          12 cyclomatic   14 cognitive  101 lines
+         156.0 CRAP
+  deployment_pack/frontend/app/products/page.tsx
+    :460 <arrow> CRITICAL
+          12 cyclomatic    9 cognitive   64 lines
+         156.0 CRAP
+  backend/src/services/backup.service.js
+    :16 <arrow> CRITICAL
+          12 cyclomatic   14 cognitive   91 lines
+         156.0 CRAP
+  backend/investigate_colmar.js
+    :9 investigate CRITICAL
+          12 cyclomatic   13 cognitive   89 lines
+         156.0 CRAP
+  frontend/app/purchasing/new/page.tsx
+    :74 convertQuantity CRITICAL
+          11 cyclomatic   11 cognitive   25 lines
+         132.0 CRAP
+    :598 prepareDocumentData CRITICAL
+          11 cyclomatic    9 cognitive   37 lines
+         132.0 CRAP
+    :101 CreatePurchaseOrderPage CRITICAL
+          11 cyclomatic    9 cognitive  867 lines
+         132.0 CRAP
+  frontend/app/accounting/page.tsx
+    :685 fetchInitialData CRITICAL
+          11 cyclomatic   10 cognitive   18 lines
+         132.0 CRAP
+  frontend/app/products/page.tsx
+    :340 handleAdjustQuantity CRITICAL
+          11 cyclomatic   11 cognitive   39 lines
+         132.0 CRAP
+  backend/fix_all_discrepancies.js
+    :20 fixAll CRITICAL
+          11 cyclomatic   13 cognitive   70 lines
+         132.0 CRAP
+  frontend/components/versements/VersementModal.tsx
+    :119 handleSubmit CRITICAL
+          11 cyclomatic   15 cognitive   56 lines
+         132.0 CRAP
+  backend/fix_stanly_inventory.js
+    :9 fixInventory CRITICAL
+          11 cyclomatic   13 cognitive  100 lines
+         132.0 CRAP
+  run_comparison.js
+    :38 <arrow> CRITICAL
+          11 cyclomatic   11 cognitive   43 lines
+         132.0 CRAP
+  frontend/components/versements/SupplierVersementModal.tsx
+    :113 handleSubmit CRITICAL
+          11 cyclomatic   15 cognitive   56 lines
+         132.0 CRAP
+    :27 SupplierVersementModal CRITICAL
+          11 cyclomatic    9 cognitive  319 lines
+         132.0 CRAP
+  frontend/app/logistics/page.tsx
+    :33 fetchData CRITICAL
+          11 cyclomatic   13 cognitive   19 lines
+         132.0 CRAP
+  frontend/app/sales/pos/page.tsx
+    :765 handleValidateSale CRITICAL
+          11 cyclomatic    9 cognitive   24 lines
+         132.0 CRAP
+  backend/fix_inventory_qty.js
+    :9 fixInventory CRITICAL
+          11 cyclomatic   10 cognitive  155 lines
+         132.0 CRAP
+  backend/delete_order_511.js
+    :14 main CRITICAL
+          11 cyclomatic   15 cognitive  103 lines
+         132.0 CRAP
+  frontend/app/customers/[id]/edit-prices/page.tsx
+    :69 <arrow> CRITICAL
+          11 cyclomatic   10 cognitive   32 lines
+         132.0 CRAP
+  frontend/hooks/useGlobalEscapeKey.ts
+    :14 handleKeyDown CRITICAL
+          11 cyclomatic    7 cognitive   40 lines
+         132.0 CRAP
+  frontend/app/inventory/page.tsx
+    :140 <arrow> CRITICAL
+          11 cyclomatic   13 cognitive   17 lines
+         132.0 CRAP
+    :242 handleSubmit CRITICAL
+          11 cyclomatic    9 cognitive   24 lines
+         132.0 CRAP
+    :1020 <arrow> CRITICAL
+          11 cyclomatic    9 cognitive   48 lines
+         132.0 CRAP
+  frontend/app/purchasing/returns/[id]/page.tsx
+    :13 PurchaseReturnDetailsPage CRITICAL
+          11 cyclomatic   11 cognitive  218 lines
+         132.0 CRAP
+  frontend/app/purchasing/edit/[id]/page.tsx
+    :73 convertQuantity CRITICAL
+          11 cyclomatic   11 cognitive   25 lines
+         132.0 CRAP
+  frontend/app/sales/returns/[id]/page.tsx
+    :127 items CRITICAL
+          11 cyclomatic   10 cognitive   22 lines
+         132.0 CRAP
+  frontend/app/purchasing/page.tsx
+    :126 handleDirectReceive CRITICAL
+          11 cyclomatic   11 cognitive   68 lines
+         132.0 CRAP
+  backend/src/api/v1/controllers/purchaseReturns.controller.js
+    :161 createPurchaseReturn CRITICAL
+          11 cyclomatic   10 cognitive   67 lines
+         132.0 CRAP
+  frontend/app/reports/page.tsx
+    :71 loadData CRITICAL
+          11 cyclomatic   10 cognitive   24 lines
+         132.0 CRAP
+  backend/recalc_packaging.js
+    :32 calculatePacking CRITICAL
+          11 cyclomatic   14 cognitive   36 lines
+         132.0 CRAP
+  frontend/app/orders/[id]/page.tsx
+    :213 receiptData CRITICAL
+          11 cyclomatic   10 cognitive   39 lines
+         132.0 CRAP
+  frontend/app/inventory/transactions/page.tsx
+    :52 InventoryTransactionsContent CRITICAL
+          11 cyclomatic   11 cognitive  250 lines
+         132.0 CRAP
+  frontend/lib/api.ts
+    :179 request CRITICAL
+          11 cyclomatic   13 cognitive   42 lines
+         132.0 CRAP
+  backend/scripts/check_missing_famille.js
+    :4 checkBackup CRITICAL
+          10 cyclomatic   17 cognitive   36 lines
+         110.0 CRAP
+  backend/scripts/dry_run_update_prices.js
+    :19 dryRun CRITICAL
+          10 cyclomatic   18 cognitive   79 lines
+         110.0 CRAP
+  backend/sync_to_cloud.js
+    :19 syncToCloud CRITICAL
+          10 cyclomatic   18 cognitive   97 lines
+         110.0 CRAP
+  backend/verify_balances.js
+    :18 run CRITICAL
+          10 cyclomatic   21 cognitive   54 lines
+         110.0 CRAP
+  desktop-app/utils/network.js
+    :10 getLocalIP CRITICAL
+          10 cyclomatic   18 cognitive   27 lines
+         110.0 CRAP
+  frontend/app/orders/[id]/page.tsx
+    :133 updateFactureItem CRITICAL
+          10 cyclomatic   17 cognitive   45 lines
+         110.0 CRAP
+  frontend/app/purchasing/returns/new/page.tsx
+    :201 updateItem CRITICAL
+          10 cyclomatic   17 cognitive   35 lines
+         110.0 CRAP
+  frontend/app/sales/returns/new/page.tsx
+    :136 updateFormItem CRITICAL
+          10 cyclomatic   17 cognitive   31 lines
+         110.0 CRAP
+  backend/api/v1/controllers/customer.controller.js
+    :306 getCustomerProductPrice CRITICAL
+          10 cyclomatic    9 cognitive   68 lines
+         110.0 CRAP
+  frontend/app/accounting/page.tsx
+    :131 AddTransactionModal CRITICAL
+          10 cyclomatic    7 cognitive  256 lines
+         110.0 CRAP
+  frontend/components/versements/VersementModal.tsx
+    :28 VersementModal CRITICAL
+          10 cyclomatic    9 cognitive  335 lines
+         110.0 CRAP
+  backend/src/api/v1/controllers/reports.controller.js
+    :208 getTopProductsReport CRITICAL
+          10 cyclomatic    9 cognitive   58 lines
+         110.0 CRAP
+  backend/src/api/v1/controllers/accounting.controller.js
+    :138 getCashTransactions CRITICAL
+          10 cyclomatic    9 cognitive   87 lines
+         110.0 CRAP
+    :897 getSupplierVersements CRITICAL
+          10 cyclomatic    8 cognitive   96 lines
+         110.0 CRAP
+  frontend/app/logistics/page.tsx
+    :15 LogisticsPage CRITICAL
+          10 cyclomatic    9 cognitive  195 lines
+         110.0 CRAP
+  backend/find_fuzzy_duplicates.js
+    :12 levenshteinDistance CRITICAL
+          10 cyclomatic   13 cognitive   24 lines
+         110.0 CRAP
+    :64 main CRITICAL
+          10 cyclomatic   14 cognitive  102 lines
+         110.0 CRAP
+  frontend/app/inventory/quick-stock/page.tsx
+    :196 handleSell CRITICAL
+          10 cyclomatic   10 cognitive   57 lines
+         110.0 CRAP
+  backend/src/api/v1/controllers/customer.controller.js
+    :338 getCustomerProductPrice CRITICAL
+          10 cyclomatic    9 cognitive   68 lines
+         110.0 CRAP
+  backend/correct_phantom_stock.js
+    :13 runCorrection CRITICAL
+          10 cyclomatic   12 cognitive   87 lines
+         110.0 CRAP
+  frontend/app/purchasing/edit/[id]/page.tsx
+    :100 EditPurchaseOrderPage CRITICAL
+          10 cyclomatic    8 cognitive  791 lines
+         110.0 CRAP
+  deployment_pack/frontend/app/products/page.tsx
+    :124 loadProducts CRITICAL
+          10 cyclomatic   10 cognitive   50 lines
+         110.0 CRAP
+  backend/global_repair_inventory.js
+    :9 globalRepair CRITICAL
+          10 cyclomatic   12 cognitive   99 lines
+         110.0 CRAP
+  frontend/app/settlements/page.tsx
+    :68 handleGenerate CRITICAL
+          10 cyclomatic   10 cognitive   36 lines
+         110.0 CRAP
+  backend/src/api/v1/controllers/purchaseOrder.controller.js
+    :644 getFactoryPurchaseDetails CRITICAL
+          10 cyclomatic   10 cognitive  130 lines
+         110.0 CRAP
+  backend/compare_purchase_prices.js
+    :10 extractSqlPrices HIGH
+           9 cyclomatic   16 cognitive   32 lines
+          90.0 CRAP
+  backend/verify_gr_postfix.js
+    :5 <arrow> HIGH
+           9 cyclomatic   17 cognitive  111 lines
+          90.0 CRAP
+  frontend/app/accounting/page.tsx
+    :396 AccountListModal HIGH
+           9 cyclomatic    7 cognitive  231 lines
+          90.0 CRAP
+  frontend/app/products/page.tsx
+    :381 handleCreateProduct HIGH
+           9 cyclomatic    9 cognitive   52 lines
+          90.0 CRAP
+  backend/purge_old_data.js
+    :43 main HIGH
+           9 cyclomatic   11 cognitive  161 lines
+          90.0 CRAP
+  backend/src/api/v1/controllers/reports.controller.js
+    :783 getEmployeeStats HIGH
+           9 cyclomatic   12 cognitive   24 lines
+          90.0 CRAP
+  frontend/app/purchasing/receive/[id]/page.tsx
+    :212 handleSubmit HIGH
+           9 cyclomatic   10 cognitive   84 lines
+          90.0 CRAP
+    :344 items HIGH
+           9 cyclomatic    8 cognitive   22 lines
+          90.0 CRAP
+  backend/src/api/v1/services/accounting.service.js
+    :73 recordPaymentTransaction HIGH
+           9 cyclomatic    9 cognitive   47 lines
+          90.0 CRAP
+  frontend/app/sales/pos/page.tsx
+    :435 init HIGH
+           9 cyclomatic    8 cognitive   15 lines
+          90.0 CRAP
+  frontend/app/brands/page.tsx
+    :35 BrandModal HIGH
+           9 cyclomatic    9 cognitive  129 lines
+          90.0 CRAP
+  backend/src/scripts/recalculate_reserved_stock.js
+    :48 reconcile HIGH
+           9 cyclomatic    8 cognitive   71 lines
+          90.0 CRAP
+  backend/direct_phase2_reassign.js
+    :11 reassignAndDelete HIGH
+           9 cyclomatic   14 cognitive  127 lines
+          90.0 CRAP
+  frontend/components/DateQuickFilter.tsx
+    :72 getDateRange HIGH
+           9 cyclomatic    3 cognitive   48 lines
+          90.0 CRAP
+  backend/fix_reserved_stock.js
+    :4 fixReserved HIGH
+           9 cyclomatic   10 cognitive  119 lines
+          90.0 CRAP
+  backend/scripts/update_prices_from_excel.js
+    :13 updatePrices HIGH
+           9 cyclomatic   13 cognitive   93 lines
+          90.0 CRAP
+  backend/src/db/sqlite.js
+    :75 query HIGH
+           9 cyclomatic   14 cognitive   50 lines
+          90.0 CRAP
+  frontend/app/inventory/page.tsx
+    :709 fetchInventoryLevels HIGH
+           9 cyclomatic   10 cognitive   29 lines
+          90.0 CRAP
+  frontend/components/CatalogueSyncModal.tsx
+    :136 handleAnalyze HIGH
+           9 cyclomatic   10 cognitive   22 lines
+          90.0 CRAP
+  frontend/app/purchasing/edit/[id]/page.tsx
+    :635 prepareDocumentData HIGH
+           9 cyclomatic    6 cognitive   29 lines
+          90.0 CRAP
+  backend/src/api/v1/controllers/order.controller.js
+    :794 updateOrderStatus HIGH
+           9 cyclomatic    8 cognitive   82 lines
+          90.0 CRAP
+  deployment_pack/backend/src/api/v1/controllers/product.controller.js
+    :14 getProducts HIGH
+           9 cyclomatic    8 cognitive   75 lines
+          90.0 CRAP
+    :121 createProduct HIGH
+           9 cyclomatic    8 cognitive   55 lines
+          90.0 CRAP
+  frontend/app/purchasing/page.tsx
+    :301 fetchPurchaseOrders HIGH
+           9 cyclomatic   10 cognitive   24 lines
+          90.0 CRAP
+  backend/src/api/v1/controllers/catalogueSync.controller.js
+    :27 cleanNumber HIGH
+           9 cyclomatic    8 cognitive   17 lines
+          90.0 CRAP
+  frontend/app/orders/print/[id]/page.tsx
+    :70 items HIGH
+           9 cyclomatic    8 cognitive   24 lines
+          90.0 CRAP
+  frontend/app/inventory/transactions/page.tsx
+    :30 formatQuantityChange HIGH
+           9 cyclomatic    8 cognitive   10 lines
+          90.0 CRAP
+  frontend/app/logistics/deliveries/new/page.tsx
+    :74 handleSubmit HIGH
+           9 cyclomatic    9 cognitive   33 lines
+          90.0 CRAP
+  frontend/app/reports/employee/[id]/page.tsx
+    :40 EmployeeReportPage HIGH
+           9 cyclomatic    8 cognitive  156 lines
+          90.0 CRAP
+  backend/recalculate_client_balances.js
+    :21 main HIGH
+           9 cyclomatic   14 cognitive  135 lines
+          90.0 CRAP
+  frontend/app/settings/page.tsx
+    :820 <arrow> HIGH
+           8 cyclomatic   17 cognitive   72 lines
+          72.0 CRAP
+  frontend/app/login/page.tsx
+    :26 handleLogin HIGH
+           8 cyclomatic   12 cognitive   32 lines
+          72.0 CRAP
+  frontend/app/products/page.tsx
+    :494 handleExport HIGH
+           8 cyclomatic   12 cognitive   59 lines
+          72.0 CRAP
+  frontend/components/versements/VersementModal.tsx
+    :69 loadInitialData HIGH
+           8 cyclomatic    8 cognitive   26 lines
+          72.0 CRAP
+  backend/src/api/v1/controllers/product.controller.js
+    :149 <arrow> HIGH
+           8 cyclomatic    5 cognitive   12 lines
+          72.0 CRAP
+    :761 ordersWithPackaging HIGH
+           8 cyclomatic   10 cognitive   25 lines
+          72.0 CRAP
+  backend/clean_last2.js
+    :7 go HIGH
+           8 cyclomatic   13 cognitive   49 lines
+          72.0 CRAP
+  frontend/components/versements/SupplierVersementModal.tsx
+    :66 loadInitialData HIGH
+           8 cyclomatic    8 cognitive   25 lines
+          72.0 CRAP
+  backend/check_gr_detail.js
+    :5 <arrow> HIGH
+           8 cyclomatic   10 cognitive   72 lines
+          72.0 CRAP
+  frontend/app/sales/pos/page.tsx
+    :949 <arrow> HIGH
+           8 cyclomatic    7 cognitive   53 lines
+          72.0 CRAP
+  frontend/components/versements/SupplierVersementsSection.tsx
+    :42 fetchVersements HIGH
+           8 cyclomatic    7 cognitive   19 lines
+          72.0 CRAP
+  frontend/app/brands/page.tsx
+    :222 handleSaveBrand HIGH
+           8 cyclomatic   12 cognitive   36 lines
+          72.0 CRAP
+  frontend/app/hr/employees/page.tsx
+    :25 EmployeesPage HIGH
+           8 cyclomatic    8 cognitive  357 lines
+          72.0 CRAP
+  frontend/app/purchasing/returns/new/page.tsx
+    :243 handleSubmit HIGH
+           8 cyclomatic    8 cognitive   35 lines
+          72.0 CRAP
+    :61 NewPurchaseReturnPage HIGH
+           8 cyclomatic    7 cognitive  509 lines
+          72.0 CRAP
+  backend/scripts/compare_solde_excel.js
+    :48 <arrow> HIGH
+           8 cyclomatic    7 cognitive   36 lines
+          72.0 CRAP
+  backend/src/scripts/cleanup_inventory_duplicates.js
+    :3 cleanupInventoryAndDuplicates HIGH
+           8 cyclomatic   11 cognitive  111 lines
+          72.0 CRAP
+  backend/src/api/v1/services/pricing.service.js
+    :3 getProductPriceForCustomer HIGH
+           8 cyclomatic   10 cognitive   56 lines
+          72.0 CRAP
+  backend/fix_inventory_dry_run.js
+    :18 fixInventory HIGH
+           8 cyclomatic   12 cognitive   86 lines
+          72.0 CRAP
+  backend/scripts/restore_cloud_brands.js
+    :12 main HIGH
+           8 cyclomatic    9 cognitive   53 lines
+          72.0 CRAP
+  backend/hard_sync_ledgers.js
+    :9 run HIGH
+           8 cyclomatic   11 cognitive   70 lines
+          72.0 CRAP
+  frontend/components/versements/VersementsSection.tsx
+    :49 fetchVersements HIGH
+           8 cyclomatic    7 cognitive   19 lines
+          72.0 CRAP
+    :250 <arrow> HIGH
+           8 cyclomatic    7 cognitive   52 lines
+          72.0 CRAP
+  backend/src/api/v1/controllers/order.controller.js
+    :1308 updateOrderFinancials HIGH
+           8 cyclomatic    6 cognitive   51 lines
+          72.0 CRAP
+  backend/phase2_reassign.js
+    :34 reassignAndDelete HIGH
+           8 cyclomatic   12 cognitive  133 lines
+          72.0 CRAP
+  frontend/app/purchasing/page.tsx
+    :140 itemsToReceive HIGH
+           8 cyclomatic    7 cognitive   22 lines
+          72.0 CRAP
+  frontend/components/print/StandardDocument.tsx
+    :231 <arrow> HIGH
+           8 cyclomatic    9 cognitive   27 lines
+          72.0 CRAP
+  backend/investigate_qty_discrepancy2.js
+    :9 investigate2 HIGH
+           8 cyclomatic    7 cognitive  204 lines
+          72.0 CRAP
+  frontend/app/logistics/new/page.tsx
+    :32 loadData HIGH
+           8 cyclomatic    7 cognitive   18 lines
+          72.0 CRAP
+  frontend/app/orders/[id]/page.tsx
+    :194 items HIGH
+           8 cyclomatic    7 cognitive   12 lines
+          72.0 CRAP
+    :223 items HIGH
+           8 cyclomatic    7 cognitive   21 lines
+          72.0 CRAP
+  backend/src/api/v1/middleware/auth.middleware.js
+    :113 <arrow> HIGH
+           8 cyclomatic    8 cognitive   46 lines
+          72.0 CRAP
+  frontend/app/logistics/deliveries/new/page.tsx
+    :49 loadFormData HIGH
+           8 cyclomatic    7 cognitive   19 lines
+          72.0 CRAP
+  frontend/components/UserFilter.tsx
+    :98 <arrow> HIGH
+           8 cyclomatic    6 cognitive   19 lines
+          72.0 CRAP
+  frontend/app/purchasing/returns/page.tsx
+    :70 fetchReturns HIGH
+           7 cyclomatic    7 cognitive   20 lines
+          56.0 CRAP
+  frontend/app/purchasing/new/page.tsx
+    :167 <arrow> HIGH
+           7 cyclomatic    6 cognitive   18 lines
+          56.0 CRAP
+    :714 <arrow> HIGH
+           7 cyclomatic    4 cognitive   27 lines
+          56.0 CRAP
+  backend/api/v1/controllers/customer.controller.js
+    :252 hardDeleteCustomer HIGH
+           7 cyclomatic    7 cognitive   49 lines
+          56.0 CRAP
+  backend/verification_scan.js
+    :27 lev HIGH
+           7 cyclomatic    9 cognitive    8 lines
+          56.0 CRAP
+  frontend/app/products/page.tsx
+    :307 handleSaveEdit HIGH
+           7 cyclomatic    7 cognitive   31 lines
+          56.0 CRAP
+  frontend/components/versements/VersementModal.tsx
+    :46 <arrow> HIGH
+           7 cyclomatic   10 cognitive   22 lines
+          56.0 CRAP
+  backend/cleanup_duplicates.js
+    :11 parseDuplicatePairs HIGH
+           7 cyclomatic   11 cognitive   57 lines
+          56.0 CRAP
+  frontend/components/versements/SupplierVersementModal.tsx
+    :44 <arrow> HIGH
+           7 cyclomatic   10 cognitive   21 lines
+          56.0 CRAP
+  backend/src/api/v1/controllers/settings.controller.js
+    :148 updateUser HIGH
+           7 cyclomatic    8 cognitive   47 lines
+          56.0 CRAP
+  backend/src/api/v1/services/accounting.service.js
+    :208 recordPurchaseReturnTransaction HIGH
+           7 cyclomatic    6 cognitive   36 lines
+          56.0 CRAP
+  backend/src/api/v1/controllers/inventory.controller.js
+    :245 cleanNumber HIGH
+           7 cyclomatic    6 cognitive   16 lines
+          56.0 CRAP
+  frontend/app/sales/pos/page.tsx
+    :559 <arrow> HIGH
+           7 cyclomatic    6 cognitive   10 lines
+          56.0 CRAP
+  frontend/app/brands/page.tsx
+    :186 fetchBrands HIGH
+           7 cyclomatic    8 cognitive   20 lines
+          56.0 CRAP
+    :344 <arrow> HIGH
+           7 cyclomatic    6 cognitive   46 lines
+          56.0 CRAP
+  frontend/app/page.tsx
+    :188 <arrow> HIGH
+           7 cyclomatic    8 cognitive   21 lines
+          56.0 CRAP
+  backend/backfill_purchase_audit.js
+    :12 backfill HIGH
+           7 cyclomatic    7 cognitive   86 lines
+          56.0 CRAP
+  frontend/app/products/form/page.tsx
+    :117 <arrow> HIGH
+           7 cyclomatic    3 cognitive    7 lines
+          56.0 CRAP
+    :41 ProductFormContent HIGH
+           7 cyclomatic    7 cognitive  234 lines
+          56.0 CRAP
+  frontend/app/purchasing/returns/new/page.tsx
+    :84 load HIGH
+           7 cyclomatic    6 cognitive   33 lines
+          56.0 CRAP
+  backend/find_fuzzy_duplicates.js
+    :51 calculateWordOverlap HIGH
+           7 cyclomatic    7 cognitive   12 lines
+          56.0 CRAP
+  backend/final_duplicate_scan.js
+    :11 levenshtein HIGH
+           7 cyclomatic    9 cognitive   18 lines
+          56.0 CRAP
+    :161 addFromMap HIGH
+           7 cyclomatic    8 cognitive   15 lines
+          56.0 CRAP
+  frontend/app/purchasing/[id]/page.tsx
+    :72 PurchaseOrderDetailPage HIGH
+           7 cyclomatic    6 cognitive  279 lines
+          56.0 CRAP
+  frontend/app/sales/returns/new/page.tsx
+    :172 handleSubmit HIGH
+           7 cyclomatic    8 cognitive   45 lines
+          56.0 CRAP
+  backend/src/api/v1/controllers/customer.controller.js
+    :284 hardDeleteCustomer HIGH
+           7 cyclomatic    7 cognitive   49 lines
+          56.0 CRAP
+  frontend/app/customers/page.tsx
+    :94 fetchCustomers HIGH
+           7 cyclomatic    8 cognitive   20 lines
+          56.0 CRAP
+  frontend/components/DateQuickFilter.tsx
+    :143 <arrow> HIGH
+           7 cyclomatic    7 cognitive   23 lines
+          56.0 CRAP
+  backend/scripts/update_solde_excel.js
+    :6 updateDatabaseSolde HIGH
+           7 cyclomatic    7 cognitive   76 lines
+          56.0 CRAP
+  frontend/app/customers/[id]/edit-prices/page.tsx
+    :119 handleSave HIGH
+           7 cyclomatic    9 cognitive   40 lines
+          56.0 CRAP
+    :47 BulkPriceEditorPage HIGH
+           7 cyclomatic    5 cognitive  212 lines
+          56.0 CRAP
+  backend/final_cleanup.js
+    :39 lev HIGH
+           7 cyclomatic    9 cognitive   10 lines
+          56.0 CRAP
+  frontend/app/inventory/page.tsx
+    :128 handleProductChange HIGH
+           7 cyclomatic    8 cognitive   40 lines
+          56.0 CRAP
+  backend/audit_all_inventory.js
+    :9 auditAllProducts HIGH
+           7 cyclomatic    8 cognitive  115 lines
+          56.0 CRAP
+  deployment_pack/frontend/lib/api.ts
+    :140 request HIGH
+           7 cyclomatic    6 cognitive   36 lines
+          56.0 CRAP
+  frontend/app/sales/returns/[id]/page.tsx
+    :78 changeStatus HIGH
+           7 cyclomatic    8 cognitive   23 lines
+          56.0 CRAP
+    :293 <arrow> HIGH
+           7 cyclomatic    6 cognitive   39 lines
+          56.0 CRAP
+  frontend/app/hr/attendance/page.tsx
+    :26 AttendancePage HIGH
+           7 cyclomatic    6 cognitive  268 lines
+          56.0 CRAP
+  backend/src/api/v1/controllers/purchaseReturns.controller.js
+    :8 getPurchaseReturns HIGH
+           7 cyclomatic    6 cognitive   79 lines
+          56.0 CRAP
+  frontend/app/orders/page.tsx
+    :234 returnRows HIGH
+           7 cyclomatic    9 cognitive   15 lines
+          56.0 CRAP
+  backend/filter_keep_list.js
+    :50 main HIGH
+           7 cyclomatic    7 cognitive   76 lines
+          56.0 CRAP
+  frontend/components/print/StandardDocument.tsx
+    :198 calculateItemCounts HIGH
+           7 cyclomatic    4 cognitive   16 lines
+          56.0 CRAP
+  frontend/app/orders/print/[id]/page.tsx
+    :60 documentData HIGH
+           7 cyclomatic    5 cognitive   36 lines
+          56.0 CRAP
+  backend/compare_dbs.js
+    :19 compare HIGH
+           7 cyclomatic    8 cognitive   55 lines
+          56.0 CRAP
+  frontend/app/orders/[id]/page.tsx
+    :95 items HIGH
+           7 cyclomatic    6 cognitive   31 lines
+          56.0 CRAP
+  backend/verify_ledger.js
+    :9 run HIGH
+           7 cyclomatic   11 cognitive   71 lines
+          56.0 CRAP
+  frontend/app/reports/employee/[id]/page.tsx
+    :56 fetchData HIGH
+           7 cyclomatic   10 cognitive   26 lines
+          56.0 CRAP
+  frontend/lib/api.ts
+    :1239 getReturns HIGH
+           7 cyclomatic    9 cognitive   12 lines
+          56.0 CRAP
+  backend/api/v1/controllers/customer.controller.js
+    :213 deleteCustomer
+           6 cyclomatic    5 cognitive   35 lines
+          42.0 CRAP
+  backend/verification_scan.js
+    :63 addGroup
+           6 cyclomatic    4 cognitive    9 lines
+          42.0 CRAP
+  frontend/app/accounting/page.tsx
+    :144 <arrow>
+           6 cyclomatic    2 cognitive   16 lines
+          42.0 CRAP
+    :172 <arrow>
+           6 cyclomatic   10 cognitive   13 lines
+          42.0 CRAP
+    :470 handleTransfer
+           6 cyclomatic    5 cognitive   28 lines
+          42.0 CRAP
+    :704 fetchTransactions
+           6 cyclomatic    5 cognitive   15 lines
+          42.0 CRAP
+    :876 <arrow>
+           6 cyclomatic    5 cognitive   25 lines
+          42.0 CRAP
+  frontend/app/products/page.tsx
+    :1048 <arrow>
+           6 cyclomatic    5 cognitive   12 lines
+          42.0 CRAP
+  backend/src/api/v1/controllers/settlements.controller.js
+    :16 generateSettlement
+           6 cyclomatic    4 cognitive   61 lines
+          42.0 CRAP
+  backend/src/api/v1/controllers/reports.controller.js
+    :321 getPurchasesReport
+           6 cyclomatic    4 cognitive   70 lines
+          42.0 CRAP
+    :836 getPaymentsReport
+           6 cyclomatic    4 cognitive   43 lines
+          42.0 CRAP
+  backend/research_anchor.js
+    :9 research
+           6 cyclomatic    6 cognitive   74 lines
+          42.0 CRAP
+  backend/src/api/v1/controllers/settings.controller.js
+    :120 createUser
+           6 cyclomatic    6 cognitive   26 lines
+          42.0 CRAP
+  frontend/app/logistics/deliveries/page.tsx
+    :59 loadData
+           6 cyclomatic    7 cognitive   18 lines
+          42.0 CRAP
+    :155 <arrow>
+           6 cyclomatic    5 cognitive   39 lines
+          42.0 CRAP
+  frontend/app/purchasing/receive/[id]/page.tsx
+    :160 fetchPO
+           6 cyclomatic    7 cognitive   34 lines
+          42.0 CRAP
+  backend/full_compare.js
+    :113 <arrow>
+           6 cyclomatic    5 cognitive    9 lines
+          42.0 CRAP
+    :124 <arrow>
+           6 cyclomatic    5 cognitive    9 lines
+          42.0 CRAP
+  backend/fix_merged_qty.js
+    :21 fix
+           6 cyclomatic    5 cognitive   23 lines
+          42.0 CRAP
+  frontend/components/versements/SupplierVersementsSection.tsx
+    :29 SupplierVersementsSection
+           6 cyclomatic    5 cognitive  210 lines
+          42.0 CRAP
+  backend/src/api/v1/controllers/brand.controller.js
+    :34 createBrand
+           6 cyclomatic    6 cognitive   22 lines
+          42.0 CRAP
+  frontend/app/brands/page.tsx
+    :259 handleDeleteBrand
+           6 cyclomatic    7 cognitive   18 lines
+          42.0 CRAP
+    :166 BrandsPage
+           6 cyclomatic    5 cognitive  243 lines
+          42.0 CRAP
+  frontend/app/hr/employees/page.tsx
+    :93 handleEdit
+           6 cyclomatic    5 cognitive   14 lines
+          42.0 CRAP
+  frontend/app/page.tsx
+    :210 fetchStats
+           6 cyclomatic    5 cognitive   14 lines
+          42.0 CRAP
+  backend/scripts/compare_solde_excel.js
+    :9 compareSolde
+           6 cyclomatic    5 cognitive  141 lines
+          42.0 CRAP
+  frontend/app/inventory/quick-stock/page.tsx
+    :131 handleSellQuantityChange
+           6 cyclomatic    3 cognitive   10 lines
+          42.0 CRAP
+  frontend/app/purchasing/[id]/page.tsx
+    :145 fetchPurchaseOrder
+           6 cyclomatic    7 cognitive   18 lines
+          42.0 CRAP
+  frontend/app/sales/returns/new/page.tsx
+    :78 loadData
+           6 cyclomatic    5 cognitive   16 lines
+          42.0 CRAP
+    :108 addProductToForm
+           6 cyclomatic    4 cognitive   27 lines
+          42.0 CRAP
+  backend/src/api/v1/controllers/customer.controller.js
+    :245 deleteCustomer
+           6 cyclomatic    5 cognitive   35 lines
+          42.0 CRAP
+  frontend/app/customers/page.tsx
+    :35 CustomersListPage
+           6 cyclomatic    6 cognitive  301 lines
+          42.0 CRAP
+  backend/src/api/v1/controllers/quickStock.controller.js
+    :102 sellQuickStockItem
+           6 cyclomatic    5 cognitive   57 lines
+          42.0 CRAP
+  frontend/components/DateQuickFilter.tsx
+    :31 StandardDateInput
+           6 cyclomatic    5 cognitive   31 lines
+          42.0 CRAP
+  backend/generate_final_cleanup_report.js
+    :30 shouldKeepProduct
+           6 cyclomatic    6 cognitive   19 lines
+          42.0 CRAP
+  backend/final_cleanup.js
+    :96 addGroup
+           6 cyclomatic    4 cognitive   12 lines
+          42.0 CRAP
+  frontend/app/customers/[id]/page.tsx
+    :559 <arrow>
+           6 cyclomatic    6 cognitive   26 lines
+          42.0 CRAP
+  frontend/app/inventory/page.tsx
+    :513 ImportStockModal
+           6 cyclomatic    4 cognitive   95 lines
+          42.0 CRAP
+  frontend/components/CatalogueSyncModal.tsx
+    :160 handleExecute
+           6 cyclomatic    6 cognitive   18 lines
+          42.0 CRAP
+  frontend/components/versements/VersementsSection.tsx
+    :120 handlePrint
+           6 cyclomatic    5 cognitive   63 lines
+          42.0 CRAP
+    :36 VersementsSection
+           6 cyclomatic    5 cognitive  294 lines
+          42.0 CRAP
+  refined_extract.js
+    :28 <arrow>
+           6 cyclomatic    5 cognitive   28 lines
+          42.0 CRAP
+  frontend/lib/exportToExcel.ts
+    :64 formatDateExport
+           6 cyclomatic    5 cognitive   16 lines
+          42.0 CRAP
+  deployment_pack/frontend/app/products/page.tsx
+    :250 handleCreateProduct
+           6 cyclomatic    6 cognitive   42 lines
+          42.0 CRAP
+    :899 <arrow>
+           6 cyclomatic    5 cognitive   23 lines
+          42.0 CRAP
+  frontend/app/sales/returns/[id]/page.tsx
+    :118 printData
+           6 cyclomatic    5 cognitive   38 lines
+          42.0 CRAP
+  frontend/app/settings/page.tsx
+    :123 loadAuditLogs
+           6 cyclomatic    5 cognitive   16 lines
+          42.0 CRAP
+    :696 <arrow>
+           6 cyclomatic    6 cognitive   34 lines
+          42.0 CRAP
+  deployment_pack/backend/src/api/v1/controllers/product.controller.js
+    :336 totals
+           6 cyclomatic    5 cognitive    8 lines
+          42.0 CRAP
+  frontend/app/hr/attendance/page.tsx
+    :75 handleClockIn
+           6 cyclomatic    6 cognitive   21 lines
+          42.0 CRAP
+    :97 handleClockOut
+           6 cyclomatic    6 cognitive   21 lines
+          42.0 CRAP
+  frontend/app/purchasing/page.tsx
+    :767 <arrow>
+           6 cyclomatic    6 cognitive   17 lines
+          42.0 CRAP
+  frontend/app/logistics/create/[orderId]/page.tsx
+    :45 loadData
+           6 cyclomatic    5 cognitive   16 lines
+          42.0 CRAP
+  backend/filter_keep_list.js
+    :30 shouldKeepProduct
+           6 cyclomatic    6 cognitive   19 lines
+          42.0 CRAP
+  frontend/app/settlements/page.tsx
+    :47 loadData
+           6 cyclomatic    5 cognitive   20 lines
+          42.0 CRAP
+  frontend/components/print/StandardDocument.tsx
+    :351 <arrow>
+           6 cyclomatic    5 cognitive   24 lines
+          42.0 CRAP
+  frontend/app/orders/print/[id]/page.tsx
+    :13 OrderPrintPage
+           6 cyclomatic    5 cognitive  176 lines
+          42.0 CRAP
+  frontend/app/logistics/new/page.tsx
+    :62 handleSubmit
+           6 cyclomatic    4 cognitive   24 lines
+          42.0 CRAP
+  backend/research_discrepancies.js
+    :18 scan
+           6 cyclomatic    7 cognitive   70 lines
+          42.0 CRAP
+  backend/src/scripts/add_factory_size_pricing.js
+    :3 runMigration
+           6 cyclomatic    6 cognitive   60 lines
+          42.0 CRAP
+  backend/src/api/v1/controllers/purchaseOrder.controller.js
+    :59 getPurchaseOrders
+           6 cyclomatic    5 cognitive   75 lines
+          42.0 CRAP
+    :492 getPurchaseHistory
+           6 cyclomatic    5 cognitive  147 lines
+          42.0 CRAP
+  backend/api/v1/controllers/settings.controller.js
+    :120 createUser
+           6 cyclomatic    6 cognitive   26 lines
+          42.0 CRAP
+  frontend/app/sales/returns/print/[id]/page.tsx
+    :62 items
+           6 cyclomatic    5 cognitive   18 lines
+          42.0 CRAP
+    :52 documentData
+           6 cyclomatic    5 cognitive   34 lines
+          42.0 CRAP
+  backend/sync_inventory.js
+    :6 sync
+           6 cyclomatic    9 cognitive   64 lines
+          42.0 CRAP
+  backend/src/api/v1/controllers/logistics.controller.js
+    :182 createDelivery
+           6 cyclomatic    3 cognitive   37 lines
+          42.0 CRAP
+  frontend/lib/api.ts
+    :328 <arrow>
+           6 cyclomatic    5 cognitive    7 lines
+          42.0 CRAP
+  frontend/app/purchasing/returns/page.tsx
+    :108 handleApprove
+           5 cyclomatic    6 cognitive   16 lines
+          30.0 CRAP
+  backend/src/api/v1/controllers/attendance.controller.js
+    :62 getAttendanceHistory
+           5 cyclomatic    4 cognitive   47 lines
+          30.0 CRAP
+  frontend/app/logistics/drivers/page.tsx
+    :127 <arrow>
+           5 cyclomatic    6 cognitive   30 lines
+          30.0 CRAP
+    :16 DriversPage
+           5 cyclomatic    4 cognitive  236 lines
+          30.0 CRAP
+  frontend/app/logistics/vehicles/page.tsx
+    :18 VehiclesPage
+           5 cyclomatic    4 cognitive  248 lines
+          30.0 CRAP
+  backend/restore_client_balances.js
+    :9 run
+           5 cyclomatic    5 cognitive   52 lines
+          30.0 CRAP
+  backend/src/server.js
+    :10 getNetworkIP
+           5 cyclomatic    7 cognitive   12 lines
+          30.0 CRAP
+  frontend/app/accounting/page.tsx
+    :418 handleCreateAccount
+           5 cyclomatic    5 cognitive   26 lines
+          30.0 CRAP
+  frontend/app/products/page.tsx
+    :273 handleDelete
+           5 cyclomatic    5 cognitive   18 lines
+          30.0 CRAP
+    :1465 <arrow>
+           5 cyclomatic    4 cognitive   13 lines
+          30.0 CRAP
+    :1527 <arrow>
+           5 cyclomatic    4 cognitive   15 lines
+          30.0 CRAP
+  backend/research_sqm_pieces.js
+    :9 scan
+           5 cyclomatic    5 cognitive   65 lines
+          30.0 CRAP
+  backend/src/scripts/create_factories_from_brands.js
+    :12 createFactoriesFromBrands
+           5 cyclomatic    7 cognitive   91 lines
+          30.0 CRAP
+  backend/src/api/v1/controllers/reports.controller.js
+    :273 getTopBrandsReport
+           5 cyclomatic    4 cognitive   43 lines
+          30.0 CRAP
+  backend/src/api/v1/controllers/product.controller.js
+    :412 fixProductMetadata
+           5 cyclomatic    6 cognitive   24 lines
+          30.0 CRAP
+    :532 totals
+           5 cyclomatic    4 cognitive    7 lines
+          30.0 CRAP
+    :466 getProductSalesHistory
+           5 cyclomatic    4 cognitive   88 lines
+          30.0 CRAP
+    :789 totals
+           5 cyclomatic    4 cognitive    7 lines
+          30.0 CRAP
+    :873 getProductReturnHistory
+           5 cyclomatic    4 cognitive  113 lines
+          30.0 CRAP
+  backend/src/api/v1/controllers/settings.controller.js
+    :197 deleteUser
+           5 cyclomatic    3 cognitive   19 lines
+          30.0 CRAP
+  frontend/app/logistics/deliveries/page.tsx
+    :49 LogisticsPage
+           5 cyclomatic    5 cognitive  154 lines
+          30.0 CRAP
+  frontend/app/purchasing/receive/[id]/page.tsx
+    :199 <arrow>
+           5 cyclomatic    6 cognitive   11 lines
+          30.0 CRAP
+  backend/src/api/v1/controllers/accounting.controller.js
+    :66 deleteCashAccount
+           5 cyclomatic    4 cognitive   31 lines
+          30.0 CRAP
+  backend/src/api/v1/services/accounting.service.js
+    :10 getDefaultAccountId
+           5 cyclomatic    3 cognitive   14 lines
+          30.0 CRAP
+    :29 recordSaleTransaction
+           5 cyclomatic    4 cognitive   39 lines
+          30.0 CRAP
+    :125 recordPurchaseTransaction
+           5 cyclomatic    4 cognitive   39 lines
+          30.0 CRAP
+    :168 recordSaleReturnTransaction
+           5 cyclomatic    4 cognitive   35 lines
+          30.0 CRAP
+  frontend/app/customers/new/page.tsx
+    :68 <arrow>
+           5 cyclomatic    7 cognitive   10 lines
+          30.0 CRAP
+  backend/src/api/v1/controllers/inventory.controller.js
+    :310 <arrow>
+           5 cyclomatic    2 cognitive    7 lines
+          30.0 CRAP
+  frontend/app/sales/pos/page.tsx
+    :113 normalizePackaging
+           5 cyclomatic    4 cognitive   13 lines
+          30.0 CRAP
+    :168 <arrow>
+           5 cyclomatic    4 cognitive    6 lines
+          30.0 CRAP
+    :457 <arrow>
+           5 cyclomatic    5 cognitive   24 lines
+          30.0 CRAP
+    :1037 <arrow>
+           5 cyclomatic    4 cognitive   59 lines
+          30.0 CRAP
+  frontend/components/versements/SupplierVersementsSection.tsx
+    :175 <arrow>
+           5 cyclomatic    4 cognitive   36 lines
+          30.0 CRAP
+  frontend/app/brands/page.tsx
+    :39 <arrow>
+           5 cyclomatic    6 cognitive   12 lines
+          30.0 CRAP
+  frontend/app/hr/employees/page.tsx
+    :115 filteredEmployees
+           5 cyclomatic    1 cognitive   10 lines
+          30.0 CRAP
+    :225 <arrow>
+           5 cyclomatic    4 cognitive   29 lines
+          30.0 CRAP
+  frontend/app/purchasing/returns/new/page.tsx
+    :129 fetchPOs
+           5 cyclomatic    4 cognitive   33 lines
+          30.0 CRAP
+    :172 addProduct
+           5 cyclomatic    4 cognitive   28 lines
+          30.0 CRAP
+  backend/find_fuzzy_duplicates.js
+    :37 calculateSimilarity
+           5 cyclomatic    4 cognitive   12 lines
+          30.0 CRAP
+  backend/investigate_marabella.js
+    :181 orphanedQty
+           5 cyclomatic    4 cognitive    5 lines
+          30.0 CRAP
+  frontend/app/inventory/quick-stock/page.tsx
+    :114 handleSellPalettesChange
+           5 cyclomatic    2 cognitive    8 lines
+          30.0 CRAP
+    :123 handleSellCartonsChange
+           5 cyclomatic    2 cognitive    7 lines
+          30.0 CRAP
+    :142 handleAddItem
+           5 cyclomatic    5 cognitive   29 lines
+          30.0 CRAP
+    :255 getPrintData
+           5 cyclomatic    4 cognitive   25 lines
+          30.0 CRAP
+  backend/src/api/v1/middleware/error.middleware.js
+    :4 errorHandler
+           5 cyclomatic    4 cognitive   16 lines
+          30.0 CRAP
+  backend/src/server.production.js
+    :29 getNetworkIP
+           5 cyclomatic    7 cognitive   11 lines
+          30.0 CRAP
+  backend/src/api/v1/controllers/customer.controller.js
+    :411 getCustomerSituation
+           5 cyclomatic    4 cognitive  112 lines
+          30.0 CRAP
+  frontend/app/customers/page.tsx
+    :115 handleDelete
+           5 cyclomatic    5 cognitive   18 lines
+          30.0 CRAP
+    :134 handleHardDelete
+           5 cyclomatic    5 cognitive   22 lines
+          30.0 CRAP
+    :261 <arrow>
+           5 cyclomatic    4 cognitive   66 lines
+          30.0 CRAP
+  backend/src/api/v1/controllers/quickStock.controller.js
+    :29 addQuickStockItem
+           5 cyclomatic    4 cognitive   24 lines
+          30.0 CRAP
+  backend/scripts/enable_manual_products.js
+    :12 runMigration
+           5 cyclomatic    7 cognitive   71 lines
+          30.0 CRAP
+  frontend/components/print/ReceiptTemplate.tsx
+    :57 ReceiptTemplate
+           5 cyclomatic    4 cognitive  193 lines
+          30.0 CRAP
+  backend/scripts/generate_comparison_excel.js
+    :45 <arrow>
+           5 cyclomatic    5 cognitive   38 lines
+          30.0 CRAP
+  frontend/app/customers/[id]/page.tsx
+    :167 handleImport
+           5 cyclomatic    6 cognitive   20 lines
+          30.0 CRAP
+    :198 handleAddRule
+           5 cyclomatic    3 cognitive   14 lines
+          30.0 CRAP
+  frontend/app/purchasing/history/page.tsx
+    :137 totals
+           5 cyclomatic    4 cognitive    6 lines
+          30.0 CRAP
+  backend/scripts/extract_proposed_balances.js
+    :5 extractUpdates
+           5 cyclomatic    4 cognitive   82 lines
+          30.0 CRAP
+  frontend/app/inventory/page.tsx
+    :739 handleSaveAdjustment
+           5 cyclomatic    6 cognitive   19 lines
+          30.0 CRAP
+    :780 handleImportSubmit
+           5 cyclomatic    5 cognitive   20 lines
+          30.0 CRAP
+  frontend/app/purchasing/returns/[id]/page.tsx
+    :49 handleApprove
+           5 cyclomatic    6 cognitive   21 lines
+          30.0 CRAP
+  backend/scratch/revert_matview.js
+    :11 revert
+           5 cyclomatic    6 cognitive   31 lines
+          30.0 CRAP
+  refined_extract.js
+    :6 cleanValue
+           5 cyclomatic    4 cognitive    8 lines
+          30.0 CRAP
+  backend/global_audit.js
+    :9 globalAudit
+           5 cyclomatic    5 cognitive   68 lines
+          30.0 CRAP
+  deployment_pack/frontend/app/products/page.tsx
+    :116 loadFilters
+           5 cyclomatic    4 cognitive    7 lines
+          30.0 CRAP
+    :193 handleDelete
+           5 cyclomatic    5 cognitive   18 lines
+          30.0 CRAP
+    :219 handleSaveEdit
+           5 cyclomatic    5 cognitive   29 lines
+          30.0 CRAP
+    :294 loadSalesHistory
+           5 cyclomatic    5 cognitive   17 lines
+          30.0 CRAP
+  desktop-app/main.js
+    :25 createLoadingWindow
+           5 cyclomatic    4 cognitive   78 lines
+          30.0 CRAP
+    :158 <arrow>
+           5 cyclomatic    5 cognitive   51 lines
+          30.0 CRAP
+  desktop-app/utils/network.js
+    :41 getAllLocalIPs
+           5 cyclomatic    7 cognitive   17 lines
+          30.0 CRAP
+  frontend/app/settings/page.tsx
+    :756 <arrow>
+           5 cyclomatic    5 cognitive   22 lines
+          30.0 CRAP
+  backend/scripts/analyze_mismatches.js
+    :45 <arrow>
+           5 cyclomatic    8 cognitive   17 lines
+          30.0 CRAP
+  backend/phase2_reassign.js
+    :20 levenshteinDistance
+           5 cyclomatic    5 cognitive   13 lines
+          30.0 CRAP
+    :84 isKeep
+           5 cyclomatic    3 cognitive    4 lines
+          30.0 CRAP
+  deployment_pack/backend/src/api/v1/controllers/product.controller.js
+    :227 fixProductMetadata
+           5 cyclomatic    6 cognitive   24 lines
+          30.0 CRAP
+    :274 getProductSalesHistory
+           5 cyclomatic    4 cognitive   84 lines
+          30.0 CRAP
+  backend/fix_negatives.js
+    :9 checkNegatives
+           5 cyclomatic    4 cognitive   51 lines
+          30.0 CRAP
+  frontend/app/purchasing/page.tsx
+    :273 <arrow>
+           5 cyclomatic    4 cognitive   11 lines
+          30.0 CRAP
+    :263 <arrow>
+           5 cyclomatic    4 cognitive   37 lines
+          30.0 CRAP
+    :393 format
+           5 cyclomatic    2 cognitive    1 lines
+          30.0 CRAP
+  backend/src/api/v1/controllers/catalogueSync.controller.js
+    :71 headers
+           5 cyclomatic    3 cognitive    5 lines
+          30.0 CRAP
+  frontend/app/orders/page.tsx
+    :69 <arrow>
+           5 cyclomatic    6 cognitive   15 lines
+          30.0 CRAP
+    :140 <arrow>
+           5 cyclomatic    4 cognitive   11 lines
+          30.0 CRAP
+    :156 handleDelete
+           5 cyclomatic    5 cognitive   11 lines
+          30.0 CRAP
+  frontend/app/logistics/create/[orderId]/page.tsx
+    :28 CreateDeliveryPage
+           5 cyclomatic    4 cognitive  153 lines
+          30.0 CRAP
+  backend/recalc_packaging.js
+    :69 main
+           5 cyclomatic    6 cognitive   48 lines
+          30.0 CRAP
+  frontend/app/settlements/page.tsx
+    :25 SettlementsPage
+           5 cyclomatic    5 cognitive  238 lines
+          30.0 CRAP
+  frontend/app/orders/[id]/page.tsx
+    :185 factureData
+           5 cyclomatic    4 cognitive   26 lines
+          30.0 CRAP
+  backend/src/api/v1/controllers/purchaseOrder.controller.js
+    :622 grandTotals
+           5 cyclomatic    4 cognitive    6 lines
+          30.0 CRAP
+  backend/api/v1/controllers/settings.controller.js
+    :148 updateUser
+           5 cyclomatic    5 cognitive   39 lines
+          30.0 CRAP
+    :189 deleteUser
+           5 cyclomatic    3 cognitive   19 lines
+          30.0 CRAP
+  backend/debug_cloud.js
+    :8 debugCloud
+           5 cyclomatic    4 cognitive   53 lines
+          30.0 CRAP
+  frontend/app/logistics/deliveries/new/page.tsx
+    :29 NewDeliveryPage
+           5 cyclomatic    4 cognitive  237 lines
+          30.0 CRAP
+  frontend/hooks/useResizableColumns.tsx
+    :20 <arrow>
+           5 cyclomatic    7 cognitive   20 lines
+          30.0 CRAP
+  Functions exceeding cyclomatic, cognitive, or CRAP thresholds (https://docs.fallow.tools/explanations/health#complexity-metrics)
+  To suppress: // fallow-ignore-next-line complexity
+
+ΓùÅ File health scores (395 files) ┬╖ sorted by triage concern
+
+   84.6    frontend\app\products\page.tsx                  risk
+           1704 LOC    0 fan-in    8 fan-out    0% dead  0.22 density  >999 risk
+
+   92.1    frontend\components\print\StandardDocument.tsx  risk
+           1020 LOC   11 fan-in    1 fan-out    0% dead  0.17 density  >999 risk
+
+   70.7    backend\final_cleanup.js                        risk
+            344 LOC    0 fan-in    0 fan-out  100% dead  0.31 density  >999 risk
+
+   74.9    backend\verify_inventory_2days.js               risk
+            418 LOC    0 fan-in    0 fan-out  100% dead  0.17 density  >999 risk
+
+   87.9    backend\src\api\v1\controllers\order.controller.js  risk
+           1453 LOC    2 fan-in    4 fan-out    0% dead  0.19 density  >999 risk
+
+   72.8    backend\correct_inventory.js                    risk
+            249 LOC    0 fan-in    0 fan-out  100% dead  0.24 density  >999 risk
+
+   90.0    backend\src\api\v1\controllers\purchaseOrder.controller.js  risk
+           1306 LOC    2 fan-in    3 fan-out    0% dead  0.15 density  >999 risk
+
+   88.8    backend\src\api\v1\controllers\catalogueSync.controller.js  risk
+            499 LOC    1 fan-in    1 fan-out    0% dead  0.28 density  >999 risk
+
+   92.4    frontend\app\settings\page.tsx                  risk
+           1035 LOC    0 fan-in    1 fan-out    0% dead  0.16 density  >999 risk
+
+   65.0    backend\verification_scan.js                    risk
+            156 LOC    0 fan-in    0 fan-out  100% dead  0.50 density  >999 risk
+
+  ... and 385 more files (--format json for full list)
+
+  Sorted by triage concern: the larger of low-MI concern and CRAP risk. The risk / structure tag marks which one placed each file. MI reflects complexity, coupling, and dead code; risk reflects untested complexity (CRAP) and can diverge from MI. Risk: low <15, moderate 15-30, high >=30. CRAP estimated from export references (85% direct, 40% indirect, 0% untested). Run `fallow health --coverage <coverage-final.json>` for exact scores. https://docs.fallow.tools/explanations/health#file-health-scores
+
+ΓùÅ Hotspots (34 files, since 6 months)
+
+  100.0 Γû╝  frontend\app\sales\pos\page.tsx
+          42 commits   6710 churn  0.35 density   0 fan-in  Γû╝ cooling
+
+   26.4 Γû╝  backend\src\api\v1\controllers\order.controller.js
+          20 commits   2412 churn  0.19 density   2 fan-in  Γû╝ cooling
+
+   25.4 Γû╝  frontend\app\orders\page.tsx
+          18 commits   1163 churn  0.21 density   0 fan-in  Γû╝ cooling
+
+   18.8 Γû▓  backend\src\api\v1\controllers\catalogueSync.controller.js
+          10 commits   1372 churn  0.28 density   1 fan-in  Γû▓ accelerating
+
+   16.9 ΓöÇ  frontend\app\reports\page.tsx
+          11 commits    602 churn  0.23 density   0 fan-in  ΓöÇ stable
+
+   16.5 Γû╝  frontend\app\products\page.tsx
+          11 commits   1924 churn  0.22 density   0 fan-in  Γû╝ cooling
+
+   15.4 ΓöÇ  frontend\hooks\useTableNavigation.ts
+           7 commits    132 churn  0.33 density   8 fan-in  ΓöÇ stable
+
+   13.7 Γû▓  backend\src\api\v1\controllers\inventory.controller.js
+           7 commits    832 churn  0.29 density   1 fan-in  Γû▓ accelerating
+Γ£ù 508 above threshold ┬╖ 3131 analyzed ┬╖ maintainability 80.4 (moderate) (0.05s)
+  Maintainability scale: good ΓëÑ85, moderate ΓëÑ65, low <65 (0ΓÇô100)
+
+Failed: dead-code (420 issues), dupes (360 clone groups), health (508 above threshold) ΓÇö start with 
+backend/verification_scan.js
+
+   13.4 Γû╝  backend\src\api\v1\controllers\product.controller.js
+          10 commits   1147 churn  0.19 density   1 fan-in  Γû╝ cooling
+
+   12.7 ΓöÇ  backend\src\api\v1\controllers\purchaseOrder.controller.js
+          12 commits   1900 churn  0.15 density   2 fan-in  ΓöÇ stable
+
+   12.0 Γû╝  frontend\app\purchasing\page.tsx
+          10 commits   1002 churn  0.18 density   0 fan-in  Γû╝ cooling
+
+   10.9 Γû╝  frontend\components\ClientStatsModal.tsx
+           6 commits    308 churn  0.27 density   1 fan-in  Γû╝ cooling
+
+    8.1 ΓöÇ  frontend\app\orders\print\[id]\page.tsx
+           4 commits    226 churn  0.30 density   0 fan-in  ΓöÇ stable
+
+    8.0 Γû╝  backend\src\api\v1\controllers\returns.controller.js
+           8 commits    527 churn  0.15 density   1 fan-in  Γû╝ cooling
+
+    7.2 Γû╝  frontend\app\inventory\page.tsx
+           6 commits   1196 churn  0.18 density   0 fan-in  Γû╝ cooling
+
+    6.9 ΓöÇ  frontend\components\print\StandardDocument.tsx
+           6 commits   1093 churn  0.17 density  11 fan-in  ΓöÇ stable
+
+    6.8 Γû╝  frontend\lib\api.ts
+           6 commits   1339 churn  0.17 density  51 fan-in  Γû╝ cooling
+
+    6.7 ΓöÇ  frontend\app\accounting\page.tsx
+           5 commits   1033 churn  0.20 density   0 fan-in  ΓöÇ stable
+
+    6.4 Γû╝  frontend\app\sales\returns\new\page.tsx
+           5 commits    391 churn  0.19 density   0 fan-in  Γû╝ cooling
+
+    5.6 Γû╝  backend\src\api\v1\controllers\reports.controller.js
+           7 commits    974 churn  0.12 density   1 fan-in  Γû╝ cooling
+
+    4.7 Γû╝  frontend\app\customers\page.tsx
+           5 commits    361 churn  0.14 density   0 fan-in  Γû╝ cooling
+
+    4.2 Γû╝  frontend\app\purchasing\[id]\page.tsx
+           3 commits    390 churn  0.20 density   0 fan-in  Γû╝ cooling
+
+    4.0 Γû▓  backend\src\api\v1\controllers\accounting.controller.js
+           4 commits   1026 churn  0.15 density   1 fan-in  Γû▓ accelerating
+
+    4.0 Γû╝  frontend\components\DateQuickFilter.tsx
+           4 commits    275 churn  0.15 density  15 fan-in  Γû╝ cooling
+
+    3.6 Γû▓  frontend\app\orders\[id]\page.tsx
+           3 commits    602 churn  0.18 density   0 fan-in  Γû▓ accelerating
+
+    3.4 Γû▓  frontend\app\purchasing\receive\[id]\page.tsx
+           3 commits    822 churn  0.17 density   0 fan-in  Γû▓ accelerating
+
+    3.4 Γû▓  frontend\app\settlements\page.tsx
+           3 commits    288 churn  0.17 density   0 fan-in  Γû▓ accelerating
+
+    3.2 Γû╝  frontend\app\sales\returns\[id]\page.tsx
+           3 commits    381 churn  0.16 density   0 fan-in  Γû╝ cooling
+
+    3.0 Γû▓  frontend\components\versements\VersementModal.tsx
+           3 commits    376 churn  0.15 density   1 fan-in  Γû▓ accelerating
+
+    3.0 Γû╝  frontend\components\versements\VersementsSection.tsx
+           3 commits    337 churn  0.15 density   1 fan-in  Γû╝ cooling
+
+    2.8 Γû╝  frontend\app\purchasing\returns\new\page.tsx
+           3 commits    577 churn  0.14 density   0 fan-in  Γû╝ cooling
+
+    2.4 Γû╝  frontend\app\page.tsx
+           3 commits    537 churn  0.12 density   0 fan-in  Γû╝ cooling
+
+    1.3 Γû▓  backend\list_tables.js
+           3 commits     55 churn  0.06 density   0 fan-in  Γû▓ accelerating
+
+    0.0 Γû╝  backend\src\api\v1\routes\index.js
+           3 commits    280 churn  0.00 density   2 fan-in  Γû╝ cooling
+
+  361 files excluded (< 3 commits)
+
+  Files with high churn and high complexity ΓÇö https://docs.fallow.tools/explanations/health#hotspot-metrics
+
+ΓùÅ Refactoring targets (57)
+  44 medium ┬╖ 13 high
+    score = quick-win ROI (higher = better) ┬╖ pri = absolute priority
+
+   17.5  pri:35.0    backend\verification_scan.js
+         complexity ┬╖ effort:medium ┬╖ confidence:high  Extract verificationScan (cognitive: 103) in 156-LOC file into smaller functions
+
+   17.0  pri:33.9    backend\src\db\index.js
+         dead code ┬╖ effort:medium ┬╖ confidence:high  Remove 5 unused exports to reduce surface area (100% dead)
+
+   15.3  pri:30.5    backend\compare_purchase_prices.js
+         untested risk ┬╖ effort:medium ┬╖ confidence:high  3 complex functions lack test coverage path, add tests before modifying
+
+   14.8  pri:44.3    frontend\app\sales\pos\page.tsx
+         complexity ┬╖ effort:high ┬╖ confidence:high  Extract addToCart (cognitive: 37) and load (cognitive: 36) in 1359-LOC file into smaller functions
+
+   14.8  pri:29.6    backend\src\scripts\recalculate_reserved_stock.js
+         untested risk ┬╖ effort:medium ┬╖ confidence:high  2 complex functions lack test coverage path, add tests before modifying
+
+   14.7  pri:29.3    backend\final_cleanup.js
+         complexity ┬╖ effort:medium ┬╖ confidence:high  Extract finalCleanup (cognitive: 145) in 344-LOC file into smaller functions
+
+   14.4  pri:28.8    scripts\repair_inventory_from_pos.js
+         complexity ┬╖ effort:medium ┬╖ confidence:high  Extract convertToStockUnit (cognitive: 34) in 156-LOC file into smaller functions
+
+   14.3  pri:28.5    scripts\sync_inventory.js
+         complexity ┬╖ effort:medium ┬╖ confidence:high  Extract syncInventory (cognitive: 43) in 135-LOC file into smaller functions
+
+   14.2  pri:28.4    deployment_pack\backend\src\api\v1\controllers\product.controller.js
+         dead code ┬╖ effort:medium ┬╖ confidence:high  Remove 12 unused exports to reduce surface area (100% dead)
+
+   14.1  pri:28.1    backend\final_duplicate_scan.js
+         complexity ┬╖ effort:medium ┬╖ confidence:high  Extract finalScan (cognitive: 50) in 244-LOC file into smaller functions
+
+  ... and 47 more targets (--format json for full list)
+
+  Prioritized refactoring recommendations based on complexity, churn, and coupling signals ΓÇö https://docs.fallow.tools/explanations/health#refactoring-targets
+
