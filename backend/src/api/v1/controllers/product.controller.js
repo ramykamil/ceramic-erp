@@ -249,6 +249,15 @@ async function createProduct(req, res, next) {
   try {
     await client.query('BEGIN');
 
+    // Resolve BaseUnit dynamically from primaryunitid to keep them in sync
+    let finalBaseUnit = baseunit;
+    if (primaryunitid) {
+      const unitRes = await client.query('SELECT UnitCode FROM Units WHERE UnitID = $1', [primaryunitid]);
+      if (unitRes.rows.length > 0) {
+        finalBaseUnit = unitRes.rows[0].unitcode;
+      }
+    }
+
     // 1. Check for existing product by code (including inactive ones)
     const existingCheck = await client.query('SELECT * FROM Products WHERE ProductCode = $1', [productcode]);
     let newProduct;
@@ -273,7 +282,7 @@ async function createProduct(req, res, next) {
             AllowCartonDisplay = COALESCE($12, AllowCartonDisplay)
         WHERE ProductID = $13
         RETURNING *
-      `, [productname, categoryid || null, brandid || null, primaryunitid || null, baseprice || 0, purchaseprice || null, finalSize, description, baseunit, ismeterbased, allowpiecesale, allowcartondisplay, existingId]);
+      `, [productname, categoryid || null, brandid || null, primaryunitid || null, baseprice || 0, purchaseprice || null, finalSize, description, finalBaseUnit, ismeterbased, allowpiecesale, allowcartondisplay, existingId]);
       newProduct = updateResult.rows[0];
     } else {
       // NORMAL INSERT
@@ -303,7 +312,7 @@ async function createProduct(req, res, next) {
         choix || null,
         qteparcolis || 0,
         qtecolisparpalette || 0,
-        baseunit,
+        finalBaseUnit,
         ismeterbased,
         allowpiecesale,
         allowcartondisplay
@@ -367,6 +376,15 @@ async function updateProduct(req, res, next) {
     } = req.body;
     const finalSize = size || extractSizeFromName(productname || '');
 
+    // Resolve BaseUnit dynamically from primaryunitid to keep them in sync
+    let finalBaseUnit = baseunit;
+    if (primaryunitid) {
+      const unitRes = await pool.query('SELECT UnitCode FROM Units WHERE UnitID = $1', [primaryunitid]);
+      if (unitRes.rows.length > 0) {
+        finalBaseUnit = unitRes.rows[0].unitcode;
+      }
+    }
+
     const result = await pool.query(
       `UPDATE Products SET 
         ProductCode=$1, ProductName=$2, CategoryID=$3, BrandID=$4, 
@@ -381,7 +399,7 @@ async function updateProduct(req, res, next) {
         primaryunitid, description, baseprice, factoryid || null, finalSize,
         purchaseprice || null, calibre || null, choix || null,
         qteparcolis || 0, qtecolisparpalette || 0,
-        baseunit, ismeterbased, allowpiecesale, allowcartondisplay,
+        finalBaseUnit, ismeterbased, allowpiecesale, allowcartondisplay,
         id
       ]
     );
