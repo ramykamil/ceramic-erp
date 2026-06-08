@@ -18,18 +18,18 @@ const app = express();
 // Enable gzip compression for all HTTP responses
 app.use(compression());
 
-// Apply global Tenant Scoping & Subscription check middleware
-app.use(tenantScoping);
-app.use(checkSubscription);
-
 // Middleware - CORS configured to allow any origin (required for local tools/Excel converter)
 const corsOptions = {
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-tenant-id'],
   credentials: false
 };
 app.use(cors(corsOptions));
+
+// Apply global Tenant Scoping & Subscription check middleware
+app.use(tenantScoping);
+app.use(checkSubscription);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

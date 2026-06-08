@@ -35,7 +35,7 @@ const { getNetworkIP } = require('./api/v1/utils/network');
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-tenant-id'],
     credentials: false
 }));
 
