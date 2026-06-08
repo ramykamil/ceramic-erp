@@ -25,6 +25,7 @@ async function getProducts(req, res, next) {
         mvc.QteColisParPalette as qtecolisparpalette, mvc.Size as size,
         mvc.DerivedPiecesPerColis as derivedpiecespercolis, mvc.DerivedColisPerPalette as derivedcolisperpalette,
         GREATEST(0, mvc.TotalQty) as cached_totalqty,
+        p.BaseUnit as baseunit,
         COUNT(*) OVER() as TotalCount,
         SUM(GREATEST(0, COALESCE(mvc.TotalQty, 0))) OVER() as filtered_totalqty,
         SUM(GREATEST(0, COALESCE(mvc.NbColis, 0))) OVER() as filtered_totalcolis,
@@ -32,6 +33,7 @@ async function getProducts(req, res, next) {
         SUM(GREATEST(0, COALESCE(mvc.TotalQty, 0)) * COALESCE(mvc.PrixAchat, 0)) OVER() as filtered_valeurachat,
         SUM(GREATEST(0, COALESCE(mvc.TotalQty, 0)) * COALESCE(mvc.PrixVente, 0)) OVER() as filtered_valeurvente
       FROM mv_Catalogue mvc
+      LEFT JOIN Products p ON mvc.ProductID = p.ProductID
       WHERE 1=1
     `;
     const params = [];

@@ -27,6 +27,7 @@ interface Product {
   nbcolis?: number;
   derivedpiecespercolis?: number;
   derivedcolisperpalette?: number;
+  baseunit?: string;
 }
 
 interface POItem {
@@ -322,21 +323,25 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
       setSearchQuery('');
       return;
     }
-    let defaultUnit = units.find(u => u.unitcode === 'PCS')?.unitid || units[0]?.unitid || 0;
-    const productNameLower = product.productname.toLowerCase();
-    const has12060 = productNameLower.includes('120/60') || productNameLower.includes('120x60');
-    const hasTileDimensions = /\d+[x\/]\d+/.test(product.productname);
-    const isFicheProduct = productNameLower.startsWith('fiche');
-    const isSingleItemPackaging = (product.derivedpiecespercolis === 1 && product.derivedcolisperpalette === 1);
+    let defaultUnit = units.find(u => u.unitcode === (product.baseunit || 'PCS'))?.unitid || units[0]?.unitid || 0;
 
-    const derivedPieces = product.derivedpiecespercolis || 0;
-    const isIntegerPackaging = Math.abs(derivedPieces - Math.round(derivedPieces)) < 0.01 && derivedPieces > 0;
+    // Only run guess logic if baseunit is not explicitly returned by the database
+    if (!product.baseunit) {
+      const productNameLower = product.productname.toLowerCase();
+      const has12060 = productNameLower.includes('120/60') || productNameLower.includes('120x60');
+      const hasTileDimensions = /\d+[x\/]\d+/.test(product.productname);
+      const isFicheProduct = productNameLower.startsWith('fiche');
+      const isSingleItemPackaging = (product.derivedpiecespercolis === 1 && product.derivedcolisperpalette === 1);
 
-    if (hasTileDimensions && !isFicheProduct && !isSingleItemPackaging) {
-      if (has12060) {
-        defaultUnit = units.find(u => u.unitcode === 'PCS')?.unitid || defaultUnit;
-      } else if (!isIntegerPackaging) {
-        defaultUnit = units.find(u => u.unitid === 1 || u.unitcode === 'SQM')?.unitid || defaultUnit;
+      const derivedPieces = product.derivedpiecespercolis || 0;
+      const isIntegerPackaging = Math.abs(derivedPieces - Math.round(derivedPieces)) < 0.01 && derivedPieces > 0;
+
+      if (hasTileDimensions && !isFicheProduct && !isSingleItemPackaging) {
+        if (has12060) {
+          defaultUnit = units.find(u => u.unitcode === 'PCS')?.unitid || defaultUnit;
+        } else if (!isIntegerPackaging) {
+          defaultUnit = units.find(u => u.unitid === 1 || u.unitcode === 'SQM')?.unitid || defaultUnit;
+        }
       }
     }
 
