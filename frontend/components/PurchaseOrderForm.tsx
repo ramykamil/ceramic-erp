@@ -644,7 +644,7 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 p-2 md:p-4">
+    <div className="min-h-screen bg-slate-900/40 text-slate-100 p-2 md:p-4">
       <div style={{ display: 'none' }}>
         <StandardDocument ref={bcRef} type="PURCHASE_ORDER" data={prepareDocumentData()} />
       </div>
@@ -681,14 +681,14 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
         )}
 
         <div className="bg-slate-900/60 rounded-xl shadow-sm shadow-black/10 border border-white/[0.06] overflow-hidden">
-          <div className="p-4 border-b border-slate-100 bg-gradient-to-r from-green-50 to-emerald-50">
+          <div className="p-4 border-b border-white/[0.06] bg-slate-900/40">
             <div className="relative max-w-2xl">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="🔍 Rechercher un produit à ajouter..."
-                className="w-full p-3 pl-4 pr-10 text-sm border-2 border-green-300 rounded-xl bg-slate-900/60 focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                className="w-full p-3 pl-4 pr-10 text-sm border border-white/[0.08] rounded-xl bg-slate-950/40 focus:border-brand-primary/40 focus:ring-brand-primary/20 text-slate-100"
               />
               {searchQuery && (
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
@@ -765,7 +765,7 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                   <th className="px-2 py-2.5" style={{ width: 35 }}></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-white/[0.06]">
                 {cart.length === 0 ? (
                   <tr>
                     <td colSpan={11} className="px-4 py-16 text-center text-slate-400">
@@ -775,7 +775,7 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                   </tr>
                 ) : (
                   cart.map((item, index) => (
-                    <tr key={item.tempId} className="hover:bg-emerald-500/10">
+                    <tr key={item.tempId} className="hover:bg-slate-800/40 transition-colors">
                       <td className="px-2 py-2 text-slate-400">{index + 1}</td>
                       <td className="px-2 py-2">
                         <div className="font-medium text-slate-100 truncate">{item.productName}</div>
@@ -789,22 +789,22 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                       <td className="px-2 py-2 text-right text-slate-500 bg-slate-900/40 font-mono">
                         {item.currentStock.toLocaleString()}
                       </td>
-                      <td className="px-2 py-2 bg-indigo-500/100/10">
+                      <td className="px-2 py-2 bg-indigo-500/10">
                         <input
                           type="number"
                           min="0"
                           value={item.palettes}
                           onChange={(e) => updateCartItem(index, 'palettes', Number(e.target.value))}
-                          className="w-full text-center p-1.5 border-2 border-indigo-300 rounded font-bold text-indigo-900 bg-slate-900/60"
+                          className="w-full text-center p-1.5 border border-white/[0.06] rounded font-bold text-slate-100 bg-slate-950/40 focus:border-brand-primary/40 focus:ring-brand-primary/20"
                         />
                       </td>
-                      <td className="px-2 py-2 bg-indigo-500/100/10">
+                      <td className="px-2 py-2 bg-indigo-500/10">
                         <input
                           type="number"
                           min="0"
                           value={item.cartons}
                           onChange={(e) => updateCartItem(index, 'cartons', Number(e.target.value))}
-                          className="w-full text-center p-1.5 border-2 border-indigo-300 rounded font-bold text-indigo-900 bg-slate-900/60"
+                          className="w-full text-center p-1.5 border border-white/[0.06] rounded font-bold text-slate-100 bg-slate-955/40 focus:border-brand-primary/40 focus:ring-brand-primary/20"
                         />
                       </td>
                       <td className="px-2 py-2 bg-emerald-500/10">
@@ -814,14 +814,14 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                           step="0.01"
                           value={item.quantity}
                           onChange={(e) => updateCartItem(index, 'quantity', Number(e.target.value))}
-                          className="w-full text-center p-1.5 border-2 border-green-400 rounded font-bold text-green-900 bg-slate-900/60"
+                          className="w-full text-center p-1.5 border border-white/[0.06] rounded font-bold text-emerald-400 bg-slate-955/40 focus:border-brand-primary/40 focus:ring-brand-primary/20"
                         />
                       </td>
                       <td className="px-2 py-2">
                         <select
                           value={item.unitId}
                           onChange={(e) => updateCartItem(index, 'unitId', Number(e.target.value))}
-                          className="w-full p-1.5 text-xs border border-white/[0.06] rounded"
+                          className="w-full p-1.5 text-xs border border-white/[0.06] rounded bg-slate-950/40 text-slate-100"
                         >
                           {units.filter(u => u.unitcode !== 'BOX').map(u => (
                             <option key={u.unitid} value={u.unitid}>{u.unitcode}</option>
@@ -835,7 +835,7 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                           step="0.01"
                           value={item.unitPrice}
                           onChange={(e) => updateCartItem(index, 'unitPrice', Number(e.target.value))}
-                          className="w-full text-right p-1.5 border border-white/[0.06] rounded font-mono"
+                          className="w-full text-right p-1.5 border border-white/[0.06] rounded font-mono bg-slate-955/40 text-slate-100"
                         />
                       </td>
                       <td className="px-2 py-2 text-right font-bold text-emerald-400 bg-emerald-500/10">
@@ -857,20 +857,20 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
             </table>
           </div>
 
-          <div className="p-4 bg-gradient-to-r from-slate-50 to-green-50 border-t border-white/[0.06]">
+          <div className="p-4 bg-slate-900/40 border-t border-white/[0.06]">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex flex-wrap gap-4 text-sm">
                 <div className="bg-slate-900/60 px-4 py-2 rounded-lg border border-white/[0.06]">
                   <span className="text-slate-500">Articles:</span>
                   <span className="ml-2 font-bold text-slate-200">{cart.length}</span>
                 </div>
-                <div className="bg-indigo-500/100/10 px-4 py-2 rounded-lg border border-indigo-200">
+                <div className="bg-indigo-500/10 px-4 py-2 rounded-lg border border-indigo-500/20">
                   <span className="text-indigo-400">Palettes:</span>
-                  <span className="ml-2 font-bold text-indigo-800">{totalPalettes}</span>
+                  <span className="ml-2 font-bold text-indigo-300">{totalPalettes}</span>
                 </div>
-                <div className="bg-indigo-500/100/10 px-4 py-2 rounded-lg border border-indigo-200">
+                <div className="bg-indigo-500/10 px-4 py-2 rounded-lg border border-indigo-500/20">
                   <span className="text-indigo-400">Cartons:</span>
-                  <span className="ml-2 font-bold text-indigo-800">{totalCartons}</span>
+                  <span className="ml-2 font-bold text-indigo-300">{totalCartons}</span>
                 </div>
                 <div className="bg-emerald-500/10 px-4 py-2 rounded-lg border border-emerald-500/20">
                   <span className="text-emerald-400">Qté Totale:</span>
@@ -885,7 +885,7 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                     type="date"
                     value={orderDate}
                     onChange={(e) => setOrderDate(e.target.value)}
-                    className="w-36 p-2 text-sm border border-white/[0.06] rounded-lg bg-slate-900/60"
+                    className="w-36 p-2 text-sm border border-white/[0.06] rounded-lg bg-slate-950/40 text-slate-100"
                   />
                 </div>
                 {mode === 'create' && (
@@ -897,7 +897,7 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                       step="0.01"
                       value={transportCost}
                       onChange={(e) => setTransportCost(Number(e.target.value))}
-                      className="w-28 p-2 text-sm border border-white/[0.06] rounded-lg bg-slate-900/60 text-right"
+                      className="w-28 p-2 text-sm border border-white/[0.06] rounded-lg bg-slate-950/40 text-slate-100 text-right font-mono"
                       placeholder="0.00"
                     />
                   </div>
@@ -911,7 +911,7 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                       step="0.01"
                       value={payment}
                       onChange={(e) => setPayment(Number(e.target.value))}
-                      className="w-32 p-2 text-sm border-2 border-green-300 rounded-lg bg-slate-900/60 font-bold text-emerald-300 text-right"
+                      className="w-32 p-2 text-sm border border-white/[0.08] rounded-lg bg-slate-955/40 font-bold text-emerald-400 text-right focus:border-brand-primary/40 focus:ring-brand-primary/20"
                       placeholder="0.00"
                     />
                   </div>
@@ -922,7 +922,7 @@ export function PurchaseOrderForm({ mode, poId }: PurchaseOrderFormProps) {
                     <select
                       value={paymentMethod}
                       onChange={(e) => setPaymentMethod(e.target.value as any)}
-                      className="w-28 p-2 text-sm border border-white/[0.06] rounded-lg bg-slate-900/60"
+                      className="w-28 p-2 text-sm border border-white/[0.06] rounded-lg bg-slate-950/40 text-slate-100"
                     >
                       <option value="ESPECE">💵 Espèce</option>
                       <option value="VIREMENT">🏦 Virement</option>

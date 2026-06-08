@@ -24,7 +24,28 @@ function authenticateToken(req, res, next) {
       });
     }
 
-    req.user = user;
+    // Verify the user actually exists in the database (handles DB seeds/resets invalidating tokens)
+    try {
+      const dbUserResult = await pool.query('SELECT UserID, Role, Username, IsActive FROM Users WHERE UserID = $1', [user.userId]);
+      if (dbUserResult.rows.length === 0 || !dbUserResult.rows[0].isactive) {
+        return res.status(401).json({
+          success: false,
+          message: 'L\'utilisateur n\'existe plus ou est désactivé. Veuillez vous reconnecter.'
+        });
+      }
+      // Set/update req.user to match current DB record details
+      req.user = {
+        ...user,
+        role: dbUserResult.rows[0].role,
+        username: dbUserResult.rows[0].username
+      };
+    } catch (dbErr) {
+      console.error('Database user validation error in auth middleware:', dbErr);
+      return res.status(500).json({
+        success: false,
+        message: 'Erreur interne de validation utilisateur'
+      });
+    }
 
     // Check Working Hours and IP restrictions
     // Skip restrictions for ADMIN and MANAGER
