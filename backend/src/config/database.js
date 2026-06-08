@@ -34,38 +34,71 @@ const pool = new Pool(poolConfig);
 
 const { tenantStorage } = require('../api/v1/utils/tenantContext');
 
-// Override pool.query to scope queries
-const originalPoolQuery = pool.query;
-pool.query = async function (text, params) {
-  const tenantId = tenantStorage.getStore();
-  if (tenantId) {
-    const client = await pool.connect();
-    try {
-      await client.query('SET app.current_tenant_id = $1', [tenantId]);
-      const res = await client.query(text, params);
-      return res;
-    } finally {
-      client.release();
-    }
-  }
-  return originalPoolQuery.call(pool, text, params);
-};
-
-// Override pool.connect to return client with scoped client.query
+// Override pool.connect to return client with scoped client.query, supporting both promise and callback styles
 const originalConnect = pool.connect;
-pool.connect = async function () {
-  const client = await originalConnect.call(pool);
-  const originalClientQuery = client.query;
-  
-  client.query = async function (text, params) {
-    const tenantId = tenantStorage.getStore();
-    if (tenantId && text !== 'BEGIN' && text !== 'COMMIT' && text !== 'ROLLBACK') {
-      await originalClientQuery.call(client, 'SET app.current_tenant_id = $1', [tenantId]);
+pool.connect = function (callback) {
+  if (callback) {
+    return originalConnect.call(pool, (err, client, release) => {
+      if (err) return callback(err, undefined, release);
+      
+      if (client && !client._scopedQueryOverridden) {
+        client._scopedQueryOverridden = true;
+        const originalClientQuery = client.query;
+        client.query = function (text, params, cb) {
+          const tenantId = tenantStorage.getStore();
+          let actualCb = cb;
+          if (typeof params === 'function') {
+            actualCb = params;
+          }
+          
+          if (tenantId && text !== 'BEGIN' && text !== 'COMMIT' && text !== 'ROLLBACK' && text !== 'SET app.current_tenant_id = $1') {
+            if (actualCb) {
+              originalClientQuery.call(client, 'SET app.current_tenant_id = $1', [tenantId], (err2) => {
+                if (err2) return actualCb(err2);
+                originalClientQuery.call(client, text, params, cb);
+              });
+              return;
+            } else {
+              return originalClientQuery.call(client, 'SET app.current_tenant_id = $1', [tenantId])
+                .then(() => originalClientQuery.call(client, text, params));
+            }
+          }
+          return originalClientQuery.call(client, text, params, cb);
+        };
+      }
+      callback(null, client, release);
+    });
+  }
+
+  // Promise style
+  return originalConnect.call(pool).then(client => {
+    if (client && !client._scopedQueryOverridden) {
+      client._scopedQueryOverridden = true;
+      const originalClientQuery = client.query;
+      client.query = function (text, params, cb) {
+        const tenantId = tenantStorage.getStore();
+        let actualCb = cb;
+        if (typeof params === 'function') {
+          actualCb = params;
+        }
+
+        if (tenantId && text !== 'BEGIN' && text !== 'COMMIT' && text !== 'ROLLBACK' && text !== 'SET app.current_tenant_id = $1') {
+          if (actualCb) {
+            originalClientQuery.call(client, 'SET app.current_tenant_id = $1', [tenantId], (err2) => {
+              if (err2) return actualCb(err2);
+              originalClientQuery.call(client, text, params, cb);
+            });
+            return;
+          } else {
+            return originalClientQuery.call(client, 'SET app.current_tenant_id = $1', [tenantId])
+              .then(() => originalClientQuery.call(client, text, params));
+          }
+        }
+        return originalClientQuery.call(client, text, params, cb);
+      };
     }
-    return originalClientQuery.call(client, text, params);
-  };
-  
-  return client;
+    return client;
+  });
 };
 
 pool.on('connect', () => {
