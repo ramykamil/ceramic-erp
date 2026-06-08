@@ -4,6 +4,7 @@
  */
 const cron = require('node-cron');
 const backupService = require('./backup.service');
+const pool = require('../config/database');
 
 class SchedulerService {
     /**
@@ -12,6 +13,7 @@ class SchedulerService {
      */
     init() {
         this.initBackupSchedule();
+        this.initSubscriptionExpiryCheck();
     }
 
     /**
@@ -42,6 +44,35 @@ class SchedulerService {
         });
 
         console.log(`[SCHEDULER] ✅ Backup scheduler initialized`);
+    }
+
+    /**
+     * Initialize the subscription and trial expiry check schedule
+     * Runs daily at 1:00 AM
+     */
+    initSubscriptionExpiryCheck() {
+        const schedule = '0 1 * * *';
+        console.log(`[SCHEDULER] 🕐 Initializing Trial Expiry Check with schedule: ${schedule}`);
+
+        cron.schedule(schedule, async () => {
+            const now = new Date().toLocaleString('fr-FR');
+            console.log(`[SCHEDULER] ⏳ Starting trial expiry scan at ${now}...`);
+
+            try {
+                const result = await pool.query(`
+                    UPDATE Tenants
+                    SET SubscriptionStatus = 'EXPIRED', UpdatedAt = CURRENT_TIMESTAMP
+                    WHERE PlanType = 'TRIAL'
+                      AND SubscriptionStatus = 'ACTIVE'
+                      AND TrialEndDate < CURRENT_TIMESTAMP
+                `);
+                console.log(`[SCHEDULER] ✅ Trial Expiry Scan Complete. Updated ${result.rowCount} stores to EXPIRED.`);
+            } catch (error) {
+                console.error('[SCHEDULER] ❌ Trial Expiry Scan Failed:', error.message);
+            }
+        });
+
+        console.log(`[SCHEDULER] ✅ Trial Expiry scheduler initialized`);
     }
 }
 

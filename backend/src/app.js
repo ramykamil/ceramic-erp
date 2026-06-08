@@ -6,6 +6,8 @@ const compression = require('compression');
 
 // Import middleware
 const { errorHandler, notFoundHandler } = require('./api/v1/middleware/error.middleware');
+const { tenantScoping } = require('./api/v1/middleware/tenant.middleware');
+const { checkSubscription } = require('./api/v1/middleware/subscription.middleware');
 
 // Import routes
 const apiRoutes = require('./api/v1/routes');
@@ -15,6 +17,10 @@ const app = express();
 
 // Enable gzip compression for all HTTP responses
 app.use(compression());
+
+// Apply global Tenant Scoping & Subscription check middleware
+app.use(tenantScoping);
+app.use(checkSubscription);
 
 // Middleware - CORS configured to allow any origin (required for local tools/Excel converter)
 const corsOptions = {

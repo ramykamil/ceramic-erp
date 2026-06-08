@@ -10,6 +10,7 @@ const pricingController = require('../controllers/pricing.controller');
 const factoryController = require('../controllers/factory.controller'); // NEW
 const customerController = require('../controllers/customer.controller');
 const orderController = require('../controllers/order.controller');
+const billingController = require('../controllers/billing.controller');
 // Add other controllers that were present before to avoid breaking other features if possible, 
 // but the user instruction said "Overwrite ... with complete, correct code" and provided a specific block.
 // However, the user also said "Fix & Finish", implying I shouldn't break existing stuff.
@@ -52,6 +53,7 @@ const purchaseReturnsController = require('../controllers/purchaseReturns.contro
 // --- Public ---
 router.get('/health', (req, res) => res.json({ status: 'ok' }));
 router.post('/auth/login', authController.login);
+router.post('/auth/register-store', authController.registerStore);
 
 // --- Products (Order matters!) ---
 router.get('/products/sizes', authenticateToken, productController.getProductSizes); // Specific route first
@@ -282,6 +284,10 @@ router.get('/bi/low-stock', authenticateToken, biController.getLowStockPredictio
 router.get('/bi/trending', authenticateToken, biController.getTrendingProducts);
 router.get('/bi/profit-analysis', authenticateToken, biController.getProfitMarginAnalysis);
 router.post('/bi/notify-whatsapp', authenticateToken, biController.sendWhatsappNotification);
+
+// --- Billing & SaaS Subscriptions ---
+router.get('/billing/status', authenticateToken, billingController.getBillingStatus);
+router.post('/billing/subscribe', authenticateToken, billingController.subscribe);
 
 module.exports = router;
 

@@ -151,6 +151,23 @@ interface SituationResponse {
   summary: SituationSummary;
 }
 
+function parseJwt(token: string) {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const buffer = typeof window !== 'undefined' ? window.atob(base64) : Buffer.from(base64, 'base64').toString('binary');
+    const jsonPayload = decodeURIComponent(
+      buffer
+        .split('')
+        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
+  } catch (e) {
+    return null;
+  }
+}
+
 class ApiClient {
   private baseUrl: string;
   private token: string | null = null;
@@ -189,6 +206,10 @@ class ApiClient {
 
     if (this.token) {
       headers.set('Authorization', `Bearer ${this.token}`);
+      const decoded = parseJwt(this.token);
+      if (decoded && decoded.tenantId) {
+        headers.set('x-tenant-id', decoded.tenantId);
+      }
     }
 
     // CRITICAL: Get API URL dynamically at request time for LAN support
@@ -218,6 +239,7 @@ class ApiClient {
       throw error;
     }
   }
+
 
 
 
@@ -441,6 +463,31 @@ class ApiClient {
       body: JSON.stringify({ username, password }),
     });
   }
+
+  async registerStore(data: { storeName: string; domainPrefix: string; username: string; passwordHash?: string; password?: string; email?: string }) {
+    return this.request('/auth/register-store', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getBillingStatus() {
+    return this.request<{
+      isTrial: boolean;
+      trialDaysLeft: number;
+      planType: string;
+      subscriptionStatus: string;
+      trialEndDate: string;
+    }>('/billing/status');
+  }
+
+  async subscribe(planType: string) {
+    return this.request('/billing/subscribe', {
+      method: 'POST',
+      body: JSON.stringify({ planType }),
+    });
+  }
+
 
   // General Settings
   async getSettings() {

@@ -65,8 +65,8 @@ async function login(req, res, next) {
       userId: user.userid, // uses userid column
       username: user.username,
       role: user.role, // uses role column
-      permissions: user.permissions // Granular permissions
-      // Add other relevant info if needed
+      permissions: user.permissions, // Granular permissions
+      tenantId: user.tenantid
     };
 
     const token = jwt.sign(payload, config.jwt.secret, {
@@ -99,7 +99,8 @@ async function login(req, res, next) {
         username: user.username,
         email: user.email, // uses email column
         role: user.role,
-        permissions: user.permissions
+        permissions: user.permissions,
+        tenantId: user.tenantid
       }
     });
 
@@ -108,6 +109,101 @@ async function login(req, res, next) {
   }
 }
 
+/**
+ * Provision a new store tenant and seed default data
+ */
+async function registerStore(req, res, next) {
+  const { storeName, domainPrefix, username, password, email } = req.body;
+
+  if (!storeName || !domainPrefix || !username || !password) {
+    return res.status(400).json({
+      success: false,
+      message: 'Store Name, Domain Prefix, Username and Password are required.'
+    });
+  }
+
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // 1. Check if domain prefix is already taken
+    const domainCheck = await client.query('SELECT TenantID FROM Tenants WHERE DomainPrefix = $1', [domainPrefix.toLowerCase()]);
+    if (domainCheck.rows.length > 0) {
+      throw new Error('This domain prefix is already taken.');
+    }
+
+    // 2. Check if username is already taken
+    const userCheck = await client.query('SELECT UserID FROM Users WHERE Username = $1', [username]);
+    if (userCheck.rows.length > 0) {
+      throw new Error('This username is already taken.');
+    }
+
+    // 3. Create Tenant
+    const trialEndDate = new Date();
+    trialEndDate.setDate(trialEndDate.getDate() + 20); // 20-day free trial
+
+    const tenantResult = await client.query(`
+      INSERT INTO Tenants (StoreName, DomainPrefix, PlanType, TrialEndDate, SubscriptionStatus)
+      VALUES ($1, $2, 'TRIAL', $3, 'ACTIVE')
+      RETURNING TenantID;
+    `, [storeName, domainPrefix.toLowerCase(), trialEndDate]);
+    const tenantId = tenantResult.rows[0].tenantid;
+
+    // 4. Set session variable for subsequent RLS scopes
+    await client.query('SET app.current_tenant_id = $1', [tenantId]);
+
+    // 5. Seed default AppSettings for this tenant
+    await client.query(`
+      INSERT INTO AppSettings (CompanyName, Activity, DefaultPrintFormat, DefaultTaxRate, DefaultTimbre, RetailMargin, WholesaleMargin, RetailMarginType, WholesaleMarginType, TenantID)
+      VALUES ($1, 'MATERIAUX DE CONSTRUCTION', 'TICKET', 19, 0, 30, 15, 'PERCENT', 'PERCENT', $2)
+    `, [storeName, tenantId]);
+
+    // 6. Seed default Warehouse
+    await client.query(`
+      INSERT INTO Warehouses (WarehouseCode, WarehouseName, Location, IsActive, TenantID)
+      VALUES ('MAIN', 'Entrepôt Principal', 'Local', 1, $1)
+    `, [tenantId]);
+
+    // 7. Seed default Units
+    const defaultUnits = [
+      ['PCS', 'Pièces', 'Pièces individuelles'],
+      ['BOX', 'Carton', 'Carton/Colis'],
+      ['SQM', 'M²', 'Mètre carré'],
+      ['PAL', 'Palette', 'Palette complète']
+    ];
+    for (const [code, name, desc] of defaultUnits) {
+      await client.query(`
+        INSERT INTO Units (UnitCode, UnitName, Description, TenantID)
+        VALUES ($1, $2, $3, $4)
+      `, [code, name, desc, tenantId]);
+    }
+
+    // 8. Create Admin User for this tenant
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await client.query(`
+      INSERT INTO Users (Username, PasswordHash, Role, Email, IsActive, TenantID)
+      VALUES ($1, $2, 'ADMIN', $3, 1, $4)
+    `, [username, hashedPassword, email || null, tenantId]);
+
+    await client.query('COMMIT');
+
+    res.status(201).json({
+      success: true,
+      message: 'Store registered successfully with a 20-day free trial.',
+      tenantId
+    });
+  } catch (error) {
+    await client.query('ROLLBACK');
+    res.status(400).json({
+      success: false,
+      message: error.message || 'Error occurred during registration.'
+    });
+  } finally {
+    client.release();
+  }
+}
+
 module.exports = {
   login,
+  registerStore
 };

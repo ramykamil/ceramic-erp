@@ -173,7 +173,7 @@ function StatCard({ label, value, trend, href, iconColor = 'sky' }: { label: str
   return content;
 }
 
-export default function DashboardHomePage() {
+function DashboardHomePage() {
   const [userName, setUserName] = useState("Utilisateur");
   const [userRole, setUserRole] = useState("");
   const [userPermissions, setUserPermissions] = useState<string[] | null>(null);
@@ -531,4 +531,255 @@ export default function DashboardHomePage() {
       )}
     </div>
   );
+}
+
+function PublicLandingPage() {
+  const router = useRouter();
+  
+  // Interactive Simulator State
+  const [purchasePrice, setPurchasePrice] = useState<number>(1200);
+  const [isRetail, setIsRetail] = useState<boolean>(true);
+  const [taxRate] = useState<number>(19); // 19% TVA
+
+  const marginPercent = isRetail ? 30 : 15;
+  const marginAmount = purchasePrice * (marginPercent / 100);
+  const priceExcludingTax = purchasePrice + marginAmount;
+  const taxAmount = priceExcludingTax * (taxRate / 100);
+  const finalPrice = priceExcludingTax + taxAmount;
+
+  return (
+    <div className="min-h-screen text-slate-100 flex flex-col relative overflow-hidden bg-slate-950 font-sans">
+      {/* Background glowing effects */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute -top-[20%] -right-[10%] w-[600px] h-[600px] rounded-full bg-teal-500/[0.08] blur-[140px] animate-pulse" />
+        <div className="absolute top-[40%] -left-[10%] w-[500px] h-[500px] rounded-full bg-sky-500/[0.06] blur-[120px] animate-pulse" style={{ animationDelay: '3s' }} />
+        <div className="absolute -bottom-[20%] right-[20%] w-[600px] h-[600px] rounded-full bg-indigo-500/[0.05] blur-[140px]" />
+      </div>
+
+      {/* Navbar */}
+      <header className="relative z-10 w-full max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-sky-500 flex items-center justify-center font-bold text-lg text-slate-950">
+            🏗️
+          </div>
+          <span className="text-xl font-black bg-gradient-to-r from-teal-400 to-sky-400 bg-clip-text text-transparent">
+            Ceramic ERP
+          </span>
+        </div>
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={() => router.push('/login')}
+            className="text-sm font-semibold text-slate-300 hover:text-white transition-colors"
+          >
+            Se Connecter
+          </button>
+          <button 
+            onClick={() => router.push('/register-store')}
+            className="btn-glassy px-4 py-2 text-xs font-extrabold uppercase rounded-lg border border-teal-500/30 text-teal-400 shadow-lg shadow-teal-500/5 hover:border-teal-400/50 hover:bg-teal-500/10 transition-all"
+          >
+            Essai Gratuit
+          </button>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 py-12 md:py-20 max-w-7xl mx-auto text-center">
+        <div className="max-w-4xl space-y-6">
+          <span className="inline-block px-3 py-1.5 rounded-full text-[10px] font-extrabold tracking-widest uppercase bg-teal-500/15 text-teal-400 border border-teal-500/20">
+            ⚡ Plateforme Multi-Boutiques de Prochaine Génération
+          </span>
+          <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white leading-tight">
+            Gérez votre Négoce de{' '}
+            <span className="bg-gradient-to-r from-teal-400 via-sky-400 to-indigo-400 bg-clip-text text-transparent font-black">
+              Carrelage &amp; Céramique
+            </span>
+          </h1>
+          <p className="text-slate-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+            Un ERP tout-en-un ultra-fluide pour suivre vos stocks en m², palettes et colis, automatiser la facturation POS, analyser vos marges nettes (BI) et notifier vos clients par WhatsApp.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <button
+              onClick={() => router.push('/register-store')}
+              className="px-8 py-4 rounded-xl bg-gradient-to-r from-teal-400 to-sky-500 text-slate-950 font-black text-sm shadow-xl shadow-teal-500/20 hover:scale-[1.02] hover:shadow-teal-500/30 active:scale-[0.98] transition-all w-full sm:w-auto"
+            >
+              Créer ma Boutique (Essai 20j gratuit)
+            </button>
+            <button
+              onClick={() => {
+                const element = document.getElementById('margin-simulator');
+                element?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="px-8 py-4 rounded-xl bg-slate-900/60 border border-white/[0.08] text-slate-300 font-bold text-sm hover:bg-slate-800/40 transition-all w-full sm:w-auto"
+            >
+              Simuler vos Marges
+            </button>
+          </div>
+        </div>
+
+        {/* Feature Grid */}
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-24 text-left">
+          <div className="glass-card p-6 border border-white/5 hover:border-teal-500/20 transition-all group">
+            <div className="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+              📊
+            </div>
+            <h3 className="font-bold text-white text-lg mb-2">POS &amp; Facturation Fluide</h3>
+            <p className="text-slate-400 text-sm leading-relaxed">
+              Enregistrez vos ventes au comptoir en quelques secondes. Générez des factures professionnelles et des tickets de caisse de 80mm en un clic.
+            </p>
+          </div>
+
+          <div className="glass-card p-6 border border-white/5 hover:border-sky-500/20 transition-all group">
+            <div className="w-12 h-12 rounded-xl bg-sky-500/10 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+              📦
+            </div>
+            <h3 className="font-bold text-white text-lg mb-2">Suivi Métrique du Stock</h3>
+            <p className="text-slate-400 text-sm leading-relaxed">
+              Fini les calculs manuels. Suivez instantanément vos niveaux de stock en mètres carrés (m²), cartons complets, palettes ou pièces individuelles.
+            </p>
+          </div>
+
+          <div className="glass-card p-6 border border-white/5 hover:border-indigo-500/20 transition-all group">
+            <div className="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+              🧠
+            </div>
+            <h3 className="font-bold text-white text-lg mb-2">BI &amp; Intelligence Prédictive</h3>
+            <p className="text-slate-400 text-sm leading-relaxed">
+              Anticipez les ruptures de stock grâce aux algorithmes de prévision de la demande. Analysez vos marges réelles pour maximiser vos profits.
+            </p>
+          </div>
+        </section>
+
+        {/* Profit Simulator Section */}
+        <section id="margin-simulator" className="w-full max-w-4xl mt-28 mb-12 scroll-mt-6">
+          <div className="glass-card p-8 md:p-10 border border-teal-500/20 bg-teal-500/[0.01] relative overflow-hidden text-left">
+            <div className="absolute top-0 right-0 bg-teal-500/10 text-teal-400 text-[10px] font-extrabold uppercase px-3.5 py-1.5 rounded-bl-xl border-l border-b border-teal-500/20">
+              Simulateur
+            </div>
+
+            <h2 className="text-2xl md:text-3xl font-black text-white mb-2">Simulateur de Prix &amp; Marge</h2>
+            <p className="text-slate-400 text-sm mb-8">
+              Découvrez comment Ceramic ERP calcule automatiquement vos prix de vente finaux en fonction des marges commerciales configurées.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              {/* Controls */}
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+                    Type de vente
+                  </label>
+                  <div className="flex bg-slate-900/80 p-1 rounded-xl border border-white/5">
+                    <button
+                      onClick={() => setIsRetail(true)}
+                      className={`flex-1 py-2.5 rounded-lg text-xs font-bold transition-all ${
+                        isRetail 
+                          ? 'bg-teal-500 text-slate-950 font-black shadow-md' 
+                          : 'text-slate-400 hover:text-white'
+                      }`}
+                      type="button"
+                    >
+                      🏬 Détail (+30%)
+                    </button>
+                    <button
+                      onClick={() => setIsRetail(false)}
+                      className={`flex-1 py-2.5 rounded-lg text-xs font-bold transition-all ${
+                        !isRetail 
+                          ? 'bg-teal-500 text-slate-950 font-black shadow-md' 
+                          : 'text-slate-400 hover:text-white'
+                      }`}
+                      type="button"
+                    >
+                      🏭 Gros (+15%)
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+                    Prix d&apos;achat du carrelage (DA/m²)
+                  </label>
+                  <input
+                    type="number"
+                    value={purchasePrice}
+                    onChange={(e) => setPurchasePrice(Math.max(0, parseFloat(e.target.value) || 0))}
+                    className="w-full bg-slate-900/60 border border-white/[0.08] focus:border-teal-500 focus:ring-1 focus:ring-teal-500/30 rounded-xl px-4 py-3 text-lg font-bold text-white text-center"
+                  />
+                  <input
+                    type="range"
+                    min="300"
+                    max="5000"
+                    step="50"
+                    value={purchasePrice}
+                    onChange={(e) => setPurchasePrice(parseInt(e.target.value))}
+                    className="w-full accent-teal-400 mt-4 cursor-pointer"
+                  />
+                </div>
+              </div>
+
+              {/* Live Display Card */}
+              <div className="bg-gradient-to-br from-slate-900/90 to-slate-950/90 border border-white/5 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between h-full min-h-[220px]">
+                <div className="space-y-4">
+                  <div className="flex justify-between text-sm text-slate-400">
+                    <span>Prix Achat Base</span>
+                    <span className="font-semibold text-white">{purchasePrice.toLocaleString()} DA</span>
+                  </div>
+                  <div className="flex justify-between text-sm text-slate-400">
+                    <span>Marge ({marginPercent}%)</span>
+                    <span className="font-semibold text-emerald-400">+{marginAmount.toLocaleString('fr-DZ', { maximumFractionDigits: 1 })} DA</span>
+                  </div>
+                  <div className="flex justify-between text-sm text-slate-400">
+                    <span>TVA ({taxRate}%)</span>
+                    <span className="font-semibold text-slate-300">+{taxAmount.toLocaleString('fr-DZ', { maximumFractionDigits: 1 })} DA</span>
+                  </div>
+                </div>
+
+                <div className="border-t border-white/5 pt-5 mt-5">
+                  <p className="text-[10px] uppercase tracking-wider font-extrabold text-teal-400 mb-1">
+                    Prix de vente final calculé
+                  </p>
+                  <p className="text-3xl md:text-4xl font-black text-white tracking-tight">
+                    {finalPrice.toLocaleString('fr-DZ', { maximumFractionDigits: 0 })}{' '}
+                    <span className="text-sm font-semibold text-slate-400">DA/m² (TTC)</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <footer className="relative z-10 w-full max-w-7xl mx-auto px-6 py-8 border-t border-white/5 text-center text-xs text-slate-500">
+        <p className="font-semibold text-slate-400 mb-1">Ceramic ERP — La Référence Logistique &amp; POS</p>
+        <p>© 2026 Développé par Ramy Kamil Mecheri. Tous droits réservés.</p>
+      </footer>
+    </div>
+  );
+}
+
+export default function AppEntryPage() {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    setIsAuthenticated(!!token);
+  }, []);
+
+  if (isAuthenticated === null) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-950">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-teal-500/20 border-t-teal-400 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-slate-400 text-sm">Chargement de votre session...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isAuthenticated) {
+    return <DashboardHomePage />;
+  }
+
+  return <PublicLandingPage />;
 }

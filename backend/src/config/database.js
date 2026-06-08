@@ -32,6 +32,42 @@ const poolConfig = process.env.DATABASE_URL
 
 const pool = new Pool(poolConfig);
 
+const { tenantStorage } = require('../api/v1/utils/tenantContext');
+
+// Override pool.query to scope queries
+const originalPoolQuery = pool.query;
+pool.query = async function (text, params) {
+  const tenantId = tenantStorage.getStore();
+  if (tenantId) {
+    const client = await pool.connect();
+    try {
+      await client.query('SET app.current_tenant_id = $1', [tenantId]);
+      const res = await client.query(text, params);
+      return res;
+    } finally {
+      client.release();
+    }
+  }
+  return originalPoolQuery.call(pool, text, params);
+};
+
+// Override pool.connect to return client with scoped client.query
+const originalConnect = pool.connect;
+pool.connect = async function () {
+  const client = await originalConnect.call(pool);
+  const originalClientQuery = client.query;
+  
+  client.query = async function (text, params) {
+    const tenantId = tenantStorage.getStore();
+    if (tenantId && text !== 'BEGIN' && text !== 'COMMIT' && text !== 'ROLLBACK') {
+      await originalClientQuery.call(client, 'SET app.current_tenant_id = $1', [tenantId]);
+    }
+    return originalClientQuery.call(client, text, params);
+  };
+  
+  return client;
+};
+
 pool.on('connect', () => {
   console.log('✓ Database connected successfully');
 });

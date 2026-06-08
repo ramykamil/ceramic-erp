@@ -41,7 +41,7 @@ interface Session {
     lastactive: string;
 }
 
-type TabType = 'SOCIETE' | 'IMPRESSION' | 'PARAMETRAGE' | 'SAUVEGARDE' | 'UTILISATEURS' | 'SESSIONS' | 'HISTORIQUE';
+type TabType = 'SOCIETE' | 'IMPRESSION' | 'PARAMETRAGE' | 'SAUVEGARDE' | 'UTILISATEURS' | 'SESSIONS' | 'HISTORIQUE' | 'FACTURATION';
 
 const ROLES = ['ADMIN', 'MANAGER', 'SALES', 'SALES_RETAIL', 'SALES_WHOLESALE', 'WAREHOUSE'];
 
@@ -50,6 +50,10 @@ export default function SettingsPage() {
     const [formData, setFormData] = useState<any>({});
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+
+    // Billing state
+    const [billing, setBilling] = useState<any>(null);
+    const [billingLoading, setBillingLoading] = useState(false);
 
     // Users state
     const [users, setUsers] = useState<User[]>([]);
@@ -75,6 +79,13 @@ export default function SettingsPage() {
     // Load Settings
     useEffect(() => {
         loadSettings();
+        if (typeof window !== 'undefined') {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tabParam = urlParams.get('tab') as TabType;
+            if (tabParam && ['SOCIETE', 'IMPRESSION', 'PARAMETRAGE', 'SAUVEGARDE', 'UTILISATEURS', 'SESSIONS', 'HISTORIQUE', 'FACTURATION'].includes(tabParam)) {
+                setActiveTab(tabParam);
+            }
+        }
     }, []);
 
     const loadSettings = async () => {
@@ -85,6 +96,35 @@ export default function SettingsPage() {
             console.error('Error loading settings:', e);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const loadBilling = async () => {
+        setBillingLoading(true);
+        try {
+            const res = await api.getBillingStatus();
+            if (res.success) {
+                setBilling(res.data);
+            }
+        } catch (e) {
+            console.error('Error loading billing:', e);
+        } finally {
+            setBillingLoading(false);
+        }
+    };
+
+    const handleSubscribe = async (planType: string) => {
+        if (!confirm(`Confirmer la souscription au plan ${planType} ?`)) return;
+        try {
+            const res = await api.subscribe(planType);
+            if (res.success) {
+                alert(`\u2705 Souscription r\u00e9ussie ! Plan actuel: ${planType}`);
+                loadBilling();
+            } else {
+                alert(`\u274c ${res.message}`);
+            }
+        } catch (e: any) {
+            alert(`\u274c Erreur: ${e.message}`);
         }
     };
 
@@ -117,8 +157,11 @@ export default function SettingsPage() {
             loadSessions();
         } else if (activeTab === 'HISTORIQUE') {
             loadAuditLogs();
+        } else if (activeTab === 'FACTURATION') {
+            loadBilling();
         }
     }, [activeTab, auditPage]);
+
 
     const loadAuditLogs = async () => {
         setAuditLoading(true);
@@ -235,6 +278,7 @@ export default function SettingsPage() {
         { key: 'UTILISATEURS', label: 'Utilisateurs', icon: '👥' },
         { key: 'SESSIONS', label: 'Appareils Connectés', icon: '📱' },
         { key: 'HISTORIQUE', label: 'Historique', icon: '📜' },
+        { key: 'FACTURATION', label: 'Abonnement', icon: '💳' },
     ];
 
     return (
@@ -895,6 +939,120 @@ export default function SettingsPage() {
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                )}
+
+                {/* TAB 8: FACTURATION */}
+                {activeTab === 'FACTURATION' && (
+                    <div className="bg-slate-900/60 rounded-xl border border-white/[0.06] shadow-sm shadow-black/10 p-6">
+                        <h2 className="text-lg font-semibold mb-6 pb-2 border-b border-white/5">💳 Détails de l&apos;Abonnement</h2>
+                        
+                        {billingLoading ? (
+                            <div className="text-center py-12">
+                                <div className="inline-block w-8 h-8 border-4 border-sky-900/30 border-t-sky-400 rounded-full animate-spin mb-4"></div>
+                                <p className="text-slate-500">Chargement des détails de facturation...</p>
+                            </div>
+                        ) : billing ? (
+                            <div className="space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div className="stat-card p-5 bg-gradient-to-br from-slate-900 to-slate-950">
+                                        <p className="text-xs text-slate-400 uppercase font-medium">Plan Actuel</p>
+                                        <p className="text-2xl font-bold text-sky-400 mt-2">{billing.planType}</p>
+                                    </div>
+                                    <div className="stat-card p-5 bg-gradient-to-br from-slate-900 to-slate-950">
+                                        <p className="text-xs text-slate-400 uppercase font-medium">Statut</p>
+                                        <span className={`inline-block mt-3 px-3 py-1 rounded-full text-xs font-bold ${
+                                            billing.subscriptionStatus === 'ACTIVE' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' :
+                                            billing.subscriptionStatus === 'EXPIRED' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
+                                            'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                                        }`}>
+                                            {billing.subscriptionStatus}
+                                        </span>
+                                    </div>
+                                    <div className="stat-card p-5 bg-gradient-to-br from-slate-900 to-slate-950">
+                                        <p className="text-xs text-slate-400 uppercase font-medium">
+                                            {billing.isTrial ? "Jours d&apos;essai restants" : "Fin d&apos;abonnement"}
+                                        </p>
+                                        <p className="text-2xl font-bold text-white mt-2">
+                                            {billing.isTrial ? `${billing.trialDaysLeft} Jours` : new Date(billing.trialEndDate).toLocaleDateString('fr-FR')}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="border-t border-white/5 pt-6 mt-8">
+                                    <h3 className="font-bold text-lg mb-6">Mettre à niveau votre plan</h3>
+                                    
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
+                                        {/* Plan Basic */}
+                                        <div className="glass-card p-6 flex flex-col justify-between border border-white/5 hover:border-sky-500/20 transition-all">
+                                            <div>
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <div>
+                                                        <h4 className="text-lg font-bold text-white">Plan BASIC</h4>
+                                                        <p className="text-xs text-slate-400">Pour les petites boutiques</p>
+                                                    </div>
+                                                    <span className="text-xl font-black text-sky-400">4,900 DA/m</span>
+                                                </div>
+                                                <ul className="space-y-2 text-sm text-slate-300 mb-6">
+                                                    <li>✅ Gestion complète du POS (Ventes)</li>
+                                                    <li>✅ Gestion de stock &amp; inventaire</li>
+                                                    <li>✅ Suivi des clients &amp; fournisseurs</li>
+                                                    <li>❌ Modules d&apos;analyses avancés (BI)</li>
+                                                    <li>❌ Notifications WhatsApp sandbox</li>
+                                                </ul>
+                                            </div>
+                                            <button 
+                                                onClick={() => handleSubscribe('BASIC')}
+                                                disabled={billing.planType === 'BASIC'}
+                                                className={`w-full py-3 rounded-xl font-bold text-sm transition-all ${
+                                                    billing.planType === 'BASIC'
+                                                    ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                                                    : 'btn-glassy text-white'
+                                                }`}
+                                            >
+                                                {billing.planType === 'BASIC' ? 'Plan Actuel' : 'Activer BASIC'}
+                                            </button>
+                                        </div>
+
+                                        {/* Plan Premium */}
+                                        <div className="glass-card p-6 flex flex-col justify-between border-2 border-teal-500/30 bg-teal-500/[0.02] hover:border-teal-500/50 transition-all relative overflow-hidden">
+                                            <div className="absolute top-0 right-0 bg-teal-500 text-slate-900 text-[10px] font-extrabold uppercase px-3 py-1 rounded-bl-lg">
+                                                Recommandé
+                                            </div>
+                                            <div>
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <div>
+                                                        <h4 className="text-lg font-bold text-white">Plan PREMIUM</h4>
+                                                        <p className="text-xs text-teal-400 font-semibold">Toutes les fonctionnalités</p>
+                                                    </div>
+                                                    <span className="text-xl font-black text-teal-400">9,900 DA/m</span>
+                                                </div>
+                                                <ul className="space-y-2 text-sm text-slate-300 mb-6 font-semibold">
+                                                    <li>✅ Tout ce qui est inclus dans BASIC</li>
+                                                    <li>✅ Intelligence d&apos;affaires (BI) &amp; Prévisions</li>
+                                                    <li>✅ Notifications automatisées WhatsApp</li>
+                                                    <li>✅ Support prioritaire</li>
+                                                    <li>✅ Multi-entrepôts sans limite</li>
+                                                </ul>
+                                            </div>
+                                            <button 
+                                                onClick={() => handleSubscribe('PREMIUM')}
+                                                disabled={billing.planType === 'PREMIUM'}
+                                                className={`w-full py-3 rounded-xl font-bold text-sm transition-all ${
+                                                    billing.planType === 'PREMIUM'
+                                                    ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                                                    : 'bg-teal-500 hover:bg-teal-600 text-slate-950 font-black shadow-lg shadow-teal-500/20'
+                                                }`}
+                                            >
+                                                {billing.planType === 'PREMIUM' ? 'Plan Actuel' : 'Activer PREMIUM'}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <p className="text-slate-400">Erreur lors de la récupération du statut de facturation.</p>
+                        )}
                     </div>
                 )}
             </div>

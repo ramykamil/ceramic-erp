@@ -807,7 +807,7 @@ async function updateOrderStatus(req, res, next) {
 
     // Fetch current status and warehouse/customer info to track transition
     const currentOrderResult = await client.query(
-      'SELECT OrderNumber, Status, WarehouseID, CustomerID, TotalAmount FROM Orders WHERE OrderID = $1',
+      'SELECT OrderNumber, Status, WarehouseID, CustomerID, TotalAmount, PaymentAmount, PaymentMethod FROM Orders WHERE OrderID = $1',
       [id]
     );
 
@@ -840,6 +840,81 @@ async function updateOrderStatus(req, res, next) {
           success: false,
           message: stockErr.message
         });
+      }
+    }
+
+    // Cancellation Logic: Revert inventory and financials
+    if (status === 'CANCELLED' && oldStatus !== 'CANCELLED') {
+      // 1. Revert Inventory
+      const itemsRes = await client.query(`
+        SELECT oi.*, p.ProductName, p.Size, p.PrimaryUnitID, p.QteParColis, p.QteColisParPalette, pu_p.UnitCode as PrimaryUnitCode, u.UnitCode 
+        FROM OrderItems oi
+        JOIN Products p ON oi.ProductID = p.ProductID
+        LEFT JOIN Units pu_p ON p.PrimaryUnitID = pu_p.UnitID
+        LEFT JOIN Units u ON oi.UnitID = u.UnitID
+        WHERE oi.OrderID = $1
+      `, [id]);
+
+      for (const item of itemsRes.rows) {
+        if (isServiceItem(item.productname)) continue;
+        const qty = parseFloat(item.quantity) || 0;
+        const sqmPerPiece = parseSqmPerPiece(item.size || item.productname);
+        const convertedQty = convertUnitToInventory(
+          qty,
+          item.unitcode,
+          item.primaryunitcode,
+          sqmPerPiece,
+          item.productname,
+          parseFloat(item.qteparcolis) || 0,
+          parseFloat(item.qtecolisparpalette) || 0
+        );
+
+        if (oldStatus === 'PENDING') {
+          // Revert reserved stock
+          await client.query(`
+            UPDATE Inventory 
+            SET QuantityReserved = GREATEST(0, QuantityReserved - $1),
+                UpdatedAt = CURRENT_TIMESTAMP
+            WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
+          `, [convertedQty, item.productid, warehouseId || 1]);
+        } else if (oldStatus === 'CONFIRMED' || oldStatus === 'PROCESSING' || oldStatus === 'SHIPPED' || oldStatus === 'DELIVERED') {
+          // Revert sold stock (add back to QuantityOnHand)
+          await client.query(`
+            UPDATE Inventory 
+            SET QuantityOnHand = QuantityOnHand + $1,
+                UpdatedAt = CURRENT_TIMESTAMP
+            WHERE ProductID = $2 AND WarehouseID = $3 AND OwnershipType = 'OWNED' AND FactoryID IS NULL
+          `, [convertedQty, item.productid, warehouseId || 1]);
+
+          // Record inventory transaction
+          await client.query(`
+            INSERT INTO InventoryTransactions 
+            (ProductID, WarehouseID, TransactionType, Quantity, ReferenceType, ReferenceID, Notes, CreatedBy, CreatedAt)
+            VALUES ($1, $2, 'IN', $3, 'ORDER', $4, $5, $6, CURRENT_TIMESTAMP)
+          `, [item.productid, warehouseId || 1, convertedQty, id, `Annulation ${orderNumber}`, req.user?.userId || 1]);
+        }
+      }
+
+      // 2. Revert Financials
+      if (oldStatus === 'CONFIRMED' || oldStatus === 'PROCESSING' || oldStatus === 'SHIPPED' || oldStatus === 'DELIVERED') {
+        if (customerId) {
+          const oldPayment = parseFloat(orderRecord.paymentamount) || 0;
+          const oldUnpaid = totalAmount - oldPayment;
+          if (oldUnpaid !== 0) {
+            await client.query('UPDATE Customers SET CurrentBalance = CurrentBalance - $1 WHERE CustomerID = $2', [oldUnpaid, customerId]);
+          }
+        }
+
+        // Reverse Cash Transactions
+        const transRes = await client.query('SELECT TransactionID, AccountID, Amount, TransactionType FROM CashTransactions WHERE ReferenceID = $1 AND ReferenceType = \'ORDER\'', [id]);
+        for (const trans of transRes.rows) {
+          if (trans.transactiontype === 'VENTE' || trans.transactiontype === 'VERSEMENT') {
+            await client.query('UPDATE CashAccounts SET Balance = Balance - $1 WHERE AccountID = $2', [trans.amount, trans.accountid]);
+          } else if (trans.transactiontype === 'RETOUR_VENTE') {
+            await client.query('UPDATE CashAccounts SET Balance = Balance + $1 WHERE AccountID = $2', [trans.amount, trans.accountid]);
+          }
+          await client.query('DELETE FROM CashTransactions WHERE TransactionID = $1', [trans.transactionid]);
+        }
       }
     }
 

@@ -142,6 +142,14 @@ export default function LoginPage() {
             </button>
           </form>
 
+          {/* Register Store redirection link */}
+          <div className="mt-6 text-center text-sm text-slate-400">
+            Vous n&apos;avez pas encore de compte ?{' '}
+            <button onClick={() => router.push('/register-store')} className="text-sky-400 hover:text-sky-300 font-semibold underline transition-colors">
+              Créer une boutique (Essai gratuit 20j)
+            </button>
+          </div>
+
           {/* Footer */}
           <div className="mt-8 pt-6 border-t border-white/5 text-center text-xs text-slate-500">
             <p className="font-medium text-slate-400 mb-1">Ceramic ERP — Système de Gestion</p>

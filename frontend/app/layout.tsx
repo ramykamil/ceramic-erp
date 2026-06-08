@@ -4,6 +4,7 @@ import { ToastProvider } from "@/components/ui/Toast";
 import MobileNav from "@/components/layout/MobileNav";
 import Footer from "@/components/layout/Footer";
 import GlobalKeyboardShortcuts from "@/components/GlobalKeyboardShortcuts";
+import TenantProvider from "@/components/layout/TenantProvider";
 
 export const metadata = {
   title: "Ceramic ERP - Système de Gestion",
@@ -17,10 +18,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ToastProvider>
           {/* Global Keyboard Shortcuts (ESC to go back) */}
           <GlobalKeyboardShortcuts />
-          {/* Main content area */}
-          <div className="relative flex-1 pb-20 md:pb-0">
-            {children}
-          </div>
+          <TenantProvider>
+            {/* Main content area */}
+            <div className="relative flex-1 pb-20 md:pb-0">
+              {children}
+            </div>
+          </TenantProvider>
           {/* Global Footer with developer credits */}
           <Footer />
           {/* Mobile Navigation */}

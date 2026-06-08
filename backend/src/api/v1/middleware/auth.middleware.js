@@ -26,7 +26,7 @@ function authenticateToken(req, res, next) {
 
     // Verify the user actually exists in the database (handles DB seeds/resets invalidating tokens)
     try {
-      const dbUserResult = await pool.query('SELECT UserID, Role, Username, IsActive FROM Users WHERE UserID = $1', [user.userId]);
+      const dbUserResult = await pool.query('SELECT UserID, Role, Username, IsActive, TenantID FROM Users WHERE UserID = $1', [user.userId]);
       if (dbUserResult.rows.length === 0 || !dbUserResult.rows[0].isactive) {
         return res.status(401).json({
           success: false,
@@ -37,7 +37,8 @@ function authenticateToken(req, res, next) {
       req.user = {
         ...user,
         role: dbUserResult.rows[0].role,
-        username: dbUserResult.rows[0].username
+        username: dbUserResult.rows[0].username,
+        tenantId: dbUserResult.rows[0].tenantid
       };
     } catch (dbErr) {
       console.error('Database user validation error in auth middleware:', dbErr);
