@@ -168,8 +168,18 @@ function OrdersListContent() {
   const handleConfirm = async (orderId: number) => {
     if (!window.confirm('Confirmer cette commande ? (Stock sera déduit)')) return;
     try {
-      await api.finalizeOrder(orderId);
-      fetchData(); // Refresh
+      let res = await api.finalizeOrder(orderId);
+      if (!res.success && res.message && (res.message.includes('limite de crédit') || res.message.includes('Limite de crédit'))) {
+        const confirmOverride = window.confirm(res.message + "\n\nVoulez-vous forcer la validation (Autorisation Administrateur requise) ?");
+        if (confirmOverride) {
+          res = await api.finalizeOrder(orderId, 0, 'ESPECE', true);
+        }
+      }
+      if (res.success) {
+        fetchData(); // Refresh
+      } else {
+        alert('Erreur confirmation: ' + res.message);
+      }
     } catch (e: any) {
       alert('Erreur confirmation: ' + e.message);
     }

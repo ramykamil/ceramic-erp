@@ -519,10 +519,11 @@ function POSContent() {
     setIsSubmitting(true);
     try {
       const effectiveId = selectedCustomerId || customers.find(c => c.customercode === 'COMPTOIR')?.customerid || 0;
-      const data = {
+      const data: any = {
         customerId: Number(effectiveId), orderType: isRetailMode ? 'RETAIL' : 'WHOLESALE', warehouseId: 1, orderDate,
         notes: observation, retailClientName: isRetailMode ? retailClientName : customerSearchQuery, shippingAddress, clientPhone,
         paymentAmount: payment, paymentMethod, deliveryCost, discount, timber,
+        overrideCreditLimit: false,
         items: cart.map(i => ({ 
           productId: i.productId, 
           quantity: i.quantity, 
@@ -533,10 +534,17 @@ function POSContent() {
           productName: (i.productCode?.toUpperCase() === 'MANUAL' || i.productCode?.toUpperCase() === 'MANUEL') ? i.productName : undefined 
         }))
       };
-      const res = editOrderId ? await api.updateOrder(Number(editOrderId), data) : await api.createOrder(data);
+      let res = editOrderId ? await api.updateOrder(Number(editOrderId), data) : await api.createOrder(data);
+      if (!res.success && res.message && (res.message.includes('limite de crédit') || res.message.includes('Limite de crédit'))) {
+        const confirmOverride = window.confirm(res.message + "\n\nVoulez-vous forcer la validation (Autorisation Administrateur requise) ?");
+        if (confirmOverride) {
+          data.overrideCreditLimit = true;
+          res = editOrderId ? await api.updateOrder(Number(editOrderId), data) : await api.createOrder(data);
+        }
+      }
       if (res.success) { alert('Vente validée!'); router.push('/orders'); }
       else alert(res.message);
-    } catch (e) { console.error(e); } finally { setIsSubmitting(false); }
+    } catch (e: any) { console.error(e); alert(e.message || 'Erreur lors de la validation'); } finally { setIsSubmitting(false); }
   };
 
   return (

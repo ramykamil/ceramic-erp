@@ -240,7 +240,7 @@ async function getProductSizes(req, res, next) {
 }
 
 async function createProduct(req, res, next) {
-  const { productcode, productname, categoryid, brandid, primaryunitid, description, baseprice, purchaseprice, factoryid, size, calibre, choix, qteparcolis, qtecolisparpalette, warehouseid } = req.body;
+  const { productcode, productname, categoryid, brandid, primaryunitid, description, baseprice, purchaseprice, factoryid, size, calibre, choix, qteparcolis, qtecolisparpalette, warehouseid, baseunit = 'SQM', ismeterbased = true, allowpiecesale = true, allowcartondisplay = true } = req.body;
   const finalSize = size || extractSizeFromName(productname || '');
 
   const client = await pool.connect();
@@ -264,10 +264,14 @@ async function createProduct(req, res, next) {
             BasePrice = COALESCE($5, BasePrice),
             PurchasePrice = COALESCE($6, PurchasePrice),
             Size = COALESCE($7, Size),
-            Description = COALESCE($8, Description)
-        WHERE ProductID = $9
+            Description = COALESCE($8, Description),
+            BaseUnit = COALESCE($9, BaseUnit),
+            IsMeterBased = COALESCE($10, IsMeterBased),
+            AllowPieceSale = COALESCE($11, AllowPieceSale),
+            AllowCartonDisplay = COALESCE($12, AllowCartonDisplay)
+        WHERE ProductID = $13
         RETURNING *
-      `, [productname, categoryid || null, brandid || null, primaryunitid || null, baseprice || 0, purchaseprice || null, finalSize, description, existingId]);
+      `, [productname, categoryid || null, brandid || null, primaryunitid || null, baseprice || 0, purchaseprice || null, finalSize, description, baseunit, ismeterbased, allowpiecesale, allowcartondisplay, existingId]);
       newProduct = updateResult.rows[0];
     } else {
       // NORMAL INSERT
@@ -275,9 +279,10 @@ async function createProduct(req, res, next) {
         INSERT INTO Products (
           ProductCode, ProductName, CategoryID, BrandID, 
           PrimaryUnitID, Description, BasePrice, PurchasePrice, FactoryID, Size, 
-          Calibre, Choix, QteParColis, QteColisParPalette, IsActive
+          Calibre, Choix, QteParColis, QteColisParPalette, IsActive,
+          BaseUnit, IsMeterBased, AllowPieceSale, AllowCartonDisplay
         )
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, TRUE) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, TRUE, $15, $16, $17, $18) 
         RETURNING *
       `;
 
@@ -295,7 +300,11 @@ async function createProduct(req, res, next) {
         calibre || null,
         choix || null,
         qteparcolis || 0,
-        qtecolisparpalette || 0
+        qtecolisparpalette || 0,
+        baseunit,
+        ismeterbased,
+        allowpiecesale,
+        allowcartondisplay
       ]);
       newProduct = result.rows[0];
     }
@@ -351,7 +360,8 @@ async function updateProduct(req, res, next) {
     const {
       productcode, productname, categoryid, brandid, primaryunitid,
       description, baseprice, purchaseprice, factoryid, size,
-      calibre, choix, qteparcolis, qtecolisparpalette
+      calibre, choix, qteparcolis, qtecolisparpalette,
+      baseunit, ismeterbased, allowpiecesale, allowcartondisplay
     } = req.body;
     const finalSize = size || extractSizeFromName(productname || '');
 
@@ -360,13 +370,16 @@ async function updateProduct(req, res, next) {
         ProductCode=$1, ProductName=$2, CategoryID=$3, BrandID=$4, 
         PrimaryUnitID=$5, Description=$6, BasePrice=$7, FactoryID=$8, Size=$9,
         PurchasePrice=$10, Calibre=$11, Choix=$12, QteParColis=$13, QteColisParPalette=$14,
+        BaseUnit=COALESCE($15, BaseUnit), IsMeterBased=COALESCE($16, IsMeterBased),
+        AllowPieceSale=COALESCE($17, AllowPieceSale), AllowCartonDisplay=COALESCE($18, AllowCartonDisplay),
         UpdatedAt=CURRENT_TIMESTAMP
-      WHERE ProductID=$15 RETURNING *`,
+      WHERE ProductID=$19 RETURNING *`,
       [
         productcode, productname, categoryid || null, brandid || null,
         primaryunitid, description, baseprice, factoryid || null, finalSize,
         purchaseprice || null, calibre || null, choix || null,
         qteparcolis || 0, qtecolisparpalette || 0,
+        baseunit, ismeterbased, allowpiecesale, allowcartondisplay,
         id
       ]
     );

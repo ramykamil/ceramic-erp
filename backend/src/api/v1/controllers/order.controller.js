@@ -14,6 +14,28 @@ const isServiceItem = (name) => {
 };
 
 // ===================================
+// ===== CREDIT LIMIT VALIDATION HELPER =====
+const checkCreditLimit = async (client, customerId, orderTotal, user, override = false) => {
+  if (!customerId) return;
+  const customerQuery = await client.query(
+    'SELECT CurrentBalance, CreditLimit, CustomerName FROM Customers WHERE CustomerID = $1',
+    [customerId]
+  );
+  if (customerQuery.rows.length > 0) {
+    const customer = customerQuery.rows[0];
+    const creditLimit = parseFloat(customer.creditlimit) || 0;
+    const currentBalance = parseFloat(customer.currentbalance) || 0;
+
+    if (creditLimit > 0 && (currentBalance + orderTotal) > creditLimit) {
+      const isAdmin = user && (user.role === 'ADMIN' || user.role === 'MANAGER');
+      if (!isAdmin && !override) {
+        throw new Error(`Limite de crédit dépassée pour ${customer.customername}. Solde actuel: ${currentBalance} DZD + Commande: ${orderTotal} DZD > Limite: ${creditLimit} DZD. Cette opération nécessite une autorisation administrateur.`);
+      }
+    }
+  }
+};
+
+// ===================================
 // ===== INVENTORY VALIDATION HELPER =====
 /**
  * Internal helper to check if an order's items have sufficient stock.
@@ -382,8 +404,28 @@ async function createOrder(req, res, next) {
       clientPhone,      // NEW
       paymentAmount, // NEW
       paymentMethod,  // NEW
+      overrideCreditLimit = false, // NEW
       items           // NEW: Array of items for atomic creation
     } = req.body;
+
+    // Check credit limit if items are provided
+    if (items && Array.isArray(items) && items.length > 0) {
+      let calculatedTotal = 0;
+      for (const item of items) {
+        const { quantity, unitPrice: providedUnitPrice, discountPercent = 0, taxPercent = 0 } = item;
+        const qty = parseFloat(quantity) || 0;
+        let unitPrice = parseFloat(providedUnitPrice) || 0;
+        if (!providedUnitPrice) {
+          const priceInfo = await pricingService.getProductPriceForCustomer(item.productId, customerId);
+          unitPrice = priceInfo.price || 0;
+        }
+        const discountAmount = (unitPrice * qty * parseFloat(discountPercent)) / 100;
+        const lineTotal = (unitPrice * qty) - discountAmount;
+        const taxAmount = (lineTotal * parseFloat(taxPercent)) / 100;
+        calculatedTotal += lineTotal + taxAmount;
+      }
+      await checkCreditLimit(client, customerId, calculatedTotal, req.user, overrideCreditLimit === true);
+    }
 
     // Generate order number
     const orderNumberResult = await client.query(
@@ -523,14 +565,14 @@ async function createOrder(req, res, next) {
           INSERT INTO OrderItems (
             OrderID, ProductID, Quantity, UnitID, UnitPrice,
             DiscountPercent, DiscountAmount, TaxPercent, TaxAmount,
-            LineTotal, PriceSource, PalletCount, ColisCount, CostPrice, LinkProductName
+            LineTotal, PriceSource, PalletCount, ColisCount, CostPrice, CostAtSale, LinkProductName
           )
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
         `;
 
         await client.query(itemQuery, [
           orderId, productId, quantity, unitId, unitPrice, discountPercent, discountAmount,
-          taxPercent, taxAmount, finalLineTotal, priceSource, palletCount, colisCount, costPrice,
+          taxPercent, taxAmount, finalLineTotal, priceSource, palletCount, colisCount, costPrice, costPrice,
           productName || null
         ]);
       }
@@ -582,7 +624,7 @@ async function addOrderItem(req, res, next) {
     await client.query('BEGIN');
 
     const { orderId } = req.params;
-    const { productId, quantity, unitId, unitPrice: providedUnitPrice, discountPercent = 0, taxPercent = 0, palletCount: rawPalletCount = 0, colisCount: rawColisCount = 0, productName } = req.body;
+    const { productId, quantity, unitId, unitPrice: providedUnitPrice, discountPercent = 0, taxPercent = 0, palletCount: rawPalletCount = 0, colisCount: rawColisCount = 0, productName, overrideCreditLimit = false } = req.body;
 
     if (parseFloat(quantity) <= 0) {
       throw new Error(`La quantité pour "${productName || 'ce produit'}" doit être supérieure à 0.`);
@@ -678,7 +720,10 @@ async function addOrderItem(req, res, next) {
     const taxAmount = (lineTotal * taxPercent) / 100;
     const finalLineTotal = lineTotal + taxAmount;
 
-    // Insert order item with pallet, carton counts, and cost price
+    // Check credit limit with the new item's total
+    await checkCreditLimit(client, customerId, finalLineTotal, req.user, overrideCreditLimit === true);
+
+    // Insert order item with pallet, carton counts, cost price, and CostAtSale
     const itemQuery = `
       INSERT INTO OrderItems (
         OrderID, ProductID, Quantity, UnitID, UnitPrice,
@@ -747,7 +792,7 @@ async function updateOrderStatus(req, res, next) {
   const client = await pool.connect();
   try {
     const { id } = req.params;
-    const { status } = req.body;
+    const { status, overrideCreditLimit = false } = req.body;
 
     const validStatuses = ['PENDING', 'CONFIRMED', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
 
@@ -760,9 +805,9 @@ async function updateOrderStatus(req, res, next) {
 
     await client.query('BEGIN');
 
-    // Fetch current status and warehouse info to track transition
+    // Fetch current status and warehouse/customer info to track transition
     const currentOrderResult = await client.query(
-      'SELECT OrderNumber, Status, WarehouseID FROM Orders WHERE OrderID = $1',
+      'SELECT OrderNumber, Status, WarehouseID, CustomerID, TotalAmount FROM Orders WHERE OrderID = $1',
       [id]
     );
 
@@ -778,10 +823,13 @@ async function updateOrderStatus(req, res, next) {
     const oldStatus = orderRecord.status;
     const warehouseId = orderRecord.warehouseid;
     const orderNumber = orderRecord.ordernumber;
+    const customerId = orderRecord.customerid;
+    const totalAmount = parseFloat(orderRecord.totalamount) || 0;
 
-    // Enforcement: If moving from PENDING to a validated status (CONFIRMED), check stock availability
+    // Enforcement: If moving from PENDING to a validated status (CONFIRMED), check stock availability and credit limit
     if (status === 'CONFIRMED' && oldStatus === 'PENDING') {
       try {
+        await checkCreditLimit(client, customerId, totalAmount, req.user, overrideCreditLimit === true);
         const itemsResult = await checkOrderStock(client, id, warehouseId);
         // Deduct inventory as well to avoid stock drift
         // Passes audit info: orderId, orderNumber, userId
@@ -879,6 +927,11 @@ async function finalizeOrder(req, res, next) {
     // 1. Check if order is in PENDING status
     if (order.status !== 'PENDING') {
       throw new Error(`Cette commande ne peut pas être validée. Statut actuel: ${order.status}`);
+    }
+
+    // 1.5 Check customer credit limit
+    if (!isRetailOrder) {
+      await checkCreditLimit(client, order.customerid, totalAmount, req.user, req.body.overrideCreditLimit === true);
     }
 
     // 2. PRE-VALIDATION: Get items and check stock BEFORE any accounting entries

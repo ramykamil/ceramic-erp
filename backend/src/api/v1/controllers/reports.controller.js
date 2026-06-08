@@ -413,10 +413,10 @@ const getProductsDetailReport = async (req, res) => {
                 oi.Quantity as qty,
                 COALESCE(oi.PalletCount, 0) as colis,
                 COALESCE(oi.ColisCount, 0) as palette,
-                COALESCE(p.BasePrice * 0.7, 0) as prix_achat,
+                COALESCE(oi.CostAtSale, oi.CostPrice, p.PurchasePrice, p.BasePrice * 0.7) as prix_achat,
                 oi.UnitPrice as prix_vente,
                 oi.LineTotal as total,
-                COALESCE(oi.LineTotal - (p.BasePrice * 0.7 * oi.Quantity), 0) as benefice
+                COALESCE(oi.LineTotal - (COALESCE(oi.CostAtSale, oi.CostPrice, p.PurchasePrice, p.BasePrice * 0.7) * oi.Quantity), 0) as benefice
             FROM OrderItems oi
             JOIN Orders o ON oi.OrderID = o.OrderID
             JOIN Products p ON oi.ProductID = p.ProductID
@@ -455,7 +455,12 @@ const getClientsReport = async (req, res) => {
                 COUNT(o.OrderID) as nb_commandes,
                 MAX(o.OrderDate) as derniere_date,
                 COALESCE(SUM(o.DiscountAmount), 0) as remise,
-                0 as benefice,
+                COALESCE((
+                  SELECT SUM(oi.LineTotal - (COALESCE(oi.CostAtSale, oi.CostPrice, p.PurchasePrice, p.BasePrice * 0.7) * oi.Quantity))
+                  FROM OrderItems oi
+                  JOIN Products p ON oi.ProductID = p.ProductID
+                  WHERE oi.OrderID IN (SELECT o2.OrderID FROM Orders o2 WHERE o2.CustomerID = c.CustomerID AND o2.OrderDate BETWEEN $1 AND $2 AND o2.Status != 'CANCELLED')
+                ), 0) as benefice,
                 COALESCE(SUM(o.TotalAmount), 0) as total,
                 COALESCE(SUM(i.PaidAmount), 0) as versement,
                 0 as rendu,

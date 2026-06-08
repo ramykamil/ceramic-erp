@@ -746,17 +746,17 @@ class ApiClient {
     });
   }
 
-  async updateOrderStatus(orderId: number, status: string) {
+  async updateOrderStatus(orderId: number, status: string, overrideCreditLimit: boolean = false) {
     return this.request(`/orders/${orderId}/status`, {
       method: 'PUT',
-      body: JSON.stringify({ status }),
+      body: JSON.stringify({ status, overrideCreditLimit }),
     });
   }
 
-  async finalizeOrder(orderId: number, paymentAmount: number = 0, paymentMethod: 'ESPECE' | 'VIREMENT' | 'CHEQUE' = 'ESPECE') {
+  async finalizeOrder(orderId: number, paymentAmount: number = 0, paymentMethod: 'ESPECE' | 'VIREMENT' | 'CHEQUE' = 'ESPECE', overrideCreditLimit: boolean = false) {
     return this.request(`/orders/${orderId}/finalize`, {
       method: 'POST',
-      body: JSON.stringify({ paymentAmount, paymentMethod }),
+      body: JSON.stringify({ paymentAmount, paymentMethod, overrideCreditLimit }),
     });
   }
 
