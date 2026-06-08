@@ -85,9 +85,9 @@ async function login(req, res, next) {
 
     // Log active session
     pool.query(
-      `INSERT INTO ActiveSessions (UserID, IPAddress, UserAgent)
-       VALUES ($1, $2, $3)`,
-      [user.userid, req.ip, req.headers['user-agent']]
+      `INSERT INTO ActiveSessions (UserID, IPAddress, UserAgent, TenantID)
+       VALUES ($1, $2, $3, $4)`,
+      [user.userid, req.ip, req.headers['user-agent'], user.tenantid]
     ).catch(err => console.error('Failed to log active session:', err));
 
     res.json({

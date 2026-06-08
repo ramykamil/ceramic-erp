@@ -51,15 +51,15 @@ pool.connect = function (callback) {
             actualCb = params;
           }
           
-          if (tenantId && text !== 'BEGIN' && text !== 'COMMIT' && text !== 'ROLLBACK' && text !== 'SET app.current_tenant_id = $1') {
+          if (tenantId && text !== 'BEGIN' && text !== 'COMMIT' && text !== 'ROLLBACK' && text !== "SELECT set_config('app.current_tenant_id', $1, false)") {
             if (actualCb) {
-              originalClientQuery.call(client, 'SET app.current_tenant_id = $1', [tenantId], (err2) => {
+              originalClientQuery.call(client, "SELECT set_config('app.current_tenant_id', $1, false)", [tenantId], (err2) => {
                 if (err2) return actualCb(err2);
                 originalClientQuery.call(client, text, params, cb);
               });
               return;
             } else {
-              return originalClientQuery.call(client, 'SET app.current_tenant_id = $1', [tenantId])
+              return originalClientQuery.call(client, "SELECT set_config('app.current_tenant_id', $1, false)", [tenantId])
                 .then(() => originalClientQuery.call(client, text, params));
             }
           }
@@ -82,15 +82,15 @@ pool.connect = function (callback) {
           actualCb = params;
         }
 
-        if (tenantId && text !== 'BEGIN' && text !== 'COMMIT' && text !== 'ROLLBACK' && text !== 'SET app.current_tenant_id = $1') {
+        if (tenantId && text !== 'BEGIN' && text !== 'COMMIT' && text !== 'ROLLBACK' && text !== "SELECT set_config('app.current_tenant_id', $1, false)") {
           if (actualCb) {
-            originalClientQuery.call(client, 'SET app.current_tenant_id = $1', [tenantId], (err2) => {
+            originalClientQuery.call(client, "SELECT set_config('app.current_tenant_id', $1, false)", [tenantId], (err2) => {
               if (err2) return actualCb(err2);
               originalClientQuery.call(client, text, params, cb);
             });
             return;
           } else {
-            return originalClientQuery.call(client, 'SET app.current_tenant_id = $1', [tenantId])
+            return originalClientQuery.call(client, "SELECT set_config('app.current_tenant_id', $1, false)", [tenantId])
               .then(() => originalClientQuery.call(client, text, params));
           }
         }
