@@ -140,6 +140,15 @@ async function seedDatabase() {
       ON CONFLICT (Username) DO NOTHING
     `, [wholesalePassword]);
 
+    // 8.3 Create Ramy User
+    console.log('Creating Ramy user...');
+    const ramyPassword = await bcrypt.hash('admin123', 10);
+    await client.query(`
+      INSERT INTO Users (Username, PasswordHash, Email, Role) VALUES
+      ('Ramy', $1, 'ramy@ceramicerp.com', 'ADMIN')
+      ON CONFLICT (Username) DO NOTHING
+    `, [ramyPassword]);
+
     // Get product IDs
     const productIds = productResult.rows.map(r => r.productid);
     const customerIds = customerResult.rows.map(r => r.customerid);
