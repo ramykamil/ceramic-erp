@@ -99,6 +99,7 @@ async function seedDatabase() {
     console.log('Creating customers...');
     const customerResult = await client.query(`
       INSERT INTO Customers (CustomerCode, CustomerName, CustomerType, PriceListID, Phone, Email, CreditLimit) VALUES
+      ('COMPTOIR', 'CLIENT COMPTOIR', 'RETAIL', $2, NULL, NULL, 0.00),
       ('CUST-001', 'ABC Construction Ltd', 'WHOLESALE', $1, '+1234567890', 'abc@construction.com', 50000.00),
       ('CUST-002', 'XYZ Retail Store', 'RETAIL', $2, '+0987654321', 'xyz@retail.com', 10000.00),
       ('CUST-003', 'BuildRight Contractors', 'WHOLESALE', $1, '+1122334455', 'info@buildright.com', 75000.00)
