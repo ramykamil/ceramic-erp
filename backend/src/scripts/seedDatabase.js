@@ -193,6 +193,14 @@ async function seedDatabase() {
 
     await client.query('COMMIT');
 
+    // Refresh materialized view to reflect new seeded products
+    try {
+      await pool.query('REFRESH MATERIALIZED VIEW mv_Catalogue');
+      console.log('✓ Materialized view mv_Catalogue refreshed successfully!');
+    } catch (mvErr) {
+      console.warn('Warning: Failed to refresh mv_Catalogue:', mvErr.message);
+    }
+
     console.log('✓ Database seeding completed successfully!');
     console.log('\nSample Data Created:');
     console.log('- 3 Categories');
