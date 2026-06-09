@@ -177,6 +177,7 @@ function DashboardHomePage() {
   const [userName, setUserName] = useState("Utilisateur");
   const [userRole, setUserRole] = useState("");
   const [userPermissions, setUserPermissions] = useState<string[] | null>(null);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [stats, setStats] = useState({
     monthlySales: 0,
     pendingOrders: 0,
@@ -212,6 +213,27 @@ function DashboardHomePage() {
       }
     } else {
       setUserPermissions(null);
+    }
+
+    // Check if super-admin
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+          atob(base64)
+            .split('')
+            .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+            .join('')
+        );
+        const decoded = JSON.parse(jsonPayload);
+        if (decoded.role === 'ADMIN' && decoded.tenantId === 'd0000000-0000-0000-0000-000000000000') {
+          setIsSuperAdmin(true);
+        }
+      } catch (e) {
+        console.error("Failed to decode token for super admin check", e);
+      }
     }
 
     if (storedRole && ['ADMIN', 'MANAGER'].includes(storedRole)) {
@@ -374,6 +396,26 @@ function DashboardHomePage() {
               </section>
             );
           })}
+
+          {/* Super Admin Section */}
+          {isSuperAdmin && (
+            <section className="space-y-4 animate-fade-in-up">
+              <h2 className="text-lg font-bold text-white pl-3 border-l-4 border-indigo-500">
+                Super-Administration Système
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <DashboardCard
+                  href="/admin/dashboard"
+                  title="Super-Admin Panel"
+                  description="Gérer les boutiques, abonnements et configurations globales"
+                  icon="🛡️"
+                  colorClass="from-indigo-500/20 to-indigo-600/10 text-indigo-400"
+                  allowedRoles={['ADMIN']}
+                  permissionKey="superadmin"
+                />
+              </div>
+            </section>
+          )}
         </div>
       </div>
 
