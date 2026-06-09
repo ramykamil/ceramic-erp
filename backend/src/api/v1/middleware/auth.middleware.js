@@ -126,9 +126,31 @@ function requireRole(...roles) {
   };
 }
 
+/**
+ * Middleware to restrict access to super administrators (Admin role on default tenant)
+ */
+function requireSuperAdmin(req, res, next) {
+  if (!req.user) {
+    return res.status(401).json({
+      success: false,
+      message: 'Authentication required'
+    });
+  }
+
+  const DEFAULT_TENANT_ID = 'd0000000-0000-0000-0000-000000000000';
+  if (req.user.tenantId !== DEFAULT_TENANT_ID || req.user.role !== 'ADMIN') {
+    return res.status(403).json({
+      success: false,
+      message: 'Access restricted to Super-Admin only.'
+    });
+  }
+
+  next();
+}
 
 module.exports = {
   authenticateToken,
-  requireRole
+  requireRole,
+  requireSuperAdmin
 };
 

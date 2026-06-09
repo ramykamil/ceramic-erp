@@ -289,6 +289,10 @@ router.post('/bi/notify-whatsapp', authenticateToken, biController.sendWhatsappN
 router.get('/billing/status', authenticateToken, billingController.getBillingStatus);
 router.post('/billing/subscribe', authenticateToken, billingController.subscribe);
 
+// --- Super-Admin UI Panel ---
+const superadminRoutes = require('./superadmin.routes');
+router.use('/superadmin', superadminRoutes);
+
 module.exports = router;
 
 

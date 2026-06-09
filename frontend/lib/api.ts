@@ -488,6 +488,31 @@ class ApiClient {
     });
   }
 
+  // Super-Admin Management Endpoints
+  async getSuperAdminStores() {
+    return this.request<any[]>('/superadmin/stores');
+  }
+
+  async updateStoreSubscription(tenantId: string, data: { planType?: string; subscriptionStatus?: string; trialEndDate?: string }) {
+    return this.request(`/superadmin/stores/${tenantId}/subscription`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getSuperAdminStats() {
+    return this.request<{
+      stats: {
+        totalstores: number;
+        activetrials: number;
+        activepaid: number;
+        expiredstores: number;
+        suspendedstores: number;
+      };
+      recentSignups: any[];
+    }>('/superadmin/stats');
+  }
+
 
   // General Settings
   async getSettings() {
